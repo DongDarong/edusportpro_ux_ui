@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create New Team | EduSportPro</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        hope: {
+                            lime: '#8DC63F',
+                            cyan: '#00AEEF',
+                            red: '#ED1C24',
+                            yellow: '#FDC116',
+                            dark: '#1D1D1B',
+                            light: '#f8fafc',
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .input-field {
+            width: 100%;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+            background-color: #f8fafc;
+            padding: 0.625rem 1rem;
+            font-size: 0.875rem;
+            color: #1e293b;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .input-field:focus {
+            background-color: #ffffff;
+            border-color: #00AEEF;
+            box-shadow: 0 0 0 3px rgba(0, 174, 239, 0.1);
+            outline: none;
+        }
+
+        .label-text {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin-bottom: 0.375rem;
+        }
+
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 800;
+            color: #1D1D1B;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .section-number {
+            background-color: #00AEEF;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+        }
+
+        .player-badge {
+            transition: all 0.2s;
+        }
+        .player-badge:hover {
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+
+<body class="bg-hope-light font-sans text-hope-dark min-h-screen pb-20">
+
+    <!-- Header -->
+    <div class="bg-white border-b border-gray-200 sticky top-0 z-20 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="w-35 h-25 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden border border-gray-100 shrink-0">
+                        <img src="/images/logo.jpg" alt="Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-xs font-bold text-gray-400\'>LOGO</span>'">
+                    </div>
+                    
+                    <div>
+                        <h1 class="text-sm md:text-base font-bold text-hope-dark leading-tight">
+                            Organization for Children’s <br class="hidden md:block"> Hope Foundation of Cambodia
+                        </h1>
+                        <p class="text-xs font-medium text-hope-cyan mt-0.5">
+                            Community Sports Student Information System
+                        </p>
+                    </div>
+                </div>
+
+                <a href="/admin/admin-teams.html" class="hidden md:flex items-center gap-2 text-sm font-semibold text-gray-500 hover:text-hope-dark transition-colors">
+                    <span>Back to Teams</span>
+                    <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 mt-8">
+
+        <!-- Page Title -->
+        <div class="mb-8">
+            <h2 class="text-3xl font-extrabold text-hope-dark tracking-tight">Create New Team</h2>
+            <p class="text-gray-500 mt-1">Configure your team roster, coaching staff, and competitive division.</p>
+        </div>
+
+        <!-- Form Card -->
+        <form class="bg-white rounded-2xl shadow-soft overflow-hidden relative">
+            
+            <!-- Branding Stripe -->
+            <div class="h-1.5 w-full flex">
+                <div class="h-full w-1/4 bg-hope-lime"></div>
+                <div class="h-full w-1/4 bg-hope-cyan"></div>
+                <div class="h-full w-1/4 bg-hope-red"></div>
+                <div class="h-full w-1/4 bg-hope-yellow"></div>
+            </div>
+
+            <div class="p-6 md:p-10 space-y-12">
+
+                <!-- Section 1: Team Logistics -->
+                <section>
+                    <div class="flex items-center justify-between border-b border-gray-100 pb-4 mb-8">
+                        <h3 class="section-title">
+                            <span class="section-number">1</span>
+                            Team Logistics
+                        </h3>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-6 gap-6">
+                        <div class="col-span-2 md:col-span-4">
+                            <label class="label-text">Team Name <span class="text-hope-red">*</span></label>
+                            <input type="text" placeholder="e.g. Battambang Eagles U16" class="input-field">
+                        </div>
+
+                        <div class="col-span-1 md:col-span-2">
+                            <label class="label-text">Division <span class="text-hope-red">*</span></label>
+                            <select class="input-field cursor-pointer">
+                                <option>Select Division</option>
+                                <option>U10 - Foundation</option>
+                                <option>U12 - Junior</option>
+                                <option>U14 - Intermediate</option>
+                                <option>U16 - Senior</option>
+                            </select>
+                        </div>
+
+                        <div class="col-span-1 md:col-span-2">
+                            <label class="label-text">Assigned Coach</label>
+                            <select class="input-field cursor-pointer">
+                                <option>Select Coach</option>
+                                <option>Coach Sok Dara</option>
+                                <option>Coach Vannak Vuthy</option>
+                                <option>Coach Chea Sophat</option>
+                            </select>
+                        </div>
+
+                        <div class="col-span-1 md:col-span-2">
+                            <label class="label-text">Team Status</label>
+                            <select class="input-field cursor-pointer font-bold text-hope-lime">
+                                <option class="text-hope-lime">Active</option>
+                                <option class="text-hope-yellow">Training Only</option>
+                                <option class="text-hope-red">Inactive</option>
+                            </select>
+                        </div>
+
+                        <div class="col-span-1 md:col-span-2">
+                            <label class="label-text">Team Logo</label>
+                            <div class="relative">
+                                <input type="file" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                                <div class="input-field flex items-center gap-2 text-gray-400 bg-white">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                                    <span class="text-xs">Upload File</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 2: Player Roster -->
+                <section>
+                    <div class="flex items-center justify-between border-b border-gray-100 pb-4 mb-8">
+                        <h3 class="section-title">
+                            <span class="section-number bg-hope-yellow">2</span>
+                            Player Roster Assignment
+                        </h3>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
+                        <div class="mb-6">
+                            <label class="label-text">Search & Add Players</label>
+                            <div class="flex gap-2">
+                                <div class="relative flex-1">
+                                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                                    </span>
+                                    <input type="text" placeholder="Type player name or registration ID..." class="input-field pl-10 bg-white">
+                                </div>
+                                <button type="button" class="bg-hope-dark text-white px-6 py-2 rounded-xl font-bold text-sm hover:bg-black transition-colors">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <h4 class="text-xs font-bold text-gray-500 uppercase tracking-widest">Selected Players (2 / 25)</h4>
+                                <span class="text-[10px] font-bold px-2 py-0.5 bg-gray-200 text-gray-600 rounded">23 Slots Free</span>
+                            </div>
+
+                            <div class="flex flex-wrap gap-3">
+                                <!-- Player Card -->
+                                <div class="player-badge flex items-center gap-2 bg-white border border-gray-200 pl-2 pr-3 py-1.5 rounded-xl shadow-sm">
+                                    <div class="w-6 h-6 rounded-full bg-hope-cyan/10 flex items-center justify-center text-[10px] font-bold text-hope-cyan">SD</div>
+                                    <span class="text-sm font-medium text-gray-700">SOK Dara</span>
+                                    <button type="button" class="text-gray-300 hover:text-hope-red transition-colors ml-1">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
+                                    </button>
+                                </div>
+
+                                <div class="player-badge flex items-center gap-2 bg-white border border-gray-200 pl-2 pr-3 py-1.5 rounded-xl shadow-sm">
+                                    <div class="w-6 h-6 rounded-full bg-hope-lime/10 flex items-center justify-center text-[10px] font-bold text-hope-lime">PV</div>
+                                    <span class="text-sm font-medium text-gray-700">PLAYER Vannak</span>
+                                    <button type="button" class="text-gray-300 hover:text-hope-red transition-colors ml-1">
+                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
+                                    </button>
+                                </div>
+
+                                <!-- Placeholder/Empty State -->
+                                <div class="flex-1 min-w-[200px] border-2 border-dashed border-gray-200 rounded-xl flex items-center justify-center py-2">
+                                    <span class="text-xs text-gray-400 italic">No more players selected</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- Footer Actions -->
+            <div class="bg-gray-50 px-6 py-5 border-t border-gray-100 flex items-center justify-end gap-3">
+                <a href="/admin/admin-teams.html" class="px-6 py-2.5 rounded-xl text-sm font-bold text-gray-500 hover:bg-white hover:text-hope-dark border border-transparent hover:border-gray-200 transition-all">
+                    Cancel
+                </a>
+                <button type="button" onclick="alert('Team Created!')" class="px-8 py-2.5 rounded-xl bg-hope-cyan text-white text-sm font-bold shadow-lg shadow-hope-cyan/30 hover:bg-sky-500 hover:-translate-y-0.5 transition-all">
+                    Create Team
+                </button>
+            </div>
+
+        </form>
+    </main>
+
+</body>
+</html>

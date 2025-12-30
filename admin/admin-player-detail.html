@@ -4,21 +4,20 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Player Details – EduSportPro</title>
+    <title>Player Profile | EduSportPro</title>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Tailwind Configuration -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
                     },
                     colors: {
                         hope: {
@@ -26,9 +25,12 @@
                             cyan: '#00AEEF',
                             red: '#ED1C24',
                             yellow: '#FDC116',
-                            dark: '#1D1D1B',
-                            light: '#f2f4f7',
+                            dark: '#0f172a',
+                            light: '#f8fafc',
                         }
+                    },
+                    boxShadow: {
+                        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
                     }
                 }
             }
@@ -37,206 +39,204 @@
 
     <style>
         body {
-            background-color: #f2f4f7;
-            color: #1D1D1B;
-            min-height: 100vh;
+            background-color: #f1f5f9;
+            background-image: radial-gradient(at 0% 0%, rgba(0, 174, 239, 0.03) 0, transparent 50%), radial-gradient(at 50% 0%, rgba(141, 198, 63, 0.03) 0, transparent 50%);
         }
-        /* Custom scrollbar for horizontal tables on mobile */
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .stat-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.1);
+        }
+
         .custom-scrollbar::-webkit-scrollbar {
-            height: 4px;
+            height: 6px;
         }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
+
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
+            background: #e2e8f0;
             border-radius: 10px;
         }
     </style>
 </head>
 
-<body class="antialiased p-4 md:p-8">
+<body class="antialiased min-h-screen pb-20">
 
-    <!-- MAIN CONTENT CONTAINER -->
-    <main class="max-w-6xl mx-auto">
-        
-        <!-- HEADER ACTIONS -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-            <div>
-                <a href="/admin/admin-players.html" class="inline-flex items-center gap-2 text-gray-500 hover:text-hope-cyan transition-colors mb-2 group">
-                    <svg class="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                    </svg>
-                    <span class="font-medium">Back to Players</span>
+    <!-- TOP NAVIGATION BAR -->
+    <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-200/60 px-6 py-4 mb-8">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <a href="/admin/admin-players.html" class="p-2 hover:bg-slate-100 rounded-full transition-colors">
+                    <svg class="w-5 h-5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
                 </a>
-                <h1 class="text-2xl font-bold text-hope-dark">Player Profile</h1>
+                <h1 class="text-xl font-extrabold text-hope-dark tracking-tight">Player Profile</h1>
             </div>
-            
-            
+            <div class="flex items-center gap-3">
+                <a href="/admin/admin-edit-player.html" class="hidden md:flex items-center gap-2 px-4 py-2 bg-hope-dark text-white rounded-xl text-sm font-bold shadow-lg shadow-slate-200 hover:bg-black transition-all">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                    Edit Profile
+                </a>
+                <button onclick="exportPlayerPDF()" class="p-2 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors shadow-sm">
+                    <svg class="w-5 h-5 text-hope-red" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5z"/></svg>
+                </button>
+            </div>
         </div>
+    </nav>
 
-        <div class="flex flex-col lg:flex-row gap-8">
+    <main class="max-w-7xl mx-auto px-6">
+        
+        <div class="grid grid-cols-12 gap-8">
             
-            <!-- Left Column: Player Profile Card -->
-            <div class="w-full lg:w-1/3 space-y-6">
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="h-24 bg-gradient-to-r from-hope-cyan to-hope-lime"></div>
-                    <div class="px-6 pb-6">
-                        <div class="relative flex justify-center">
-                            <div class="absolute -top-12 w-24 h-24 bg-hope-yellow rounded-full border-4 border-white flex items-center justify-center text-white text-3xl font-bold shadow-lg">
-                                SK
+            <!-- LEFT COLUMN: AVATAR & QUICK STATS -->
+            <div class="col-span-12 lg:col-span-4 space-y-8">
+                
+                <!-- Main Identity Card -->
+                <div class="glass-card rounded-[2.5rem] shadow-glass overflow-hidden relative">
+                    <div class="h-32 bg-gradient-to-br from-hope-cyan via-blue-500 to-hope-lime opacity-90"></div>
+                    
+                    <div class="px-8 pb-10">
+                        <div class="relative -mt-16 mb-6 flex justify-center">
+                            <div class="w-32 h-32 rounded-3xl bg-white p-1.5 shadow-xl rotate-3 transform transition-transform hover:rotate-0">
+                                <div class="w-full h-full bg-slate-100 rounded-2xl flex items-center justify-center text-4xl font-black text-slate-300 overflow-hidden">
+                                    <!-- Player Image Fallback -->
+                                    <span class="text-hope-cyan">SK</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="mt-14 text-center">
-                            <h2 class="text-xl font-bold text-hope-dark">Sok Kiri</h2>
-                            <p class="text-gray-500 text-sm">Center Forward • U-19 Elite</p>
-                            <div class="mt-4 flex justify-center gap-2">
-                                <span class="px-3 py-1 bg-hope-lime/10 text-hope-lime text-xs font-bold rounded-full">Active</span>
-                                <span class="px-3 py-1 bg-gray-100 text-gray-600 text-xs font-bold rounded-full">ID: PLY-772</span>
+
+                        <div class="text-center">
+                            <h2 class="text-2xl font-black text-hope-dark leading-tight">Sok Kiri</h2>
+                            <p class="text-slate-500 font-medium text-sm mt-1 uppercase tracking-widest">Center Forward • U-19 Elite</p>
+                            
+                            <div class="flex items-center justify-center gap-2 mt-6">
+                                <span class="px-4 py-1.5 bg-emerald-50 text-emerald-600 text-[10px] font-black rounded-full border border-emerald-100">ACTIVE PLAYER</span>
+                                <span class="px-4 py-1.5 bg-slate-100 text-slate-500 text-[10px] font-black rounded-full border border-slate-200">ID: PLY-772</span>
                             </div>
                         </div>
-                        
-                        <div class="mt-8 space-y-4 border-t border-gray-50 pt-6">
-                            <div class="flex items-center gap-3 text-sm">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                                <span class="text-gray-600">sok.player@esp.com</span>
+
+                        <div class="grid grid-cols-2 gap-4 mt-10">
+                            <div class="p-4 bg-slate-50/50 rounded-2xl border border-white">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Height</p>
+                                <p class="text-lg font-extrabold text-hope-dark">178 <span class="text-xs font-normal text-slate-400">cm</span></p>
                             </div>
-                            <div class="flex items-center gap-3 text-sm">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                                <span class="text-gray-600">012 987 654</span>
-                            </div>
-                            <div class="flex items-center gap-3 text-sm">
-                                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                                <span class="text-gray-600">Registered Jan 2024</span>
+                            <div class="p-4 bg-slate-50/50 rounded-2xl border border-white">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Weight</p>
+                                <p class="text-lg font-extrabold text-hope-dark">72 <span class="text-xs font-normal text-slate-400">kg</span></p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- PLAYER ATTRIBUTES (SIDE-BY-SIZE / GRID) -->
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                    <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Physical Attributes</h3>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="p-3 bg-gray-50 rounded-xl">
-                            <div class="text-[10px] font-bold text-gray-400 uppercase">Height</div>
-                            <div class="text-lg font-bold text-hope-dark">178 cm</div>
+                <!-- Contact & Metadata -->
+                <div class="glass-card rounded-[2rem] p-8 shadow-glass space-y-6">
+                    <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest">Digital Touchpoints</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 group">
+                            <div class="w-10 h-10 rounded-xl bg-hope-cyan/10 flex items-center justify-center group-hover:bg-hope-cyan group-hover:text-white transition-all">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase">Primary Email</p>
+                                <p class="text-sm font-semibold text-hope-dark">sok.player@esp.com</p>
+                            </div>
                         </div>
-                        <div class="p-3 bg-gray-50 rounded-xl">
-                            <div class="text-[10px] font-bold text-gray-400 uppercase">Weight</div>
-                            <div class="text-lg font-bold text-hope-dark">72 kg</div>
-                        </div>
-                        <div class="p-3 bg-gray-50 rounded-xl">
-                            <div class="text-[10px] font-bold text-gray-400 uppercase">Preferred Foot</div>
-                            <div class="text-lg font-bold text-hope-dark">Right</div>
-                        </div>
-                        <div class="p-3 bg-gray-50 rounded-xl">
-                            <div class="text-[10px] font-bold text-gray-400 uppercase">Blood Type</div>
-                            <div class="text-lg font-bold text-hope-dark">O+</div>
+                        <div class="flex items-center gap-4 group">
+                            <div class="w-10 h-10 rounded-xl bg-hope-lime/10 flex items-center justify-center group-hover:bg-hope-lime group-hover:text-white transition-all">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase">Mobile Contact</p>
+                                <p class="text-sm font-semibold text-hope-dark">012 987 654</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Right Column: Details -->
-            <div class="flex-1 space-y-6">
+            <!-- RIGHT COLUMN: PERFORMANCE & DETAILS -->
+            <div class="col-span-12 lg:col-span-8 space-y-8">
                 
-                <!-- Player Performance Stats -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
-                        <div class="text-xs font-bold text-gray-400 uppercase mb-1 text-[10px] tracking-widest">Total Matches</div>
-                        <div class="text-2xl font-bold text-hope-dark">24</div>
+                <!-- Performance Scorecard -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div class="stat-card glass-card p-6 rounded-3xl shadow-glass flex items-center gap-5">
+                        <div class="w-14 h-14 bg-hope-cyan/5 text-hope-cyan rounded-2xl flex items-center justify-center">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                        <div>
+                            <p class="text-3xl font-black text-hope-dark">24</p>
+                            <p class="text-xs font-bold text-slate-400 uppercase">Matches</p>
+                        </div>
                     </div>
-                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
-                        <div class="text-xs font-bold text-gray-400 uppercase mb-1 text-[10px] tracking-widest">Training Attendance</div>
-                        <div class="text-2xl font-bold text-hope-dark">92%</div>
+                    <div class="stat-card glass-card p-6 rounded-3xl shadow-glass flex items-center gap-5">
+                        <div class="w-14 h-14 bg-hope-lime/5 text-hope-lime rounded-2xl flex items-center justify-center">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+                        <div>
+                            <p class="text-3xl font-black text-hope-dark">92<span class="text-base">%</span></p>
+                            <p class="text-xs font-bold text-slate-400 uppercase">Attendance</p>
+                        </div>
                     </div>
-                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
-                        <div class="text-xs font-bold text-gray-400 uppercase mb-1 text-[10px] tracking-widest">Average Rating</div>
-                        <div class="text-2xl font-bold text-hope-lime">8.1</div>
+                    <div class="stat-card glass-card p-6 rounded-3xl shadow-glass flex items-center gap-5">
+                        <div class="w-14 h-14 bg-hope-yellow/5 text-hope-yellow rounded-2xl flex items-center justify-center font-black text-xl">8.1</div>
+                        <div>
+                            <p class="text-3xl font-black text-hope-dark">Elite</p>
+                            <p class="text-xs font-bold text-slate-400 uppercase">Tier Status</p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- PLAYER PERFORMANCE TABLE -->
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-white">
-                        <h3 class="font-bold text-hope-dark">Match History & Statistics</h3>
-                        <span class="text-[10px] text-gray-400 font-medium italic">Current Season: 2024/25</span>
+                <!-- Match History Table -->
+                <div class="glass-card rounded-[2.5rem] shadow-glass overflow-hidden border-none">
+                    <div class="px-8 py-6 border-b border-slate-100 flex justify-between items-center bg-white/50">
+                        <h3 class="font-extrabold text-hope-dark tracking-tight">Recent Form</h3>
+                        <div class="flex gap-1">
+                            <div class="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center text-[10px] text-white font-bold">W</div>
+                            <div class="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center text-[10px] text-white font-bold">W</div>
+                            <div class="w-6 h-6 rounded-md bg-amber-400 flex items-center justify-center text-[10px] text-white font-bold">D</div>
+                        </div>
                     </div>
                     <div class="overflow-x-auto custom-scrollbar">
-                        <table class="w-full text-left">
-                            <thead class="bg-gray-50/50">
-                                <tr>
-                                    <th class="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Match</th>
-                                    <th class="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Position</th>
-                                    <th class="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-center">Goals</th>
-                                    <th class="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-center">Assists</th>
-                                    <th class="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-center">YC</th>
-                                    <th class="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-center">RC</th>
-                                    <th class="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider text-center">Rating</th>
-                                    <th class="px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Coach Notes</th>
+                        <table class="w-full">
+                            <thead>
+                                <tr class="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-slate-50/50">
+                                    <th class="px-8 py-4 text-left">Fixture</th>
+                                    <th class="px-8 py-4 text-center">G</th>
+                                    <th class="px-8 py-4 text-center">A</th>
+                                    <th class="px-8 py-4 text-right">Rating</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-50 bg-white">
-                                <tr class="hover:bg-gray-50/50 transition-colors">
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-bold text-hope-cyan">Team A VS Team B</div>
-                                        <div class="text-[10px] text-gray-400">Oct 12, 2024</div>
+                            <tbody class="divide-y divide-slate-100/50">
+                                <tr class="group hover:bg-slate-50/50 transition-colors">
+                                    <td class="px-8 py-5">
+                                        <p class="font-bold text-sm text-hope-dark">Team A vs Team B</p>
+                                        <p class="text-[10px] text-slate-400 font-medium">May 14, 2024</p>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-semibold text-hope-dark">Forward (CF)</div>
-                                    </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <div class="text-sm font-bold text-hope-dark">2</div>
-                                    </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <div class="text-sm font-bold text-hope-dark">1</div>
-                                    </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <span class="inline-block w-4 h-6 bg-hope-yellow rounded-sm shadow-sm border border-yellow-600/20"></span>
-                                        <div class="text-[10px] mt-1 font-bold text-hope-yellow">0</div>
-                                    </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <span class="inline-block w-4 h-6 bg-hope-red rounded-sm shadow-sm border border-red-800/20"></span>
-                                        <div class="text-[10px] mt-1 font-bold text-hope-red">0</div>
-                                    </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <div class="inline-flex items-center px-2 py-1 rounded-md bg-hope-lime/10 text-hope-lime font-bold text-sm">
-                                            8.4
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <p class="text-xs text-gray-500 line-clamp-1 max-w-[150px]" title="Excellent spatial awareness and finishing today.">Excellent spatial awareness...</p>
+                                    <td class="px-8 py-5 text-center font-bold text-slate-600">2</td>
+                                    <td class="px-8 py-5 text-center font-bold text-slate-600">1</td>
+                                    <td class="px-8 py-5 text-right">
+                                        <span class="px-3 py-1 bg-hope-lime text-white rounded-lg text-xs font-black">8.4</span>
                                     </td>
                                 </tr>
-                                <tr class="hover:bg-gray-50/50 transition-colors">
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-bold text-hope-cyan">Team C VS Team A</div>
-                                        <div class="text-[10px] text-gray-400">Oct 05, 2024</div>
+                                <tr class="group hover:bg-slate-50/50 transition-colors">
+                                    <td class="px-8 py-5">
+                                        <p class="font-bold text-sm text-hope-dark">Team C vs Team A</p>
+                                        <p class="text-[10px] text-slate-400 font-medium">May 07, 2024</p>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-semibold text-hope-dark">Winger (LW)</div>
-                                    </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <div class="text-sm font-bold text-hope-dark">1</div>
-                                    </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <div class="text-sm font-bold text-hope-dark">2</div>
-                                    </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <span class="inline-block w-4 h-6 bg-hope-yellow rounded-sm shadow-sm border border-yellow-600/20"></span>
-                                        <div class="text-[10px] mt-1 font-bold text-hope-yellow">1</div>
-                                    </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <span class="inline-block w-4 h-6 bg-hope-red rounded-sm shadow-sm border border-red-800/20"></span>
-                                        <div class="text-[10px] mt-1 font-bold text-hope-red">0</div>
-                                    </td>
-                                    <td class="px-6 py-4 text-center">
-                                        <div class="inline-flex items-center px-2 py-1 rounded-md bg-hope-cyan/10 text-hope-cyan font-bold text-sm">
-                                            7.9
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        <p class="text-xs text-gray-500 line-clamp-1 max-w-[150px]" title="Exceptional crossing ability and pace.">Exceptional crossing ability...</p>
+                                    <td class="px-8 py-5 text-center font-bold text-slate-600">1</td>
+                                    <td class="px-8 py-5 text-center font-bold text-slate-600">2</td>
+                                    <td class="px-8 py-5 text-right">
+                                        <span class="px-3 py-1 bg-hope-cyan text-white rounded-lg text-xs font-black">7.9</span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -244,10 +244,110 @@
                     </div>
                 </div>
 
+                <!-- Comprehensive Bio Sections -->
+                <div class="glass-card rounded-[2.5rem] shadow-glass p-8 md:p-12 space-y-12 border-none">
+                    
+                    <!-- Bio Info -->
+                    <section>
+                        <div class="flex items-center gap-3 mb-8">
+                            <div class="w-2 h-8 bg-hope-cyan rounded-full"></div>
+                            <h3 class="text-xl font-black text-hope-dark">Comprehensive Biography</h3>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-8 gap-x-12">
+                            <div>
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Full Legal Name</p>
+                                <p class="text-sm font-bold text-hope-dark">Sok Kiri</p>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Date of Birth</p>
+                                <p class="text-sm font-bold text-hope-dark">12 Aug 2006</p>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Nationality</p>
+                                <p class="text-sm font-bold text-hope-dark">Cambodian</p>
+                            </div>
+                            <div class="md:col-span-3 pt-6 border-t border-slate-100">
+                                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Residential Address</p>
+                                <p class="text-sm font-bold text-hope-dark">Svay Pak, Russey Keo, Phnom Penh</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Education -->
+                    <section>
+                        <div class="flex items-center gap-3 mb-8">
+                            <div class="w-2 h-8 bg-hope-lime rounded-full"></div>
+                            <h3 class="text-xl font-black text-hope-dark">Academic Background</h3>
+                        </div>
+                        <div class="bg-slate-50/80 p-6 rounded-3xl border border-white">
+                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div>
+                                    <p class="text-sm font-extrabold text-hope-dark">Children’s Hope School</p>
+                                    <p class="text-xs text-slate-500 font-medium">Secondary Education Program</p>
+                                </div>
+                                <div class="px-5 py-2 bg-white rounded-2xl shadow-sm border border-slate-100 inline-flex items-center gap-2">
+                                    <span class="text-[10px] font-black text-slate-400 uppercase">Grade</span>
+                                    <span class="text-lg font-black text-hope-lime">11</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Family/Guardians -->
+                    <section>
+                        <div class="flex items-center gap-3 mb-8">
+                            <div class="w-2 h-8 bg-hope-yellow rounded-full"></div>
+                            <h3 class="text-xl font-black text-hope-dark">Guardian Matrix</h3>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-slate-50/50 p-6 rounded-3xl border border-slate-100">
+                                <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Paternal Data</h4>
+                                <div class="space-y-2">
+                                    <p class="text-sm font-bold text-hope-dark">Sok Vannak</p>
+                                    <p class="text-xs text-slate-500">Occupation: Farmer</p>
+                                </div>
+                            </div>
+                            <div class="bg-slate-50/50 p-6 rounded-3xl border border-slate-100">
+                                <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Maternal Data</h4>
+                                <div class="space-y-2">
+                                    <p class="text-sm font-bold text-hope-dark">Chan Srey</p>
+                                    <p class="text-xs text-slate-500">Occupation: Vendor</p>
+                                </div>
+                            </div>
+                            <div class="md:col-span-2 bg-hope-dark p-6 rounded-3xl text-white shadow-xl shadow-slate-200">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Primary Emergency Contact</p>
+                                        <p class="text-lg font-bold">012 987 654</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="px-4 py-1.5 bg-white/10 rounded-xl text-[10px] font-black uppercase">Verified Guardian</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
             </div>
         </div>
-
     </main>
+
+    <script>
+        function exportPlayerPDF() {
+            // Simplified feedback for the prototype
+            const btn = event.currentTarget;
+            btn.innerHTML = '<svg class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
+            setTimeout(() => {
+                btn.innerHTML = '<svg class="w-5 h-5 text-hope-red" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V7h2v5z"/></svg>';
+                alert("Player Dossier successfully compiled as PDF.");
+            }, 1000);
+        }
+
+        function exportPlayerExcel() {
+            alert("Raw performance data exported to XLSX.");
+        }
+    </script>
 
 </body>
 </html>
