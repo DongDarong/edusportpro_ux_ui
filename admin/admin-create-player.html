@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -267,7 +266,7 @@
                     </div>
                 </section>
 
-                <!-- ================= II. SPORTS PROFILE (NEW) ================= -->
+                <!-- ================= II. SPORTS PROFILE ================= -->
                 <section>
                     <div class="flex items-center justify-between border-b border-gray-100 pb-4 mb-6">
                         <h3 class="section-title">
@@ -321,7 +320,7 @@
                     </div>
                 </section>
 
-                <!-- ================= II. PARENT / GUARDIAN ================= -->
+                <!-- ================= III. PARENT / GUARDIAN ================= -->
                 <section>
                     <div class="flex items-center justify-between border-b border-gray-100 pb-4 mb-6">
                         <h3 class="section-title">
@@ -401,6 +400,44 @@
                     </div>
                 </section>
 
+                <!-- ================= IV. DOCUMENTS (NEW) ================= -->
+                <section>
+                    <div class="flex items-center justify-between border-b border-gray-100 pb-4 mb-6">
+                        <h3 class="section-title">
+                            <span class="section-number bg-hope-red">4</span>
+                            Documents & Contracts
+                        </h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-6">
+                        <div class="col-span-1">
+                            <label class="label-text">Signed Contract (Image or PDF)</label>
+                            
+                            <!-- Custom File Upload Area -->
+                            <div class="mt-2 flex justify-center rounded-xl border-2 border-dashed border-gray-300 px-6 py-10 hover:border-hope-cyan transition-colors bg-gray-50 hover:bg-white group cursor-pointer relative">
+                                <div class="text-center">
+                                    <svg class="mx-auto h-12 w-12 text-gray-300 group-hover:text-hope-cyan transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    <div class="mt-4 flex text-sm leading-6 text-gray-600 justify-center">
+                                        <label for="image_contract" class="relative cursor-pointer rounded-md font-semibold text-hope-cyan focus-within:outline-none focus-within:ring-2 focus-within:ring-hope-cyan focus-within:ring-offset-2 hover:text-sky-600">
+                                            <span>Upload files</span>
+                                            <input id="image_contract" name="image_contract[]" type="file" class="sr-only" accept="image/*,.pdf" multiple onchange="updateFileList(this)">
+                                        </label>
+                                        <p class="pl-1">or drag and drop</p>
+                                    </div>
+                                    <p class="text-xs text-gray-500">PNG, JPG, PDF up to 10MB (Multiple allowed)</p>
+                                </div>
+                            </div>
+
+                            <!-- Selected Files Grid Preview -->
+                            <div id="fileList" class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <!-- Thumbnails will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
             </div>
 
             <!-- FOOTER BUTTONS -->
@@ -416,5 +453,49 @@
         </form>
     </main>
 
+    <script>
+        function updateFileList(input) {
+            const fileList = document.getElementById('fileList');
+            // fileList.innerHTML = ''; // Uncomment to clear list on new selection, or keep appending
+            // For now, let's clear to keep it simple as standard input replaces files
+            fileList.innerHTML = '';
+
+            if (input.files && input.files.length > 0) {
+                for (let i = 0; i < input.files.length; i++) {
+                    const file = input.files[i];
+                    
+                    // Container for Thumbnail
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'relative group aspect-square bg-gray-100 rounded-xl overflow-hidden border border-gray-200';
+                    
+                    // Preview Logic
+                    let previewContent = '';
+                    if (file.type.startsWith('image/')) {
+                        const url = URL.createObjectURL(file);
+                        previewContent = `<img src="${url}" class="w-full h-full object-cover" alt="${file.name}">`;
+                    } else {
+                        // Generic File Icon for PDF etc
+                        previewContent = `
+                            <div class="w-full h-full flex flex-col items-center justify-center p-2 text-center">
+                                <svg class="w-8 h-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                <span class="text-xs font-medium text-gray-600 truncate w-full">${file.name}</span>
+                            </div>
+                        `;
+                    }
+
+                    fileItem.innerHTML = `
+                        ${previewContent}
+                        <!-- Overlay with Delete (Mock) -->
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button type="button" class="bg-white p-1.5 rounded-full text-hope-red hover:bg-red-50 shadow-sm" onclick="this.parentElement.parentElement.remove()">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </button>
+                        </div>
+                    `;
+                    fileList.appendChild(fileItem);
+                }
+            }
+        }
+    </script>
 </body>
 </html>
