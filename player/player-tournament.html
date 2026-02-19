@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Player - Tournament | EduSportPro</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: { hope: { lime: '#8DC63F', cyan: '#00AEEF', red: '#ED1C24', yellow: '#FDC116', dark: '#1D1D1B', light: '#f2f4f7' } }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #f2f4f7; color: #1D1D1B; overflow-x: hidden; }
+    .glass-backdrop { backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); background-color: rgba(0, 0, 0, 0.5); }
+  </style>
+</head>
+<body class="antialiased h-screen flex flex-col">
+  <nav class="bg-white w-full shadow-sm border-b border-gray-200 flex items-center justify-between px-4 md:px-6 py-3 shrink-0 z-50">
+    <div class="flex items-center gap-3">
+      <button onclick="toggleSidebar()" class="md:hidden p-2 -ml-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-hope-cyan"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg></button>
+      <div class="w-8 h-8 md:w-10 md:h-10 bg-hope-lime rounded-lg flex items-center justify-center text-white font-bold text-lg md:text-xl shadow-sm shrink-0">E</div>
+      <div class="text-lg md:text-xl font-bold tracking-tight hidden sm:block"><span class="text-hope-lime">Edu</span><span class="text-hope-cyan">Sport</span><span class="text-hope-red">Pro</span></div>
+    </div>
+    <div class="flex items-center gap-3 md:gap-6">
+      <a href="/player/player-notifications.html" class="relative p-2 hover:bg-gray-100 rounded-full transition-colors"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-hope-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg><span class="absolute top-1 right-1 bg-hope-red text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">4</span></a>
+      <select class="bg-gray-50 border border-gray-200 text-hope-dark text-sm rounded-lg focus:ring-hope-cyan focus:border-hope-cyan block px-2 py-1.5 md:px-3 outline-none"><option>EN</option><option>KM</option></select>
+      <a href="/player/player-profile.html" class="flex items-center gap-2 md:gap-3 cursor-pointer pl-2 md:pl-4 border-l border-gray-200 hover:bg-gray-50 transition-colors rounded-r-lg p-1"><div class="text-right hidden md:block"><div class="text-sm font-semibold text-hope-dark">Player Dara</div><div class="text-xs text-gray-500">Defender - Team A</div></div><div class="w-8 h-8 md:w-9 md:h-9 bg-hope-yellow rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm shrink-0">PD</div></a>
+    </div>
+  </nav>
+
+  <div class="flex h-[calc(100vh-64px)] overflow-hidden relative">
+    <div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 z-[55] hidden transition-opacity opacity-0 md:hidden glass-backdrop"></div>
+
+    <aside id="sidebar" class="w-64 bg-white shadow-xl md:shadow-md flex-shrink-0 z-[60] fixed inset-y-0 left-0 transform -translate-x-full transition-transform duration-300 md:translate-x-0 md:static md:z-auto h-full">
+      <div class="p-5 h-full overflow-y-auto relative">
+        <button onclick="toggleSidebar()" class="absolute top-4 right-4 md:hidden text-gray-400 hover:text-hope-red transition-colors p-1"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg></button>
+        <h2 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Player Menu</h2>
+        <nav class="space-y-1">
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/player/player-dashboard.html">Dashboard</a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/player/player-information.html">Player Info</a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/player/player-team.html">Team Info</a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/player/player-match-schedule.html">Match Schedule</a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/player/player-performance.html">Performance</a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg bg-gray-100 text-hope-dark font-semibold group" href="/player/player-tournament.html">Tournament</a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/player/player-division.html">Division</a>
+        </nav>
+      </div>
+    </aside>
+
+    <main class="flex-1 p-4 md:p-8 overflow-y-auto w-full">
+      <div class="mb-6"><h1 class="text-2xl md:text-3xl font-bold text-hope-dark">Tournament Information</h1><p class="text-gray-500 mt-1 text-sm md:text-base">Read-only tournament page for players.</p></div>
+      <div class="mb-6 rounded-xl border border-hope-cyan/30 bg-hope-cyan/5 p-4"><span class="inline-flex items-center rounded-full bg-white border border-hope-cyan/30 text-hope-cyan text-xs font-semibold px-3 py-1">View Only</span><p class="text-sm text-gray-600 mt-2">You can check the information, but edit and delete are disabled.</p></div>
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-6 mb-6">
+        <h2 class="text-xl font-bold text-hope-dark mb-4">Tournament Schedule</h2>
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-sm">
+            <thead><tr class="bg-gray-50 border-b border-gray-200"><th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase">Match</th><th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase">Date</th><th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase">Venue</th><th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase">Status</th></tr></thead>
+            <tbody class="divide-y divide-gray-100"><tr><td class="py-3 px-4">Team A vs Team D</td><td class="py-3 px-4">Mar 12, 2026</td><td class="py-3 px-4">Field 1</td><td class="py-3 px-4"><span class="px-2 py-1 rounded-full text-xs bg-hope-cyan/10 text-hope-cyan">Live</span></td></tr><tr><td class="py-3 px-4">Team B vs Team C</td><td class="py-3 px-4">Mar 13, 2026</td><td class="py-3 px-4">Field 2</td><td class="py-3 px-4"><span class="px-2 py-1 rounded-full text-xs bg-hope-yellow/10 text-hope-yellow">Upcoming</span></td></tr><tr><td class="py-3 px-4">Final</td><td class="py-3 px-4">Mar 20, 2026</td><td class="py-3 px-4">Main Stadium</td><td class="py-3 px-4"><span class="px-2 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Scheduled</span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const backdrop = document.getElementById('sidebarBackdrop');
+      const isOpen = sidebar.classList.contains('translate-x-0');
+      if (isOpen) {
+        sidebar.classList.remove('translate-x-0');
+        sidebar.classList.add('-translate-x-full');
+        backdrop.classList.add('opacity-0');
+        setTimeout(() => backdrop.classList.add('hidden'), 200);
+      } else {
+        sidebar.classList.remove('-translate-x-full');
+        sidebar.classList.add('translate-x-0');
+        backdrop.classList.remove('hidden');
+        setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
+      }
+    }
+  </script>
+</body>
+</html>

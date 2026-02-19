@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Coach - Tournament | EduSportPro</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            hope: {
+              lime: '#8DC63F',
+              cyan: '#00AEEF',
+              red: '#ED1C24',
+              yellow: '#FDC116',
+              dark: '#1D1D1B',
+              light: '#f2f4f7',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #f2f4f7; color: #1D1D1B; overflow-x: hidden; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; }
+    ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #00AEEF; }
+    .glass-backdrop { background-color: rgba(0, 0, 0, 0.4); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); }
+  </style>
+</head>
+<body class="antialiased h-screen flex flex-col">
+  <nav class="bg-white w-full shadow-sm border-b border-gray-200 flex items-center justify-between px-4 md:px-6 py-3 sticky top-0 z-50 shrink-0">
+    <div class="flex items-center gap-3">
+      <button onclick="toggleSidebar()" class="md:hidden p-2 -ml-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-hope-lime">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+      </button>
+      <div class="w-15 h-12 md:w-25 md:h-15 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden border border-gray-100 shadow-sm shrink-0">
+        <img src="/images/logo.jpg" alt="Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-[10px] font-bold text-gray-400\'>HOPE</span>'">
+      </div>
+      <div class="hidden sm:block">
+        <div class="text-[10px] md:text-xs font-bold text-hope-dark uppercase tracking-tight leading-tight">Organization for Children's</div>
+        <div class="text-xs md:text-sm font-extrabold text-hope-cyan leading-none">Hope Foundation of Cambodia</div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3 md:gap-6">
+      <a href="/coach/coach-notifications.html" class="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-hope-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+        <span class="absolute top-1 right-1 bg-hope-red text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">4</span>
+      </a>
+      <select class="bg-gray-50 border border-gray-200 text-hope-dark text-sm rounded-lg focus:ring-hope-cyan focus:border-hope-cyan block px-2 py-1.5 md:px-3 outline-none"><option>EN</option><option>KM</option></select>
+      <a href="/coach/coach-profile.html" class="flex items-center gap-2 md:gap-3 cursor-pointer pl-2 md:pl-4 border-l border-gray-200 hover:bg-gray-50 transition-colors rounded-r-lg p-1">
+        <div class="text-right hidden md:block"><div class="text-sm font-semibold text-hope-dark">Coach Sok</div><div class="text-xs text-gray-500">Team A Coach</div></div>
+        <div class="w-8 h-8 md:w-9 md:h-9 bg-hope-cyan rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm shrink-0">CS</div>
+      </a>
+    </div>
+  </nav>
+
+  <div class="flex h-[calc(100vh-64px)] relative overflow-hidden">
+    <div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 glass-backdrop z-[55] hidden transition-opacity opacity-0 md:hidden"></div>
+
+    <aside id="sidebar" class="w-64 bg-white shadow-xl md:shadow-md flex-shrink-0 z-[60] fixed inset-y-0 left-0 transform -translate-x-full transition-transform duration-300 md:translate-x-0 md:static md:z-auto h-full">
+      <div class="p-5 h-full overflow-y-auto relative flex flex-col">
+        <button onclick="toggleSidebar()" class="absolute top-4 right-4 md:hidden text-gray-400 hover:text-hope-red transition-colors p-1">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+
+        <div class="mb-8 px-2"><div class="text-2xl font-extrabold tracking-tighter"><span class="text-hope-lime">Edu</span><span class="text-hope-cyan">Sport</span><span class="text-hope-red">Pro</span></div></div>
+
+        <h2 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Coach Menu</h2>
+        <nav class="space-y-1 flex-1">
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-dashboard.html">Dashboard</a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-teams.html">My Team</a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-training.html">Training Sessions</a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-att.html">Attendance</a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-performance.html">Performance</a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-matches.html">Matches</a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-inventory.html">Inventory</a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-calendar.html">Calendar</a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg bg-hope-cyan/10 text-hope-cyan font-semibold" href="/coach/coach-tournament.html">Tournament</a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-division.html">Division</a>
+        </nav>
+
+        <div class="mt-auto pt-6 border-t border-gray-100"><a href="/index.html" class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-hope-red hover:bg-red-50 transition-colors font-semibold">Sign Out</a></div>
+      </div>
+    </aside>
+
+    <main class="flex-1 p-4 md:p-8 overflow-y-auto w-full">
+      <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-bold text-hope-dark">Tournament Overview</h1>
+        <p class="text-gray-500 mt-1 text-sm md:text-base">Read-only view for coach and player. No edit or delete actions are available.</p>
+      </div>
+
+      <div class="mb-6 rounded-xl border border-hope-cyan/30 bg-hope-cyan/5 p-4">
+        <span class="inline-flex items-center rounded-full bg-white border border-hope-cyan/30 text-hope-cyan text-xs font-semibold px-3 py-1">View Only</span>
+        <p class="text-sm text-gray-600 mt-2">Data is displayed for checking tournament progress. Updates must be done by Admin.</p>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-6 mb-6">
+        <h2 class="text-xl font-bold text-hope-dark mb-4">Active Tournaments</h2>
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-sm">
+            <thead>
+              <tr class="bg-gray-50 border-b border-gray-200">
+                <th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase">Tournament</th>
+                <th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase">Division</th>
+                <th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase">Type</th>
+                <th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase">Period</th>
+                <th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase">Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr><td class="py-3 px-4 font-medium text-hope-dark">Hope Youth League 2026</td><td class="py-3 px-4">U16</td><td class="py-3 px-4">League</td><td class="py-3 px-4">Jan - Apr 2026</td><td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-hope-cyan/10 text-hope-cyan">Ongoing</span></td></tr>
+              <tr><td class="py-3 px-4 font-medium text-hope-dark">Hope Development Cup</td><td class="py-3 px-4">U14</td><td class="py-3 px-4">Knockout</td><td class="py-3 px-4">May - Jun 2026</td><td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-hope-yellow/10 text-hope-yellow">Upcoming</span></td></tr>
+              <tr><td class="py-3 px-4 font-medium text-hope-dark">Junior Friendship Series</td><td class="py-3 px-4">U12</td><td class="py-3 px-4">Friendly Cup</td><td class="py-3 px-4">Aug 2026</td><td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-hope-lime/10 text-hope-lime">Planned</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-6">
+        <h2 class="text-xl font-bold text-hope-dark mb-4">Current Bracket Snapshot</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+          <div class="rounded-lg border border-gray-100 bg-gray-50 p-4"><p class="text-xs text-gray-500 uppercase">Quarter Final</p><p class="font-semibold mt-2">Team A vs Team D</p><p class="text-gray-500 mt-1">Mar 12, 2026</p></div>
+          <div class="rounded-lg border border-gray-100 bg-gray-50 p-4"><p class="text-xs text-gray-500 uppercase">Quarter Final</p><p class="font-semibold mt-2">Team B vs Team C</p><p class="text-gray-500 mt-1">Mar 13, 2026</p></div>
+          <div class="rounded-lg border border-gray-100 bg-gray-50 p-4"><p class="text-xs text-gray-500 uppercase">Final</p><p class="font-semibold mt-2">Winner QF1 vs Winner QF2</p><p class="text-gray-500 mt-1">Mar 20, 2026</p></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const backdrop = document.getElementById('sidebarBackdrop');
+      const isOpen = sidebar.classList.contains('translate-x-0');
+      if (isOpen) {
+        sidebar.classList.remove('translate-x-0');
+        sidebar.classList.add('-translate-x-full');
+        backdrop.classList.add('opacity-0');
+        setTimeout(() => backdrop.classList.add('hidden'), 200);
+      } else {
+        sidebar.classList.remove('-translate-x-full');
+        sidebar.classList.add('translate-x-0');
+        backdrop.classList.remove('hidden');
+        setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -68,7 +68,7 @@
     </style>
 </head>
 
-<body class="antialiased h-screen flex flex-col">
+<body class="antialiased h-screen flex flex-col bg-gradient-to-br from-gray-50 via-white to-gray-100">
 
     <!-- ========================= -->
     <!-- LAYOUT WRAPPER -->
@@ -88,6 +88,10 @@
                     </div>
                     Back to Teams
                 </a>
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <button class="w-full sm:w-auto px-4 py-2 rounded-lg border border-gray-200 bg-white text-gray-700 text-sm font-semibold hover:border-hope-cyan hover:text-hope-cyan transition-colors">Export Summary</button>
+                    <button class="w-full sm:w-auto px-4 py-2 rounded-lg bg-hope-cyan text-white text-sm font-semibold hover:bg-sky-500 transition-colors">Edit Team</button>
+                </div>
             </div>
 
             <!-- TEAM HERO CARD -->
@@ -148,6 +152,30 @@
                 </div>
             </div>
 
+            <!-- QUICK KPIS -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+                    <p class="text-[11px] uppercase tracking-wider text-gray-400 font-bold">Win Rate</p>
+                    <p class="text-2xl font-black text-hope-dark mt-1">68%</p>
+                    <p class="text-xs text-gray-500 mt-1">This season</p>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+                    <p class="text-[11px] uppercase tracking-wider text-gray-400 font-bold">Avg Goals</p>
+                    <p class="text-2xl font-black text-hope-dark mt-1">2.4</p>
+                    <p class="text-xs text-gray-500 mt-1">Per match</p>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+                    <p class="text-[11px] uppercase tracking-wider text-gray-400 font-bold">Attendance</p>
+                    <p class="text-2xl font-black text-hope-dark mt-1">93%</p>
+                    <p class="text-xs text-gray-500 mt-1">Last 30 days</p>
+                </div>
+                <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-4">
+                    <p class="text-[11px] uppercase tracking-wider text-gray-400 font-bold">Injury List</p>
+                    <p class="text-2xl font-black text-hope-dark mt-1">2</p>
+                    <p class="text-xs text-gray-500 mt-1">Active players</p>
+                </div>
+            </div>
+
             <!-- TWO COLUMN LAYOUT -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
@@ -159,9 +187,32 @@
                                 <svg class="w-5 h-5 text-hope-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
                                 Player Roster
                             </h2>
-                            <button class="text-xs font-bold text-hope-cyan hover:bg-hope-cyan/10 px-3 py-1.5 rounded-lg transition-colors">
-                                + Add Player
+                            <button class="text-xs font-bold bg-hope-cyan text-white hover:bg-sky-500 px-3 py-1.5 rounded-lg transition-colors">
+                                Add Player
                             </button>
+                        </div>
+
+                        <div class="px-6 py-4 border-b border-gray-100 bg-white">
+                            <div class="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
+                                <div class="relative w-full md:max-w-xs">
+                                    <input type="text" placeholder="Search player name..." class="w-full rounded-lg border border-gray-200 bg-gray-50 py-2 pl-9 pr-3 text-sm text-gray-700 outline-none focus:bg-white focus:border-hope-cyan">
+                                    <svg class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15z"></path></svg>
+                                </div>
+                                <div class="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
+                                    <select class="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 outline-none focus:bg-white focus:border-hope-cyan">
+                                        <option>All Positions</option>
+                                        <option>Forward</option>
+                                        <option>Midfielder</option>
+                                        <option>Defender</option>
+                                        <option>Goalkeeper</option>
+                                    </select>
+                                    <select class="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 outline-none focus:bg-white focus:border-hope-cyan">
+                                        <option>Sort: Jersey Number</option>
+                                        <option>Sort: Name A-Z</option>
+                                        <option>Sort: Name Z-A</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="overflow-x-auto">
@@ -325,6 +376,19 @@
                                 <a href="/admin/admin-matches.html" class="text-xs font-bold text-hope-lime hover:underline">View Schedule</a>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Team Notes -->
+                    <div class="bg-white rounded-xl shadow-md border border-gray-100 p-5">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-sm font-bold text-gray-400 uppercase tracking-widest">Team Notes</h3>
+                            <span class="text-[10px] font-bold text-hope-cyan bg-hope-cyan/10 border border-hope-cyan/20 px-2 py-0.5 rounded">Internal</span>
+                        </div>
+                        <ul class="space-y-3 text-sm text-gray-600">
+                            <li class="p-3 rounded-lg bg-gray-50 border border-gray-100">Focus on defensive transitions before next fixture.</li>
+                            <li class="p-3 rounded-lg bg-gray-50 border border-gray-100">Two players are returning from minor injury this week.</li>
+                            <li class="p-3 rounded-lg bg-gray-50 border border-gray-100">Plan one extra set-piece session on Friday.</li>
+                        </ul>
                     </div>
 
                 </div>

@@ -122,6 +122,19 @@
 
     <main class="max-w-7xl mx-auto px-6">
         
+        <!-- QUICK ACTIONS -->
+        <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div class="flex flex-wrap items-center gap-2">
+                <span class="px-3 py-1.5 rounded-full text-[11px] font-bold bg-hope-cyan/10 text-hope-cyan border border-hope-cyan/20">Profile Synced</span>
+                <span class="px-3 py-1.5 rounded-full text-[11px] font-bold bg-hope-lime/10 text-hope-lime border border-hope-lime/20">Eligible to Play</span>
+                <span class="px-3 py-1.5 rounded-full text-[11px] font-bold bg-white text-slate-500 border border-slate-200">Contract Valid</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <button class="px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 text-sm font-bold hover:border-hope-cyan hover:text-hope-cyan transition-colors">Message Coach</button>
+                <button class="px-4 py-2 rounded-xl bg-hope-dark text-white text-sm font-bold hover:bg-slate-800 transition-colors">Open Timeline</button>
+            </div>
+        </div>
+        
         <div class="grid grid-cols-12 gap-8">
             
             <!-- LEFT COLUMN: AVATAR & QUICK STATS -->
@@ -194,6 +207,28 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Health & Eligibility -->
+                <div class="glass-card rounded-[2rem] p-6 shadow-glass">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest">Health & Eligibility</h3>
+                        <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-1 rounded-full">Cleared</span>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex items-center justify-between p-3 rounded-2xl bg-white/70 border border-slate-100">
+                            <span class="text-slate-500 font-semibold">Medical Check</span>
+                            <span class="font-bold text-hope-dark">2026-01-10</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 rounded-2xl bg-white/70 border border-slate-100">
+                            <span class="text-slate-500 font-semibold">Injury Status</span>
+                            <span class="font-bold text-emerald-600">No Active Injury</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 rounded-2xl bg-white/70 border border-slate-100">
+                            <span class="text-slate-500 font-semibold">Registration</span>
+                            <span class="font-bold text-hope-dark">Valid Until 2026-12-31</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- RIGHT COLUMN: PERFORMANCE & DETAILS -->
@@ -231,11 +266,20 @@
                 <!-- Match History Table -->
                 <div class="glass-card rounded-[2.5rem] shadow-glass overflow-hidden border-none">
                     <div class="px-8 py-6 border-b border-slate-100 flex justify-between items-center bg-white/50">
-                        <h3 class="font-extrabold text-hope-dark tracking-tight">Recent Form</h3>
-                        <div class="flex gap-1">
-                            <div class="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center text-[10px] text-white font-bold shadow-sm">W</div>
-                            <div class="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center text-[10px] text-white font-bold shadow-sm">W</div>
-                            <div class="w-6 h-6 rounded-md bg-amber-400 flex items-center justify-center text-[10px] text-white font-bold shadow-sm">D</div>
+                        <div>
+                            <h3 class="font-extrabold text-hope-dark tracking-tight">Recent Form</h3>
+                            <p class="text-xs text-slate-400 mt-1">Last 5 official matches</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <select class="hidden sm:block rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 outline-none focus:border-hope-cyan">
+                                <option>Season 2026</option>
+                                <option>Season 2025</option>
+                            </select>
+                            <div class="flex gap-1">
+                                <div class="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center text-[10px] text-white font-bold shadow-sm">W</div>
+                                <div class="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center text-[10px] text-white font-bold shadow-sm">W</div>
+                                <div class="w-6 h-6 rounded-md bg-amber-400 flex items-center justify-center text-[10px] text-white font-bold shadow-sm">D</div>
+                            </div>
                         </div>
                     </div>
                     <div class="overflow-x-auto custom-scrollbar">

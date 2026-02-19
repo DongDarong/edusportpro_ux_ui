@@ -1,0 +1,145 @@
+LOGIC WEBSITE PROJECT - EDUSPORTPRO
+
+1. SYSTEM GOAL
+EduSportPro is a multi-role sports management system for Admin, Coach, and Player.
+Core modules: authentication, users, teams, players, matches, training, attendance, calendar, performance, tournament, division, notifications, reports, inventory.
+
+2. ROLE LOGIC
+- Admin
+  - Full control: create/read/update/delete across main modules.
+  - Can manage tournament/division/calendar data and view analytics/reports.
+  - In Calendar event creation, can target all teams, one team, or multiple teams.
+- Coach
+  - Operational role: manage training, attendance, performance, matches, and coach calendar events.
+  - Tournament/Division pages are read-only.
+  - In Calendar event creation, team target is locked to coach's own team.
+- Player
+  - Personal role: view own dashboard/profile/team/performance/schedule/notifications.
+  - Tournament/Division/Calendar are view-only.
+
+3. AUTHENTICATION FLOW
+- index.html:
+  - Select portal (Admin or Team).
+  - Admin login -> /admin/admin-dashboard.html
+  - Team login -> /coach/coach-dashboard.html (current UI redirect)
+- forgot_password.html -> verify_code.html -> reset_password.html
+- Password reset flow validates code then updates password.
+
+4. MAIN NAVIGATION LOGIC
+- Each module has a sidebar + top navbar.
+- Sidebar controls route transitions (static HTML links).
+- Active menu item is highlighted per current page.
+- Notification and profile are accessible from top navbar.
+
+5. CORE BUSINESS FLOWS
+5.1 User & Role Management (Admin)
+- Create user -> assign role -> user appears in users list.
+- Role-permission mapping controls access level by module.
+
+5.2 Team & Player Management (Admin)
+- Create team -> assign coach -> assign players.
+- Player detail stores profile, address, guardian, school, physical attributes, positions.
+
+5.3 Training & Attendance (Admin/Coach)
+- Create training sessions by team/date/time/location.
+- Mark attendance per player per training/match (present/absent/late).
+
+5.4 Match & Result Flow (Admin/Coach)
+- Create match schedule (home/away/date/location/status).
+- Input match results after completion.
+- Performance and statistics are linked to match/player.
+
+5.5 Calendar Flow (Admin/Coach)
+- Add/edit/delete event in modal form.
+- Event fields: type, add team (all/single/multi for admin), title, date, time.
+- If event type = Other, show comment input.
+- Save event -> render calendar grid and event list.
+- Notification scope:
+  - Admin + All Teams -> notify all coaches and players.
+  - Admin + selected team(s) -> notify coaches and players in selected team(s).
+  - Coach -> notify coach-team audience only (own team).
+
+5.6 Tournament & Division Flow
+- Tournament defines competition season/type/status.
+- Tournament can map to one or more divisions.
+- Divisions contain groups.
+- Groups contain teams.
+- Matches link to tournament/division/group/stage.
+- Standings derive from group match outcomes.
+- Coach/player can view tournament/division only (no edit/delete UI actions).
+
+6. DATA MODEL LOGIC (SQL)
+Main tables:
+- users, roles, permissions, role_permissions
+- coaches, players, teams, team_players
+- trainings, attendance
+- matches, match_results, match_events, player_match_statistics
+- divisions, tournaments, tournament_divisions, groups, group_teams, standings
+- calendar_events, calendar_event_teams, calendar_event_recipients
+- notifications, inventories, activity_logs, otp_verifications
+
+Key link rules:
+- users.role_id -> roles.id
+- team_players(team_id, player_id) join table
+- matches.home_team_id / away_team_id -> teams.id
+- matches.tournament_id -> tournaments.id
+- matches.division_id -> divisions.id
+- matches.group_id -> groups.id
+- standings group + team unique pair
+- calendar_events.comment used when event_type = other
+- calendar_event_teams supports one event -> many teams
+- calendar_events.team_id kept nullable for backward compatibility (all teams = NULL)
+
+7. ACCESS CONTROL LOGIC
+Permission strategy:
+- module_view for read.
+- module_manage/create/update/delete for write.
+Current intent:
+- Admin: full module permissions.
+- Coach: operational write on coach modules; read-only tournament/division.
+- Player: read-only access to own and shared visibility modules.
+
+8. UI-TO-DATABASE BINDING TARGETS
+Recommended endpoint-to-view mapping:
+- Tournament list page -> vw_tournament_summary
+- Division standings page -> vw_division_standings
+- Calendar list page -> vw_calendar_events
+- Detail pages query base tables by id.
+
+9. BACKEND EVENT CREATION LOGIC (SQL PROCEDURE)
+Procedure:
+- sp_create_calendar_event(p_creator_user_id, p_title, p_event_type, p_comment, p_event_date, p_event_time, p_is_all_teams, p_team_ids_csv)
+Rules:
+- Player creation blocked.
+- Coach auto-forced to own team.
+- Admin can send to all teams or selected team IDs.
+- Writes calendar event.
+- Writes team mapping into calendar_event_teams for specific-team events.
+- Writes notifications and recipient rows into notifications + calendar_event_recipients.
+
+10. VALIDATION LOGIC
+- Required fields on forms: title/date minimum for events.
+- Event type Other supports comment input and display.
+- For non-all events, at least one valid team must be selected.
+- Foreign key integrity enforced in SQL.
+- Role checks required at API layer before write actions.
+
+11. NON-FUNCTIONAL LOGIC
+- Responsive layout (desktop/mobile sidebar toggle).
+- Clear role separation in navigation and permissions.
+- Auditability via activity logs and timestamps.
+
+12. CURRENT PROJECT STATUS
+- Frontend pages and role navigation are implemented.
+- Coach/player tournament and division are read-only in UI.
+- Calendar supports Other-type comment UI + data field.
+- Admin calendar supports Add Team: all/single/multi selection + team search.
+- Coach calendar uses same Add Team UI but locked to own team.
+- SQL includes schema and seed data for tournament/division/calendar plus notification delivery logic.
+
+13. NEXT BACKEND IMPLEMENTATION STEPS
+- Build API auth/session middleware.
+- Enforce role_permissions in every write endpoint.
+- Map frontend Add Team selection to p_is_all_teams + p_team_ids_csv.
+- Use DB transactions for result/standing updates.
+- Add tests for permission boundaries and notification audience correctness.

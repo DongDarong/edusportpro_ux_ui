@@ -186,6 +186,15 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                         Calendar
                     </a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-tournament.html">
+            <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8M12 17v4M7 4h10l-1 6H8L7 4zM5 4h14"></path></svg>
+            Tournament
+          </a>
+
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-division.html">
+            <svg class="w-5 h-5 group-hover:text-hope-lime transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"></path></svg>
+            Division
+          </a>
         </nav>
         <!-- Footer Sign Out -->
                 <div class="mt-auto pt-6 border-t border-gray-100">
@@ -224,7 +233,7 @@
     <!-- Date -->
     <div>
       <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
-      <input type="date"
+      <input id="sessionDateInput" type="date"
         class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900
                focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none">
     </div>
@@ -243,7 +252,7 @@
     <!-- Select Team (NEW) -->
     <div>
       <label class="block text-sm font-medium text-gray-700 mb-1">Select Team</label>
-      <select
+      <select id="coachTeamSelect"
         class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900
                focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none">
         <option value="">All Teams</option>
@@ -258,6 +267,7 @@
     <!-- Load Button -->
     <div class="flex items-end">
       <button
+        id="attendanceLoadBtn"
         class="w-full bg-hope-lime hover:bg-lime-600 text-white py-2.5 rounded-lg
                shadow-sm transition-colors font-medium flex items-center justify-center gap-2">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -281,8 +291,46 @@
 
 
       <!-- ========================= -->
+      <!-- MY PRESENCE -->
+      <!-- ========================= -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-6 mb-6 md:mb-8">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-semibold bg-hope-cyan/10 text-hope-cyan border border-hope-cyan/20">Self Check-in</span>
+            <h2 class="text-base md:text-lg font-bold text-hope-dark">My Presence</h2>
+          </div>
+          <p class="text-xs md:text-sm text-gray-500">Submit once per selected date. Edit/Delete is disabled after submit.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+            <select id="myPresenceStatus" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none">
+              <option value="present">Present</option>
+              <option value="absent">Absent</option>
+              <option value="late">Late</option>
+              <option value="excused">Excused</option>
+            </select>
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Note (Optional)</label>
+            <input id="myPresenceNote" type="text" placeholder="Add note..." class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 placeholder:text-gray-400 focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none">
+          </div>
+        </div>
+        <div class="mt-4 flex flex-col md:flex-row md:items-center gap-3">
+          <button id="submitMyPresenceBtn" class="w-full md:w-auto bg-hope-lime hover:bg-lime-600 text-white px-6 py-2.5 rounded-lg shadow-sm transition-colors font-medium disabled:opacity-60 disabled:cursor-not-allowed">
+            Submit My Presence
+          </button>
+          <p id="myPresenceStateText" class="text-sm text-gray-600"></p>
+        </div>
+      </div>
+
+      <!-- ========================= -->
       <!-- PLAYER ATTENDANCE TABLE -->
       <!-- ========================= -->
+      <div class="mb-4 md:mb-5">
+        <label id="attendanceSearchLabel" class="block text-sm font-medium text-gray-700 mb-1">Search Player Name</label>
+        <input id="attendanceNameSearch" type="text" placeholder="Search player..." class="w-full md:max-w-md rounded-lg border-gray-300 border p-2.5 text-gray-900 placeholder:text-gray-400 focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none bg-white">
+      </div>
       <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         
         <div class="p-4 md:p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50">
@@ -303,7 +351,7 @@
               </tr>
             </thead>
             
-            <tbody class="bg-white divide-y divide-gray-100">
+            <tbody id="attendanceListBody" class="bg-white divide-y divide-gray-100">
 
               <!-- Player 1 -->
               <tr class="hover:bg-gray-50 transition-colors">
@@ -394,6 +442,102 @@
 
       </div>
 
+      <!-- ========================= -->
+      <!-- ATTENDANCE RECORDS -->
+      <!-- ========================= -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mt-6 md:mt-8">
+
+        <div class="p-4 md:p-5 border-b border-gray-100 flex justify-between items-center">
+          <h2 class="text-base md:text-lg font-bold text-hope-dark">Attendance Records</h2>
+          <div class="flex gap-2">
+            <button class="px-2 py-1.5 md:px-3 border border-gray-200 text-gray-600 rounded-lg hover:border-hope-red hover:text-hope-red text-xs font-medium transition-colors flex items-center gap-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+              <span class="hidden sm:inline">PDF</span>
+            </button>
+            <button class="px-2 py-1.5 md:px-3 border border-gray-200 text-gray-600 rounded-lg hover:border-hope-lime hover:text-hope-lime text-xs font-medium transition-colors flex items-center gap-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+              <span class="hidden sm:inline">Excel</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-100">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Player</th>
+                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Team</th>
+                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Status</th>
+                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Notes</th>
+              </tr>
+            </thead>
+
+            <tbody id="attendanceRecordsBody" class="bg-white divide-y divide-gray-100">
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center gap-3">
+                    <div class="h-8 w-8 rounded-full bg-hope-lime/20 flex items-center justify-center text-hope-lime font-bold text-xs border border-white">RS</div>
+                    <span class="font-medium text-hope-dark">Rina Seng</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Team A</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-hope-lime/10 text-hope-lime border border-hope-lime/20">
+                    <span class="w-1.5 h-1.5 rounded-full bg-hope-lime"></span>
+                    Present
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-400">-</td>
+              </tr>
+
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center gap-3">
+                    <div class="h-8 w-8 rounded-full bg-hope-cyan/20 flex items-center justify-center text-hope-cyan font-bold text-xs border border-white">SR</div>
+                    <span class="font-medium text-hope-dark">Sok Rith</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Team A</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-hope-red/10 text-hope-red border border-hope-red/20">
+                    <span class="w-1.5 h-1.5 rounded-full bg-hope-red"></span>
+                    Absent
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Sick</td>
+              </tr>
+
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex items-center gap-3">
+                    <div class="h-8 w-8 rounded-full bg-hope-yellow/20 flex items-center justify-center text-hope-yellow font-bold text-xs border border-white">CD</div>
+                    <span class="font-medium text-hope-dark">Chan Dara</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Team A</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-hope-yellow/10 text-hope-yellow border border-hope-yellow/20">
+                    <span class="w-1.5 h-1.5 rounded-full bg-hope-yellow"></span>
+                    Late
+                  </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Traffic</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- PAGINATION -->
+          <div class="flex items-center justify-between mt-4 px-4 py-3 bg-white rounded-b-xl border border-t-0 border-gray-100">
+            <div class="text-sm text-gray-500">Showing <span>1</span>-<span>3</span> of <span>3</span></div>
+            <div class="flex items-center gap-2">
+              <button class="px-3 py-1 bg-white border border-gray-200 rounded-md text-sm text-gray-600 hover:bg-gray-50">Prev</button>
+              <div class="flex items-center gap-1">1</div>
+              <button class="px-3 py-1 bg-white border border-gray-200 rounded-md text-sm text-gray-600 hover:bg-gray-50">Next</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </main>
 
   </div>
@@ -419,6 +563,202 @@
         body.style.overflow = 'auto';
       }
     }
+
+    function filterAttendanceByName() {
+      const searchInput = document.getElementById('attendanceNameSearch');
+      const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+      const listRows = document.querySelectorAll('#attendanceListBody tr');
+      const recordRows = document.querySelectorAll('#attendanceRecordsBody tr');
+
+      listRows.forEach((row) => {
+        const nameEl = row.querySelector('td:first-child .text-sm.font-medium.text-gray-900');
+        const name = nameEl ? nameEl.textContent.toLowerCase() : '';
+        row.style.display = name.includes(query) ? '' : 'none';
+      });
+
+      recordRows.forEach((row) => {
+        const nameEl = row.querySelector('td:first-child .font-medium.text-hope-dark');
+        const name = nameEl ? nameEl.textContent.toLowerCase() : '';
+        row.style.display = name.includes(query) ? '' : 'none';
+      });
+    }
+
+    const COACH_PRESENCE_KEY = 'esp_coach_presence_records';
+
+    function getTodayIsoDate() {
+      const now = new Date();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      return `${now.getFullYear()}-${month}-${day}`;
+    }
+
+    function getCoachPresenceStore() {
+      try {
+        const raw = localStorage.getItem(COACH_PRESENCE_KEY);
+        return raw ? JSON.parse(raw) : {};
+      } catch (err) {
+        return {};
+      }
+    }
+
+    function setCoachPresenceStore(store) {
+      try {
+        localStorage.setItem(COACH_PRESENCE_KEY, JSON.stringify(store));
+      } catch (err) {
+        // Ignore storage errors for static preview mode.
+      }
+    }
+
+    function getSelectedPresenceDate() {
+      const sessionDateInput = document.getElementById('sessionDateInput');
+      return sessionDateInput && sessionDateInput.value ? sessionDateInput.value : getTodayIsoDate();
+    }
+
+    function getSelectedTeamName() {
+      const teamSelect = document.getElementById('coachTeamSelect');
+      if (!teamSelect || !teamSelect.options || teamSelect.selectedIndex < 0) return 'Coach Team';
+      const selectedText = teamSelect.options[teamSelect.selectedIndex].text;
+      return selectedText === 'All Teams' ? 'Coach Team' : selectedText;
+    }
+
+    function getStatusBadge(status) {
+      const map = {
+        present: {
+          label: 'Present',
+          cls: 'bg-hope-lime/10 text-hope-lime border-hope-lime/20',
+          dot: 'bg-hope-lime'
+        },
+        absent: {
+          label: 'Absent',
+          cls: 'bg-hope-red/10 text-hope-red border-hope-red/20',
+          dot: 'bg-hope-red'
+        },
+        late: {
+          label: 'Late',
+          cls: 'bg-hope-yellow/10 text-hope-yellow border-hope-yellow/20',
+          dot: 'bg-hope-yellow'
+        },
+        excused: {
+          label: 'Excused',
+          cls: 'bg-hope-cyan/10 text-hope-cyan border-hope-cyan/20',
+          dot: 'bg-hope-cyan'
+        }
+      };
+      return map[status] || map.present;
+    }
+
+    function upsertMyPresenceRow(record) {
+      const recordsBody = document.getElementById('attendanceRecordsBody');
+      if (!recordsBody) return;
+
+      const existingRow = document.getElementById('myPresenceRecordRow');
+      if (existingRow) existingRow.remove();
+      if (!record) return;
+
+      const badge = getStatusBadge(record.status);
+      const row = document.createElement('tr');
+      row.id = 'myPresenceRecordRow';
+      row.className = 'hover:bg-gray-50 transition-colors';
+      row.innerHTML = `
+        <td class="px-6 py-4 whitespace-nowrap">
+          <div class="flex items-center gap-3">
+            <div class="h-8 w-8 rounded-full bg-hope-lime/20 flex items-center justify-center text-hope-lime font-bold text-xs border border-white">ME</div>
+            <span class="font-medium text-hope-dark">Coach (You)</span>
+          </div>
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${record.team}</td>
+        <td class="px-6 py-4 whitespace-nowrap">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${badge.cls} border">
+            <span class="w-1.5 h-1.5 rounded-full ${badge.dot}"></span>
+            ${badge.label}
+          </span>
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${record.note || '-'}</td>
+      `;
+      recordsBody.prepend(row);
+    }
+
+    function setMyPresenceLockedState() {
+      const date = getSelectedPresenceDate();
+      const store = getCoachPresenceStore();
+      const record = store[date];
+      const statusSelect = document.getElementById('myPresenceStatus');
+      const noteInput = document.getElementById('myPresenceNote');
+      const submitBtn = document.getElementById('submitMyPresenceBtn');
+      const stateText = document.getElementById('myPresenceStateText');
+
+      if (!statusSelect || !noteInput || !submitBtn || !stateText) return;
+
+      if (record) {
+        statusSelect.value = record.status;
+        noteInput.value = record.note || '';
+        statusSelect.disabled = true;
+        noteInput.disabled = true;
+        submitBtn.disabled = true;
+        submitBtn.classList.add('opacity-60', 'cursor-not-allowed');
+        submitBtn.textContent = 'Submitted (Locked)';
+        stateText.className = 'text-sm text-hope-red font-medium';
+        stateText.textContent = `Submitted for ${date}. Locked (cannot edit/delete).`;
+        upsertMyPresenceRow(record);
+      } else {
+        statusSelect.disabled = false;
+        noteInput.disabled = false;
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+        submitBtn.textContent = 'Submit My Presence';
+        stateText.className = 'text-sm text-gray-600';
+        stateText.textContent = `No presence submitted for ${date}.`;
+        upsertMyPresenceRow(null);
+      }
+    }
+
+    function submitMyPresence() {
+      const date = getSelectedPresenceDate();
+      const store = getCoachPresenceStore();
+      if (store[date]) {
+        setMyPresenceLockedState();
+        return;
+      }
+
+      const statusSelect = document.getElementById('myPresenceStatus');
+      const noteInput = document.getElementById('myPresenceNote');
+      const record = {
+        status: statusSelect ? statusSelect.value : 'present',
+        note: noteInput ? noteInput.value.trim() : '',
+        team: getSelectedTeamName(),
+        createdAt: new Date().toISOString()
+      };
+      store[date] = record;
+      setCoachPresenceStore(store);
+      setMyPresenceLockedState();
+      filterAttendanceByName();
+    }
+
+    const attendanceNameSearch = document.getElementById('attendanceNameSearch');
+    const attendanceLoadBtn = document.getElementById('attendanceLoadBtn');
+    const sessionDateInput = document.getElementById('sessionDateInput');
+    const submitMyPresenceBtn = document.getElementById('submitMyPresenceBtn');
+
+    if (attendanceNameSearch) {
+      attendanceNameSearch.addEventListener('input', filterAttendanceByName);
+    }
+    if (attendanceLoadBtn) {
+      attendanceLoadBtn.addEventListener('click', filterAttendanceByName);
+    }
+    if (sessionDateInput && !sessionDateInput.value) {
+      sessionDateInput.value = getTodayIsoDate();
+    }
+    if (sessionDateInput) {
+      sessionDateInput.addEventListener('change', function onSessionDateChange() {
+        setMyPresenceLockedState();
+        filterAttendanceByName();
+      });
+    }
+    if (submitMyPresenceBtn) {
+      submitMyPresenceBtn.addEventListener('click', submitMyPresence);
+    }
+
+    setMyPresenceLockedState();
   </script>
 
 </body>

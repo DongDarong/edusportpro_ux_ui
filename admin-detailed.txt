@@ -1,0 +1,300 @@
+ADMIN SECTION - DETAILED DESCRIPTION (EDUSPORTPRO)
+
+1. ADMIN SECTION PURPOSE
+The Admin section is the system control center of EduSportPro. It is responsible for governance, setup, and operational oversight across all sports-management modules. Admin can configure users and roles, manage teams/players, schedule and monitor activities, oversee competition structure (tournament/division), and analyze outputs through reports.
+
+Primary objective:
+- Ensure data consistency and operational control across Coach and Player modules.
+- Provide authoritative creation/update/deletion abilities where business ownership belongs to administration.
+
+2. ADMIN ROLE CAPABILITY SCOPE
+Admin capabilities are full-access in the frontend and mapped to full-access permission intent in SQL logic:
+- Create / Read / Update / Delete (CRUD) for core entities.
+- Publish data that downstream roles consume (Coach/Player).
+- Trigger communication workflows (notifications).
+- Maintain structure and compliance (roles, permissions, division/tournament hierarchy).
+
+Admin boundary:
+- Admin is the source of truth for organization-level data.
+- Coach and Player modules consume or update only role-appropriate subsets.
+
+3. ADMIN IA (INFORMATION ARCHITECTURE)
+Admin menu is organized into:
+- Operational Core:
+  - Dashboard, Users, Teams, Players, Matches, Training, Attendance, Calendar
+- Management/Control:
+  - Performance, Inventory, Reports
+- Account/Support:
+  - Notifications, Profile
+- Competition Structure:
+  - Tournament, Division
+
+This structure supports top-down operations:
+1) Configure people and access ->
+2) Configure teams and athlete data ->
+3) Run schedules/events/matches ->
+4) Capture outcomes and metrics ->
+5) Review reports and adjust decisions.
+
+4. ADMIN PAGE-BY-PAGE DETAILED DESCRIPTION
+
+4.1 admin/admin-dashboard.html
+Purpose:
+- Executive overview of platform status.
+Main functions:
+- KPI cards (teams, players, upcoming sessions/matches, alerts).
+- Fast navigation entry into key admin modules.
+- Visual operational snapshot for daily monitoring.
+Use-case:
+- First landing page after admin login.
+- Triage operational tasks and anomalies quickly.
+
+4.2 admin/admin-users.html
+Purpose:
+- Manage all platform accounts.
+Main functions:
+- User list, filtering/pagination.
+- Open create-user flow.
+- View/edit user-level information (depending on implementation).
+Use-case:
+- Onboard staff/coach/player accounts and maintain lifecycle status.
+
+4.3 admin/admin-user-create.html
+Purpose:
+- Register new users and assign role context.
+Main functions:
+- Create credentials + profile baseline.
+- Role assignment (admin/coach/player) as gateway to menu permissions.
+Use-case:
+- Initial identity provisioning for all system actors.
+
+4.4 admin/admin-teams.html
+Purpose:
+- Central team registry and team operations panel.
+Main functions:
+- Team list and quick actions.
+- Access team detail/create pages.
+Use-case:
+- Add and maintain team entities used by training/match/attendance/calendar modules.
+
+4.5 admin/admin-team-create.html
+Purpose:
+- Register a new team record.
+Main functions:
+- Team metadata input (name/division/status/coach mapping in backend logic).
+Use-case:
+- Organization expansion, season rollovers, and new squad setup.
+
+4.6 admin/admin-team-detail.html
+Purpose:
+- Deep view of one team.
+Main functions:
+- Team profile, member context, links to related modules.
+Use-case:
+- Team-level diagnostics and administration.
+
+4.7 admin/admin-players.html
+Purpose:
+- Player registry management.
+Main functions:
+- Player list with pagination.
+- Open player create and detail views.
+Use-case:
+- Roster administration and data quality control.
+
+4.8 admin/admin-create-player.html
+Purpose:
+- New player onboarding.
+Main functions:
+- Collect player identity, profile, and form data.
+Use-case:
+- Add athletes into the system before team assignment and performance tracking.
+
+4.9 admin/admin-player-detail.html
+Purpose:
+- 360-degree player profile.
+Main functions:
+- Display rich details; modal/export interactions.
+Use-case:
+- Verification, eligibility checks, and longitudinal athlete review.
+
+4.10 admin/admin-matches.html
+Purpose:
+- Match scheduling and maintenance.
+Main functions:
+- Add/edit/list matches.
+- Workflow to result entry.
+Use-case:
+- Plan official fixtures across teams/divisions/tournaments.
+
+4.11 admin/admin-match-results.html
+Purpose:
+- Record completed match outcomes.
+Main functions:
+- Input scoreline and completion status.
+- Trigger downstream standings/statistical updates in backend logic.
+Use-case:
+- Finalize competition data after games.
+
+4.12 admin/admin-training.html
+Purpose:
+- Training operations management.
+Main functions:
+- Session planning list with modal/pagination/search behavior.
+Use-case:
+- Coordinate development sessions across teams.
+
+4.13 admin/admin-att.html
+Purpose:
+- Attendance control and audit.
+Main functions:
+- View/update attendance states.
+Use-case:
+- Monitor participation reliability and discipline.
+
+4.14 admin/admin-calendar.html
+Purpose:
+- Unified event scheduling interface for organization activities.
+Main functions:
+- Calendar month navigation.
+- Add/edit/delete events.
+- Event Type handling with conditional comment input for Other type.
+- Add Team targeting logic:
+  - All Teams
+  - Single Team
+  - Multiple Teams
+- Team search field in Add Team section.
+- Notification audience logic (admin):
+  - All Teams -> all coaches + players.
+  - Selected team(s) -> coaches + players in selected teams.
+Use-case:
+- Manage cross-module schedule communication and event visibility.
+
+4.15 admin/admin-performance.html
+Purpose:
+- Enter and maintain player performance inputs.
+Main functions:
+- Performance data entry and update flow.
+Use-case:
+- Standardize athlete evaluation data.
+
+4.16 admin/admin-inventory.html
+Purpose:
+- Equipment/resource administration.
+Main functions:
+- Inventory item list and modal-based management.
+Use-case:
+- Track quantity/condition/lifecycle of sports assets.
+
+4.17 admin/admin-reports.html
+Purpose:
+- Decision support and analytics.
+Main functions:
+- Aggregated views for operational and performance outcomes.
+Use-case:
+- Management review, planning, and governance reporting.
+
+4.18 admin/admin-profile.html
+Purpose:
+- Admin account settings.
+Main functions:
+- Profile updates and account control fields.
+Use-case:
+- Maintain administrator account hygiene and preferences.
+
+4.19 admin/admin-notifications.html
+Purpose:
+- Notification inbox for admin alerts.
+Main functions:
+- View and manage messages related to operations/events/system updates.
+Use-case:
+- Communication and exception tracking.
+
+4.20 admin/admin-tournament.html
+Purpose:
+- Tournament-level competition management.
+Main functions:
+- Tournament listing by type/status/season.
+- Tournament overview with linked competition context.
+Use-case:
+- Seasonal competition governance from setup to monitoring.
+
+4.21 admin/admin-division.html
+Purpose:
+- Division/group/standings control surface.
+Main functions:
+- Organize divisional structures.
+- Review group composition and standing contexts.
+Use-case:
+- Keep competitive hierarchy accurate and up-to-date.
+
+5. ADMIN WORKFLOW CHAINS (END-TO-END)
+
+Workflow A: Identity to Operations
+1) Create user (users/user-create)
+2) Assign role
+3) Create team (teams/team-create)
+4) Create players (players/create-player)
+5) Assign players to teams (backend mapping)
+6) Start training/calendar/match operations
+
+Workflow B: Match Lifecycle
+1) Create match (matches)
+2) Run event (calendar + operational execution)
+3) Enter result (match-results)
+4) Update standings/statistics (backend logic)
+5) Consume outcome in reports
+
+Workflow C: Calendar Communication
+1) Admin creates event in calendar
+2) Select audience scope via Add Team
+3) Save event
+4) Notification distribution by scope
+5) Coach/player receive role-scoped event visibility
+
+6. ACCESS & PERMISSION MODEL (ADMIN VIEW)
+Admin intent:
+- Full module-level create/update/delete permissions.
+- View permissions across all modules.
+- Manage role-permission relationships.
+
+Key policy outcomes:
+- Admin can edit tournament/division.
+- Coach/player are view-only for tournament/division.
+- Admin can publish broad or targeted calendar events.
+
+7. DATA MODEL RELATIONSHIP TO ADMIN MODULES
+Admin pages map primarily to these tables/views (SQL design intent):
+- users, roles, permissions, role_permissions
+- teams, team_players, coaches, players
+- trainings, attendance
+- matches, match_results, match_events, player_match_statistics
+- tournaments, divisions, tournament_divisions, groups, group_teams, standings
+- calendar_events, calendar_event_teams, notifications, calendar_event_recipients
+- vw_tournament_summary, vw_division_standings, vw_calendar_events
+
+8. QUALITY AND GOVERNANCE RESPONSIBILITIES
+Admin section must ensure:
+- Referential integrity (no orphan assignments).
+- Permission integrity (correct role boundaries).
+- Communication correctness (event audience targeting).
+- Auditability (timestamps/activity logs).
+- Data consistency across modules sharing entities.
+
+9. KNOWN IMPLEMENTATION CHARACTERISTICS
+- Current frontend is static-prototype oriented (mock interactions in several modules).
+- UI logic for scope-based calendar notifications exists and should be enforced server-side.
+- Backend procedure (`sp_create_calendar_event`) and mapping table (`calendar_event_teams`) are intended to operationalize admin targeting logic.
+
+10. RECOMMENDED BACKEND ENFORCEMENT FOR ADMIN MODULE
+- Validate admin role on all write endpoints.
+- Wrap multi-step writes in transactions (calendar event + recipients + notifications).
+- Normalize team target input into structured arrays/IDs.
+- Centralize permission checks via middleware/policy layer.
+- Add integration tests for:
+  - all-team notification fanout,
+  - multi-team notification fanout,
+  - coach/player visibility boundaries.
+
+11. SUMMARY
+The Admin section is the governing layer of EduSportPro: it initializes and controls actors, structures competition, schedules operations, records outcomes, and drives communication. It is both an operational cockpit and a compliance boundary that defines what downstream roles can see or change.

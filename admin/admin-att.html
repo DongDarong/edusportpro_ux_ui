@@ -243,7 +243,15 @@
           Filter Attendance Records
         </h2>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6">
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Select</label>
+             <select id="attendanceViewSelect" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none">
+              <option value="player" selected>Player</option>
+              <option value="coach">Coach</option>
+            </select>
+          </div>
 
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Team</label>
@@ -268,7 +276,7 @@
           </div>
 
           <div class="flex items-end">
-             <button class="w-full bg-hope-lime hover:bg-lime-600 text-white py-2.5 rounded-lg shadow-sm transition-colors font-medium flex items-center justify-center gap-2">
+             <button id="attendanceLoadBtn" class="w-full bg-hope-lime hover:bg-lime-600 text-white py-2.5 rounded-lg shadow-sm transition-colors font-medium flex items-center justify-center gap-2">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
               Load Attendance
             </button>
@@ -328,12 +336,53 @@
 
 
       <!-- ========================= -->
+      <!-- PLAYER ATTENDANCE TABLE -->
+      <!-- ========================= -->
+      <div class="mb-4 md:mb-5">
+        <label id="attendanceSearchLabel" class="block text-sm font-medium text-gray-700 mb-1">Search Player Name</label>
+        <input id="attendanceNameSearch" type="text" placeholder="Search player..." class="w-full md:max-w-md rounded-lg border-gray-300 border p-2.5 text-gray-900 placeholder:text-gray-400 focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none bg-white">
+      </div>
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6 md:mb-8">
+        
+        <div class="p-4 md:p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+           <h2 id="attendanceListTitle" class="text-base md:text-lg font-bold text-hope-dark">Player Attendance List</h2>
+           <div class="text-sm text-gray-500">
+             Date: <span class="font-medium text-gray-900">Today</span>
+           </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-100">
+            <thead class="bg-white">
+              <tr>
+                <th id="listHead1" scope="col" class="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Player</th>
+                <th id="listHead2" scope="col" class="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Position</th>
+                <th id="listHead3" scope="col" class="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Team</th>
+                <th id="listHead4" scope="col" class="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Coach</th>
+                <th id="listHead5" scope="col" class="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Status</th>
+                <th id="listHead6" scope="col" class="px-4 md:px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Notes</th>
+              </tr>
+            </thead>
+            
+            <tbody id="attendanceListBody" class="bg-white divide-y divide-gray-100"></tbody>
+          </table>
+        </div>
+
+        <div class="p-4 md:p-6 border-t border-gray-100 bg-gray-50 flex justify-end">
+           <button class="w-full md:w-auto bg-hope-lime hover:bg-lime-600 text-white px-8 py-2.5 rounded-lg shadow-sm transition-all transform active:scale-95 font-semibold flex items-center justify-center gap-2">
+             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+             Save Attendance
+           </button>
+        </div>
+      </div>
+
+      <!-- ========================= -->
       <!-- ATTENDANCE TABLE -->
       <!-- ========================= -->
       <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         
         <div class="p-4 md:p-5 border-b border-gray-100 flex justify-between items-center">
-          <h2 class="text-base md:text-lg font-bold text-hope-dark">Attendance Records</h2>
+          <h2 id="attendanceRecordsTitle" class="text-base md:text-lg font-bold text-hope-dark">Player Attendance Records</h2>
           <div class="flex gap-2">
              <button class="px-2 py-1.5 md:px-3 border border-gray-200 text-gray-600 rounded-lg hover:border-hope-red hover:text-hope-red text-xs font-medium transition-colors flex items-center gap-1">
                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
@@ -349,15 +398,17 @@
         <div class="overflow-x-auto">
           <table class="min-w-full divide-y divide-gray-100">
             <thead class="bg-gray-50">
-               <tr>
-                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Player</th>
-                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Team</th>
-                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Status</th>
-                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Notes</th>
+              <tr>
+                <th id="recordsHead1" scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Player</th>
+                <th id="recordsHead2" scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Team</th>
+                <th id="recordsHead3" scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Coach</th>
+                <th id="recordsHead4" scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Date</th>
+                <th id="recordsHead5" scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Status</th>
+                <th id="recordsHead6" scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Notes</th>
               </tr>
             </thead>
 
-            <tbody class="bg-white divide-y divide-gray-100">
+            <tbody id="attendanceRecordsBody" class="bg-white divide-y divide-gray-100">
 
               <!-- Record 1 (Present - Lime) -->
               <tr class="hover:bg-gray-50 transition-colors">
@@ -368,6 +419,8 @@
                   </div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Team A</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Coach Sok</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">2026-02-18</td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-hope-lime/10 text-hope-lime border border-hope-lime/20">
                     <span class="w-1.5 h-1.5 rounded-full bg-hope-lime"></span>
@@ -386,6 +439,8 @@
                   </div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Team B</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Coach Dara</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">2026-02-18</td>
                 <td class="px-6 py-4 whitespace-nowrap">
                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-hope-red/10 text-hope-red border border-hope-red/20">
                     <span class="w-1.5 h-1.5 rounded-full bg-hope-red"></span>
@@ -404,6 +459,8 @@
                   </div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Team C</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Coach Vanna</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">2026-02-18</td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-hope-yellow/10 text-hope-yellow border border-hope-yellow/20">
                     <span class="w-1.5 h-1.5 rounded-full bg-hope-yellow"></span>
@@ -422,6 +479,8 @@
                   </div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Team A</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Coach Sok</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">2026-02-17</td>
                 <td class="px-6 py-4 whitespace-nowrap">
                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-hope-cyan/10 text-hope-cyan border border-hope-cyan/20">
                     <span class="w-1.5 h-1.5 rounded-full bg-hope-cyan"></span>
@@ -470,6 +529,162 @@
         setTimeout(() => backdrop.classList.add('hidden'), 300); 
         body.style.overflow = 'auto';
       }
+    }
+
+    const playerListData = [
+      { initials: "RS", initialsClass: "bg-hope-lime/10 text-hope-lime border-hope-lime/20", name: "Rina Seng", code: "#10", role: "Forward", team: "Team A", lead: "Coach Sok", status: "present", note: "" },
+      { initials: "SR", initialsClass: "bg-hope-cyan/10 text-hope-cyan border-hope-cyan/20", name: "Sok Rith", code: "#08", role: "Midfielder", team: "Team B", lead: "Coach Dara", status: "absent", note: "Sick" },
+      { initials: "CD", initialsClass: "bg-hope-red/10 text-hope-red border-hope-red/20", name: "Chan Dara", code: "#04", role: "Defender", team: "Team C", lead: "Coach Vanna", status: "late", note: "Traffic" }
+    ];
+
+    const coachListData = [
+      { initials: "CS", initialsClass: "bg-hope-lime/10 text-hope-lime border-hope-lime/20", name: "Coach Sok", code: "CA-01", role: "Head Coach", team: "Team A", lead: "Admin", status: "present", note: "" },
+      { initials: "CD", initialsClass: "bg-hope-cyan/10 text-hope-cyan border-hope-cyan/20", name: "Coach Dara", code: "CA-02", role: "Assistant Coach", team: "Team B", lead: "Admin", status: "excused", note: "Approved Leave" },
+      { initials: "CV", initialsClass: "bg-hope-yellow/10 text-hope-yellow border-hope-yellow/20", name: "Coach Vanna", code: "CA-03", role: "Fitness Coach", team: "Team C", lead: "Admin", status: "late", note: "Traffic" }
+    ];
+
+    const playerRecordsData = [
+      { initials: "RS", initialsClass: "bg-hope-lime/20 text-hope-lime", name: "Rina Seng", team: "Team A", lead: "Coach Sok", date: "2026-02-18", status: "present", note: "-" },
+      { initials: "SR", initialsClass: "bg-hope-cyan/20 text-hope-cyan", name: "Sok Rith", team: "Team B", lead: "Coach Dara", date: "2026-02-18", status: "absent", note: "Sick" },
+      { initials: "CD", initialsClass: "bg-hope-red/20 text-hope-red", name: "Chan Dara", team: "Team C", lead: "Coach Vanna", date: "2026-02-18", status: "late", note: "Traffic" },
+      { initials: "VL", initialsClass: "bg-hope-yellow/20 text-hope-yellow", name: "Vuthy Lim", team: "Team A", lead: "Coach Sok", date: "2026-02-17", status: "excused", note: "Family Event" }
+    ];
+
+    const coachRecordsData = [
+      { initials: "CS", initialsClass: "bg-hope-lime/20 text-hope-lime", name: "Coach Sok", team: "Team A", lead: "Admin", date: "2026-02-18", status: "present", note: "-" },
+      { initials: "CD", initialsClass: "bg-hope-cyan/20 text-hope-cyan", name: "Coach Dara", team: "Team B", lead: "Admin", date: "2026-02-18", status: "excused", note: "Approved Leave" },
+      { initials: "CV", initialsClass: "bg-hope-yellow/20 text-hope-yellow", name: "Coach Vanna", team: "Team C", lead: "Admin", date: "2026-02-18", status: "late", note: "Traffic" }
+    ];
+
+    function statusPill(status) {
+      const map = {
+        present: { label: "Present", cls: "bg-hope-lime/10 text-hope-lime border-hope-lime/20", dot: "bg-hope-lime" },
+        absent: { label: "Absent", cls: "bg-hope-red/10 text-hope-red border-hope-red/20", dot: "bg-hope-red" },
+        late: { label: "Late", cls: "bg-hope-yellow/10 text-hope-yellow border-hope-yellow/20", dot: "bg-hope-yellow" },
+        excused: { label: "Excused", cls: "bg-hope-cyan/10 text-hope-cyan border-hope-cyan/20", dot: "bg-hope-cyan" }
+      };
+      return map[status] || map.present;
+    }
+
+    function renderAttendanceList(mode) {
+      const body = document.getElementById("attendanceListBody");
+      if (!body) return;
+
+      const searchInput = document.getElementById("attendanceNameSearch");
+      const query = searchInput ? searchInput.value.trim().toLowerCase() : "";
+      const source = mode === "coach" ? coachListData : playerListData;
+      const data = source.filter((row) => row.name.toLowerCase().includes(query));
+      body.innerHTML = data.map((row) => {
+        const status = statusPill(row.status);
+        return `
+          <tr class="hover:bg-gray-50 transition-colors">
+            <td class="px-4 md:px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center gap-3">
+                <div class="h-10 w-10 rounded-full ${row.initialsClass} flex items-center justify-center font-bold text-sm border shrink-0">${row.initials}</div>
+                <div>
+                  <div class="text-sm font-medium text-gray-900">${row.name}</div>
+                  <div class="text-xs text-gray-500">${row.code}</div>
+                </div>
+              </div>
+            </td>
+            <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-500">${row.role}</td>
+            <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-600">${row.team}</td>
+            <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-600">${row.lead}</td>
+            <td class="px-4 md:px-6 py-4 whitespace-nowrap">
+              <select class="rounded-lg border-gray-300 border py-1.5 px-3 text-sm focus:border-hope-lime focus:ring-hope-lime outline-none bg-white">
+                <option value="present" ${row.status === "present" ? "selected" : ""}>Present</option>
+                <option value="absent" ${row.status === "absent" ? "selected" : ""}>Absent</option>
+                <option value="late" ${row.status === "late" ? "selected" : ""}>Late</option>
+                <option value="excused" ${row.status === "excused" ? "selected" : ""}>Excused</option>
+              </select>
+            </td>
+            <td class="px-4 md:px-6 py-4 whitespace-nowrap">
+              <input type="text" value="${row.note}" placeholder="Add note..." class="w-full min-w-[150px] rounded-lg border-gray-200 border py-1.5 px-3 text-sm focus:border-hope-lime focus:ring-hope-lime outline-none bg-gray-50 focus:bg-white transition-colors">
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function renderAttendanceRecords(mode) {
+      const body = document.getElementById("attendanceRecordsBody");
+      if (!body) return;
+
+      const searchInput = document.getElementById("attendanceNameSearch");
+      const query = searchInput ? searchInput.value.trim().toLowerCase() : "";
+      const source = mode === "coach" ? coachRecordsData : playerRecordsData;
+      const data = source.filter((row) => row.name.toLowerCase().includes(query));
+      body.innerHTML = data.map((row) => {
+        const status = statusPill(row.status);
+        return `
+          <tr class="hover:bg-gray-50 transition-colors">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded-full ${row.initialsClass} flex items-center justify-center font-bold text-xs border border-white">${row.initials}</div>
+                <span class="font-medium text-hope-dark">${row.name}</span>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${row.team}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${row.lead}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${row.date}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${status.cls} border">
+                <span class="w-1.5 h-1.5 rounded-full ${status.dot}"></span>
+                ${status.label}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${row.note || "-"}</td>
+          </tr>
+        `;
+      }).join("");
+
+      const total = data.length;
+      const totalItems = document.getElementById("totalItems");
+      const endItem = document.getElementById("endItem");
+      if (totalItems) totalItems.textContent = String(total);
+      if (endItem) endItem.textContent = String(total);
+    }
+
+    function renderAttendanceMode(mode) {
+      const listTitle = document.getElementById("attendanceListTitle");
+      const recordsTitle = document.getElementById("attendanceRecordsTitle");
+      const listHead1 = document.getElementById("listHead1");
+      const recordsHead1 = document.getElementById("recordsHead1");
+      const searchLabel = document.getElementById("attendanceSearchLabel");
+      const searchInput = document.getElementById("attendanceNameSearch");
+      const roleLabel = mode === "coach" ? "Role" : "Position";
+
+      if (listTitle) listTitle.textContent = mode === "coach" ? "Coach Attendance List" : "Player Attendance List";
+      if (recordsTitle) recordsTitle.textContent = mode === "coach" ? "Coach Attendance Records" : "Player Attendance Records";
+      if (listHead1) listHead1.textContent = mode === "coach" ? "Coach" : "Player";
+      if (recordsHead1) recordsHead1.textContent = mode === "coach" ? "Coach" : "Player";
+      if (searchLabel) searchLabel.textContent = mode === "coach" ? "Search Coach Name" : "Search Player Name";
+      if (searchInput) searchInput.placeholder = mode === "coach" ? "Search coach..." : "Search player...";
+      const listHead2 = document.getElementById("listHead2");
+      if (listHead2) listHead2.textContent = roleLabel;
+
+      renderAttendanceList(mode);
+      renderAttendanceRecords(mode);
+    }
+
+    const attendanceViewSelect = document.getElementById("attendanceViewSelect");
+    const attendanceNameSearch = document.getElementById("attendanceNameSearch");
+    const attendanceLoadBtn = document.getElementById("attendanceLoadBtn");
+    if (attendanceViewSelect) {
+      attendanceViewSelect.addEventListener("change", function onAttendanceModeChange() {
+        renderAttendanceMode(this.value);
+      });
+      renderAttendanceMode(attendanceViewSelect.value);
+    }
+    if (attendanceNameSearch && attendanceViewSelect) {
+      attendanceNameSearch.addEventListener("input", function onAttendanceSearch() {
+        renderAttendanceMode(attendanceViewSelect.value);
+      });
+    }
+    if (attendanceLoadBtn && attendanceViewSelect) {
+      attendanceLoadBtn.addEventListener("click", function onLoadAttendance() {
+        renderAttendanceMode(attendanceViewSelect.value);
+      });
     }
     
   </script>

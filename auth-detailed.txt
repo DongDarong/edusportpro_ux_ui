@@ -1,0 +1,205 @@
+AUTH SECTION - DETAILED DESCRIPTION (EDUSPORTPRO)
+
+1. AUTH MODULE PURPOSE
+The Auth section controls identity entry, account recovery, and initial role-based routing into EduSportPro portals.
+
+Primary objective:
+- Authenticate users by role context.
+- Provide secure password recovery.
+- Route authenticated users to correct module dashboards.
+
+2. AUTH PAGES OVERVIEW
+Auth module pages:
+- index.html
+- forgot_password.html
+- verify_code.html
+- reset_password.html
+
+3. PAGE-BY-PAGE DETAILED DESCRIPTION
+
+3.1 index.html
+Purpose:
+- Unified sign-in entry point with role portal selection.
+Main UI states:
+- Role Selection
+  - Admin Portal
+  - Team Portal (coach/player context)
+- Admin Login form
+- Team Login form
+
+Current frontend routing behavior:
+- Admin login submit -> /admin/admin-dashboard.html
+- Team login submit -> /coach/coach-dashboard.html (current prototype redirect)
+
+Expected production logic:
+- Validate credentials server-side.
+- Detect user role from account.
+- Route by role:
+  - admin -> admin dashboard
+  - coach -> coach dashboard
+  - player -> player dashboard
+
+3.2 forgot_password.html
+Purpose:
+- Start password reset flow.
+Main functions:
+- Collect account email.
+- Trigger OTP generation/send.
+- Redirect to code verification page.
+
+Current prototype flow:
+- Submit -> verify_code.html
+
+Expected production logic:
+- Verify email exists (without account enumeration leaks).
+- Create OTP record with purpose=password_reset and expiration.
+- Send code via trusted channel (email/SMS policy).
+
+3.3 verify_code.html
+Purpose:
+- Validate reset OTP.
+Main functions:
+- Enter verification code.
+- Countdown/timer UX.
+- Continue to password reset after valid code.
+
+Current prototype flow:
+- Submit -> reset_password.html
+
+Expected production logic:
+- Validate OTP by:
+  - account/email mapping,
+  - purpose,
+  - expiration,
+  - unused status.
+- Mark OTP as used upon success.
+- Issue short-lived reset token/session to continue flow.
+
+3.4 reset_password.html
+Purpose:
+- Set a new password after OTP verification.
+Main functions:
+- Enter new password and confirmation.
+- Submit reset action.
+
+Current prototype flow:
+- Submit redirects to a sign-in path (UI placeholder).
+
+Expected production logic:
+- Validate reset token/session.
+- Enforce password policy.
+- Update password hash in users table.
+- Invalidate active auth sessions if policy requires.
+- Redirect user to sign-in page.
+
+4. AUTH FLOW LOGIC (END-TO-END)
+
+Flow A: Sign-In
+1) User opens index.html.
+2) User selects portal (admin/team) and enters credentials.
+3) Backend validates credentials.
+4) Backend creates session/JWT.
+5) System routes user by role.
+
+Flow B: Password Recovery
+1) User opens forgot_password.html and submits email.
+2) Backend creates OTP and sends code.
+3) User enters code in verify_code.html.
+4) Backend validates + marks code used.
+5) User sets new password in reset_password.html.
+6) Backend commits password update and returns to sign-in.
+
+5. ROLE ROUTING LOGIC
+Expected role mapping after successful authentication:
+- admin -> /admin/admin-dashboard.html
+- coach -> /coach/coach-dashboard.html
+- player -> /player/player-dashboard.html
+
+Important:
+- Team portal should not hard-route everyone to coach in production.
+- Routing must be identity/role driven from backend response.
+
+6. VALIDATION RULES
+6.1 Sign-In
+- Required: username/email and password.
+- Rate limiting and lockout policy for repeated failures.
+- Generic error message (avoid user enumeration).
+
+6.2 Forgot Password
+- Required: valid email format.
+- Do not reveal whether email exists.
+- Enforce OTP request throttling.
+
+6.3 Verify Code
+- Required: OTP format and length.
+- Enforce expiration and max attempts.
+- One-time usage only.
+
+6.4 Reset Password
+- Required: new password + confirm password.
+- Must match.
+- Policy recommendation:
+  - min length,
+  - mixed complexity,
+  - disallow recent password reuse.
+
+7. SECURITY EXPECTATIONS
+- Passwords stored as strong hashes (never plain text in production).
+- Session tokens should be signed and short-lived with refresh strategy.
+- CSRF protection for state-changing auth endpoints.
+- Brute-force protection and anomaly monitoring.
+- OTP must be purpose-scoped and time-bound.
+- Clear audit trail in activity logs for auth-sensitive actions.
+
+8. DATA MODEL MAPPING (SQL INTENT)
+Auth-relevant tables:
+- users
+- roles
+- otp_verifications
+- activity_logs
+
+Key auth fields:
+- users.email
+- users.password (should be hashed in production)
+- users.role_id -> roles.id
+- otp_verifications: email, otp_code, purpose, expires_at, is_used
+
+Auth-related events to log:
+- login success/failure
+- OTP requested
+- OTP verified/failed
+- password reset completed
+
+9. API CONTRACT RECOMMENDATION
+Suggested endpoints:
+- POST /api/auth/login
+- POST /api/auth/forgot-password
+- POST /api/auth/verify-code
+- POST /api/auth/reset-password
+- POST /api/auth/logout
+- GET  /api/auth/me
+
+Response guideline:
+- login returns user profile + role + redirect target
+- all errors return normalized error schema
+
+10. FRONTEND-BACKEND INTEGRATION NOTES
+Current state:
+- Auth pages are frontend prototype transitions.
+- Forms currently use client-side redirection only.
+
+Integration target:
+- Replace onsubmit redirects with async API calls.
+- Use backend role response for route selection.
+- Persist auth state (secure cookie or token storage strategy).
+
+11. TESTING CHECKLIST (AUTH)
+- Valid login routes to correct role dashboard.
+- Invalid login returns generic error.
+- Forgot password does not leak account existence.
+- OTP expires correctly and cannot be reused.
+- Reset password updates credentials and old password no longer works.
+- Player/coach/admin cross-role route access denied without proper auth.
+
+12. SUMMARY
+The Auth section is the security and routing gateway of EduSportPro. It is responsible for trusted identity entry, safe account recovery, and strict role-based portal access. The current UI flow is ready for backend integration, and production readiness depends on enforcing server-side validation, secure credential handling, and robust OTP/session controls.

@@ -1,0 +1,188 @@
+PLAYER SECTION - DETAILED DESCRIPTION (EDUSPORTPRO)
+
+1. PLAYER SECTION PURPOSE
+The Player section is the personal interaction layer of EduSportPro. It provides each athlete with visibility into their profile, team context, schedule, performance, and notifications.
+
+Primary objective:
+- Give players clear and timely access to information that affects their participation.
+- Maintain a focused read-first experience with minimal administrative complexity.
+
+2. PLAYER ROLE CAPABILITY SCOPE
+Player capabilities are mostly read-only and personal-scope oriented.
+
+Allowed (intended):
+- View personal dashboard and status indicators.
+- View own profile/information.
+- View team information.
+- View match schedule.
+- View performance overview.
+- View notifications.
+- Access tournament/division information in read-only mode.
+
+Restricted:
+- No system-wide management (users, teams, divisions, tournaments, inventory).
+- No event creation or broad audience notifications.
+- No write authority on admin/coach operational modules.
+
+3. PLAYER IA (INFORMATION ARCHITECTURE)
+Player menu structure is designed for simple consumption:
+- Dashboard
+- Player Info
+- Team Info
+- Match Schedule
+- Performance
+- Tournament (read-only)
+- Division (read-only)
+- Notifications (top-nav access)
+- Profile/Settings (top-nav access)
+
+4. PLAYER PAGE-BY-PAGE DETAILED DESCRIPTION
+
+4.1 player/player-dashboard.html
+Purpose:
+- Personal summary screen.
+Main functions:
+- Quick overview cards and shortcuts.
+- Snapshot of schedule/performance context.
+Use-case:
+- Daily check-in for upcoming responsibilities.
+
+4.2 player/player-information.html
+Purpose:
+- Personal information display.
+Main functions:
+- View player profile details.
+Use-case:
+- Confirm identity/profile data.
+
+4.3 player/player-team.html
+Purpose:
+- Team context and membership information.
+Main functions:
+- View team details relevant to the player.
+Use-case:
+- Understand squad context and related info.
+
+4.4 player/player-match-schedule.html
+Purpose:
+- Match planning visibility.
+Main functions:
+- View upcoming fixtures and schedule details.
+Use-case:
+- Preparation and attendance planning.
+
+4.5 player/player-performance.html
+Purpose:
+- Performance monitoring.
+Main functions:
+- View performance metrics and summaries.
+Use-case:
+- Track personal progress over time.
+
+4.6 player/player-notifications.html
+Purpose:
+- Communication inbox for player.
+Main functions:
+- View reminders, announcements, and event notifications.
+Use-case:
+- Stay synchronized with team/admin updates.
+
+4.7 player/player-profile.html
+Purpose:
+- Personal account settings.
+Main functions:
+- Profile and preference management fields.
+Use-case:
+- Maintain account quality and personalization.
+
+4.8 player/player-tournament.html (Read-only)
+Purpose:
+- Competition-level awareness.
+Main functions:
+- View tournament information and status.
+Use-case:
+- Follow season structure and progression.
+
+4.9 player/player-division.html (Read-only)
+Purpose:
+- Division/group standings visibility.
+Main functions:
+- View division standings and ranking context.
+Use-case:
+- Understand competitive position and context.
+
+5. PLAYER WORKFLOW CHAINS (END-TO-END)
+
+Workflow A: Daily Readiness
+1) Open Dashboard.
+2) Check notifications.
+3) Review match schedule.
+4) Confirm personal/team context.
+
+Workflow B: Performance Follow-up
+1) Open Performance page.
+2) Review latest metrics.
+3) Compare against upcoming schedule demands.
+
+Workflow C: Competition Awareness
+1) Open Tournament page.
+2) Open Division page.
+3) Understand standings and season trajectory.
+
+6. NOTIFICATION & EVENT VISIBILITY LOGIC (PLAYER)
+Player receives notifications from:
+- Admin-created events (all teams or targeted team(s)).
+- Coach-created events scoped to coach team.
+
+Player behavior:
+- Consume notifications and schedule data.
+- No authority to broadcast or retarget communication.
+
+7. ACCESS & PERMISSION MODEL (PLAYER VIEW)
+Player permission intent:
+- Read personal/shared visibility modules.
+- No administrative or operational write actions.
+
+Important boundary:
+- Player cannot create calendar events.
+- Player cannot modify tournament/division structures.
+
+8. DATA MODEL RELATIONSHIP TO PLAYER MODULES
+Primary entities consumed by player pages:
+- users, roles, permissions
+- players (personal profile)
+- team_players, teams (membership and team context)
+- matches, match_results (schedule/result visibility)
+- performance records/statistics
+- tournaments, divisions, groups, standings (read-only competition data)
+- notifications, calendar_events, calendar_event_recipients
+
+Key joins relevant to player scope:
+- players.user_id -> users.id
+- team_players.player_id -> players.id -> teams
+- notifications.user_id -> users.id
+- standings/team data for division pages
+
+9. UI CHARACTERISTICS
+- Responsive layout with sidebar and top bar.
+- Consistent navigation pattern across player pages.
+- Focus on clarity and low-complexity interactions.
+- Read-heavy UX with limited form-heavy interactions.
+
+10. QUALITY EXPECTATIONS FOR PLAYER MODULE
+- Accurate personal data presentation.
+- Timely schedule and notification updates.
+- Strong permission boundaries (no hidden write paths).
+- Consistent read-only treatment for tournament/division.
+
+11. RECOMMENDED BACKEND ENFORCEMENT FOR PLAYER
+- Authorize requests by user role and user-to-player mapping.
+- Filter all data by player identity/team membership where needed.
+- Deny all non-read actions on restricted modules.
+- Add tests for:
+  - player cannot create/update/delete admin or coach resources,
+  - player can only access own personal profile data,
+  - player receives only intended notifications.
+
+12. SUMMARY
+The Player section is a focused consumer interface in EduSportPro. It enables athletes to stay informed, prepared, and aligned with team operations while preserving strict role boundaries. Its design priority is simple, reliable visibility rather than management control.

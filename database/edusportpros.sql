@@ -1,3 +1,4 @@
+# MySQL/MariaDB only. Do not run this script in Microsoft SQL Server Management Studio (SSMS).
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
@@ -18,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `edusportpross`
+-- Database: `edusportpro`
 --
 
 -- --------------------------------------------------------
@@ -220,15 +221,6 @@ INSERT INTO `permissions` (`id`, `name`, `module`, `description`, `created_at`) 
 (35, 'notification_view', 'notifications', 'View notifications', '2026-01-10 13:03:11'),
 (36, 'notification_send', 'notifications', 'Send notifications', '2026-01-10 13:03:11'),
 (37, 'activity_view', 'activity_logs', 'View system activity logs', '2026-01-10 13:03:11');
-
--- Extra permissions for tournament/division/calendar access control
-INSERT INTO `permissions` (`id`, `name`, `module`, `description`, `created_at`) VALUES
-(38, 'tournament_view', 'tournaments', 'View tournament information', '2026-01-11 09:03:11'),
-(39, 'tournament_manage', 'tournaments', 'Create, update, and delete tournaments', '2026-01-11 09:03:11'),
-(40, 'division_view', 'divisions', 'View division data and standings', '2026-01-11 09:03:11'),
-(41, 'division_manage', 'divisions', 'Create, update, and delete divisions', '2026-01-11 09:03:11'),
-(42, 'calendar_view', 'calendar_events', 'View calendar events', '2026-01-11 09:03:11'),
-(43, 'calendar_manage', 'calendar_events', 'Create, update, and delete calendar events', '2026-01-11 09:03:11');
 
 -- --------------------------------------------------------
 
@@ -440,23 +432,6 @@ INSERT INTO `role_permissions` (`role_id`, `permission_id`) VALUES
 (3, 29),
 (3, 31),
 (3, 35);
-
--- Role access for tournament/division/calendar:
--- admin = full, coach = tournament/division view-only + calendar manage, player = view-only
-INSERT INTO `role_permissions` (`role_id`, `permission_id`) VALUES
-(1, 38),
-(1, 39),
-(1, 40),
-(1, 41),
-(1, 42),
-(1, 43),
-(2, 38),
-(2, 40),
-(2, 42),
-(2, 43),
-(3, 38),
-(3, 40),
-(3, 42);
 
 -- --------------------------------------------------------
 
@@ -941,25 +916,6 @@ ALTER TABLE `users`
 -- Tournament System Extension
 --
 
--- TOURNAMENTS
-CREATE TABLE `tournaments` (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` varchar(150) NOT NULL,
-  `tournament_type` enum('league','knockout','friendly_cup') NOT NULL DEFAULT 'league',
-  `season_year` int(11) NOT NULL,
-  `start_date` date DEFAULT NULL,
-  `end_date` date DEFAULT NULL,
-  `status` enum('planned','ongoing','completed','cancelled') NOT NULL DEFAULT 'planned',
-  `created_by` bigint(20) UNSIGNED DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `idx_tournament_season_year` (`season_year`),
-  KEY `idx_tournament_status` (`status`),
-  KEY `idx_tournament_created_by` (`created_by`),
-  CONSTRAINT `tournaments_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
 -- DIVISIONS (U12 U14 U16...)
 CREATE TABLE `divisions` (
   `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -1004,14 +960,11 @@ CREATE TABLE `group_teams` (
 
 -- EXTEND MATCHES
 ALTER TABLE `matches`
-  ADD COLUMN `tournament_id` bigint(20) UNSIGNED DEFAULT NULL,
   ADD COLUMN `division_id` bigint(20) UNSIGNED DEFAULT NULL,
   ADD COLUMN `group_id` bigint(20) UNSIGNED DEFAULT NULL,
   ADD COLUMN `stage` enum('group','quarter','semi','final') DEFAULT 'group',
-  ADD KEY `tournament_id` (`tournament_id`),
   ADD KEY `division_id` (`division_id`),
   ADD KEY `group_id` (`group_id`),
-  ADD CONSTRAINT `matches_ibfk_tournament` FOREIGN KEY (`tournament_id`) REFERENCES `tournaments` (`id`),
   ADD CONSTRAINT `matches_ibfk_division` FOREIGN KEY (`division_id`) REFERENCES `divisions` (`id`),
   ADD CONSTRAINT `matches_ibfk_group` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`);
 
@@ -1099,20 +1052,6 @@ INSERT INTO `divisions` (`id`, `name`, `min_age`, `max_age`, `created_at`) VALUE
 (2, 'U14', 13, 14, '2026-01-11 10:00:00'),
 (3, 'U16', 15, 16, '2026-01-11 10:00:00');
 
--- Tournaments
-INSERT INTO `tournaments` (`id`, `name`, `tournament_type`, `season_year`, `start_date`, `end_date`, `status`, `created_by`) VALUES
-(1, 'Hope Youth League 2026', 'league', 2026, '2026-01-15', '2026-04-30', 'ongoing', 1),
-(2, 'Hope Development Cup', 'knockout', 2026, '2026-05-10', '2026-06-20', 'planned', 1),
-(3, 'Junior Friendship Series', 'friendly_cup', 2026, '2026-08-01', '2026-08-31', 'planned', 1);
-
--- Tournament divisions mapping
-INSERT INTO `tournament_divisions` (`tournament_id`, `division_id`) VALUES
-(1, 1),
-(1, 2),
-(1, 3),
-(2, 2),
-(3, 1);
-
 -- Team division mapping by season
 INSERT INTO `team_divisions` (`team_id`, `division_id`, `season_year`) VALUES
 (1, 1, 2026),
@@ -1138,13 +1077,13 @@ INSERT INTO `group_teams` (`group_id`, `team_id`) VALUES
 (3, 6);
 
 -- Matches with division/group/stage
-INSERT INTO `matches` (`id`, `home_team_id`, `away_team_id`, `match_date`, `location`, `status`, `created_at`, `tournament_id`, `division_id`, `group_id`, `stage`) VALUES
-(1, 1, 2, '2026-03-10', 'Field 1', 'completed', '2026-03-10 08:00:00', 1, 1, 1, 'group'),
-(2, 3, 4, '2026-03-11', 'Field 2', 'scheduled', '2026-03-11 08:00:00', 1, 2, 2, 'group'),
-(3, 5, 6, '2026-03-12', 'Main Stadium', 'scheduled', '2026-03-12 08:00:00', 1, 3, 3, 'group'),
-(4, 1, 3, '2026-04-01', 'Main Stadium', 'scheduled', '2026-03-20 08:00:00', 1, 1, NULL, 'quarter'),
-(5, 5, 2, '2026-04-10', 'Main Stadium', 'scheduled', '2026-03-20 08:00:00', 2, 3, NULL, 'semi'),
-(6, 1, 5, '2026-04-20', 'Main Stadium', 'scheduled', '2026-03-20 08:00:00', 2, 3, NULL, 'final');
+INSERT INTO `matches` (`id`, `home_team_id`, `away_team_id`, `match_date`, `location`, `status`, `created_at`, `division_id`, `group_id`, `stage`) VALUES
+(1, 1, 2, '2026-03-10', 'Field 1', 'completed', '2026-03-10 08:00:00', 1, 1, 'group'),
+(2, 3, 4, '2026-03-11', 'Field 2', 'scheduled', '2026-03-11 08:00:00', 2, 2, 'group'),
+(3, 5, 6, '2026-03-12', 'Main Stadium', 'scheduled', '2026-03-12 08:00:00', 3, 3, 'group'),
+(4, 1, 3, '2026-04-01', 'Main Stadium', 'scheduled', '2026-03-20 08:00:00', 1, NULL, 'quarter'),
+(5, 5, 2, '2026-04-10', 'Main Stadium', 'scheduled', '2026-03-20 08:00:00', 3, NULL, 'semi'),
+(6, 1, 5, '2026-04-20', 'Main Stadium', 'scheduled', '2026-03-20 08:00:00', 3, NULL, 'final');
 
 -- Match results (completed match)
 INSERT INTO `match_results` (`match_id`, `home_goals`, `away_goals`, `created_at`) VALUES
@@ -1174,296 +1113,6 @@ INSERT INTO `player_match_statistics` (`id`, `match_id`, `player_id`, `goals`, `
 (4, 1, 4, 0, 0, 1, 0, 90),
 (5, 1, 5, 1, 0, 0, 0, 90),
 (6, 1, 6, 0, 1, 0, 0, 75);
-
--- --------------------------------------------------------
---
--- Calendar Events Extension
---
-
-CREATE TABLE `calendar_events` (
-  `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `title` varchar(150) NOT NULL,
-  `event_type` enum('match','training','meeting','other') NOT NULL DEFAULT 'match',
-  `comment` varchar(255) DEFAULT NULL,
-  `event_date` date NOT NULL,
-  `event_time` time DEFAULT NULL,
-  `team_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `created_by` bigint(20) UNSIGNED DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `idx_calendar_event_date` (`event_date`),
-  KEY `idx_calendar_team_id` (`team_id`),
-  KEY `idx_calendar_created_by` (`created_by`),
-  CONSTRAINT `calendar_events_ibfk_1` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE SET NULL,
-  CONSTRAINT `calendar_events_ibfk_2` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- TOURNAMENT DIVISIONS
-CREATE TABLE `tournament_divisions` (
-  `tournament_id` bigint(20) UNSIGNED NOT NULL,
-  `division_id` bigint(20) UNSIGNED NOT NULL,
-  PRIMARY KEY (`tournament_id`,`division_id`),
-  KEY `idx_tournament_divisions_division` (`division_id`),
-  CONSTRAINT `tournament_divisions_ibfk_1` FOREIGN KEY (`tournament_id`) REFERENCES `tournaments` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `tournament_divisions_ibfk_2` FOREIGN KEY (`division_id`) REFERENCES `divisions` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-INSERT INTO `calendar_events` (`title`, `event_type`, `comment`, `event_date`, `event_time`, `team_id`, `created_by`) VALUES
-('Training', 'training', NULL, '2026-12-05', '10:00:00', 1, 1),
-('Tactics Meeting', 'meeting', NULL, '2026-12-08', '14:00:00', NULL, 1),
-('vs Team C', 'match', NULL, '2026-12-20', '16:00:00', 1, 1),
-('Fitness Test', 'other', 'Pre-season endurance check', '2026-12-15', '09:00:00', 3, 1);
-
--- --------------------------------------------------------
---
--- API-Ready Views (for UI data binding)
---
-
-CREATE OR REPLACE VIEW `vw_tournament_summary` AS
-SELECT
-  t.id,
-  t.name,
-  t.tournament_type,
-  t.season_year,
-  t.start_date,
-  t.end_date,
-  t.status,
-  COUNT(DISTINCT td.division_id) AS division_count,
-  COUNT(DISTINCT m.id) AS match_count
-FROM tournaments t
-LEFT JOIN tournament_divisions td ON td.tournament_id = t.id
-LEFT JOIN matches m ON m.tournament_id = t.id
-GROUP BY t.id, t.name, t.tournament_type, t.season_year, t.start_date, t.end_date, t.status;
-
-CREATE OR REPLACE VIEW `vw_division_standings` AS
-SELECT
-  d.id AS division_id,
-  d.name AS division_name,
-  g.id AS group_id,
-  g.name AS group_name,
-  s.team_id,
-  tm.name AS team_name,
-  s.played,
-  s.win,
-  s.draw,
-  s.lose,
-  s.goals_for,
-  s.goals_against,
-  s.goal_diff,
-  s.points
-FROM standings s
-JOIN groups g ON g.id = s.group_id
-JOIN divisions d ON d.id = g.division_id
-JOIN teams tm ON tm.id = s.team_id;
-
-CREATE OR REPLACE VIEW `vw_calendar_events` AS
-SELECT
-  ce.id,
-  ce.title,
-  ce.event_type,
-  ce.comment,
-  ce.event_date,
-  ce.event_time,
-  ce.team_id,
-  COALESCE(t.name, 'All Teams') AS team_name,
-  ce.created_by,
-  u.name AS created_by_name,
-  ce.created_at,
-  ce.updated_at
-FROM calendar_events ce
-LEFT JOIN teams t ON t.id = ce.team_id
-LEFT JOIN users u ON u.id = ce.created_by;
-
--- --------------------------------------------------------
---
--- Notification Delivery Extension (Calendar Events)
---
-
--- Link notification back to event for traceability
-ALTER TABLE `notifications`
-  ADD COLUMN `event_id` bigint(20) UNSIGNED DEFAULT NULL AFTER `user_id`,
-  ADD KEY `idx_notifications_event_id` (`event_id`),
-  ADD CONSTRAINT `notifications_ibfk_event` FOREIGN KEY (`event_id`) REFERENCES `calendar_events` (`id`) ON DELETE CASCADE;
-
--- Stores exact delivery audience for each event
-CREATE TABLE `calendar_event_recipients` (
-  `event_id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`event_id`,`user_id`),
-  KEY `idx_calendar_event_recipients_user_id` (`user_id`),
-  CONSTRAINT `calendar_event_recipients_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `calendar_events` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `calendar_event_recipients_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Supports one or many teams per event
-CREATE TABLE `calendar_event_teams` (
-  `event_id` bigint(20) UNSIGNED NOT NULL,
-  `team_id` bigint(20) UNSIGNED NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`event_id`,`team_id`),
-  KEY `idx_calendar_event_teams_team_id` (`team_id`),
-  CONSTRAINT `calendar_event_teams_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `calendar_events` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `calendar_event_teams_ibfk_2` FOREIGN KEY (`team_id`) REFERENCES `teams` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-DELIMITER $$
-DROP PROCEDURE IF EXISTS `sp_create_calendar_event` $$
-CREATE PROCEDURE `sp_create_calendar_event` (
-  IN p_creator_user_id BIGINT UNSIGNED,
-  IN p_title VARCHAR(150),
-  IN p_event_type ENUM('match','training','meeting','other'),
-  IN p_comment VARCHAR(255),
-  IN p_event_date DATE,
-  IN p_event_time TIME,
-  IN p_is_all_teams TINYINT(1),
-  IN p_team_ids_csv TEXT
-)
-BEGIN
-  DECLARE v_role_name VARCHAR(50);
-  DECLARE v_creator_coach_id BIGINT UNSIGNED;
-  DECLARE v_creator_team_id BIGINT UNSIGNED;
-  DECLARE v_event_id BIGINT UNSIGNED;
-  DECLARE v_message TEXT;
-  DECLARE v_first_team_id BIGINT UNSIGNED DEFAULT NULL;
-  DECLARE v_csv TEXT;
-  DECLARE v_token VARCHAR(32);
-  DECLARE v_target_count INT DEFAULT 0;
-
-  SELECT r.name
-    INTO v_role_name
-  FROM users u
-  JOIN roles r ON r.id = u.role_id
-  WHERE u.id = p_creator_user_id
-  LIMIT 1;
-
-  IF v_role_name IS NULL THEN
-    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Invalid creator user id';
-  END IF;
-
-  -- Player is view-only for calendar events
-  IF v_role_name = 'player' THEN
-    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Player is not allowed to create events';
-  END IF;
-
-  -- Coach can only create for own team
-  IF v_role_name = 'coach' THEN
-    SELECT c.id INTO v_creator_coach_id
-    FROM coaches c
-    WHERE c.user_id = p_creator_user_id
-    LIMIT 1;
-
-    SELECT t.id INTO v_creator_team_id
-    FROM teams t
-    WHERE t.coach_id = v_creator_coach_id
-    ORDER BY t.id
-    LIMIT 1;
-
-    IF v_creator_team_id IS NULL THEN
-      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Coach has no assigned team';
-    END IF;
-
-    SET p_is_all_teams = 0;
-    SET p_team_ids_csv = CAST(v_creator_team_id AS CHAR);
-  END IF;
-
-  -- Admin/Coach specific-target event requires at least one team id
-  IF p_is_all_teams = 0 AND (p_team_ids_csv IS NULL OR TRIM(p_team_ids_csv) = '') THEN
-    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'At least one team must be selected';
-  END IF;
-
-  -- Store nullable team_id for backward compatibility:
-  -- all teams = NULL, specific teams = first team from list
-  IF p_is_all_teams = 0 THEN
-    SET v_first_team_id = CAST(SUBSTRING_INDEX(TRIM(p_team_ids_csv), ',', 1) AS UNSIGNED);
-  END IF;
-
-  INSERT INTO calendar_events (
-    title, event_type, comment, event_date, event_time, team_id, created_by
-  ) VALUES (
-    p_title, p_event_type, p_comment, p_event_date, p_event_time, IF(p_is_all_teams = 1, NULL, v_first_team_id), p_creator_user_id
-  );
-
-  SET v_event_id = LAST_INSERT_ID();
-
-  -- Save explicit team mapping for specific-team events
-  IF p_is_all_teams = 0 THEN
-    SET v_csv = TRIM(BOTH ',' FROM REPLACE(p_team_ids_csv, ' ', ''));
-
-    WHILE v_csv IS NOT NULL AND v_csv <> '' DO
-      SET v_token = SUBSTRING_INDEX(v_csv, ',', 1);
-
-      IF v_token REGEXP '^[0-9]+$' THEN
-        INSERT IGNORE INTO calendar_event_teams (event_id, team_id)
-        SELECT v_event_id, CAST(v_token AS UNSIGNED)
-        FROM teams
-        WHERE id = CAST(v_token AS UNSIGNED);
-      END IF;
-
-      IF INSTR(v_csv, ',') > 0 THEN
-        SET v_csv = SUBSTRING(v_csv, INSTR(v_csv, ',') + 1);
-      ELSE
-        SET v_csv = '';
-      END IF;
-    END WHILE;
-
-    SELECT COUNT(*) INTO v_target_count
-    FROM calendar_event_teams
-    WHERE event_id = v_event_id;
-
-    IF v_target_count = 0 THEN
-      SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'No valid team ids were provided';
-    END IF;
-  END IF;
-
-  IF p_is_all_teams = 1 THEN
-    SET v_message = CONCAT('New event "', p_title, '" is scheduled for all teams.');
-  ELSE
-    SET v_message = CONCAT('New event "', p_title, '" is scheduled for selected team(s).');
-  END IF;
-
-  -- All teams: notify all coaches and players
-  IF p_is_all_teams = 1 THEN
-    INSERT INTO notifications (user_id, event_id, title, message, is_read)
-    SELECT u.id, v_event_id, 'New Calendar Event', v_message, 0
-    FROM users u
-    JOIN roles r ON r.id = u.role_id
-    WHERE r.name IN ('coach', 'player');
-
-    INSERT INTO calendar_event_recipients (event_id, user_id)
-    SELECT v_event_id, u.id
-    FROM users u
-    JOIN roles r ON r.id = u.role_id
-    WHERE r.name IN ('coach', 'player');
-  ELSE
-    -- Specific one/multiple teams: notify coaches + players in selected teams
-    INSERT INTO notifications (user_id, event_id, title, message, is_read)
-    SELECT DISTINCT u.id, v_event_id, 'New Calendar Event', v_message, 0
-    FROM calendar_event_teams cet
-    JOIN teams t ON t.id = cet.team_id
-    LEFT JOIN coaches c ON c.id = t.coach_id
-    LEFT JOIN users u_coach ON u_coach.id = c.user_id
-    LEFT JOIN team_players tp ON tp.team_id = t.id
-    LEFT JOIN players p ON p.id = tp.player_id
-    LEFT JOIN users u_player ON u_player.id = p.user_id
-    JOIN users u ON u.id IN (u_coach.id, u_player.id)
-    WHERE cet.event_id = v_event_id;
-
-    INSERT INTO calendar_event_recipients (event_id, user_id)
-    SELECT DISTINCT v_event_id, u.id
-    FROM calendar_event_teams cet
-    JOIN teams t ON t.id = cet.team_id
-    LEFT JOIN coaches c ON c.id = t.coach_id
-    LEFT JOIN users u_coach ON u_coach.id = c.user_id
-    LEFT JOIN team_players tp ON tp.team_id = t.id
-    LEFT JOIN players p ON p.id = tp.player_id
-    LEFT JOIN users u_player ON u_player.id = p.user_id
-    JOIN users u ON u.id IN (u_coach.id, u_player.id)
-    WHERE cet.event_id = v_event_id;
-  END IF;
-END $$
-DELIMITER ;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

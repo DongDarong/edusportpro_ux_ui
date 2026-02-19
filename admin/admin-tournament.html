@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Tournament | EduSportPro</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            hope: {
+              lime: '#8DC63F',
+              cyan: '#00AEEF',
+              red: '#ED1C24',
+              yellow: '#FDC116',
+              dark: '#1D1D1B',
+              light: '#f2f4f7',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #f2f4f7;
+      color: #1D1D1B;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00AEEF;
+    }
+
+    .glass-backdrop {
+      background-color: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+    }
+  </style>
+</head>
+
+<body class="antialiased h-screen flex flex-col">
+
+  <nav class="bg-white w-full shadow-sm border-b border-gray-200 flex items-center justify-between px-4 md:px-6 py-3 sticky top-0 z-50 shrink-0">
+    <div class="flex items-center gap-3">
+      <button onclick="toggleSidebar()" class="md:hidden p-2 -ml-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-hope-lime">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+      </button>
+
+      <div class="w-15 h-12 md:w-25 md:h-15 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden border border-gray-100 shadow-sm shrink-0">
+        <img src="/images/logo.jpg" alt="Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-[10px] font-bold text-gray-400\'>HOPE</span>'">
+      </div>
+
+      <div class="hidden sm:block">
+        <div class="text-[10px] md:text-xs font-bold text-hope-dark uppercase tracking-tight leading-tight">
+          Organization for Children's
+        </div>
+        <div class="text-xs md:text-sm font-extrabold text-hope-cyan leading-none">
+          Hope Foundation of Cambodia
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3 md:gap-6">
+      <a href="/admin/admin-notifications.html" class="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-hope-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+        <span class="absolute top-1 right-1 bg-hope-red text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">4</span>
+      </a>
+
+      <select class="bg-gray-50 border border-gray-200 text-hope-dark text-sm rounded-lg focus:ring-hope-cyan focus:border-hope-cyan block px-2 py-1.5 md:px-3 outline-none">
+        <option>EN</option>
+        <option>KM</option>
+      </select>
+
+      <a href="/admin/admin-profile.html" class="flex items-center gap-2 md:gap-3 cursor-pointer pl-2 md:pl-4 border-l border-gray-200 hover:bg-gray-50 transition-colors rounded-r-lg p-1">
+        <div class="text-right hidden md:block">
+          <div class="text-sm font-semibold text-hope-dark">Admin User</div>
+          <div class="text-xs text-gray-500">Super Admin</div>
+        </div>
+        <div class="w-8 h-8 md:w-9 md:h-9 bg-hope-cyan rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm shrink-0">
+          AU
+        </div>
+      </a>
+    </div>
+  </nav>
+
+  <div class="flex h-[calc(100vh-64px)] relative overflow-hidden">
+    <div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 glass-backdrop z-[55] hidden transition-opacity opacity-0 md:hidden"></div>
+
+    <aside id="sidebar" class="w-64 bg-white shadow-xl md:shadow-md flex-shrink-0 z-[60] fixed inset-y-0 left-0 transform -translate-x-full transition-transform duration-300 md:translate-x-0 md:static md:z-auto h-full">
+      <div class="p-5 h-full overflow-y-auto relative flex flex-col">
+        <button onclick="toggleSidebar()" class="absolute top-4 right-4 md:hidden text-gray-400 hover:text-hope-red transition-colors p-1">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+
+        <div class="mb-8 px-2">
+          <div class="text-2xl font-extrabold tracking-tighter">
+            <span class="text-hope-lime">Edu</span><span class="text-hope-cyan">Sport</span><span class="text-hope-red">Pro</span>
+          </div>
+        </div>
+
+        <h2 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4 px-2">Main Menu</h2>
+        <nav class="space-y-1 flex-1">
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-dashboard.html">
+            <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+            Dashboard
+          </a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-matches.html">
+            <svg class="w-5 h-5 group-hover:text-hope-yellow transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            Matches
+          </a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg bg-hope-cyan/10 text-hope-cyan font-semibold" href="/admin/admin-tournament.html">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8M12 17v4M7 4h10l-1 6H8L7 4zM5 4h14"></path></svg>
+            Tournament
+          </a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-teams.html">
+            <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"></path></svg>
+            Teams
+          </a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-reports.html">
+            <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6m4 6V9m4 10V5"></path></svg>
+            Reports
+          </a>
+        </nav>
+
+        <div class="mt-auto pt-6 border-t border-gray-100">
+          <a href="/index.html" class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-hope-red hover:bg-red-50 transition-colors font-semibold">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7"></path></svg>
+            Sign Out
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <main class="flex-1 p-4 md:p-8 overflow-y-auto w-full">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6">
+        <div>
+          <h1 class="text-2xl md:text-3xl font-bold text-hope-dark">Tournament Management</h1>
+          <p class="text-gray-500 mt-1 text-sm md:text-base">Create, monitor, and review tournament progress across divisions.</p>
+        </div>
+        <a href="#createTournamentSection" class="w-full md:w-auto bg-hope-cyan hover:bg-sky-500 text-white px-5 py-2.5 rounded-lg shadow-sm transition-all font-medium text-center">Create Tournament</a>
+      </div>
+
+      <div id="createTournamentSection" class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-6 mb-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-5">
+          <div>
+            <h2 class="text-xl font-bold text-hope-dark">1. Create Tournament</h2>
+            <p class="text-sm text-gray-500 mt-1">Add a new tournament and define its schedule, type, and division scope.</p>
+          </div>
+          <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-hope-cyan/10 text-hope-cyan border border-hope-cyan/20">Admin Action</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Tournament Name</label>
+            <input type="text" placeholder="e.g. Hope Youth League 2027" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Tournament Type</label>
+            <select class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+              <option>League</option>
+              <option>Knockout</option>
+              <option>Friendly Cup</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Division</label>
+            <select class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+              <option>U12</option>
+              <option>U14</option>
+              <option>U16</option>
+              <option>U18</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+            <input type="date" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+            <input type="date" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+            <select class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+              <option>Planned</option>
+              <option>Upcoming</option>
+              <option>Ongoing</option>
+              <option>Completed</option>
+            </select>
+          </div>
+          <div class="md:col-span-2 lg:col-span-3">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <textarea rows="3" placeholder="Enter tournament details..." class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none resize-none"></textarea>
+          </div>
+        </div>
+
+        <div class="mt-5 flex flex-col sm:flex-row gap-3 sm:justify-end">
+          <button class="px-5 py-2.5 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 text-sm font-medium">Clear</button>
+          <button class="px-5 py-2.5 rounded-lg bg-hope-cyan hover:bg-sky-500 text-white text-sm font-semibold shadow-sm">Save Tournament</button>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-6 mb-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5">
+          <div>
+            <h2 class="text-xl font-bold text-hope-dark">2. Tournament List</h2>
+            <p class="text-sm text-gray-500 mt-1">បញជករបរកតទងអស</p>
+          </div>
+          <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+            <div>
+              <label class="block text-xs font-semibold text-gray-500 mb-1">Filter តមឆន / បរភទ</label>
+              <div class="flex gap-2">
+                <select class="bg-gray-50 border border-gray-200 text-hope-dark text-sm rounded-lg px-3 py-2 outline-none focus:ring-hope-cyan focus:border-hope-cyan">
+                  <option>Year: 2026</option>
+                  <option>Year: 2025</option>
+                  <option>Year: 2024</option>
+                </select>
+                <select class="bg-gray-50 border border-gray-200 text-hope-dark text-sm rounded-lg px-3 py-2 outline-none focus:ring-hope-cyan focus:border-hope-cyan">
+                  <option>Type: League</option>
+                  <option>Type: Knockout</option>
+                  <option>Type: Friendly Cup</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full">
+            <thead>
+              <tr class="bg-gray-50 border-b border-gray-200">
+                <th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Tournament</th>
+                <th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Division</th>
+                <th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Type</th>
+                <th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Period</th>
+                <th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="py-3 px-4 font-medium text-hope-dark">Hope Youth League 2026</td>
+                <td class="py-3 px-4 text-gray-600">U16</td>
+                <td class="py-3 px-4 text-gray-600">League</td>
+                <td class="py-3 px-4 text-gray-600">Jan - Apr 2026</td>
+                <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-hope-cyan/10 text-hope-cyan">Ongoing</span></td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="py-3 px-4 font-medium text-hope-dark">Hope Development Cup</td>
+                <td class="py-3 px-4 text-gray-600">U14</td>
+                <td class="py-3 px-4 text-gray-600">Knockout</td>
+                <td class="py-3 px-4 text-gray-600">May - Jun 2026</td>
+                <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-hope-yellow/10 text-hope-yellow">Upcoming</span></td>
+              </tr>
+              <tr class="hover:bg-gray-50 transition-colors">
+                <td class="py-3 px-4 font-medium text-hope-dark">Junior Friendship Series</td>
+                <td class="py-3 px-4 text-gray-600">U12</td>
+                <td class="py-3 px-4 text-gray-600">Friendly Cup</td>
+                <td class="py-3 px-4 text-gray-600">Aug 2026</td>
+                <td class="py-3 px-4"><span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-hope-lime/10 text-hope-lime">Planned</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-6">
+        <h2 class="text-xl font-bold text-hope-dark mb-4">3. Tournament Overview</h2>
+
+        <div class="flex flex-wrap gap-2 mb-5 border-b border-gray-100 pb-4">
+          <button class="px-4 py-2 rounded-lg bg-hope-cyan text-white text-sm font-semibold">Overview</button>
+          <button class="px-4 py-2 rounded-lg bg-gray-100 text-gray-600 text-sm font-semibold hover:bg-gray-200">Divisions</button>
+          <button class="px-4 py-2 rounded-lg bg-gray-100 text-gray-600 text-sm font-semibold hover:bg-gray-200">Fixtures</button>
+          <button class="px-4 py-2 rounded-lg bg-gray-100 text-gray-600 text-sm font-semibold hover:bg-gray-200">Standings</button>
+          <button class="px-4 py-2 rounded-lg bg-gray-100 text-gray-600 text-sm font-semibold hover:bg-gray-200">Summary</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div class="rounded-xl border border-hope-lime/20 bg-hope-lime/5 p-4">
+            <p class="text-xs uppercase tracking-wider text-gray-500">Division</p>
+            <h3 class="text-2xl font-extrabold text-hope-dark mt-1">U12</h3>
+            <p class="text-sm text-gray-600 mt-2">8 teams, grassroots development focus.</p>
+          </div>
+          <div class="rounded-xl border border-hope-cyan/20 bg-hope-cyan/5 p-4">
+            <p class="text-xs uppercase tracking-wider text-gray-500">Division</p>
+            <h3 class="text-2xl font-extrabold text-hope-dark mt-1">U14</h3>
+            <p class="text-sm text-gray-600 mt-2">10 teams, regional qualification stage.</p>
+          </div>
+          <div class="rounded-xl border border-hope-red/20 bg-hope-red/5 p-4">
+            <p class="text-xs uppercase tracking-wider text-gray-500">Division</p>
+            <h3 class="text-2xl font-extrabold text-hope-dark mt-1">U16</h3>
+            <p class="text-sm text-gray-600 mt-2">12 teams, championship bracket phase.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="bg-gray-50 rounded-lg p-4 border border-gray-100">
+            <p class="text-xs text-gray-500 uppercase">Total Tournaments</p>
+            <p class="text-2xl font-bold text-hope-dark mt-1">6</p>
+          </div>
+          <div class="bg-gray-50 rounded-lg p-4 border border-gray-100">
+            <p class="text-xs text-gray-500 uppercase">Total Teams</p>
+            <p class="text-2xl font-bold text-hope-dark mt-1">30</p>
+          </div>
+          <div class="bg-gray-50 rounded-lg p-4 border border-gray-100">
+            <p class="text-xs text-gray-500 uppercase">Matches Played</p>
+            <p class="text-2xl font-bold text-hope-dark mt-1">42</p>
+          </div>
+          <div class="bg-gray-50 rounded-lg p-4 border border-gray-100">
+            <p class="text-xs text-gray-500 uppercase">Upcoming Matches</p>
+            <p class="text-2xl font-bold text-hope-dark mt-1">18</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const backdrop = document.getElementById('sidebarBackdrop');
+      const body = document.body;
+
+      if (sidebar.classList.contains('-translate-x-full')) {
+        sidebar.classList.remove('-translate-x-full');
+        backdrop.classList.remove('hidden');
+        setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
+        body.style.overflow = 'hidden';
+      } else {
+        sidebar.classList.add('-translate-x-full');
+        backdrop.classList.add('opacity-0');
+        setTimeout(() => backdrop.classList.add('hidden'), 300);
+        body.style.overflow = 'auto';
+      }
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,226 @@
+COACH SECTION - DETAILED DESCRIPTION (EDUSPORTPRO)
+
+1. COACH SECTION PURPOSE
+The Coach section is the operational execution layer for team-level sports management. It focuses on day-to-day team activities: training, attendance, match preparation, performance input, and calendar-driven coordination.
+
+Primary objective:
+- Turn admin-defined structures (users, teams, tournaments/divisions) into practical team operations.
+- Keep team data timely and accurate for players and administrators.
+
+2. COACH ROLE CAPABILITY SCOPE
+Coach capabilities are operational and scoped to team context.
+
+Allowed (intended):
+- Manage training sessions for assigned team.
+- Track attendance.
+- Input/update player performance metrics.
+- Manage coach-side schedule/match logistics.
+- Create calendar events for own team only.
+- View notifications and profile settings.
+
+Restricted:
+- Tournament and Division are read-only.
+- No organization-wide user/team governance.
+- No all-team calendar targeting.
+
+3. COACH IA (INFORMATION ARCHITECTURE)
+Coach menu is organized around execution flow:
+- Daily Operations:
+  - Dashboard, My Team, Training Sessions, Attendance, Performance, Matches, Calendar
+- Supporting Operations:
+  - Inventory, Notifications
+- Account:
+  - Profile
+- Read-only Competition Context:
+  - Tournament, Division
+
+4. COACH PAGE-BY-PAGE DETAILED DESCRIPTION
+
+4.1 coach/coach-dashboard.html
+Purpose:
+- Daily command center for coach activities.
+Main functions:
+- Team KPIs and quick status cards.
+- Fast links to critical modules.
+Use-case:
+- Start-of-day planning and monitoring.
+
+4.2 coach/coach-teams.html
+Purpose:
+- View coach-assigned team context.
+Main functions:
+- Team overview and member/summary information.
+Use-case:
+- Review roster context before sessions/matches.
+
+4.3 coach/coach-training.html
+Purpose:
+- Plan and maintain training sessions.
+Main functions:
+- Add/edit session details.
+- Search/filter/paginate training entries.
+Use-case:
+- Structured practice management.
+
+4.4 coach/coach-att.html
+Purpose:
+- Manage attendance records.
+Main functions:
+- Mark attendance states per player.
+- Review attendance consistency.
+Use-case:
+- Participation monitoring and discipline support.
+
+4.5 coach/coach-performance.html
+Purpose:
+- Enter/update player performance data.
+Main functions:
+- Performance input per player (session/match aligned).
+Use-case:
+- Ongoing athlete evaluation.
+
+4.6 coach/coach-matches.html
+Purpose:
+- Manage team match schedule context.
+Main functions:
+- View/create/update match planning details in coach scope.
+Use-case:
+- Preparation and fixture readiness.
+
+4.7 coach/coach-calendar.html
+Purpose:
+- Team-level event planning and schedule management.
+Main functions:
+- Month-view calendar.
+- Create/edit/delete event modal.
+- Event Type with conditional comment input for Other.
+- Add Team UI with Team search field (same structure as admin UI).
+
+Critical coach constraint:
+- Add Team controls are UI-locked to coach's own team.
+- Save logic enforces event team = current coach team.
+- Coach cannot select All Teams or arbitrary multiple teams.
+
+Use-case:
+- Publish team-specific training/meeting/match events.
+
+4.8 coach/coach-inventory.html
+Purpose:
+- View/manage equipment in coach operational context.
+Main functions:
+- Inventory state review and related actions as enabled.
+Use-case:
+- Ensure training/match readiness.
+
+4.9 coach/coach-notifications.html
+Purpose:
+- Coach communication inbox.
+Main functions:
+- Review event and operational notifications.
+- Filter and interaction controls in UI.
+Use-case:
+- Stay aligned with admin and team communications.
+
+4.10 coach/coach-profile.html
+Purpose:
+- Coach account/profile settings.
+Main functions:
+- Update profile and credentials/settings fields.
+Use-case:
+- Maintain account hygiene.
+
+4.11 coach/coach-tournament.html (Read-only)
+Purpose:
+- View tournament structures and progress.
+Main functions:
+- Display tournament lists/status/overview.
+Use-case:
+- Competition awareness without edit authority.
+
+4.12 coach/coach-division.html (Read-only)
+Purpose:
+- View division groups and standings.
+Main functions:
+- Display group and standing information.
+Use-case:
+- Track competitive position for planning.
+
+5. COACH WORKFLOW CHAINS (END-TO-END)
+
+Workflow A: Session Management
+1) Open Dashboard for quick status.
+2) Plan/update training in Training module.
+3) Publish/align event in Calendar.
+4) Execute session.
+5) Record attendance and performance.
+
+Workflow B: Match Preparation
+1) Review match schedule.
+2) Update calendar team event.
+3) Confirm attendance and readiness.
+4) Input performance outcomes after activity.
+
+Workflow C: Team Communication
+1) Coach receives admin notifications.
+2) Coach creates team-only events in calendar.
+3) Players in that team consume updates.
+
+6. CALENDAR TARGETING LOGIC (COACH)
+Coach-specific policy:
+- UI shows Add Team + Team search for consistency.
+- Selection controls are locked to current coach team.
+- Backend intent enforces same rule through procedure logic.
+
+Expected backend mapping:
+- sp_create_calendar_event(...) resolves coach -> own team.
+- Event notification fanout includes:
+  - coach account and players in that team.
+
+7. ACCESS & PERMISSION MODEL (COACH VIEW)
+Coach permission intent:
+- Read/write on operational modules in team scope.
+- Read-only on tournament/division.
+- No system-wide administration.
+
+Important boundary:
+- Any write endpoint must verify coach team ownership before commit.
+
+8. DATA MODEL RELATIONSHIP TO COACH MODULES
+Core entities used in coach module:
+- users, roles, permissions, role_permissions
+- coaches, teams, team_players, players
+- trainings, attendance
+- matches, performance records/statistics
+- calendar_events, calendar_event_teams, notifications, calendar_event_recipients
+- tournaments/divisions/groups/standings (read-only consumption)
+
+Key joins relevant to coach scope:
+- coaches.user_id -> users.id
+- teams.coach_id -> coaches.id
+- team_players.team_id + player_id for roster context
+- calendar event recipient mapping for delivery visibility
+
+9. QUALITY AND GOVERNANCE RESPONSIBILITIES (COACH)
+Coach section should ensure:
+- Timely and accurate team-level updates.
+- Event communication scoped correctly to own team.
+- Attendance/performance updates reflect real operations.
+- Respect for read-only constraints on tournament/division.
+
+10. IMPLEMENTATION CHARACTERISTICS
+- Current frontend uses static pages with inline JS workflows.
+- Several interactions are mock/prototype-level and require API integration.
+- Team-lock behavior in coach calendar exists at UI layer and should be mirrored in backend validation.
+
+11. RECOMMENDED BACKEND ENFORCEMENT FOR COACH
+- Resolve coach identity -> coach record -> assigned team(s).
+- Reject event creation if target team does not belong to coach.
+- Apply transaction boundary for event + notifications writes.
+- Add tests for:
+  - coach cannot target all teams,
+  - coach cannot target another team,
+  - coach can create for own team,
+  - read-only tournament/division endpoints for coach.
+
+12. SUMMARY
+The Coach section is the execution workspace of EduSportPro. It translates administrative planning into team action while remaining inside strict scope boundaries. Its value is operational precision: schedule correctly, communicate correctly, track correctly, and keep team outcomes reliable for the whole platform.
