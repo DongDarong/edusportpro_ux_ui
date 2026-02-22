@@ -11,6 +11,7 @@
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="/admin/admin-data-store.js"></script>
 
     <script>
         tailwind.config = {
@@ -38,6 +39,13 @@
     </script>
 
     <style>
+        body {
+            background:
+                radial-gradient(circle at top right, rgba(0, 174, 239, 0.08), transparent 30%),
+                radial-gradient(circle at top left, rgba(141, 198, 63, 0.08), transparent 28%),
+                #f8fafc;
+        }
+
         .input-field {
             width: 100%;
             border-radius: 0.5rem;
@@ -93,6 +101,14 @@
         .player-badge:hover {
             transform: translateY(-1px);
         }
+
+        .section-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 1rem;
+            padding: 1.25rem;
+            background-color: #ffffff;
+            box-shadow: 0 6px 20px rgba(2, 6, 23, 0.04);
+        }
     </style>
 </head>
 
@@ -128,16 +144,20 @@
     </div>
 
     <!-- Main -->
-    <main class="max-w-5xl mx-auto px-4 sm:px-6 mt-8">
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 mt-8">
 
         <!-- Page Title -->
-        <div class="mb-8">
+        <div class="mb-8 bg-white border border-gray-200 rounded-2xl px-6 py-5 shadow-sm">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-md bg-hope-cyan/10 text-hope-cyan">Admin</span>
+                <span class="text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-md bg-hope-lime/10 text-hope-lime">Team Setup</span>
+            </div>
             <h2 class="text-3xl font-extrabold text-hope-dark tracking-tight">Create New Team</h2>
-            <p class="text-gray-500 mt-1">Configure your team roster, coaching staff, and competitive division.</p>
+            <p class="text-gray-500 mt-1">Configure team identity, assign coaching, and prepare roster structure.</p>
         </div>
 
         <!-- Form Card -->
-        <form class="bg-white rounded-2xl shadow-soft overflow-hidden relative">
+        <form id="teamCreateForm" class="bg-white rounded-2xl shadow-soft overflow-hidden relative">
             
             <!-- Branding Stripe -->
             <div class="h-1.5 w-full flex">
@@ -150,7 +170,7 @@
             <div class="p-6 md:p-10 space-y-12">
 
                 <!-- Section 1: Team Logistics -->
-                <section>
+                <section class="section-card">
                     <div class="flex items-center justify-between border-b border-gray-100 pb-4 mb-8">
                         <h3 class="section-title">
                             <span class="section-number">1</span>
@@ -161,36 +181,34 @@
                     <div class="grid grid-cols-2 md:grid-cols-6 gap-6">
                         <div class="col-span-2 md:col-span-4">
                             <label class="label-text">Team Name <span class="text-hope-red">*</span></label>
-                            <input type="text" placeholder="e.g. Battambang Eagles U16" class="input-field">
+                            <input id="teamNameInput" type="text" placeholder="e.g. Battambang Eagles U16" class="input-field">
                         </div>
 
                         <div class="col-span-1 md:col-span-2">
                             <label class="label-text">Division <span class="text-hope-red">*</span></label>
-                            <select class="input-field cursor-pointer">
-                                <option>Select Division</option>
-                                <option>U10 - Foundation</option>
-                                <option>U12 - Junior</option>
-                                <option>U14 - Intermediate</option>
-                                <option>U16 - Senior</option>
+                            <select id="teamDivisionInput" class="input-field cursor-pointer">
+                                <option value="">Select Division</option>
+                                <option value="U10">U10 - Foundation</option>
+                                <option value="U12">U12 - Junior</option>
+                                <option value="U14">U14 - Intermediate</option>
+                                <option value="U16">U16 - Senior</option>
+                                <option value="U18">U18</option>
                             </select>
                         </div>
 
                         <div class="col-span-1 md:col-span-2">
                             <label class="label-text">Assigned Coach</label>
-                            <select class="input-field cursor-pointer">
-                                <option>Select Coach</option>
-                                <option>Coach Sok Dara</option>
-                                <option>Coach Vannak Vuthy</option>
-                                <option>Coach Chea Sophat</option>
+                            <select id="teamCoachInput" class="input-field cursor-pointer">
+                                <option value="">Select Coach</option>
                             </select>
                         </div>
 
                         <div class="col-span-1 md:col-span-2">
                             <label class="label-text">Team Status</label>
-                            <select class="input-field cursor-pointer font-bold text-hope-lime">
-                                <option class="text-hope-lime">Active</option>
-                                <option class="text-hope-yellow">Training Only</option>
-                                <option class="text-hope-red">Inactive</option>
+                            <select id="teamStatusInput" class="input-field cursor-pointer font-bold text-hope-lime">
+                                <option value="Active" class="text-hope-lime">Active</option>
+                                <option value="Training" class="text-hope-yellow">Training Only</option>
+                                <option value="Inactive" class="text-hope-red">Inactive</option>
                             </select>
                         </div>
 
@@ -208,7 +226,7 @@
                 </section>
 
                 <!-- Section 2: Player Roster -->
-                <section>
+                <section class="section-card">
                     <div class="flex items-center justify-between border-b border-gray-100 pb-4 mb-8">
                         <h3 class="section-title">
                             <span class="section-number bg-hope-yellow">2</span>
@@ -268,28 +286,100 @@
             </div>
 
             <!-- Footer Actions -->
-            <div class="bg-gray-50 px-6 py-5 border-t border-gray-100 flex items-center justify-end gap-3">
-                <a href="/admin/admin-teams.html" class="px-6 py-2.5 rounded-xl text-sm font-bold text-gray-500 hover:bg-white hover:text-hope-dark border border-transparent hover:border-gray-200 transition-all">
+            <div class="bg-gray-50 px-6 py-5 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <p class="text-xs text-gray-500">Required fields: Team name and division.</p>
+                <div class="flex items-center gap-3">
+                    <a href="/admin/admin-teams.html" class="px-6 py-2.5 rounded-xl text-sm font-bold text-gray-500 hover:bg-white hover:text-hope-dark border border-transparent hover:border-gray-200 transition-all">
                     Cancel
-                </a>
-                <button type="button" onclick="alert('Team Created!')" class="px-8 py-2.5 rounded-xl bg-hope-cyan text-white text-sm font-bold shadow-lg shadow-hope-cyan/30 hover:bg-sky-500 hover:-translate-y-0.5 transition-all">
+                    </a>
+                    <button type="submit" class="px-8 py-2.5 rounded-xl bg-hope-cyan text-white text-sm font-bold shadow-lg shadow-hope-cyan/30 hover:bg-sky-500 hover:-translate-y-0.5 transition-all">
                     Create Team
-                </button>
+                    </button>
+                </div>
             </div>
 
         </form>
     </main>
 
+    <script>
+        function buildTeamId(existingTeams) {
+            const maxId = existingTeams.reduce(function (max, team) {
+                const raw = String(team.id || '');
+                const num = Number(raw.replace(/^T/, ''));
+                if (!Number.isFinite(num)) return max;
+                return Math.max(max, num);
+            }, 0);
+            return 'T' + String(maxId + 1).padStart(3, '0');
+        }
+
+        function normalizeArray(input) {
+            return Array.isArray(input) ? input : [];
+        }
+
+        function populateCoachOptions(coaches) {
+            const select = document.getElementById('teamCoachInput');
+            if (!select) return;
+            const options = ['<option value="">Select Coach</option>'].concat(
+                coaches.map(function (coach) {
+                    const id = coach.id || coach.coachId || coach.coach_id || '';
+                    const name = coach.name || coach.fullName || coach.coachName || id || 'Unknown Coach';
+                    return '<option value="' + String(id) + '">' + name + '</option>';
+                })
+            );
+            select.innerHTML = options.join('');
+        }
+
+        async function handleCreateTeamSubmit(event) {
+            event.preventDefault();
+            await window.AdminDataStore.bootstrap();
+
+            const teamName = document.getElementById('teamNameInput').value.trim();
+            const division = document.getElementById('teamDivisionInput').value;
+            const coachId = document.getElementById('teamCoachInput').value;
+            const status = document.getElementById('teamStatusInput').value;
+
+            if (!teamName) {
+                alert('Team name is required.');
+                return;
+            }
+            if (!division) {
+                alert('Division is required.');
+                return;
+            }
+
+            const teams = normalizeArray(window.AdminDataStore.getArray('teams', []));
+            const coaches = normalizeArray(window.AdminDataStore.getArray('coaches', []));
+            const selectedCoach = coaches.find(function (coach) {
+                const id = coach.id || coach.coachId || coach.coach_id;
+                return String(id) === String(coachId);
+            });
+
+            const newTeam = {
+                id: buildTeamId(teams),
+                name: teamName,
+                division: division,
+                status: status || 'Active'
+            };
+
+            if (coachId) {
+                newTeam.coachId = coachId;
+                newTeam.coachName = selectedCoach ? (selectedCoach.name || selectedCoach.fullName || '') : '';
+            }
+
+            teams.unshift(newTeam);
+            window.AdminDataStore.set('teams', teams);
+            alert('Team created successfully.');
+            window.location.href = '/admin/admin-teams.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', async function () {
+            await window.AdminDataStore.bootstrap();
+            const coaches = normalizeArray(window.AdminDataStore.getArray('coaches', []));
+            populateCoachOptions(coaches);
+            const form = document.getElementById('teamCreateForm');
+            if (form) form.addEventListener('submit', handleCreateTeamSubmit);
+        });
+    </script>
+
 </body>
 </html>
-
-
-
-
-
-
-AWSLabsUser-2hU1ou23QcTNMihRgZsuxB/609a35cb-56b7-450e-a1fb-7fef6ad9a134
-
-
-
-arn:aws:s3:::reportbucket-037622730560

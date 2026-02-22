@@ -168,6 +168,8 @@ Key joins relevant to player scope:
 - Consistent navigation pattern across player pages.
 - Focus on clarity and low-complexity interactions.
 - Read-heavy UX with limited form-heavy interactions.
+- Tournament and Division pages remain view-only and reflect competition data
+  configured by admin workflows.
 
 10. QUALITY EXPECTATIONS FOR PLAYER MODULE
 - Accurate personal data presentation.

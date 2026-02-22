@@ -1,0 +1,431 @@
+{
+  "users": [
+    {
+      "id": "U001",
+      "name": "Dara Dev",
+      "email": "dara.dev@edusportpro.local",
+      "role": "Admin",
+      "status": "Active",
+      "phone": "012 345 678",
+      "permissions": ["Manage Users", "Manage Matches", "View Reports"]
+    },
+    {
+      "id": "U002",
+      "name": "Sok Vanna",
+      "email": "sok.vanna@edusportpro.local",
+      "role": "Coach",
+      "status": "Active",
+      "phone": "012 987 654",
+      "permissions": ["Matches", "Teams"]
+    },
+    {
+      "id": "U003",
+      "name": "Chan Vath",
+      "email": "chan.vath@edusportpro.local",
+      "role": "Player",
+      "status": "Pending",
+      "phone": "098 765 432",
+      "permissions": ["View Only"]
+    }
+  ],
+  "teams": [
+    { "id": "T001", "name": "Hope Strikers", "division": "U12" },
+    { "id": "T002", "name": "Phnom Tigers", "division": "U14" },
+    { "id": "T003", "name": "Angkor Eagles", "division": "U16" },
+    { "id": "T004", "name": "Mekong Warriors", "division": "U18" },
+    { "id": "T005", "name": "Siem Reap Juniors", "division": "U14" },
+    { "id": "T006", "name": "Kampot Falcons", "division": "U16" },
+    { "id": "T007", "name": "Battambang United", "division": "U12" },
+    { "id": "T008", "name": "Tonle Sap Stars", "division": "U18" }
+  ],
+  "matches": [
+    {
+      "id": "M001",
+      "competitionType": "tournament",
+      "homeTeamId": "T001",
+      "awayTeamId": "T002",
+      "tournamentId": "TRN-2026-001",
+      "dateTime": "2026-03-02T14:00",
+      "venue": "City Stadium",
+      "status": "Scheduled",
+      "homeScore": 2,
+      "awayScore": 0
+    },
+    {
+      "id": "M002",
+      "competitionType": "external",
+      "externalTournamentName": "Weekend Friendly Series",
+      "homeTeamId": "T003",
+      "awayTeamId": "T004",
+      "dateTime": "2026-03-05T09:00",
+      "venue": "National Arena",
+      "status": "Pending",
+      "homeScore": null,
+      "awayScore": null
+    }
+  ],
+  "trainingSessions": [
+    {
+      "id": "TRS-001",
+      "teamId": "T001",
+      "coachId": "C001",
+      "date": "2026-03-01",
+      "location": "Training Hall A",
+      "focus": "Attack and Passing"
+    },
+    {
+      "id": "TRS-002",
+      "teamId": "T002",
+      "coachId": "C004",
+      "date": "2026-03-03",
+      "location": "Main Field",
+      "focus": "Defense Formation"
+    },
+    {
+      "id": "TRS-003",
+      "teamId": "T003",
+      "coachId": "C002",
+      "date": "2026-03-05",
+      "location": "Training Hall B",
+      "focus": "Fitness and Conditioning"
+    }
+  ],
+  "attendanceRecords": [
+    {
+      "id": "AR-001",
+      "subjectType": "player",
+      "subjectId": "PL-001",
+      "teamId": "T001",
+      "coachId": "C001",
+      "date": "2026-02-18",
+      "activityType": "training",
+      "status": "present",
+      "note": ""
+    },
+    {
+      "id": "AR-002",
+      "subjectType": "player",
+      "subjectId": "PL-002",
+      "teamId": "T002",
+      "coachId": "C004",
+      "date": "2026-02-18",
+      "activityType": "training",
+      "status": "absent",
+      "note": "Sick"
+    },
+    {
+      "id": "AR-003",
+      "subjectType": "player",
+      "subjectId": "PL-003",
+      "teamId": "T003",
+      "coachId": "C002",
+      "date": "2026-02-18",
+      "activityType": "training",
+      "status": "late",
+      "note": "Traffic"
+    },
+    {
+      "id": "AR-004",
+      "subjectType": "coach",
+      "subjectId": "C001",
+      "teamId": "T001",
+      "coachId": "",
+      "date": "2026-02-18",
+      "activityType": "training",
+      "status": "present",
+      "note": ""
+    },
+    {
+      "id": "AR-005",
+      "subjectType": "coach",
+      "subjectId": "C002",
+      "teamId": "T003",
+      "coachId": "",
+      "date": "2026-02-18",
+      "activityType": "training",
+      "status": "excused",
+      "note": "Approved Leave"
+    },
+    {
+      "id": "AR-006",
+      "subjectType": "coach",
+      "subjectId": "C004",
+      "teamId": "T002",
+      "coachId": "",
+      "date": "2026-02-18",
+      "activityType": "match",
+      "status": "late",
+      "note": "Traffic"
+    }
+  ],
+  "calendarEvents": [
+    {
+      "id": "CE-001",
+      "date": "2026-03-04",
+      "title": "Tactics Meeting",
+      "type": "meeting",
+      "time": "14:00",
+      "team": "all",
+      "comment": ""
+    },
+    {
+      "id": "CE-002",
+      "date": "2026-03-08",
+      "title": "Fitness Test",
+      "type": "other",
+      "time": "09:00",
+      "team": ["T001", "T002"],
+      "comment": "Pre-season endurance check"
+    }
+  ],
+  "performanceRecords": [
+    {
+      "id": "PR-001",
+      "date": "2026-03-02",
+      "sessionType": "match",
+      "opponent": "Phnom Tigers",
+      "playerId": "PL-001",
+      "goals": 1,
+      "assists": 1,
+      "yellow": 0,
+      "red": 0,
+      "rating": 8,
+      "notes": "Strong pressing in final third"
+    },
+    {
+      "id": "PR-002",
+      "date": "2026-03-02",
+      "sessionType": "match",
+      "opponent": "Phnom Tigers",
+      "playerId": "PL-002",
+      "goals": 0,
+      "assists": 1,
+      "yellow": 1,
+      "red": 0,
+      "rating": 7,
+      "notes": "Good distribution"
+    },
+    {
+      "id": "PR-003",
+      "date": "2026-03-02",
+      "sessionType": "match",
+      "opponent": "Phnom Tigers",
+      "playerId": "PL-003",
+      "goals": 0,
+      "assists": 0,
+      "yellow": 0,
+      "red": 0,
+      "rating": 8,
+      "notes": "Key saves in second half"
+    }
+  ],
+  "inventoryItems": [
+    {
+      "id": "INV-001",
+      "name": "Football Shoes",
+      "category": "Equipment",
+      "stock": 12,
+      "supplier": "SportShop Co.",
+      "status": "in_stock"
+    },
+    {
+      "id": "INV-024",
+      "name": "Whistles",
+      "category": "Accessories",
+      "stock": 3,
+      "supplier": "CoachMart",
+      "status": "low"
+    },
+    {
+      "id": "INV-055",
+      "name": "Team Jerseys",
+      "category": "Uniforms",
+      "stock": 0,
+      "supplier": "SportsWear Ltd.",
+      "status": "out"
+    }
+  ],
+  "inventoryCategories": [
+    "Equipment",
+    "Uniforms",
+    "Accessories",
+    "Supplies"
+  ],
+  "notifications": [
+    {
+      "id": "NTF-001",
+      "type": "matches",
+      "title": "New Match Scheduled",
+      "message": "Hope Strikers vs Phnom Tigers - March 02, 2026",
+      "createdAt": "2026-02-21T14:00:00Z",
+      "read": false
+    },
+    {
+      "id": "NTF-002",
+      "type": "inventory",
+      "title": "Low Stock Alert",
+      "message": "Whistles have dropped below minimum stock level.",
+      "createdAt": "2026-02-21T09:00:00Z",
+      "read": false
+    },
+    {
+      "id": "NTF-003",
+      "type": "training",
+      "title": "Training Focus Updated",
+      "message": "Coach Sok updated Training Hall A session focus.",
+      "createdAt": "2026-02-20T08:15:00Z",
+      "read": true
+    },
+    {
+      "id": "NTF-004",
+      "type": "system",
+      "title": "Data Sync Completed",
+      "message": "Admin data has been synced successfully from JSON.",
+      "createdAt": "2026-02-19T11:25:00Z",
+      "read": true
+    }
+  ],
+  "players": [
+    {
+      "id": "PL-001",
+      "name": "Rina Seng",
+      "email": "rina@esp.com",
+      "position": "Forward",
+      "status": "Active",
+      "teamId": "T001",
+      "phone": "012 111 222",
+      "heightCm": 165,
+      "weightKg": 54,
+      "attendance": 94,
+      "matches": 24,
+      "tier": "Elite",
+      "season": "Season 2026",
+      "medicalCheckDate": "2026-01-10",
+      "injuryStatus": "No Active Injury",
+      "registrationUntil": "2026-12-31",
+      "eligibilityStatus": "Eligible to Play",
+      "contractStatus": "Contract Valid",
+      "profileSyncStatus": "Profile Synced",
+      "dateOfBirth": "2008-08-12",
+      "nationality": "Cambodian",
+      "address": "Svay Pak, Russey Keo, Phnom Penh",
+      "schoolName": "Children's Hope School",
+      "educationProgram": "Secondary Education Program",
+      "gradeLevel": "11",
+      "fatherName": "Sok Vannak",
+      "fatherOccupation": "Farmer",
+      "motherName": "Chan Srey",
+      "motherOccupation": "Vendor",
+      "emergencyContact": "012 987 654",
+      "guardianVerified": true,
+      "documentName": "Contract_2026_RinaSeng.pdf",
+      "documentMeta": "Uploaded Jan 15, 2026 • 2.4 MB",
+      "documentStatus": "Signed",
+      "form": "WWD",
+      "recentForm": [
+        { "fixture": "Hope Strikers vs Phnom Tigers", "date": "2026-02-12", "g": 2, "a": 1, "rating": 8.4 },
+        { "fixture": "Angkor Eagles vs Hope Strikers", "date": "2026-02-05", "g": 1, "a": 0, "rating": 7.9 },
+        { "fixture": "Mekong Warriors vs Hope Strikers", "date": "2026-01-29", "g": 1, "a": 2, "rating": 8.1 }
+      ]
+    },
+    {
+      "id": "PL-002",
+      "name": "Sok Rith",
+      "email": "sokrith@esp.com",
+      "position": "Midfielder",
+      "status": "Injury",
+      "teamId": "T002",
+      "phone": "012 333 444",
+      "heightCm": 170,
+      "weightKg": 61,
+      "attendance": 81,
+      "matches": 18,
+      "tier": "Pro",
+      "season": "Season 2026",
+      "medicalCheckDate": "2026-01-08",
+      "injuryStatus": "Hamstring Recovery",
+      "registrationUntil": "2026-12-31",
+      "eligibilityStatus": "Temporarily Not Eligible",
+      "contractStatus": "Contract Valid",
+      "profileSyncStatus": "Profile Synced",
+      "dateOfBirth": "2007-11-03",
+      "nationality": "Cambodian",
+      "address": "Chroy Changvar, Phnom Penh",
+      "schoolName": "Hope Academy",
+      "educationProgram": "Upper Secondary",
+      "gradeLevel": "12",
+      "fatherName": "Rith Sarun",
+      "fatherOccupation": "Driver",
+      "motherName": "Neth Lina",
+      "motherOccupation": "Tailor",
+      "emergencyContact": "011 667 889",
+      "guardianVerified": true,
+      "documentName": "Medical_Clearance_SokRith.pdf",
+      "documentMeta": "Uploaded Feb 02, 2026 • 1.1 MB",
+      "documentStatus": "Pending",
+      "form": "DWL",
+      "recentForm": [
+        { "fixture": "Phnom Tigers vs Tonle Sap Stars", "date": "2026-02-10", "g": 0, "a": 1, "rating": 7.1 },
+        { "fixture": "Phnom Tigers vs Angkor Eagles", "date": "2026-02-03", "g": 1, "a": 0, "rating": 7.4 }
+      ]
+    },
+    {
+      "id": "PL-003",
+      "name": "Chan Dara",
+      "email": "dara@esp.com",
+      "position": "Goalkeeper",
+      "status": "Active",
+      "teamId": "T003",
+      "phone": "012 555 666",
+      "heightCm": 178,
+      "weightKg": 69,
+      "attendance": 96,
+      "matches": 27,
+      "tier": "Elite",
+      "season": "Season 2026",
+      "medicalCheckDate": "2026-01-12",
+      "injuryStatus": "No Active Injury",
+      "registrationUntil": "2026-12-31",
+      "eligibilityStatus": "Eligible to Play",
+      "contractStatus": "Contract Valid",
+      "profileSyncStatus": "Profile Synced",
+      "dateOfBirth": "2008-02-18",
+      "nationality": "Cambodian",
+      "address": "Kandal Province",
+      "schoolName": "Future Stars School",
+      "educationProgram": "Secondary Education",
+      "gradeLevel": "10",
+      "fatherName": "Chan Mony",
+      "fatherOccupation": "Mechanic",
+      "motherName": "Pov Ratha",
+      "motherOccupation": "Teacher",
+      "emergencyContact": "015 334 998",
+      "guardianVerified": true,
+      "documentName": "Contract_2026_ChanDara.pdf",
+      "documentMeta": "Uploaded Jan 20, 2026 • 1.9 MB",
+      "documentStatus": "Signed",
+      "form": "WWW",
+      "recentForm": [
+        { "fixture": "Angkor Eagles vs Hope Strikers", "date": "2026-02-11", "g": 0, "a": 0, "rating": 8.2 },
+        { "fixture": "Angkor Eagles vs Mekong Warriors", "date": "2026-02-04", "g": 0, "a": 0, "rating": 8.0 },
+        { "fixture": "Phnom Tigers vs Angkor Eagles", "date": "2026-01-28", "g": 0, "a": 0, "rating": 8.5 }
+      ]
+    }
+  ],
+  "coaches": [
+    { "id": "C001", "name": "Coach Sok" },
+    { "id": "C002", "name": "Coach Dara" },
+    { "id": "C003", "name": "Coach Vanna" },
+    { "id": "C004", "name": "Coach Nita" }
+  ],
+  "tournaments": [
+    { "id": "TRN-2026-001", "name": "Hope Youth League 2026" },
+    { "id": "TRN-2026-002", "name": "Cambodia Junior Cup 2026" },
+    { "id": "TRN-2026-003", "name": "Regional Talent Trophy 2026" }
+  ],
+  "tournamentTeamMap": {
+    "TRN-2026-001": ["T001", "T002", "T003"],
+    "TRN-2026-002": ["T004", "T005"],
+    "TRN-2026-003": ["T006", "T007", "T008"]
+  }
+}

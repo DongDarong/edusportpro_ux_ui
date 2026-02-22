@@ -11,6 +11,7 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <script src="/admin/admin-data-store.js"></script>
 
     <!-- Tailwind Configuration -->
     <script>
@@ -90,7 +91,7 @@
                 </a>
                 <div class="flex items-center gap-2 w-full sm:w-auto">
                     <button class="w-full sm:w-auto px-4 py-2 rounded-lg border border-gray-200 bg-white text-gray-700 text-sm font-semibold hover:border-hope-cyan hover:text-hope-cyan transition-colors">Export Summary</button>
-                    <button class="w-full sm:w-auto px-4 py-2 rounded-lg bg-hope-cyan text-white text-sm font-semibold hover:bg-sky-500 transition-colors">Edit Team</button>
+                    <a id="editTeamBtn" href="/admin/admin-team-create.html" class="w-full sm:w-auto px-4 py-2 rounded-lg bg-hope-cyan text-white text-sm font-semibold hover:bg-sky-500 transition-colors text-center">Edit Team</a>
                 </div>
             </div>
 
@@ -104,16 +105,16 @@
                         
                         <!-- Logo / Avatar -->
                         <div class="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gray-50 border-2 border-gray-100 flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform duration-300">
-                            <span class="text-4xl md:text-5xl font-black text-hope-cyan">A</span>
+                            <span id="teamAvatarInitial" class="text-4xl md:text-5xl font-black text-hope-cyan">T</span>
                         </div>
 
                         <!-- Info -->
                         <div class="flex-1">
                             <div class="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 mb-2">
-                                <h1 class="text-2xl md:text-3xl font-black text-hope-dark tracking-tight">Team A (Eagles)</h1>
-                                <span class="w-fit px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 border border-green-200 flex items-center gap-1.5">
+                                <h1 id="teamNameTitle" class="text-2xl md:text-3xl font-black text-hope-dark tracking-tight">Team</h1>
+                                <span id="teamStatusBadge" class="w-fit px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 border border-green-200 flex items-center gap-1.5">
                                     <span class="w-1.5 h-1.5 rounded-full bg-green-600 animate-pulse"></span>
-                                    Active Roster
+                                    Active
                                 </span>
                             </div>
                             
@@ -125,7 +126,7 @@
                                     </div>
                                     <div>
                                         <p class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Coach</p>
-                                        <p class="font-bold text-hope-dark text-sm">Coach Sok</p>
+                                        <p id="teamCoachName" class="font-bold text-hope-dark text-sm">Unassigned</p>
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-3">
@@ -134,7 +135,7 @@
                                     </div>
                                     <div>
                                         <p class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Players</p>
-                                        <p class="font-bold text-hope-dark text-sm">20 Registered</p>
+                                        <p id="teamPlayersCount" class="font-bold text-hope-dark text-sm">0 Registered</p>
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-3">
@@ -143,7 +144,7 @@
                                     </div>
                                     <div>
                                         <p class="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Division</p>
-                                        <p class="font-bold text-hope-dark text-sm">U16 League</p>
+                                        <p id="teamDivisionText" class="font-bold text-hope-dark text-sm">N/A League</p>
                                     </div>
                                 </div>
                             </div>
@@ -226,79 +227,10 @@
                                         <th class="px-6 py-4 font-bold text-right">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody class="text-sm">
-                                    <!-- Row 1 -->
-                                    <tr class="group hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0">
-                                        <td class="px-6 py-4 text-gray-400 font-mono">1</td>
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center gap-3">
-                                                <div class="w-8 h-8 rounded-full bg-hope-cyan/10 text-hope-cyan font-bold flex items-center justify-center text-xs">CD</div>
-                                                <span class="font-bold text-gray-800">Chan Dara</span>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">
-                                                Forward
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 text-center font-mono font-bold text-gray-500">09</td>
-                                        <td class="px-6 py-4 text-right">
-                                            <button class="text-gray-400 hover:text-hope-cyan transition-colors">
-                                              <a href="/admin/admin-player-detail.html">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
-                                            </button>
-                                        </td>
-                                    </tr>
-
-                                    <!-- Row 2 -->
-                                    <tr class="group hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0">
-                                        <td class="px-6 py-4 text-gray-400 font-mono">2</td>
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center gap-3">
-                                                <div class="w-8 h-8 rounded-full bg-hope-lime/10 text-hope-lime font-bold flex items-center justify-center text-xs">SV</div>
-                                                <span class="font-bold text-gray-800">Sok Vannak</span>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
-                                                Midfielder
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 text-center font-mono font-bold text-gray-500">08</td>
-                                        <td class="px-6 py-4 text-right">
-                                            <button class="text-gray-400 hover:text-hope-cyan transition-colors">
-                                              <a href="/admin/admin-player-detail.html">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
-                                            </button>
-                                        </td>
-                                    </tr>
-
-                                    <!-- Row 3 -->
-                                    <tr class="group hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0">
-                                        <td class="px-6 py-4 text-gray-400 font-mono">3</td>
-                                        <td class="px-6 py-4">
-                                            <div class="flex items-center gap-3">
-                                                <div class="w-8 h-8 rounded-full bg-gray-100 text-gray-500 font-bold flex items-center justify-center text-xs">HS</div>
-                                                <span class="font-bold text-gray-800">Heng Sophal</span>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">
-                                                Goalkeeper
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 text-center font-mono font-bold text-gray-500">01</td>
-                                        <td class="px-6 py-4 text-right">
-                                            <button class="text-gray-400 hover:text-hope-cyan transition-colors">
-                                              <a href="/admin/admin-player-detail.html">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
+                                <tbody id="teamRosterBody" class="text-sm"></tbody>
                             </table>
                             <div class="p-4 text-center border-t border-gray-50">
-                                <button class="text-xs font-bold text-gray-400 hover:text-hope-dark transition-colors">Load 17 more players...</button>
+                                <button id="teamRosterFooter" class="text-xs font-bold text-gray-400 hover:text-hope-dark transition-colors">Roster loaded from JSON data</button>
                             </div>
                         </div>
                     </div>
@@ -397,5 +329,137 @@
         </main>
     </div>
 
+    <script>
+        function getQueryParam(name) {
+            const params = new URLSearchParams(window.location.search);
+            return params.get(name) || '';
+        }
+
+        function getTeamName(team) {
+            return team.name || team.teamName || team.title || team.id || 'Unknown Team';
+        }
+
+        function getTeamDivision(team) {
+            return team.division || team.divisionName || team.ageGroup || team.category || 'N/A';
+        }
+
+        function getTeamStatus(team) {
+            return team.status || 'Active';
+        }
+
+        function getTeamCoachName(team, coaches) {
+            if (team.coachName) return team.coachName;
+            if (team.coach && (team.coach.name || team.coach.fullName)) return team.coach.name || team.coach.fullName;
+            const coachId = team.coachId || team.coach_id || (team.coach && (team.coach.id || team.coach.coachId));
+            if (!coachId) return 'Unassigned';
+            const coach = coaches.find(function (c) {
+                const id = c.id || c.coachId || c.coach_id;
+                return String(id) === String(coachId);
+            });
+            return coach ? (coach.name || coach.fullName || 'Unassigned') : 'Unassigned';
+        }
+
+        function getPlayerTeamId(player) {
+            return player.teamId || player.team_id || player.teamID || (player.team && (player.team.id || player.team.teamId || player.team.team_id)) || '';
+        }
+
+        function getPlayerName(player) {
+            return player.name || player.fullName || [player.firstName, player.lastName].filter(Boolean).join(' ') || player.id || 'Unknown Player';
+        }
+
+        function getPlayerPosition(player) {
+            return player.position || player.role || player.playingPosition || 'Unknown';
+        }
+
+        function getPlayerKitNumber(player, fallbackIndex) {
+            const value = player.kitNumber || player.jerseyNumber || player.number || player.no;
+            if (value == null || value === '') return String(fallbackIndex + 1).padStart(2, '0');
+            return String(value).padStart(2, '0');
+        }
+
+        function getStatusClasses(status) {
+            const normalized = String(status || '').toLowerCase();
+            if (normalized === 'inactive' || normalized === 'suspended') {
+                return 'bg-red-100 text-red-700 border-red-200';
+            }
+            if (normalized === 'training') {
+                return 'bg-yellow-100 text-yellow-700 border-yellow-200';
+            }
+            return 'bg-green-100 text-green-700 border-green-200';
+        }
+
+        function renderTeamHeader(team, coaches, teamId) {
+            const teamName = getTeamName(team);
+            const division = getTeamDivision(team);
+            const status = getTeamStatus(team);
+            const coachName = getTeamCoachName(team, coaches);
+
+            document.getElementById('teamAvatarInitial').textContent = teamName.charAt(0).toUpperCase() || 'T';
+            document.getElementById('teamNameTitle').textContent = teamName;
+            document.getElementById('teamCoachName').textContent = coachName;
+            document.getElementById('teamDivisionText').textContent = division + ' League';
+
+            const statusBadge = document.getElementById('teamStatusBadge');
+            statusBadge.className = 'w-fit px-3 py-1 rounded-full text-xs font-bold border flex items-center gap-1.5 ' + getStatusClasses(status);
+            statusBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-current"></span>' + status;
+
+            document.getElementById('editTeamBtn').href = '/admin/admin-team-create.html?edit=' + encodeURIComponent(String(teamId));
+        }
+
+        function renderRosterRows(players) {
+            const body = document.getElementById('teamRosterBody');
+            if (!players.length) {
+                body.innerHTML = '<tr><td colspan="5" class="px-6 py-6 text-sm text-gray-500">No players assigned to this team.</td></tr>';
+                document.getElementById('teamRosterFooter').textContent = 'No players in roster';
+                return;
+            }
+
+            body.innerHTML = players.map(function (player, index) {
+                const name = getPlayerName(player);
+                const initials = name.split(' ').filter(Boolean).map(function (part) { return part.charAt(0).toUpperCase(); }).slice(0, 2).join('') || 'PL';
+                const position = getPlayerPosition(player);
+                const kitNumber = getPlayerKitNumber(player, index);
+                return (
+                    '<tr class="group hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0">' +
+                    '<td class="px-6 py-4 text-gray-400 font-mono">' + (index + 1) + '</td>' +
+                    '<td class="px-6 py-4"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-hope-cyan/10 text-hope-cyan font-bold flex items-center justify-center text-xs">' + initials + '</div><span class="font-bold text-gray-800">' + name + '</span></div></td>' +
+                    '<td class="px-6 py-4"><span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">' + position + '</span></td>' +
+                    '<td class="px-6 py-4 text-center font-mono font-bold text-gray-500">' + kitNumber + '</td>' +
+                    '<td class="px-6 py-4 text-right"><a href="/admin/admin-player-detail.html" class="text-gray-400 hover:text-hope-cyan transition-colors"><svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a></td>' +
+                    '</tr>'
+                );
+            }).join('');
+            document.getElementById('teamRosterFooter').textContent = 'Showing ' + players.length + ' players';
+        }
+
+        document.addEventListener('DOMContentLoaded', async function () {
+            await window.AdminDataStore.bootstrap();
+            const teamId = getQueryParam('id');
+            const teams = window.AdminDataStore.getArray('teams', []);
+            const players = window.AdminDataStore.getArray('players', []);
+            const coaches = window.AdminDataStore.getArray('coaches', []);
+            const team = teams.find(function (item) {
+                return String(item.id) === String(teamId);
+            }) || teams[0];
+
+            if (!team) {
+                document.getElementById('teamNameTitle').textContent = 'Team Not Found';
+                document.getElementById('teamCoachName').textContent = '-';
+                document.getElementById('teamPlayersCount').textContent = '0 Registered';
+                document.getElementById('teamDivisionText').textContent = '-';
+                renderRosterRows([]);
+                return;
+            }
+
+            const resolvedId = team.id || teamId;
+            const teamPlayers = players.filter(function (player) {
+                return String(getPlayerTeamId(player)) === String(resolvedId);
+            });
+
+            renderTeamHeader(team, coaches, resolvedId);
+            document.getElementById('teamPlayersCount').textContent = String(teamPlayers.length) + ' Registered';
+            renderRosterRows(teamPlayers);
+        });
+    </script>
 </body>
 </html>

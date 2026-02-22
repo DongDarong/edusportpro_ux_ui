@@ -11,6 +11,7 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/admin/admin-data-store.js"></script>
 
   <!-- Tailwind Configuration with Custom Brand Colors -->
   <script>
@@ -174,6 +175,16 @@
             Matches
           </a>
 
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-tournament-overview.html">
+            <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8M12 17v4M7 4h10l-1 6H8L7 4zM5 4h14"></path></svg>
+            Tournament
+          </a>
+
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-division.html">
+            <svg class="w-5 h-5 group-hover:text-hope-yellow transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"></path></svg>
+            Division
+          </a>
+
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-training.html">
              <svg class="w-5 h-5 group-hover:text-hope-red transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
             Training
@@ -189,6 +200,7 @@
                         <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                         Calendar
                     </a>
+
 
           <div class="pt-4 pb-2">
             <h2 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Management</h2>
@@ -255,24 +267,23 @@
 
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Team</label>
-             <select class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none">
-              <option>Team A</option>
-              <option>Team B</option>
-              <option>Team C</option>
+             <select id="attendanceTeamFilter" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none">
+              <option value="">All Teams</option>
             </select>
           </div>
 
           <div>
              <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
-             <select class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none">
-              <option>Training</option>
-              <option>Match</option>
+             <select id="attendanceTypeFilter" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none">
+              <option value="">All Types</option>
+              <option value="training">Training</option>
+              <option value="match">Match</option>
             </select>
           </div>
 
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
-            <input type="date" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none">
+            <input id="attendanceDateFilter" type="date" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none">
           </div>
 
           <div class="flex items-end">
@@ -297,8 +308,8 @@
           <div class="absolute top-0 left-0 w-1.5 h-full bg-hope-lime"></div>
           <p class="text-gray-500 text-xs md:text-sm font-medium">Present</p>
           <div class="flex justify-between items-end mt-2">
-             <h2 class="text-2xl md:text-3xl font-bold text-hope-dark">18</h2>
-             <span class="text-hope-lime bg-hope-lime/10 px-2 py-1 rounded-lg text-xs font-semibold">75%</span>
+             <h2 id="presentCount" class="text-2xl md:text-3xl font-bold text-hope-dark">0</h2>
+             <span id="presentPct" class="text-hope-lime bg-hope-lime/10 px-2 py-1 rounded-lg text-xs font-semibold">0%</span>
           </div>
         </div>
 
@@ -307,8 +318,8 @@
           <div class="absolute top-0 left-0 w-1.5 h-full bg-hope-red"></div>
           <p class="text-gray-500 text-xs md:text-sm font-medium">Absent</p>
           <div class="flex justify-between items-end mt-2">
-             <h2 class="text-2xl md:text-3xl font-bold text-hope-dark">4</h2>
-             <span class="text-hope-red bg-hope-red/10 px-2 py-1 rounded-lg text-xs font-semibold">16%</span>
+             <h2 id="absentCount" class="text-2xl md:text-3xl font-bold text-hope-dark">0</h2>
+             <span id="absentPct" class="text-hope-red bg-hope-red/10 px-2 py-1 rounded-lg text-xs font-semibold">0%</span>
           </div>
         </div>
 
@@ -317,8 +328,8 @@
           <div class="absolute top-0 left-0 w-1.5 h-full bg-hope-yellow"></div>
           <p class="text-gray-500 text-xs md:text-sm font-medium">Late</p>
           <div class="flex justify-between items-end mt-2">
-             <h2 class="text-2xl md:text-3xl font-bold text-hope-dark">2</h2>
-             <span class="text-hope-yellow bg-hope-yellow/10 px-2 py-1 rounded-lg text-xs font-semibold">8%</span>
+             <h2 id="lateCount" class="text-2xl md:text-3xl font-bold text-hope-dark">0</h2>
+             <span id="latePct" class="text-hope-yellow bg-hope-yellow/10 px-2 py-1 rounded-lg text-xs font-semibold">0%</span>
           </div>
         </div>
 
@@ -327,8 +338,8 @@
           <div class="absolute top-0 left-0 w-1.5 h-full bg-hope-cyan"></div>
           <p class="text-gray-500 text-xs md:text-sm font-medium">Excused</p>
           <div class="flex justify-between items-end mt-2">
-             <h2 class="text-2xl md:text-3xl font-bold text-hope-dark">1</h2>
-             <span class="text-hope-cyan bg-hope-cyan/10 px-2 py-1 rounded-lg text-xs font-semibold">4%</span>
+             <h2 id="excusedCount" class="text-2xl md:text-3xl font-bold text-hope-dark">0</h2>
+             <span id="excusedPct" class="text-hope-cyan bg-hope-cyan/10 px-2 py-1 rounded-lg text-xs font-semibold">0%</span>
           </div>
         </div>
 
@@ -347,7 +358,7 @@
         <div class="p-4 md:p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50">
            <h2 id="attendanceListTitle" class="text-base md:text-lg font-bold text-hope-dark">Player Attendance List</h2>
            <div class="text-sm text-gray-500">
-             Date: <span class="font-medium text-gray-900">Today</span>
+             Date: <span id="attendanceListDateLabel" class="font-medium text-gray-900">Today</span>
            </div>
         </div>
 
@@ -369,7 +380,7 @@
         </div>
 
         <div class="p-4 md:p-6 border-t border-gray-100 bg-gray-50 flex justify-end">
-           <button class="w-full md:w-auto bg-hope-lime hover:bg-lime-600 text-white px-8 py-2.5 rounded-lg shadow-sm transition-all transform active:scale-95 font-semibold flex items-center justify-center gap-2">
+           <button id="attendanceSaveBtn" class="w-full md:w-auto bg-hope-lime hover:bg-lime-600 text-white px-8 py-2.5 rounded-lg shadow-sm transition-all transform active:scale-95 font-semibold flex items-center justify-center gap-2">
              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
              Save Attendance
            </button>
@@ -531,30 +542,14 @@
       }
     }
 
-    const playerListData = [
-      { initials: "RS", initialsClass: "bg-hope-lime/10 text-hope-lime border-hope-lime/20", name: "Rina Seng", code: "#10", role: "Forward", team: "Team A", lead: "Coach Sok", status: "present", note: "" },
-      { initials: "SR", initialsClass: "bg-hope-cyan/10 text-hope-cyan border-hope-cyan/20", name: "Sok Rith", code: "#08", role: "Midfielder", team: "Team B", lead: "Coach Dara", status: "absent", note: "Sick" },
-      { initials: "CD", initialsClass: "bg-hope-red/10 text-hope-red border-hope-red/20", name: "Chan Dara", code: "#04", role: "Defender", team: "Team C", lead: "Coach Vanna", status: "late", note: "Traffic" }
-    ];
+    let teamsState = [];
+    let playersState = [];
+    let coachesState = [];
+    let attendanceRecordsState = [];
 
-    const coachListData = [
-      { initials: "CS", initialsClass: "bg-hope-lime/10 text-hope-lime border-hope-lime/20", name: "Coach Sok", code: "CA-01", role: "Head Coach", team: "Team A", lead: "Admin", status: "present", note: "" },
-      { initials: "CD", initialsClass: "bg-hope-cyan/10 text-hope-cyan border-hope-cyan/20", name: "Coach Dara", code: "CA-02", role: "Assistant Coach", team: "Team B", lead: "Admin", status: "excused", note: "Approved Leave" },
-      { initials: "CV", initialsClass: "bg-hope-yellow/10 text-hope-yellow border-hope-yellow/20", name: "Coach Vanna", code: "CA-03", role: "Fitness Coach", team: "Team C", lead: "Admin", status: "late", note: "Traffic" }
-    ];
-
-    const playerRecordsData = [
-      { initials: "RS", initialsClass: "bg-hope-lime/20 text-hope-lime", name: "Rina Seng", team: "Team A", lead: "Coach Sok", date: "2026-02-18", status: "present", note: "-" },
-      { initials: "SR", initialsClass: "bg-hope-cyan/20 text-hope-cyan", name: "Sok Rith", team: "Team B", lead: "Coach Dara", date: "2026-02-18", status: "absent", note: "Sick" },
-      { initials: "CD", initialsClass: "bg-hope-red/20 text-hope-red", name: "Chan Dara", team: "Team C", lead: "Coach Vanna", date: "2026-02-18", status: "late", note: "Traffic" },
-      { initials: "VL", initialsClass: "bg-hope-yellow/20 text-hope-yellow", name: "Vuthy Lim", team: "Team A", lead: "Coach Sok", date: "2026-02-17", status: "excused", note: "Family Event" }
-    ];
-
-    const coachRecordsData = [
-      { initials: "CS", initialsClass: "bg-hope-lime/20 text-hope-lime", name: "Coach Sok", team: "Team A", lead: "Admin", date: "2026-02-18", status: "present", note: "-" },
-      { initials: "CD", initialsClass: "bg-hope-cyan/20 text-hope-cyan", name: "Coach Dara", team: "Team B", lead: "Admin", date: "2026-02-18", status: "excused", note: "Approved Leave" },
-      { initials: "CV", initialsClass: "bg-hope-yellow/20 text-hope-yellow", name: "Coach Vanna", team: "Team C", lead: "Admin", date: "2026-02-18", status: "late", note: "Traffic" }
-    ];
+    function normalizeArray(value) {
+      return Array.isArray(value) ? value : [];
+    }
 
     function statusPill(status) {
       const map = {
@@ -566,128 +561,281 @@
       return map[status] || map.present;
     }
 
-    function renderAttendanceList(mode) {
+    function escapeHtml(value) {
+      return String(value == null ? "" : value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function getTodayYmd() {
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function getInitials(name) {
+      const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+      if (!parts.length) return "?";
+      if (parts.length === 1) return parts[0].slice(0, 1).toUpperCase();
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+
+    function getTeamById(teamId) {
+      return teamsState.find(function (t) { return String(t.id || "") === String(teamId || ""); }) || null;
+    }
+
+    function getCoachById(coachId) {
+      return coachesState.find(function (c) { return String(c.id || "") === String(coachId || ""); }) || null;
+    }
+
+    function getPlayerById(playerId) {
+      return playersState.find(function (p) { return String(p.id || "") === String(playerId || ""); }) || null;
+    }
+
+    function readFilters() {
+      return {
+        mode: String((document.getElementById("attendanceViewSelect") || {}).value || "player"),
+        query: String((document.getElementById("attendanceNameSearch") || {}).value || "").trim().toLowerCase(),
+        teamId: String((document.getElementById("attendanceTeamFilter") || {}).value || ""),
+        activityType: String((document.getElementById("attendanceTypeFilter") || {}).value || ""),
+        date: String((document.getElementById("attendanceDateFilter") || {}).value || "")
+      };
+    }
+
+    function getFilteredRecords(filters) {
+      return attendanceRecordsState.filter(function (record) {
+        if (String(record.subjectType || "") !== filters.mode) return false;
+        if (filters.teamId && String(record.teamId || "") !== filters.teamId) return false;
+        if (filters.activityType && String(record.activityType || "") !== filters.activityType) return false;
+        if (filters.date && String(record.date || "") !== filters.date) return false;
+        const subject = filters.mode === "player" ? getPlayerById(record.subjectId) : getCoachById(record.subjectId);
+        const subjectName = String((subject && subject.name) || "").toLowerCase();
+        return !filters.query || subjectName.indexOf(filters.query) !== -1;
+      });
+    }
+
+    function ensureRecord(subjectType, subjectId, teamId, coachId) {
+      const filters = readFilters();
+      const date = filters.date || getTodayYmd();
+      const activityType = filters.activityType || "training";
+      let record = attendanceRecordsState.find(function (r) {
+        return String(r.subjectType || "") === subjectType &&
+          String(r.subjectId || "") === String(subjectId) &&
+          String(r.date || "") === date &&
+          String(r.activityType || "") === activityType;
+      });
+      if (!record) {
+        const max = attendanceRecordsState.reduce(function (acc, item) {
+          const n = Number(String(item.id || "").replace(/\D/g, ""));
+          return Number.isFinite(n) ? Math.max(acc, n) : acc;
+        }, 0);
+        record = {
+          id: "AR-" + String(max + 1).padStart(3, "0"),
+          subjectType: subjectType,
+          subjectId: String(subjectId),
+          teamId: String(teamId || ""),
+          coachId: String(coachId || ""),
+          date: date,
+          activityType: activityType,
+          status: "present",
+          note: ""
+        };
+        attendanceRecordsState.push(record);
+      }
+      return record;
+    }
+
+    function computeSummary(records) {
+      const totals = { present: 0, absent: 0, late: 0, excused: 0 };
+      records.forEach(function (r) {
+        const k = String(r.status || "present").toLowerCase();
+        if (totals[k] != null) totals[k] += 1;
+      });
+      const all = records.length || 1;
+      function pct(n) { return Math.round((n / all) * 100) + "%"; }
+      const presentCount = document.getElementById("presentCount");
+      const absentCount = document.getElementById("absentCount");
+      const lateCount = document.getElementById("lateCount");
+      const excusedCount = document.getElementById("excusedCount");
+      const presentPct = document.getElementById("presentPct");
+      const absentPct = document.getElementById("absentPct");
+      const latePct = document.getElementById("latePct");
+      const excusedPct = document.getElementById("excusedPct");
+      if (presentCount) presentCount.textContent = String(totals.present);
+      if (absentCount) absentCount.textContent = String(totals.absent);
+      if (lateCount) lateCount.textContent = String(totals.late);
+      if (excusedCount) excusedCount.textContent = String(totals.excused);
+      if (presentPct) presentPct.textContent = pct(totals.present);
+      if (absentPct) absentPct.textContent = pct(totals.absent);
+      if (latePct) latePct.textContent = pct(totals.late);
+      if (excusedPct) excusedPct.textContent = pct(totals.excused);
+    }
+
+    function renderAttendanceList(filters) {
       const body = document.getElementById("attendanceListBody");
       if (!body) return;
-
-      const searchInput = document.getElementById("attendanceNameSearch");
-      const query = searchInput ? searchInput.value.trim().toLowerCase() : "";
-      const source = mode === "coach" ? coachListData : playerListData;
-      const data = source.filter((row) => row.name.toLowerCase().includes(query));
-      body.innerHTML = data.map((row) => {
-        const status = statusPill(row.status);
-        return `
-          <tr class="hover:bg-gray-50 transition-colors">
-            <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-              <div class="flex items-center gap-3">
-                <div class="h-10 w-10 rounded-full ${row.initialsClass} flex items-center justify-center font-bold text-sm border shrink-0">${row.initials}</div>
-                <div>
-                  <div class="text-sm font-medium text-gray-900">${row.name}</div>
-                  <div class="text-xs text-gray-500">${row.code}</div>
-                </div>
-              </div>
-            </td>
-            <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-500">${row.role}</td>
-            <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-600">${row.team}</td>
-            <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-600">${row.lead}</td>
-            <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-              <select class="rounded-lg border-gray-300 border py-1.5 px-3 text-sm focus:border-hope-lime focus:ring-hope-lime outline-none bg-white">
-                <option value="present" ${row.status === "present" ? "selected" : ""}>Present</option>
-                <option value="absent" ${row.status === "absent" ? "selected" : ""}>Absent</option>
-                <option value="late" ${row.status === "late" ? "selected" : ""}>Late</option>
-                <option value="excused" ${row.status === "excused" ? "selected" : ""}>Excused</option>
-              </select>
-            </td>
-            <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-              <input type="text" value="${row.note}" placeholder="Add note..." class="w-full min-w-[150px] rounded-lg border-gray-200 border py-1.5 px-3 text-sm focus:border-hope-lime focus:ring-hope-lime outline-none bg-gray-50 focus:bg-white transition-colors">
-            </td>
-          </tr>
-        `;
+      const source = filters.mode === "coach" ? coachesState : playersState;
+      const rows = source.filter(function (item) {
+        const name = String(item.name || "").toLowerCase();
+        if (filters.query && name.indexOf(filters.query) === -1) return false;
+        if (filters.teamId && String(item.teamId || "") !== filters.teamId) return false;
+        return true;
+      });
+      body.innerHTML = rows.map(function (item) {
+        const team = getTeamById(item.teamId);
+        const teamName = team ? (team.name || team.id) : "-";
+        const record = ensureRecord(filters.mode, item.id, item.teamId, "");
+        const status = statusPill(record.status);
+        const role = filters.mode === "coach" ? "Coach" : (item.position || "Player");
+        const code = filters.mode === "coach" ? String(item.id || "") : ("#" + String(item.id || "").replace(/\D/g, "").slice(-2));
+        return '' +
+          '<tr class="hover:bg-gray-50 transition-colors">' +
+            '<td class="px-4 md:px-6 py-4 whitespace-nowrap">' +
+              '<div class="flex items-center gap-3">' +
+                '<div class="h-10 w-10 rounded-full bg-hope-lime/10 text-hope-lime border-hope-lime/20 flex items-center justify-center font-bold text-sm border shrink-0">' + escapeHtml(getInitials(item.name)) + '</div>' +
+                '<div><div class="text-sm font-medium text-gray-900">' + escapeHtml(item.name || "") + '</div><div class="text-xs text-gray-500">' + escapeHtml(code) + '</div></div>' +
+              '</div>' +
+            '</td>' +
+            '<td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-500">' + escapeHtml(role) + '</td>' +
+            '<td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-600">' + escapeHtml(teamName) + '</td>' +
+            '<td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-600">' + (filters.mode === "coach" ? "Admin" : "-") + '</td>' +
+            '<td class="px-4 md:px-6 py-4 whitespace-nowrap">' +
+              '<select data-record-id="' + escapeHtml(record.id) + '" class="attendance-status rounded-lg border-gray-300 border py-1.5 px-3 text-sm focus:border-hope-lime focus:ring-hope-lime outline-none bg-white">' +
+                '<option value="present"' + (record.status === "present" ? " selected" : "") + '>Present</option>' +
+                '<option value="absent"' + (record.status === "absent" ? " selected" : "") + '>Absent</option>' +
+                '<option value="late"' + (record.status === "late" ? " selected" : "") + '>Late</option>' +
+                '<option value="excused"' + (record.status === "excused" ? " selected" : "") + '>Excused</option>' +
+              '</select>' +
+            '</td>' +
+            '<td class="px-4 md:px-6 py-4 whitespace-nowrap">' +
+              '<input data-record-id="' + escapeHtml(record.id) + '" value="' + escapeHtml(record.note || "") + '" placeholder="Add note..." class="attendance-note w-full min-w-[150px] rounded-lg border-gray-200 border py-1.5 px-3 text-sm focus:border-hope-lime focus:ring-hope-lime outline-none bg-gray-50 focus:bg-white transition-colors">' +
+            '</td>' +
+          '</tr>';
       }).join("");
     }
 
-    function renderAttendanceRecords(mode) {
+    function renderAttendanceRecords(filters) {
       const body = document.getElementById("attendanceRecordsBody");
       if (!body) return;
-
-      const searchInput = document.getElementById("attendanceNameSearch");
-      const query = searchInput ? searchInput.value.trim().toLowerCase() : "";
-      const source = mode === "coach" ? coachRecordsData : playerRecordsData;
-      const data = source.filter((row) => row.name.toLowerCase().includes(query));
-      body.innerHTML = data.map((row) => {
-        const status = statusPill(row.status);
-        return `
-          <tr class="hover:bg-gray-50 transition-colors">
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="flex items-center gap-3">
-                <div class="h-8 w-8 rounded-full ${row.initialsClass} flex items-center justify-center font-bold text-xs border border-white">${row.initials}</div>
-                <span class="font-medium text-hope-dark">${row.name}</span>
-              </div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${row.team}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${row.lead}</td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${row.date}</td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${status.cls} border">
-                <span class="w-1.5 h-1.5 rounded-full ${status.dot}"></span>
-                ${status.label}
-              </span>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${row.note || "-"}</td>
-          </tr>
-        `;
+      const records = getFilteredRecords(filters);
+      body.innerHTML = records.map(function (record) {
+        const status = statusPill(record.status);
+        const subject = filters.mode === "coach" ? getCoachById(record.subjectId) : getPlayerById(record.subjectId);
+        const team = getTeamById(record.teamId);
+        const coach = getCoachById(record.coachId);
+        return '' +
+          '<tr class="hover:bg-gray-50 transition-colors">' +
+            '<td class="px-6 py-4 whitespace-nowrap"><div class="flex items-center gap-3"><div class="h-8 w-8 rounded-full bg-hope-lime/20 text-hope-lime flex items-center justify-center font-bold text-xs border border-white">' + escapeHtml(getInitials(subject ? subject.name : "")) + '</div><span class="font-medium text-hope-dark">' + escapeHtml(subject ? subject.name : record.subjectId) + '</span></div></td>' +
+            '<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">' + escapeHtml(team ? (team.name || team.id) : "-") + '</td>' +
+            '<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">' + escapeHtml(coach ? coach.name : "-") + '</td>' +
+            '<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">' + escapeHtml(record.date || "-") + '</td>' +
+            '<td class="px-6 py-4 whitespace-nowrap"><span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ' + status.cls + ' border"><span class="w-1.5 h-1.5 rounded-full ' + status.dot + '"></span>' + status.label + '</span></td>' +
+            '<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">' + escapeHtml(record.note || "-") + '</td>' +
+          '</tr>';
       }).join("");
 
-      const total = data.length;
+      const total = records.length;
       const totalItems = document.getElementById("totalItems");
       const endItem = document.getElementById("endItem");
+      const startItem = document.getElementById("startItem");
+      const pageButtons = document.getElementById("pageButtons");
       if (totalItems) totalItems.textContent = String(total);
       if (endItem) endItem.textContent = String(total);
+      if (startItem) startItem.textContent = total ? "1" : "0";
+      if (pageButtons) pageButtons.textContent = "1";
+      computeSummary(records);
     }
 
-    function renderAttendanceMode(mode) {
+    function populateTeamFilter() {
+      const teamFilter = document.getElementById("attendanceTeamFilter");
+      if (!teamFilter) return;
+      teamFilter.innerHTML = '<option value="">All Teams</option>' + teamsState.map(function (team) {
+        return '<option value="' + escapeHtml(team.id || "") + '">' + escapeHtml(team.name || team.id || "") + '</option>';
+      }).join("");
+    }
+
+    function setHeaderByMode(mode) {
       const listTitle = document.getElementById("attendanceListTitle");
       const recordsTitle = document.getElementById("attendanceRecordsTitle");
       const listHead1 = document.getElementById("listHead1");
       const recordsHead1 = document.getElementById("recordsHead1");
       const searchLabel = document.getElementById("attendanceSearchLabel");
       const searchInput = document.getElementById("attendanceNameSearch");
-      const roleLabel = mode === "coach" ? "Role" : "Position";
-
+      const listHead2 = document.getElementById("listHead2");
       if (listTitle) listTitle.textContent = mode === "coach" ? "Coach Attendance List" : "Player Attendance List";
       if (recordsTitle) recordsTitle.textContent = mode === "coach" ? "Coach Attendance Records" : "Player Attendance Records";
       if (listHead1) listHead1.textContent = mode === "coach" ? "Coach" : "Player";
       if (recordsHead1) recordsHead1.textContent = mode === "coach" ? "Coach" : "Player";
       if (searchLabel) searchLabel.textContent = mode === "coach" ? "Search Coach Name" : "Search Player Name";
       if (searchInput) searchInput.placeholder = mode === "coach" ? "Search coach..." : "Search player...";
-      const listHead2 = document.getElementById("listHead2");
-      if (listHead2) listHead2.textContent = roleLabel;
-
-      renderAttendanceList(mode);
-      renderAttendanceRecords(mode);
+      if (listHead2) listHead2.textContent = mode === "coach" ? "Role" : "Position";
     }
 
-    const attendanceViewSelect = document.getElementById("attendanceViewSelect");
-    const attendanceNameSearch = document.getElementById("attendanceNameSearch");
-    const attendanceLoadBtn = document.getElementById("attendanceLoadBtn");
-    if (attendanceViewSelect) {
-      attendanceViewSelect.addEventListener("change", function onAttendanceModeChange() {
-        renderAttendanceMode(this.value);
-      });
-      renderAttendanceMode(attendanceViewSelect.value);
+    function renderAttendance() {
+      const filters = readFilters();
+      setHeaderByMode(filters.mode);
+      const dateLabel = document.getElementById("attendanceListDateLabel");
+      if (dateLabel) dateLabel.textContent = filters.date || "Today";
+      renderAttendanceList(filters);
+      renderAttendanceRecords(filters);
+      bindListInputs();
     }
-    if (attendanceNameSearch && attendanceViewSelect) {
-      attendanceNameSearch.addEventListener("input", function onAttendanceSearch() {
-        renderAttendanceMode(attendanceViewSelect.value);
+
+    function bindListInputs() {
+      document.querySelectorAll(".attendance-status").forEach(function (el) {
+        el.addEventListener("change", function () {
+          const id = String(this.getAttribute("data-record-id") || "");
+          const record = attendanceRecordsState.find(function (item) { return String(item.id || "") === id; });
+          if (record) record.status = String(el.value || "present");
+          renderAttendance();
+        });
+      });
+      document.querySelectorAll(".attendance-note").forEach(function (el) {
+        el.addEventListener("input", function () {
+          const id = String(this.getAttribute("data-record-id") || "");
+          const record = attendanceRecordsState.find(function (item) { return String(item.id || "") === id; });
+          if (record) record.note = String(el.value || "");
+        });
       });
     }
-    if (attendanceLoadBtn && attendanceViewSelect) {
-      attendanceLoadBtn.addEventListener("click", function onLoadAttendance() {
-        renderAttendanceMode(attendanceViewSelect.value);
-      });
+
+    function saveAttendance() {
+      window.AdminDataStore.set("attendanceRecords", attendanceRecordsState);
+      alert("Attendance saved.");
+      renderAttendance();
     }
+
+    document.addEventListener("DOMContentLoaded", async function () {
+      await window.AdminDataStore.bootstrap();
+      teamsState = normalizeArray(window.AdminDataStore.getArray("teams", []));
+      playersState = normalizeArray(window.AdminDataStore.getArray("players", []));
+      coachesState = normalizeArray(window.AdminDataStore.getArray("coaches", []));
+      attendanceRecordsState = normalizeArray(window.AdminDataStore.getArray("attendanceRecords", []));
+      populateTeamFilter();
+
+      const viewSelect = document.getElementById("attendanceViewSelect");
+      const nameSearch = document.getElementById("attendanceNameSearch");
+      const loadBtn = document.getElementById("attendanceLoadBtn");
+      const teamFilter = document.getElementById("attendanceTeamFilter");
+      const typeFilter = document.getElementById("attendanceTypeFilter");
+      const dateFilter = document.getElementById("attendanceDateFilter");
+      const saveBtn = document.getElementById("attendanceSaveBtn");
+
+      if (viewSelect) viewSelect.addEventListener("change", renderAttendance);
+      if (nameSearch) nameSearch.addEventListener("input", renderAttendance);
+      if (teamFilter) teamFilter.addEventListener("change", renderAttendance);
+      if (typeFilter) typeFilter.addEventListener("change", renderAttendance);
+      if (dateFilter) dateFilter.addEventListener("change", renderAttendance);
+      if (loadBtn) loadBtn.addEventListener("click", function () { renderAttendance(); bindListInputs(); });
+      if (saveBtn) saveBtn.addEventListener("click", saveAttendance);
+
+      renderAttendance();
+      bindListInputs();
+    });
     
   </script>
+  <script src="/admin/admin-sidebar-loader.js"></script>
 
 </body>
 

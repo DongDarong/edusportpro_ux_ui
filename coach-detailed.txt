@@ -211,6 +211,8 @@ Coach section should ensure:
 - Current frontend uses static pages with inline JS workflows.
 - Several interactions are mock/prototype-level and require API integration.
 - Team-lock behavior in coach calendar exists at UI layer and should be mirrored in backend validation.
+- Tournament and Division views are read-only and are expected to reflect
+  admin-managed competition setup.
 
 11. RECOMMENDED BACKEND ENFORCEMENT FOR COACH
 - Resolve coach identity -> coach record -> assigned team(s).

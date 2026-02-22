@@ -11,6 +11,7 @@
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="/admin/admin-data-store.js"></script>
 
     <script>
         tailwind.config = {
@@ -125,12 +126,12 @@
         
         <div class="flex items-center justify-between mb-6">
             <div>
-                <h2 class="text-2xl font-bold text-hope-dark">New Player Registration</h2>
+                <h2 id="playerFormTitle" class="text-2xl font-bold text-hope-dark">New Player Registration</h2>
                 <p class="text-sm text-gray-500">Please fill in all required fields marked with <span class="text-hope-red">*</span></p>
             </div>
         </div>
 
-        <form class="bg-white rounded-2xl shadow-soft overflow-hidden relative">
+        <form id="playerCreateForm" class="bg-white rounded-2xl shadow-soft overflow-hidden relative">
             
             <!-- Branding Stripe -->
             <div class="h-1.5 w-full flex">
@@ -153,18 +154,25 @@
 
                     <div class="grid grid-cols-2 md:grid-cols-12 gap-x-4 gap-y-6">
                         <div class="col-span-2 md:col-span-6">
-                            <label class="label-text">Family Name & Given Name <span class="text-hope-red">*</span></label>
-                            <select name="user" required class="input-field cursor-pointer">
-                                <option value="" disabled selected>Select a user</option>
-                                <option value="1">SOK Dara</option>
-                                <option value="2">KIM Chan</option>
-                                <option value="3">RATH Srey</option>
+                            <label class="label-text">Select User <span class="text-hope-red">*</span></label>
+                            <select id="playerUserSelect" class="input-field cursor-pointer">
+                                <option value="">Select a user</option>
                             </select>
+                        </div>
+
+                        <div class="col-span-2 md:col-span-6">
+                            <label class="label-text">Family Name & Given Name <span class="text-hope-red">*</span></label>
+                            <input id="playerNameInput" type="text" required placeholder="Enter player full name" class="input-field">
+                        </div>
+
+                        <div class="col-span-2 md:col-span-6">
+                            <label class="label-text">Email Address</label>
+                            <input id="playerEmailInput" type="email" placeholder="player@email.com" class="input-field">
                         </div>
 
                         <div class="col-span-1 md:col-span-3">
                             <label class="label-text">Gender <span class="text-hope-red">*</span></label>
-                            <select class="input-field cursor-pointer">
+                            <select id="playerGenderInput" class="input-field cursor-pointer">
                                 <option>Male</option>
                                 <option>Female</option>
                             </select>
@@ -172,17 +180,17 @@
 
                         <div class="col-span-1 md:col-span-3">
                             <label class="label-text">Date of Birth</label>
-                            <input type="date" class="input-field text-gray-500">
+                            <input id="playerDobInput" type="date" class="input-field text-gray-500">
                         </div>
 
                         <div class="col-span-1 md:col-span-6">
                             <label class="label-text">Ethnicity</label>
-                            <input type="text" placeholder="Khmer" class="input-field">
+                            <input id="playerEthnicityInput" type="text" placeholder="Khmer" class="input-field">
                         </div>
 
                         <div class="col-span-1 md:col-span-6">
                             <label class="label-text">Nationality</label>
-                            <input type="text" placeholder="Cambodian" class="input-field">
+                            <input id="playerNationalityInput" type="text" placeholder="Cambodian" class="input-field">
                         </div>
                         
                         <!-- Physical Attributes Header -->
@@ -192,17 +200,17 @@
 
                         <div class="col-span-1 md:col-span-3">
                             <label class="label-text">Height (cm)</label>
-                            <input type="number" placeholder="165" class="input-field">
+                            <input id="playerHeightInput" type="number" placeholder="165" class="input-field">
                         </div>
 
                         <div class="col-span-1 md:col-span-3">
                             <label class="label-text">Weight (kg)</label>
-                            <input type="number" placeholder="55" class="input-field">
+                            <input id="playerWeightInput" type="number" placeholder="55" class="input-field">
                         </div>
 
                         <div class="col-span-1 md:col-span-3">
                             <label class="label-text">Preferred Foot</label>
-                            <select class="input-field cursor-pointer">
+                            <select id="playerPreferredFootInput" class="input-field cursor-pointer">
                                 <option>Right</option>
                                 <option>Left</option>
                                 <option>Both</option>
@@ -211,7 +219,7 @@
 
                         <div class="col-span-1 md:col-span-3">
                             <label class="label-text">Blood Type</label>
-                            <select class="input-field cursor-pointer">
+                            <select id="playerBloodTypeInput" class="input-field cursor-pointer">
                                 <option>Unknown</option>
                                 <option>O+</option>
                                 <option>O-</option>
@@ -234,19 +242,19 @@
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                             <div class="col-span-1">
                                 <label class="label-text">Village</label>
-                                <input type="text" class="input-field bg-white">
+                                <input id="playerBirthVillageInput" type="text" class="input-field bg-white">
                             </div>
                             <div class="col-span-1">
                                 <label class="label-text">Commune</label>
-                                <input type="text" class="input-field bg-white">
+                                <input id="playerBirthCommuneInput" type="text" class="input-field bg-white">
                             </div>
                             <div class="col-span-1">
                                 <label class="label-text">District</label>
-                                <input type="text" class="input-field bg-white">
+                                <input id="playerBirthDistrictInput" type="text" class="input-field bg-white">
                             </div>
                             <div class="col-span-1">
                                 <label class="label-text">Province</label>
-                                <input type="text" class="input-field bg-white">
+                                <input id="playerBirthProvinceInput" type="text" class="input-field bg-white">
                             </div>
                         </div>
                     </div>
@@ -256,11 +264,11 @@
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
                             <div class="col-span-2 md:col-span-2">
                                 <label class="label-text">Current School</label>
-                                <input type="text" class="input-field" placeholder="School Name">
+                                <input id="playerSchoolInput" type="text" class="input-field" placeholder="School Name">
                             </div>
                             <div class="col-span-1">
                                 <label class="label-text">Grade / Year</label>
-                                <input type="text" class="input-field">
+                                <input id="playerGradeInput" type="text" class="input-field">
                             </div>
                         </div>
                     </div>
@@ -278,7 +286,7 @@
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                         <div class="col-span-1">
                             <label class="label-text">Primary Position <span class="text-hope-red">*</span></label>
-                            <select class="input-field cursor-pointer">
+                            <select id="playerPrimaryPositionInput" class="input-field cursor-pointer">
                                 <option value="">Select Position</option>
                                 <option>Goalkeeper (GK)</option>
                                 <option>Center Back (CB)</option>
@@ -292,7 +300,7 @@
                         </div>
                         <div class="col-span-1">
                             <label class="label-text">Secondary Position</label>
-                            <select class="input-field cursor-pointer">
+                            <select id="playerSecondaryPositionInput" class="input-field cursor-pointer">
                                 <option value="">None</option>
                                 <option>Goalkeeper (GK)</option>
                                 <option>Defense</option>
@@ -302,19 +310,25 @@
                         </div>
                         <div class="col-span-1">
                             <label class="label-text">Activity Status <span class="text-hope-red">*</span></label>
-                            <select class="input-field cursor-pointer font-bold text-hope-lime">
-                                <option class="text-hope-lime">Active</option>
-                                <option class="text-hope-red">Inactive</option>
-                                <option class="text-hope-yellow">Injured</option>
-                                <option class="text-gray-400">Suspended</option>
+                            <select id="playerStatusInput" class="input-field cursor-pointer font-bold text-hope-lime">
+                                <option value="Active" class="text-hope-lime">Active</option>
+                                <option value="Inactive" class="text-hope-red">Inactive</option>
+                                <option value="Injury" class="text-hope-yellow">Injured</option>
+                                <option value="Suspended" class="text-gray-400">Suspended</option>
                             </select>
                         </div>
                         <div class="col-span-1">
                             <label class="label-text">Reg. Status <span class="text-hope-red">*</span></label>
-                            <select class="input-field cursor-pointer">
+                            <select id="playerRegistrationStatusInput" class="input-field cursor-pointer">
                                 <option>Full Registered</option>
                                 <option>Pending Documents</option>
                                 <option>Trialist</option>
+                            </select>
+                        </div>
+                        <div class="col-span-2 md:col-span-4">
+                            <label class="label-text">Team</label>
+                            <select id="playerTeamInput" class="input-field cursor-pointer">
+                                <option value="">Unassigned</option>
                             </select>
                         </div>
                     </div>
@@ -340,15 +354,15 @@
                             <div class="grid grid-cols-2 md:grid-cols-12 gap-4">
                                 <div class="col-span-2 md:col-span-6">
                                     <label class="label-text">Name</label>
-                                    <input type="text" class="input-field">
+                                    <input id="playerFatherNameInput" type="text" class="input-field">
                                 </div>
                                 <div class="col-span-1 md:col-span-2">
                                     <label class="label-text">Age</label>
-                                    <input type="number" class="input-field">
+                                    <input id="playerFatherAgeInput" type="number" class="input-field">
                                 </div>
                                 <div class="col-span-1 md:col-span-4">
                                     <label class="label-text">Occupation</label>
-                                    <input type="text" class="input-field">
+                                    <input id="playerFatherOccupationInput" type="text" class="input-field">
                                 </div>
                             </div>
                         </div>
@@ -363,15 +377,15 @@
                             <div class="grid grid-cols-2 md:grid-cols-12 gap-4">
                                 <div class="col-span-2 md:col-span-6">
                                     <label class="label-text">Name</label>
-                                    <input type="text" class="input-field">
+                                    <input id="playerMotherNameInput" type="text" class="input-field">
                                 </div>
                                 <div class="col-span-1 md:col-span-2">
                                     <label class="label-text">Age</label>
-                                    <input type="number" class="input-field">
+                                    <input id="playerMotherAgeInput" type="number" class="input-field">
                                 </div>
                                 <div class="col-span-1 md:col-span-4">
                                     <label class="label-text">Occupation</label>
-                                    <input type="text" class="input-field">
+                                    <input id="playerMotherOccupationInput" type="text" class="input-field">
                                 </div>
                             </div>
                         </div>
@@ -384,12 +398,12 @@
                                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                                     </span>
-                                    <input type="tel" required class="input-field pl-10" placeholder="012 345 678">
+                                    <input id="playerGuardianPhoneInput" type="tel" required class="input-field pl-10" placeholder="012 345 678">
                                 </div>
                             </div>
                             <div>
                                 <label class="label-text">Relationship to Player</label>
-                                <select class="input-field">
+                                <select id="playerGuardianRelationshipInput" class="input-field">
                                     <option>Father</option>
                                     <option>Mother</option>
                                     <option>Grandparent</option>
@@ -445,7 +459,7 @@
                 <a href="/admin/admin-players.html" class="px-6 py-2.5 rounded-xl text-sm font-bold text-gray-600 hover:bg-white hover:text-hope-dark border border-transparent hover:border-gray-200 transition-all">
                     Cancel
                 </a>
-                <button type="submit" class="px-8 py-2.5 rounded-xl bg-hope-cyan text-white text-sm font-bold shadow-lg shadow-hope-cyan/30 hover:bg-sky-500 transition-all">
+                <button id="playerSubmitBtn" type="submit" class="px-8 py-2.5 rounded-xl bg-hope-cyan text-white text-sm font-bold shadow-lg shadow-hope-cyan/30 hover:bg-sky-500 transition-all">
                     Save Record
                 </button>
             </div>
@@ -496,6 +510,314 @@
                 }
             }
         }
+
+        let editingPlayerId = '';
+
+        function normalizeArray(input) {
+            return Array.isArray(input) ? input : [];
+        }
+
+        function buildPlayerId(existingPlayers) {
+            const maxId = existingPlayers.reduce(function (max, player) {
+                const raw = String(player.id || '');
+                const num = Number(raw.replace(/\D/g, ''));
+                if (!Number.isFinite(num)) return max;
+                return Math.max(max, num);
+            }, 0);
+            return 'PL-' + String(maxId + 1).padStart(3, '0');
+        }
+
+        function populateTeamOptions(teams) {
+            const select = document.getElementById('playerTeamInput');
+            if (!select) return;
+            const options = ['<option value="">Unassigned</option>'].concat(
+                teams.map(function (team) {
+                    const id = team.id || '';
+                    const name = team.name || team.teamName || team.title || id;
+                    return '<option value="' + id + '">' + name + '</option>';
+                })
+            );
+            select.innerHTML = options.join('');
+        }
+
+        function populateUserOptions(users) {
+            const select = document.getElementById('playerUserSelect');
+            if (!select) return;
+            const playerUsers = users.filter(function (user) {
+                return String(user.role || '').toLowerCase() === 'player';
+            });
+            const source = playerUsers.length ? playerUsers : users;
+            const options = ['<option value="">Select a user</option>'].concat(
+                source.map(function (user) {
+                    const id = user.id || '';
+                    const name = user.name || user.fullName || id;
+                    const email = user.email || '';
+                    return '<option value="' + String(id) + '" data-name="' + String(name).replace(/"/g, '&quot;') + '" data-email="' + String(email).replace(/"/g, '&quot;') + '">' + name + (email ? ' (' + email + ')' : '') + '</option>';
+                })
+            );
+            select.innerHTML = options.join('');
+        }
+
+        function bindUserSelectAutofill() {
+            const select = document.getElementById('playerUserSelect');
+            if (!select) return;
+            select.addEventListener('change', function () {
+                const option = select.options[select.selectedIndex];
+                if (!option || !option.value) return;
+                const name = option.getAttribute('data-name') || '';
+                const email = option.getAttribute('data-email') || '';
+                if (name) document.getElementById('playerNameInput').value = name;
+                if (email) document.getElementById('playerEmailInput').value = email;
+            });
+        }
+
+        function ensureFieldNames(form) {
+            const fields = Array.from(form.querySelectorAll('input, select, textarea'));
+            let generated = 0;
+            fields.forEach(function (field) {
+                if (field.name) return;
+                if (field.id) {
+                    field.name = field.id;
+                    return;
+                }
+                generated += 1;
+                field.name = 'field_' + String(generated).padStart(3, '0');
+            });
+        }
+
+        function collectFormSnapshot(form) {
+            const snapshot = {};
+            const fields = Array.from(form.querySelectorAll('input, select, textarea'));
+            fields.forEach(function (field) {
+                if (!field.name) return;
+                if (field.type === 'file') {
+                    snapshot[field.name] = Array.from(field.files || []).map(function (file) { return file.name; });
+                    return;
+                }
+                if (field.type === 'checkbox') {
+                    snapshot[field.name] = !!field.checked;
+                    return;
+                }
+                if (field.type === 'radio') {
+                    if (field.checked) snapshot[field.name] = field.value;
+                    return;
+                }
+                snapshot[field.name] = field.value;
+            });
+            return snapshot;
+        }
+
+        function applyFormSnapshot(form, rawForm) {
+            if (!rawForm || typeof rawForm !== 'object') return;
+            Object.keys(rawForm).forEach(function (name) {
+                const field = form.elements[name];
+                if (!field) return;
+                if (field instanceof RadioNodeList) {
+                    const value = rawForm[name];
+                    Array.from(field).forEach(function (radio) {
+                        radio.checked = String(radio.value) === String(value);
+                    });
+                    return;
+                }
+                if (field.type === 'checkbox') {
+                    field.checked = !!rawForm[name];
+                    return;
+                }
+                if (field.type === 'file') return;
+                field.value = rawForm[name];
+            });
+        }
+
+        function setFieldValue(id, value, skipIfEmpty) {
+            const field = document.getElementById(id);
+            if (!field) return;
+            if (skipIfEmpty && (value === undefined || value === null || String(value).trim() === '')) return;
+            const safe = value == null ? '' : String(value);
+            field.value = safe;
+        }
+
+        function setSelectValueSmart(id, value, skipIfEmpty) {
+            const field = document.getElementById(id);
+            if (!field) return;
+            const safe = value == null ? '' : String(value).trim();
+            if (skipIfEmpty && !safe) return;
+            if (!safe) return;
+            field.value = safe;
+            if (field.value === safe) return;
+            const needle = safe.toLowerCase();
+            const option = Array.from(field.options || []).find(function (opt) {
+                const v = String(opt.value || '').toLowerCase();
+                const t = String(opt.textContent || '').toLowerCase();
+                return v === needle || t === needle || v.indexOf(needle) !== -1 || t.indexOf(needle) !== -1 || needle.indexOf(v) !== -1 || needle.indexOf(t) !== -1;
+            });
+            if (option) field.value = option.value;
+        }
+
+        function getFieldValue(id) {
+            const field = document.getElementById(id);
+            return field ? field.value : '';
+        }
+
+        function fillPlayerForm(player) {
+            const form = document.getElementById('playerCreateForm');
+            if (form) applyFormSnapshot(form, player.rawForm);
+            document.getElementById('playerNameInput').value = player.name || player.fullName || '';
+            document.getElementById('playerEmailInput').value = player.email || '';
+            setSelectValueSmart('playerPrimaryPositionInput', player.position || player.primaryPosition || '', true);
+            setSelectValueSmart('playerSecondaryPositionInput', player.secondaryPosition || '', true);
+            setSelectValueSmart('playerGenderInput', player.gender || '', true);
+            setFieldValue('playerDobInput', player.dateOfBirth || player.dob || '', true);
+            setFieldValue('playerEthnicityInput', player.ethnicity || '', true);
+            setFieldValue('playerNationalityInput', player.nationality || '', true);
+            setFieldValue('playerHeightInput', player.heightCm || player.height || '', true);
+            setFieldValue('playerWeightInput', player.weightKg || player.weight || '', true);
+            setSelectValueSmart('playerPreferredFootInput', player.preferredFoot || '', true);
+            setSelectValueSmart('playerBloodTypeInput', player.bloodType || '', true);
+            setFieldValue('playerBirthVillageInput', player.birthVillage || '', true);
+            setFieldValue('playerBirthCommuneInput', player.birthCommune || '', true);
+            setFieldValue('playerBirthDistrictInput', player.birthDistrict || '', true);
+            setFieldValue('playerBirthProvinceInput', player.birthProvince || '', true);
+            setFieldValue('playerSchoolInput', player.schoolName || player.school || '', true);
+            setFieldValue('playerGradeInput', player.gradeLevel || player.grade || '', true);
+            document.getElementById('playerStatusInput').value = player.status || 'Active';
+            setSelectValueSmart('playerRegistrationStatusInput', player.registrationStatus || '', true);
+            setFieldValue('playerFatherNameInput', player.fatherName || '', true);
+            setFieldValue('playerFatherAgeInput', player.fatherAge || '', true);
+            setFieldValue('playerFatherOccupationInput', player.fatherOccupation || '', true);
+            setFieldValue('playerMotherNameInput', player.motherName || '', true);
+            setFieldValue('playerMotherAgeInput', player.motherAge || '', true);
+            setFieldValue('playerMotherOccupationInput', player.motherOccupation || '', true);
+            setFieldValue('playerGuardianPhoneInput', player.emergencyContact || player.guardianPhone || '', true);
+            setSelectValueSmart('playerGuardianRelationshipInput', player.guardianRelationship || '', true);
+            const teamId = player.teamId || player.team_id || player.teamID || '';
+            setSelectValueSmart('playerTeamInput', teamId, true);
+            const userSelect = document.getElementById('playerUserSelect');
+            const userId = player.userId || '';
+            if (userSelect) {
+                if (userId) {
+                    setSelectValueSmart('playerUserSelect', userId, true);
+                } else {
+                    const lowerEmail = String(player.email || '').toLowerCase();
+                    const lowerName = String(player.name || player.fullName || '').toLowerCase();
+                    const matched = Array.from(userSelect.options || []).find(function (opt) {
+                        const e = String(opt.getAttribute('data-email') || '').toLowerCase();
+                        const n = String(opt.getAttribute('data-name') || '').toLowerCase();
+                        return (lowerEmail && e === lowerEmail) || (lowerName && n === lowerName);
+                    });
+                    if (matched) userSelect.value = matched.value;
+                }
+            }
+        }
+
+        async function initEditMode() {
+            await window.AdminDataStore.bootstrap();
+            const params = new URLSearchParams(window.location.search);
+            const editId = params.get('edit');
+            if (!editId) return;
+            const players = normalizeArray(window.AdminDataStore.getArray('players', []));
+            const player = players.find(function (p) { return String(p.id) === String(editId); });
+            if (!player) return;
+            editingPlayerId = String(player.id);
+            fillPlayerForm(player);
+            document.getElementById('playerFormTitle').textContent = 'Update Player';
+            document.getElementById('playerSubmitBtn').textContent = 'Update Data';
+            document.title = 'Update Player | EduSportPro';
+        }
+
+        async function handlePlayerSubmit(event) {
+            event.preventDefault();
+            await window.AdminDataStore.bootstrap();
+            const players = normalizeArray(window.AdminDataStore.getArray('players', []));
+            const teams = normalizeArray(window.AdminDataStore.getArray('teams', []));
+
+            const name = document.getElementById('playerNameInput').value.trim();
+            const email = document.getElementById('playerEmailInput').value.trim();
+            const position = getFieldValue('playerPrimaryPositionInput');
+            const status = document.getElementById('playerStatusInput').value;
+            const teamId = document.getElementById('playerTeamInput').value;
+            const userId = document.getElementById('playerUserSelect').value;
+            const form = document.getElementById('playerCreateForm');
+            const rawForm = form ? collectFormSnapshot(form) : {};
+
+            if (!name) {
+                alert('Player name is required.');
+                return;
+            }
+            if (!userId) {
+                alert('Please select a user.');
+                return;
+            }
+            if (!position) {
+                alert('Primary position is required.');
+                return;
+            }
+
+            const team = teams.find(function (t) { return String(t.id) === String(teamId); });
+            const payload = {
+                name: name,
+                email: email,
+                position: position,
+                primaryPosition: position,
+                secondaryPosition: getFieldValue('playerSecondaryPositionInput'),
+                gender: getFieldValue('playerGenderInput'),
+                dateOfBirth: getFieldValue('playerDobInput'),
+                ethnicity: getFieldValue('playerEthnicityInput'),
+                nationality: getFieldValue('playerNationalityInput'),
+                heightCm: getFieldValue('playerHeightInput'),
+                weightKg: getFieldValue('playerWeightInput'),
+                preferredFoot: getFieldValue('playerPreferredFootInput'),
+                bloodType: getFieldValue('playerBloodTypeInput'),
+                birthVillage: getFieldValue('playerBirthVillageInput'),
+                birthCommune: getFieldValue('playerBirthCommuneInput'),
+                birthDistrict: getFieldValue('playerBirthDistrictInput'),
+                birthProvince: getFieldValue('playerBirthProvinceInput'),
+                schoolName: getFieldValue('playerSchoolInput'),
+                gradeLevel: getFieldValue('playerGradeInput'),
+                status: status || 'Active',
+                registrationStatus: getFieldValue('playerRegistrationStatusInput'),
+                fatherName: getFieldValue('playerFatherNameInput'),
+                fatherAge: getFieldValue('playerFatherAgeInput'),
+                fatherOccupation: getFieldValue('playerFatherOccupationInput'),
+                motherName: getFieldValue('playerMotherNameInput'),
+                motherAge: getFieldValue('playerMotherAgeInput'),
+                motherOccupation: getFieldValue('playerMotherOccupationInput'),
+                guardianPhone: getFieldValue('playerGuardianPhoneInput'),
+                guardianRelationship: getFieldValue('playerGuardianRelationshipInput'),
+                emergencyContact: getFieldValue('playerGuardianPhoneInput'),
+                userId: userId,
+                teamId: teamId || '',
+                teamName: team ? (team.name || team.teamName || '') : '',
+                rawForm: rawForm
+            };
+
+            if (editingPlayerId) {
+                const idx = players.findIndex(function (p) { return String(p.id) === String(editingPlayerId); });
+                if (idx < 0) {
+                    alert('Player not found.');
+                    return;
+                }
+                players[idx] = Object.assign({}, players[idx], payload);
+                window.AdminDataStore.set('players', players);
+                alert('Player data updated successfully.');
+            } else {
+                players.unshift(Object.assign({ id: buildPlayerId(players) }, payload));
+                window.AdminDataStore.set('players', players);
+                alert('Player created successfully.');
+            }
+
+            window.location.href = '/admin/admin-players.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', async function () {
+            await window.AdminDataStore.bootstrap();
+            populateUserOptions(normalizeArray(window.AdminDataStore.getArray('users', [])));
+            populateTeamOptions(normalizeArray(window.AdminDataStore.getArray('teams', [])));
+            bindUserSelectAutofill();
+            const form = document.getElementById('playerCreateForm');
+            if (form) ensureFieldNames(form);
+            await initEditMode();
+            if (form) form.addEventListener('submit', handlePlayerSubmit);
+        });
     </script>
 </body>
 </html>

@@ -11,6 +11,7 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/admin/admin-data-store.js"></script>
 
   <!-- Tailwind Configuration with Custom Brand Colors -->
   <script>
@@ -173,6 +174,16 @@
             Matches
           </a>
 
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-tournament-overview.html">
+            <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8M12 17v4M7 4h10l-1 6H8L7 4zM5 4h14"></path></svg>
+            Tournament
+          </a>
+
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-division.html">
+            <svg class="w-5 h-5 group-hover:text-hope-yellow transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"></path></svg>
+            Division
+          </a>
+
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-training.html">
              <svg class="w-5 h-5 group-hover:text-hope-red transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
             Training
@@ -243,19 +254,23 @@
           <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
           </div>
-          <input type="text" placeholder="Search inventory items..." class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-hope-lime focus:border-hope-lime sm:text-sm transition-shadow">
+          <input id="inventorySearchInput" type="text" placeholder="Search inventory items..." class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-hope-lime focus:border-hope-lime sm:text-sm transition-shadow">
         </div>
         
         <div class="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-          <select class="block w-full md:w-48 pl-3 pr-10 py-2.5 text-base border border-gray-200 focus:outline-none focus:ring-hope-lime focus:border-hope-lime sm:text-sm rounded-lg">
-            <option>All Categories</option>
+          <select id="inventoryCategorySelect" class="block w-full md:w-48 pl-3 pr-10 py-2.5 text-base border border-gray-200 focus:outline-none focus:ring-hope-lime focus:border-hope-lime sm:text-sm rounded-lg">
+            <option value="all">All Categories</option>
             <option>Equipment</option>
             <option>Uniforms</option>
             <option>Accessories</option>
             <option>Supplies</option>
           </select>
+
+           <button id="createCategoryBtn" type="button" class="w-full md:w-auto px-4 py-2 border border-hope-lime/40 text-hope-lime rounded-lg hover:bg-hope-lime/10 transition-colors font-medium">
+            Create Category
+          </button>
           
-           <button class="w-full md:w-auto px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600 flex items-center justify-center gap-2 transition-colors">
+           <button id="inventoryApplyFilterBtn" type="button" class="w-full md:w-auto px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600 flex items-center justify-center gap-2 transition-colors">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
             Filter
           </button>
@@ -271,8 +286,8 @@
           <div class="absolute top-0 left-0 w-1.5 h-full bg-hope-lime"></div>
           <p class="text-gray-500 text-xs md:text-sm font-medium">Total Items</p>
           <div class="flex justify-between items-end mt-2">
-             <h2 class="text-2xl md:text-3xl font-bold text-hope-dark">126</h2>
-             <span class="text-hope-lime bg-hope-lime/10 px-2 py-1 rounded text-xs font-semibold">+12</span>
+             <h2 id="summaryTotalItems" class="text-2xl md:text-3xl font-bold text-hope-dark">0</h2>
+             <span class="text-hope-lime bg-hope-lime/10 px-2 py-1 rounded text-xs font-semibold">JSON</span>
           </div>
         </div>
 
@@ -281,7 +296,7 @@
           <div class="absolute top-0 left-0 w-1.5 h-full bg-hope-yellow"></div>
           <p class="text-gray-500 text-xs md:text-sm font-medium">Low Stock</p>
           <div class="flex justify-between items-end mt-2">
-             <h2 class="text-2xl md:text-3xl font-bold text-hope-dark">9</h2>
+             <h2 id="summaryLowStock" class="text-2xl md:text-3xl font-bold text-hope-dark">0</h2>
              <span class="text-hope-yellow bg-hope-yellow/10 px-2 py-1 rounded text-xs font-semibold">Attn Needed</span>
           </div>
         </div>
@@ -291,7 +306,7 @@
           <div class="absolute top-0 left-0 w-1.5 h-full bg-hope-cyan"></div>
           <p class="text-gray-500 text-xs md:text-sm font-medium">Categories</p>
           <div class="flex justify-between items-end mt-2">
-             <h2 class="text-2xl md:text-3xl font-bold text-hope-dark">14</h2>
+             <h2 id="summaryCategories" class="text-2xl md:text-3xl font-bold text-hope-dark">0</h2>
           </div>
         </div>
 
@@ -300,7 +315,7 @@
           <div class="absolute top-0 left-0 w-1.5 h-full bg-hope-red"></div>
           <p class="text-gray-500 text-xs md:text-sm font-medium">Out of Stock</p>
           <div class="flex justify-between items-end mt-2">
-             <h2 class="text-2xl md:text-3xl font-bold text-hope-dark">6</h2>
+             <h2 id="summaryOutOfStock" class="text-2xl md:text-3xl font-bold text-hope-dark">0</h2>
              <span class="text-hope-red bg-hope-red/10 px-2 py-1 rounded text-xs font-semibold">Urgent</span>
           </div>
         </div>
@@ -338,7 +353,7 @@
               </tr>
             </thead>
 
-            <tbody class="bg-white divide-y divide-gray-100">
+            <tbody id="inventoryTableBody" class="bg-white divide-y divide-gray-100">
 
               <!-- Item 1 -->
               <tr class="hover:bg-gray-50 transition-colors">
@@ -471,32 +486,32 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="sm:col-span-2">
               <label class="block text-sm font-medium text-gray-700 mb-1">Item Name</label>
-              <input type="text" placeholder="e.g. Football Shoes" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none">
+              <input id="itemNameInput" type="text" placeholder="e.g. Football Shoes" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none">
             </div>
 
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
-               <select class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none">
-                <option>Equipment</option>
-                <option>Uniforms</option>
-                <option>Accessories</option>
-                <option>Supplies</option>
+               <select id="itemCategorySelect" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none">
+                <option value="Equipment">Equipment</option>
+                <option value="Uniforms">Uniforms</option>
+                <option value="Accessories">Accessories</option>
+                <option value="Supplies">Supplies</option>
               </select>
             </div>
 
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Stock Quantity</label>
-              <input type="number" placeholder="e.g. 15" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none">
+              <input id="itemStockInput" type="number" placeholder="e.g. 15" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none">
             </div>
 
             <div class="sm:col-span-2">
               <label class="block text-sm font-medium text-gray-700 mb-1">Supplier</label>
-              <input type="text" placeholder="e.g. SportShop Co." class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none">
+              <input id="itemSupplierInput" type="text" placeholder="e.g. SportShop Co." class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none">
             </div>
 
              <div class="sm:col-span-2">
                <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-              <select class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none">
+              <select id="itemStatusSelect" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none">
                 <option value="in_stock">In Stock</option>
                 <option value="low">Low Stock</option>
                 <option value="out">Out of Stock</option>
@@ -508,10 +523,46 @@
 
         <!-- Modal Footer -->
         <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 border-t border-gray-100">
-          <button type="button" class="inline-flex w-full justify-center rounded-lg bg-hope-lime px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-lime-600 sm:ml-3 sm:w-auto transition-colors">Save Item</button>
+          <button id="saveItemBtn" type="button" class="inline-flex w-full justify-center rounded-lg bg-hope-lime px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-lime-600 sm:ml-3 sm:w-auto transition-colors">Save Item</button>
           <button type="button" onclick="closeModal()" class="mt-3 inline-flex w-full justify-center rounded-lg bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto transition-colors">Cancel</button>
         </div>
         
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========================= -->
+  <!-- CREATE CATEGORY MODAL -->
+  <!-- ========================= -->
+  <div id="categoryModal" class="fixed inset-0 z-[75] hidden overflow-y-auto" aria-labelledby="category-modal-title" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onclick="closeCategoryModal()"></div>
+
+    <div class="flex min-h-screen items-center justify-center p-4 text-center sm:p-0">
+      <div class="relative transform overflow-hidden rounded-xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md w-full">
+        <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 border-b border-gray-100">
+          <div class="sm:flex sm:items-start">
+            <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-hope-lime/10 sm:mx-0 sm:h-10 sm:w-10">
+              <svg class="h-6 w-6 text-hope-lime" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+            </div>
+            <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+              <h3 class="text-lg font-semibold leading-6 text-hope-dark" id="category-modal-title">Create Category</h3>
+              <div class="mt-2">
+                <p class="text-sm text-gray-500">Add a new inventory category for filtering and item assignment.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white px-4 py-5 sm:p-6">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Category Name</label>
+          <input id="categoryNameInput" type="text" placeholder="e.g. Medical Supplies" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none">
+        </div>
+
+        <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 border-t border-gray-100">
+          <button id="saveCategoryBtn" type="button" class="inline-flex w-full justify-center rounded-lg bg-hope-lime px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-lime-600 sm:ml-3 sm:w-auto transition-colors">Save Category</button>
+          <button type="button" onclick="closeCategoryModal()" class="mt-3 inline-flex w-full justify-center rounded-lg bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto transition-colors">Cancel</button>
+        </div>
       </div>
     </div>
   </div>
@@ -539,25 +590,369 @@
       }
     }
 
-    function openModal() {
-      const modal = document.getElementById("itemModal");
-      modal.classList.remove("hidden");
-      document.body.style.overflow = 'hidden'; 
+    const inventorySearchInput = document.getElementById('inventorySearchInput');
+    const inventoryCategorySelect = document.getElementById('inventoryCategorySelect');
+    const createCategoryBtn = document.getElementById('createCategoryBtn');
+    const inventoryApplyFilterBtn = document.getElementById('inventoryApplyFilterBtn');
+    const inventoryTableBody = document.getElementById('inventoryTableBody');
+    const summaryTotalItems = document.getElementById('summaryTotalItems');
+    const summaryLowStock = document.getElementById('summaryLowStock');
+    const summaryCategories = document.getElementById('summaryCategories');
+    const summaryOutOfStock = document.getElementById('summaryOutOfStock');
+    const startItem = document.getElementById('startItem');
+    const endItem = document.getElementById('endItem');
+    const totalItems = document.getElementById('totalItems');
+    const prevPage = document.getElementById('prevPage');
+    const nextPage = document.getElementById('nextPage');
+    const pageButtons = document.getElementById('pageButtons');
+    const modalTitle = document.getElementById('modal-title');
+    const itemNameInput = document.getElementById('itemNameInput');
+    const itemCategorySelect = document.getElementById('itemCategorySelect');
+    const itemStockInput = document.getElementById('itemStockInput');
+    const itemSupplierInput = document.getElementById('itemSupplierInput');
+    const itemStatusSelect = document.getElementById('itemStatusSelect');
+    const saveItemBtn = document.getElementById('saveItemBtn');
+    const categoryModal = document.getElementById('categoryModal');
+    const categoryNameInput = document.getElementById('categoryNameInput');
+    const saveCategoryBtn = document.getElementById('saveCategoryBtn');
+
+    let inventoryState = [];
+    let inventoryCategoriesState = [];
+    let currentPage = 1;
+    const pageSize = 6;
+    let editingItemId = null;
+
+    function normalize(value) {
+      return String(value || '').trim().toLowerCase();
     }
 
-    function closeModal() {
-      const modal = document.getElementById("itemModal");
-      modal.classList.add("hidden");
+    function nextInventoryId() {
+      const max = inventoryState.reduce((acc, item) => {
+        const n = Number(String(item.id || '').replace(/\D/g, ''));
+        return Number.isFinite(n) ? Math.max(acc, n) : acc;
+      }, 0);
+      return 'INV-' + String(max + 1).padStart(3, '0');
+    }
+
+    function statusMeta(status) {
+      if (status === 'out') {
+        return { label: 'Out of Stock', badge: 'bg-hope-red/10 text-hope-red border-hope-red/20', dot: 'bg-hope-red' };
+      }
+      if (status === 'low') {
+        return { label: 'Low Stock', badge: 'bg-hope-yellow/10 text-hope-yellow border-hope-yellow/20', dot: 'bg-hope-yellow' };
+      }
+      return { label: 'In Stock', badge: 'bg-hope-lime/10 text-hope-lime border-hope-lime/20', dot: 'bg-hope-lime' };
+    }
+
+    function iconForCategory(category) {
+      const key = normalize(category);
+      if (key.includes('uniform')) return 'U';
+      if (key.includes('access')) return 'A';
+      if (key.includes('supply')) return 'S';
+      return 'E';
+    }
+
+    function filteredInventory() {
+      const q = normalize(inventorySearchInput.value);
+      const selectedCategory = String(inventoryCategorySelect.value || 'all');
+      return inventoryState.filter((item) => {
+        const categoryOk = selectedCategory === 'all' || String(item.category || '') === selectedCategory;
+        if (!categoryOk) return false;
+        if (!q) return true;
+        return normalize(item.name).includes(q) ||
+          normalize(item.id).includes(q) ||
+          normalize(item.category).includes(q) ||
+          normalize(item.supplier).includes(q);
+      });
+    }
+
+    function updateSummaryCards() {
+      summaryTotalItems.textContent = String(inventoryState.length);
+      summaryLowStock.textContent = String(inventoryState.filter((item) => String(item.status || '') === 'low').length);
+      summaryOutOfStock.textContent = String(inventoryState.filter((item) => String(item.status || '') === 'out').length);
+      summaryCategories.textContent = String(getAllCategories().length);
+    }
+
+    function getAllCategories() {
+      const fromItems = inventoryState.map((item) => String(item.category || '').trim()).filter(Boolean);
+      const fromStored = inventoryCategoriesState.map((value) => String(value || '').trim()).filter(Boolean);
+      return Array.from(new Set(fromItems.concat(fromStored))).sort();
+    }
+
+    function persistInventoryCategories() {
+      window.AdminDataStore.set('inventoryCategories', inventoryCategoriesState);
+    }
+
+    function renderCategoryFilterOptions() {
+      const categories = getAllCategories();
+      const current = String(inventoryCategorySelect.value || 'all');
+      inventoryCategorySelect.innerHTML = '<option value="all">All Categories</option>' +
+        categories.map((category) => `<option value="${category}">${category}</option>`).join('');
+      inventoryCategorySelect.value = categories.includes(current) || current === 'all' ? current : 'all';
+    }
+
+    function renderItemCategoryOptions() {
+      const categories = getAllCategories();
+      const current = String(itemCategorySelect.value || '');
+      itemCategorySelect.innerHTML = categories.map((category) => `<option value="${category}">${category}</option>`).join('');
+      if (!categories.length) {
+        itemCategorySelect.innerHTML = '<option value="Equipment">Equipment</option>';
+        itemCategorySelect.value = 'Equipment';
+        return;
+      }
+      itemCategorySelect.value = categories.includes(current) ? current : categories[0];
+    }
+
+    function createCategory() {
+      const value = String(categoryNameInput.value || '').trim();
+      if (!value) return;
+      const exists = getAllCategories().some((category) => normalize(category) === normalize(value));
+      if (exists) {
+        window.alert('Category already exists.');
+        return;
+      }
+      inventoryCategoriesState.push(value);
+      persistInventoryCategories();
+      renderCategoryFilterOptions();
+      renderItemCategoryOptions();
+      inventoryCategorySelect.value = value;
+      currentPage = 1;
+      renderInventoryTable();
+      closeCategoryModal();
+      window.alert(`Category "${value}" created.`);
+    }
+
+    function openCategoryModal() {
+      categoryNameInput.value = '';
+      categoryModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => categoryNameInput.focus(), 0);
+    }
+    window.openCategoryModal = openCategoryModal;
+
+    function closeCategoryModal() {
+      categoryModal.classList.add('hidden');
       document.body.style.overflow = 'auto';
     }
+    window.closeCategoryModal = closeCategoryModal;
 
-    // Close modal on escape key
-    document.addEventListener('keydown', function(event) {
-      if (event.key === "Escape") {
-        closeModal();
+    function renderPagination(totalFiltered) {
+      const totalPages = Math.max(1, Math.ceil(totalFiltered / pageSize));
+      if (currentPage > totalPages) currentPage = totalPages;
+
+      prevPage.disabled = currentPage <= 1;
+      nextPage.disabled = currentPage >= totalPages;
+      prevPage.classList.toggle('opacity-50', prevPage.disabled);
+      nextPage.classList.toggle('opacity-50', nextPage.disabled);
+
+      let buttonsHtml = '';
+      for (let i = 1; i <= totalPages; i += 1) {
+        buttonsHtml += `<button type="button" onclick="goToPage(${i})" class="px-2.5 py-1 rounded-md text-sm border ${i === currentPage ? 'bg-hope-lime text-white border-hope-lime' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'}">${i}</button>`;
+      }
+      pageButtons.innerHTML = buttonsHtml;
+    }
+
+    function renderInventoryTable() {
+      const filtered = filteredInventory();
+      const total = filtered.length;
+      const start = total === 0 ? 0 : ((currentPage - 1) * pageSize) + 1;
+      const end = Math.min(currentPage * pageSize, total);
+      const pageItems = filtered.slice(start - 1, end);
+
+      if (!pageItems.length) {
+        inventoryTableBody.innerHTML = '<tr><td colspan="6" class="px-6 py-8 text-center text-sm text-gray-400 italic">No inventory items found.</td></tr>';
+      } else {
+        inventoryTableBody.innerHTML = pageItems.map((item) => {
+          const status = statusMeta(String(item.status || 'in_stock'));
+          return `
+            <tr class="hover:bg-gray-50 transition-colors">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center gap-3">
+                  <div class="h-10 w-10 rounded-lg bg-gray-100 border border-gray-200 flex items-center justify-center text-sm font-bold text-gray-600">${iconForCategory(item.category)}</div>
+                  <div>
+                    <div class="text-sm font-medium text-hope-dark">${String(item.name || '')}</div>
+                    <div class="text-xs text-gray-500">ID: #${String(item.id || '')}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${String(item.category || '-')}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-hope-dark">${Number(item.stock || 0)}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${String(item.supplier || '-')}</td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${status.badge}">
+                  <span class="w-1.5 h-1.5 rounded-full ${status.dot}"></span>
+                  ${status.label}
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <button type="button" onclick="editItem('${String(item.id || '')}')" class="text-hope-yellow hover:text-yellow-600 mr-3 transition-colors">Edit</button>
+                <button type="button" onclick="deleteItem('${String(item.id || '')}')" class="text-hope-red hover:text-red-700 transition-colors">Delete</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      startItem.textContent = String(start);
+      endItem.textContent = String(end);
+      totalItems.textContent = String(total);
+      renderPagination(total);
+      updateSummaryCards();
+    }
+
+    function persistInventory() {
+      window.AdminDataStore.set('inventoryItems', inventoryState);
+    }
+
+    function resetModalForm() {
+      editingItemId = null;
+      modalTitle.textContent = 'Add Inventory Item';
+      itemNameInput.value = '';
+      renderItemCategoryOptions();
+      itemStockInput.value = '';
+      itemSupplierInput.value = '';
+      itemStatusSelect.value = 'in_stock';
+    }
+
+    function openModal() {
+      const modal = document.getElementById('itemModal');
+      if (!editingItemId) resetModalForm();
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+    window.openModal = openModal;
+
+    function closeModal() {
+      const modal = document.getElementById('itemModal');
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+    window.closeModal = closeModal;
+
+    function editItem(itemId) {
+      const item = inventoryState.find((entry) => String(entry.id || '') === String(itemId || ''));
+      if (!item) return;
+      editingItemId = String(item.id || '');
+      modalTitle.textContent = 'Edit Inventory Item';
+      itemNameInput.value = String(item.name || '');
+      renderItemCategoryOptions();
+      itemCategorySelect.value = String(item.category || 'Equipment');
+      itemStockInput.value = String(Number(item.stock || 0));
+      itemSupplierInput.value = String(item.supplier || '');
+      itemStatusSelect.value = String(item.status || 'in_stock');
+      openModal();
+    }
+    window.editItem = editItem;
+
+    function deleteItem(itemId) {
+      const item = inventoryState.find((entry) => String(entry.id || '') === String(itemId || ''));
+      if (!item) return;
+      if (!window.confirm(`Delete "${item.name}"?`)) return;
+      inventoryState = inventoryState.filter((entry) => String(entry.id || '') !== String(itemId || ''));
+      persistInventory();
+      renderCategoryFilterOptions();
+      renderInventoryTable();
+    }
+    window.deleteItem = deleteItem;
+
+    function goToPage(page) {
+      currentPage = Number(page) || 1;
+      renderInventoryTable();
+    }
+    window.goToPage = goToPage;
+
+    saveItemBtn.addEventListener('click', function () {
+      const name = String(itemNameInput.value || '').trim();
+      const category = String(itemCategorySelect.value || '').trim();
+      const supplier = String(itemSupplierInput.value || '').trim();
+      const status = String(itemStatusSelect.value || 'in_stock');
+      const stock = Math.max(0, Number(itemStockInput.value || 0));
+
+      if (!name || !category || !supplier) {
+        window.alert('Please fill all required fields.');
+        return;
+      }
+
+      const payload = { name, category, stock, supplier, status };
+      if (editingItemId) {
+        const idx = inventoryState.findIndex((item) => String(item.id || '') === editingItemId);
+        if (idx >= 0) inventoryState[idx] = Object.assign({}, inventoryState[idx], payload);
+      } else {
+        inventoryState.push(Object.assign({ id: nextInventoryId() }, payload));
+      }
+
+      persistInventory();
+      renderCategoryFilterOptions();
+      renderItemCategoryOptions();
+      renderInventoryTable();
+      closeModal();
+      resetModalForm();
+    });
+
+    prevPage.addEventListener('click', function () {
+      if (currentPage > 1) {
+        currentPage -= 1;
+        renderInventoryTable();
       }
     });
+
+    nextPage.addEventListener('click', function () {
+      const total = filteredInventory().length;
+      const totalPages = Math.max(1, Math.ceil(total / pageSize));
+      if (currentPage < totalPages) {
+        currentPage += 1;
+        renderInventoryTable();
+      }
+    });
+
+    inventorySearchInput.addEventListener('input', function () {
+      currentPage = 1;
+      renderInventoryTable();
+    });
+
+    inventoryCategorySelect.addEventListener('change', function () {
+      currentPage = 1;
+      renderInventoryTable();
+    });
+
+    inventoryApplyFilterBtn.addEventListener('click', function () {
+      currentPage = 1;
+      renderInventoryTable();
+    });
+
+    createCategoryBtn.addEventListener('click', function () {
+      openCategoryModal();
+    });
+
+    saveCategoryBtn.addEventListener('click', function () {
+      createCategory();
+    });
+
+    categoryNameInput.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        createCategory();
+      }
+    });
+
+    // Close modal on escape key
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') {
+        closeModal();
+        closeCategoryModal();
+      }
+    });
+
+    document.addEventListener('DOMContentLoaded', async function () {
+      await window.AdminDataStore.bootstrap();
+      inventoryState = window.AdminDataStore.getArray('inventoryItems', []);
+      inventoryCategoriesState = window.AdminDataStore.getArray('inventoryCategories', []);
+      renderCategoryFilterOptions();
+      renderItemCategoryOptions();
+      renderInventoryTable();
+    });
   </script>
+  <script src="/admin/admin-sidebar-loader.js"></script>
 
 </body>
 

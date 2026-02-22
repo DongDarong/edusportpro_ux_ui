@@ -28,6 +28,9 @@ Core modules: authentication, users, teams, players, matches, training, attendan
 4. MAIN NAVIGATION LOGIC
 - Each module has a sidebar + top navbar.
 - Sidebar controls route transitions (static HTML links).
+- Admin pages are being standardized to a shared sidebar component:
+  - `admin/admin-sidebar-component.html` (markup)
+  - `admin/admin-sidebar-loader.js` (inject + active state)
 - Active menu item is highlighted per current page.
 - Notification and profile are accessible from top navbar.
 
@@ -62,6 +65,8 @@ Core modules: authentication, users, teams, players, matches, training, attendan
 5.6 Tournament & Division Flow
 - Tournament defines competition season/type/status.
 - Tournament can map to one or more divisions.
+- Admin tournament form supports multi-division selection via checkboxes
+  (U12/U14/U16/U18) instead of single-select division.
 - Divisions contain groups.
 - Groups contain teams.
 - Matches link to tournament/division/group/stage.
@@ -121,6 +126,7 @@ Rules:
 - Required fields on forms: title/date minimum for events.
 - Event type Other supports comment input and display.
 - For non-all events, at least one valid team must be selected.
+- Tournament creation should validate at least one division checkbox selected.
 - Foreign key integrity enforced in SQL.
 - Role checks required at API layer before write actions.
 
@@ -135,6 +141,9 @@ Rules:
 - Calendar supports Other-type comment UI + data field.
 - Admin calendar supports Add Team: all/single/multi selection + team search.
 - Coach calendar uses same Add Team UI but locked to own team.
+- Admin tournament form now uses division checkboxes (multi-select).
+- Shared admin sidebar component and loader are integrated in admin pages
+  to keep menu links and active state consistent.
 - SQL includes schema and seed data for tournament/division/calendar plus notification delivery logic.
 
 13. NEXT BACKEND IMPLEMENTATION STEPS

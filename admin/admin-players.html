@@ -11,6 +11,7 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/admin/admin-data-store.js"></script>
 
   <!-- Tailwind Configuration with Custom Brand Colors -->
   <script>
@@ -174,6 +175,16 @@
             Matches
           </a>
 
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-tournament-overview.html">
+            <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8M12 17v4M7 4h10l-1 6H8L7 4zM5 4h14"></path></svg>
+            Tournament
+          </a>
+
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-division.html">
+            <svg class="w-5 h-5 group-hover:text-hope-yellow transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"></path></svg>
+            Division
+          </a>
+
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-training.html">
              <svg class="w-5 h-5 group-hover:text-hope-red transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
             Training
@@ -249,16 +260,16 @@
           <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
           </div>
-          <input type="text" placeholder="Search by player name, team or email..." class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-hope-cyan focus:border-hope-cyan sm:text-sm transition-shadow">
+          <input id="playerSearchInput" type="text" placeholder="Search by player name, team or email..." class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-hope-cyan focus:border-hope-cyan sm:text-sm transition-shadow">
         </div>
         
         <div class="flex flex-col md:flex-row gap-4">
-           <select class="block w-full md:w-48 pl-3 pr-10 py-2.5 text-base border border-gray-200 focus:outline-none focus:ring-hope-cyan focus:border-hope-cyan sm:text-sm rounded-lg">
-            <option>All Positions</option>
-            <option>Forward</option>
-            <option>Midfielder</option>
-            <option>Defender</option>
-            <option>Goalkeeper</option>
+           <select id="playerPositionFilter" class="block w-full md:w-48 pl-3 pr-10 py-2.5 text-base border border-gray-200 focus:outline-none focus:ring-hope-cyan focus:border-hope-cyan sm:text-sm rounded-lg">
+            <option value="">All Positions</option>
+            <option value="Forward">Forward</option>
+            <option value="Midfielder">Midfielder</option>
+            <option value="Defender">Defender</option>
+            <option value="Goalkeeper">Goalkeeper</option>
           </select>
           
            <button class="w-full md:w-auto px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600 flex items-center justify-center gap-2 transition-colors">
@@ -284,130 +295,7 @@
               </tr>
             </thead>
 
-            <tbody class="bg-white divide-y divide-gray-100">
-
-              <!-- Player 1 -->
-              <tr class="hover:bg-gray-50 transition-colors">
-                <td class="px-6 py-4 whitespace-nowrap">
-                   <div class="flex items-center">
-                    <div class="flex-shrink-0 h-10 w-10">
-                      <img class="h-10 w-10 rounded-full border-2 border-white shadow-sm object-cover" src="https://ui-avatars.com/api/?name=Rina+Seng&background=8DC63F&color=fff" alt="">
-                    </div>
-                    <div class="ml-4">
-                      <div class="text-sm font-medium text-hope-dark">Rina Seng</div>
-                      <div class="text-xs text-gray-500">ID: #PL-102</div>
-                    </div>
-                  </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-600">rina@esp.com</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-hope-lime"></span>
-                    <span class="text-sm text-gray-700">Team A</span>
-                  </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                    Forward
-                  </span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-hope-lime/10 text-hope-lime border border-hope-lime/20">
-                    <span class="w-1.5 h-1.5 rounded-full bg-hope-lime"></span>
-                    Active
-                  </span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <a href="/admin/admin-player-detail.html" class="text-hope-cyan hover:text-hope-dark">View</a>
-                  <button class="text-hope-yellow hover:text-yellow-600 mr-3 transition-colors">Edit</button>
-                  <button class="text-hope-red hover:text-red-700 transition-colors">Delete</button>
-                </td>
-              </tr>
-
-              <!-- Player 2 -->
-              <tr class="hover:bg-gray-50 transition-colors">
-                <td class="px-6 py-4 whitespace-nowrap">
-                   <div class="flex items-center">
-                    <div class="flex-shrink-0 h-10 w-10">
-                       <img class="h-10 w-10 rounded-full border-2 border-white shadow-sm object-cover" src="https://ui-avatars.com/api/?name=Sok+Rith&background=ED1C24&color=fff" alt="">
-                    </div>
-                    <div class="ml-4">
-                      <div class="text-sm font-medium text-hope-dark">Sok Rith</div>
-                      <div class="text-xs text-gray-500">ID: #PL-109</div>
-                    </div>
-                  </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-600">sokrith@esp.com</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                   <div class="flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-hope-yellow"></span>
-                    <span class="text-sm text-gray-700">Team B</span>
-                  </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                    Midfielder
-                  </span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <!-- Injury status: typically bad, so using RED -->
-                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-hope-red/10 text-hope-red border border-hope-red/20">
-                    <span class="w-1.5 h-1.5 rounded-full bg-hope-red"></span>
-                    Injury
-                  </span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <a href="/admin/admin-player-detail.html" class="text-hope-cyan hover:text-hope-dark">View</a>
-                  <button class="text-hope-yellow hover:text-yellow-600 mr-3 transition-colors">Edit</button>
-                  <button class="text-hope-red hover:text-red-700 transition-colors">Delete</button>
-                </td>
-              </tr>
-
-              <!-- Player 3 -->
-              <tr class="hover:bg-gray-50 transition-colors">
-                <td class="px-6 py-4 whitespace-nowrap">
-                   <div class="flex items-center">
-                    <div class="flex-shrink-0 h-10 w-10">
-                       <img class="h-10 w-10 rounded-full border-2 border-white shadow-sm object-cover" src="https://ui-avatars.com/api/?name=Chan+Dara&background=00AEEF&color=fff" alt="">
-                    </div>
-                    <div class="ml-4">
-                      <div class="text-sm font-medium text-hope-dark">Chan Dara</div>
-                      <div class="text-xs text-gray-500">ID: #PL-115</div>
-                    </div>
-                  </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm text-gray-600">dara@esp.com</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                   <div class="flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-hope-red"></span>
-                    <span class="text-sm text-gray-700">Team C</span>
-                  </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                    Goalkeeper
-                  </span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-hope-lime/10 text-hope-lime border border-hope-lime/20">
-                    <span class="w-1.5 h-1.5 rounded-full bg-hope-lime"></span>
-                    Active
-                  </span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <a href="/admin/admin-player-detail.html" class="text-hope-cyan hover:text-hope-dark">View</a>
-                  <button class="text-hope-yellow hover:text-yellow-600 mr-3 transition-colors">Edit</button>
-                  <button class="text-hope-red hover:text-red-700 transition-colors">Delete</button>
-                </td>
-              </tr>
-
-            </tbody>
+            <tbody id="playersTableBody" class="bg-white divide-y divide-gray-100"></tbody>
           </table>
         </div>
         
@@ -449,57 +337,160 @@
     }
 
 
-    // Simple client-side pagination for Players table
-    (function () {
-      const rowsPerPage = 10;
-      let currentPage = 1;
-      const tableBody = document.querySelector('table tbody');
+    const PLAYER_PAGE_SIZE = 10;
+    let playersState = [];
+    let teamsState = [];
+    let filteredPlayersState = [];
+    let playersCurrentPage = 1;
+
+    function normalizeArray(input) {
+      return Array.isArray(input) ? input : [];
+    }
+
+    function getPlayerName(player) {
+      return player.name || player.fullName || [player.firstName, player.lastName].filter(Boolean).join(' ') || player.id || 'Unknown Player';
+    }
+
+    function getPlayerEmail(player) {
+      return player.email || player.emailAddress || '-';
+    }
+
+    function getPlayerPosition(player) {
+      return player.position || player.role || player.playingPosition || 'N/A';
+    }
+
+    function getPlayerStatus(player) {
+      return player.status || 'Active';
+    }
+
+    function getPlayerTeamId(player) {
+      return player.teamId || player.team_id || player.teamID || (player.team && (player.team.id || player.team.teamId || player.team.team_id)) || '';
+    }
+
+    function getTeamNameById(teamId) {
+      const team = teamsState.find(function (t) { return String(t.id) === String(teamId); });
+      return team ? (team.name || team.teamName || team.id) : 'Unassigned';
+    }
+
+    function statusClass(status) {
+      const s = String(status || '').toLowerCase();
+      if (s === 'injury' || s === 'injured') return 'bg-hope-red/10 text-hope-red border-hope-red/20';
+      if (s === 'inactive' || s === 'suspended') return 'bg-gray-100 text-gray-700 border-gray-200';
+      return 'bg-hope-lime/10 text-hope-lime border-hope-lime/20';
+    }
+
+    function initials(name) {
+      const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+      if (!parts.length) return 'PL';
+      return parts.slice(0, 2).map(function (p) { return p.charAt(0).toUpperCase(); }).join('');
+    }
+
+    function renderPlayersTable() {
+      const body = document.getElementById('playersTableBody');
       const pageInfo = document.getElementById('paginationInfo');
       const pageButtons = document.getElementById('pageButtons');
       const prevBtn = document.getElementById('prevPage');
       const nextBtn = document.getElementById('nextPage');
+      if (!body || !pageInfo || !pageButtons) return;
 
-      if (!tableBody || !pageInfo || !pageButtons) return;
+      const totalItems = filteredPlayersState.length;
+      const totalPages = Math.max(1, Math.ceil(totalItems / PLAYER_PAGE_SIZE));
+      if (playersCurrentPage > totalPages) playersCurrentPage = totalPages;
+      const start = (playersCurrentPage - 1) * PLAYER_PAGE_SIZE;
+      const end = Math.min(start + PLAYER_PAGE_SIZE, totalItems);
+      const rows = filteredPlayersState.slice(start, end);
 
-      const rows = Array.from(tableBody.querySelectorAll('tr'));
-      const totalItems = rows.length;
-
-      function render() {
-        const totalPages = Math.max(1, Math.ceil(totalItems / rowsPerPage));
-        if (currentPage > totalPages) currentPage = totalPages;
-        window.__playersCurrentPage = currentPage;
-
-        const start = (currentPage - 1) * rowsPerPage;
-        const end = Math.min(start + rowsPerPage, totalItems);
-
-        rows.forEach((r, i) => r.style.display = (i >= start && i < end) ? '' : 'none');
-
-        pageInfo.textContent = totalItems === 0 ? 'No players to display.' : `Showing ${totalItems === 0 ? 0 : start + 1} to ${end} of ${totalItems} players`;
-
-        // render page buttons
-        pageButtons.innerHTML = '';
-        for (let i = 1; i <= totalPages; i++) {
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          btn.textContent = i;
-          btn.className = 'px-3 py-1 rounded-md text-sm font-medium ' + (i === currentPage ? 'bg-hope-red text-white' : 'bg-white border border-gray-300 text-gray-700');
-          btn.addEventListener('click', () => { currentPage = i; render(); });
-          pageButtons.appendChild(btn);
-        }
-
-        if (prevBtn) prevBtn.disabled = currentPage === 1;
-        if (nextBtn) nextBtn.disabled = currentPage === totalPages;
+      if (!rows.length) {
+        body.innerHTML = '<tr><td colspan="6" class="px-6 py-6 text-sm text-gray-500">No players found.</td></tr>';
+      } else {
+        body.innerHTML = rows.map(function (player) {
+          const id = String(player.id || '');
+          const name = getPlayerName(player);
+          const email = getPlayerEmail(player);
+          const position = getPlayerPosition(player);
+          const status = getPlayerStatus(player);
+          const teamName = getTeamNameById(getPlayerTeamId(player));
+          const avatarUrl = player.avatar || ('https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=00AEEF&color=fff');
+          return (
+            '<tr class="hover:bg-gray-50 transition-colors">' +
+            '<td class="px-6 py-4 whitespace-nowrap"><div class="flex items-center"><div class="flex-shrink-0 h-10 w-10"><img class="h-10 w-10 rounded-full border-2 border-white shadow-sm object-cover" src="' + avatarUrl + '" alt=""></div><div class="ml-4"><div class="text-sm font-medium text-hope-dark">' + name + '</div><div class="text-xs text-gray-500">ID: ' + (id || '-') + '</div></div></div></td>' +
+            '<td class="px-6 py-4 whitespace-nowrap"><div class="text-sm text-gray-600">' + email + '</div></td>' +
+            '<td class="px-6 py-4 whitespace-nowrap"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-hope-cyan"></span><span class="text-sm text-gray-700">' + teamName + '</span></div></td>' +
+            '<td class="px-6 py-4 whitespace-nowrap"><span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">' + position + '</span></td>' +
+            '<td class="px-6 py-4 whitespace-nowrap"><span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ' + statusClass(status) + '"><span class="w-1.5 h-1.5 rounded-full bg-current"></span>' + status + '</span></td>' +
+            '<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"><a href="/admin/admin-player-detail.html?id=' + encodeURIComponent(id) + '" class="text-hope-cyan hover:text-hope-dark">View</a><button type="button" onclick="goToUpdatePlayer(\'' + id + '\')" class="text-hope-yellow hover:text-yellow-600 mr-3 transition-colors">Update</button><button type="button" onclick="deletePlayer(\'' + id + '\')" class="text-hope-red hover:text-red-700 transition-colors">Delete</button></td>' +
+            '</tr>'
+          );
+        }).join('');
       }
 
-      window.changePlayersPage = function (n) {
-        const totalPages = Math.max(1, Math.ceil(totalItems / rowsPerPage));
-        currentPage = Math.max(1, Math.min(n, totalPages));
-        render();
-      };
+      pageInfo.textContent = totalItems === 0 ? 'No players to display.' : 'Showing ' + (start + 1) + ' to ' + end + ' of ' + totalItems + ' players';
+      pageButtons.innerHTML = '';
+      for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.textContent = i;
+        btn.className = 'px-3 py-1 rounded-md text-sm font-medium ' + (i === playersCurrentPage ? 'bg-hope-red text-white' : 'bg-white border border-gray-300 text-gray-700');
+        btn.addEventListener('click', function () { playersCurrentPage = i; renderPlayersTable(); });
+        pageButtons.appendChild(btn);
+      }
 
-      render();
-    })();
+      if (prevBtn) prevBtn.disabled = playersCurrentPage === 1;
+      if (nextBtn) nextBtn.disabled = playersCurrentPage === totalPages;
+      window.__playersCurrentPage = playersCurrentPage;
+    }
+
+    function applyPlayersFilters(resetPage) {
+      const search = String((document.getElementById('playerSearchInput') || {}).value || '').trim().toLowerCase();
+      const position = String((document.getElementById('playerPositionFilter') || {}).value || '');
+      filteredPlayersState = playersState.filter(function (player) {
+        const name = getPlayerName(player).toLowerCase();
+        const email = getPlayerEmail(player).toLowerCase();
+        const teamName = getTeamNameById(getPlayerTeamId(player)).toLowerCase();
+        const bySearch = !search || name.indexOf(search) !== -1 || email.indexOf(search) !== -1 || teamName.indexOf(search) !== -1;
+        const byPosition = !position || String(getPlayerPosition(player)) === position;
+        return bySearch && byPosition;
+      });
+      if (resetPage) playersCurrentPage = 1;
+      renderPlayersTable();
+    }
+
+    function savePlayers() {
+      window.AdminDataStore.set('players', playersState);
+    }
+
+    window.goToUpdatePlayer = function (playerId) {
+      window.location.href = '/admin/admin-create-player.html?edit=' + encodeURIComponent(String(playerId));
+    };
+
+    window.deletePlayer = function (playerId) {
+      const player = playersState.find(function (item) { return String(item.id) === String(playerId); });
+      if (!player) return;
+      if (!window.confirm('Delete player "' + getPlayerName(player) + '"?')) return;
+      playersState = playersState.filter(function (item) { return String(item.id) !== String(playerId); });
+      savePlayers();
+      applyPlayersFilters(false);
+    };
+
+    window.changePlayersPage = function (n) {
+      const totalPages = Math.max(1, Math.ceil(filteredPlayersState.length / PLAYER_PAGE_SIZE));
+      playersCurrentPage = Math.max(1, Math.min(n, totalPages));
+      renderPlayersTable();
+    };
+
+    document.addEventListener('DOMContentLoaded', async function () {
+      await window.AdminDataStore.bootstrap();
+      playersState = normalizeArray(window.AdminDataStore.getArray('players', []));
+      teamsState = normalizeArray(window.AdminDataStore.getArray('teams', []));
+      filteredPlayersState = playersState.slice();
+      const searchInput = document.getElementById('playerSearchInput');
+      const positionFilter = document.getElementById('playerPositionFilter');
+      if (searchInput) searchInput.addEventListener('input', function () { applyPlayersFilters(true); });
+      if (positionFilter) positionFilter.addEventListener('change', function () { applyPlayersFilters(true); });
+      applyPlayersFilters(true);
+    });
   </script>
+  <script src="/admin/admin-sidebar-loader.js"></script>
 
 </body>
 

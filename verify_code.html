@@ -11,6 +11,7 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/admin/admin-data-store.js"></script>
 
   <!-- Tailwind Configuration -->
   <script>
@@ -73,13 +74,15 @@
 
         <div class="text-center mb-8">
           <h2 class="text-2xl font-bold text-gray-900">Verify Code</h2>
-          <p class="text-gray-500 text-sm mt-2">Enter the 6-digit code sent to your email.</p>
+          <p class="text-gray-500 text-sm mt-2">Enter the 6-digit code sent to <span id="verifyEmailLabel">your email</span>.</p>
         </div>
 
-        <form onsubmit="event.preventDefault(); window.location.href='reset_password.html';" class="space-y-6">
+        <form id="verifyCodeForm" class="space-y-6">
           <div class="flex justify-between gap-2">
-            <input type="text" maxlength="6" class="w-full h-14 text-center text-3xl font-bold border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-hope-yellow focus:ring-2 focus:ring-hope-yellow/20 outline-none tracking-widest" placeholder="000000" />
+            <input id="verifyCodeInput" type="text" maxlength="6" class="w-full h-14 text-center text-3xl font-bold border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:border-hope-yellow focus:ring-2 focus:ring-hope-yellow/20 outline-none tracking-widest" placeholder="000000" />
           </div>
+
+          <p id="verifyMsg" class="hidden text-sm font-medium text-center"></p>
 
           <!-- Timer Display -->
           <div class="text-center">
@@ -99,6 +102,70 @@
   </div>
 
   <script>
+    function showVerifyMessage(message, isError) {
+      const msg = document.getElementById('verifyMsg');
+      if (!msg) return;
+      msg.textContent = message;
+      msg.classList.remove('hidden', 'text-red-600', 'text-emerald-600');
+      msg.classList.add(isError ? 'text-red-600' : 'text-emerald-600');
+    }
+
+    function setVerifyEmailLabel(value) {
+      const label = document.getElementById('verifyEmailLabel');
+      if (!label) return;
+      label.textContent = value || 'your email';
+    }
+
+    function getResetContext() {
+      return {
+        email: String(sessionStorage.getItem('edusportpro_reset_email') || '').trim().toLowerCase(),
+        code: String(sessionStorage.getItem('edusportpro_reset_code') || '').trim(),
+        expiresAt: Number(sessionStorage.getItem('edusportpro_reset_expires_at') || 0)
+      };
+    }
+
+    async function initVerifyPage() {
+      if (window.AdminDataStore) {
+        await window.AdminDataStore.bootstrap();
+      }
+
+      const context = getResetContext();
+      if (context.email) {
+        setVerifyEmailLabel(context.email);
+      }
+    }
+
+    function handleVerifySubmit(event) {
+      event.preventDefault();
+
+      const codeInput = document.getElementById('verifyCodeInput');
+      const codeValue = String(codeInput ? codeInput.value : '').replace(/\D/g, '');
+      const context = getResetContext();
+
+      if (!context.email || !context.code || !context.expiresAt) {
+        showVerifyMessage('Reset session not found. Start from Forgot Password.', true);
+        return;
+      }
+      if (Date.now() > context.expiresAt) {
+        showVerifyMessage('Code expired. Request a new one.', true);
+        return;
+      }
+      if (codeValue.length !== 6) {
+        showVerifyMessage('Enter a valid 6-digit code.', true);
+        return;
+      }
+      if (codeValue !== context.code) {
+        showVerifyMessage('Invalid code. Try again.', true);
+        return;
+      }
+
+      sessionStorage.setItem('edusportpro_reset_verified', 'true');
+      showVerifyMessage('Code verified. Redirecting...', false);
+      setTimeout(function () {
+        window.location.href = 'reset_password.html';
+      }, 700);
+    }
+
     // Timer Logic
     function startTimer(duration, display) {
       let timer = duration, minutes, seconds;
@@ -127,20 +194,32 @@
               alert("New code sent!");
               resendBtn.disabled = true;
               resendBtn.classList.add('text-gray-400', 'cursor-not-allowed');
-              resendBtn.classList.remove('text-hope-yellow', 'hover:underline', 'cursor-pointer');
-              resendBtn.innerText = "Resend";
-              // Restart timer
-              startTimer(duration, display);
+          resendBtn.classList.remove('text-hope-yellow', 'hover:underline', 'cursor-pointer');
+          resendBtn.innerText = "Resend";
+          const currentContext = getResetContext();
+          const nextCode = String(Math.floor(100000 + Math.random() * 900000));
+          sessionStorage.setItem('edusportpro_reset_code', nextCode);
+          sessionStorage.setItem('edusportpro_reset_expires_at', String(Date.now() + duration * 1000));
+          if (currentContext.email) {
+            sessionStorage.setItem('edusportpro_reset_email', currentContext.email);
+          }
+          // Restart timer
+          startTimer(duration, display);
           };
         }
       }, 1000);
     }
 
-    window.onload = function () {
+    document.addEventListener('DOMContentLoaded', function () {
+      const form = document.getElementById('verifyCodeForm');
+      if (form) {
+        form.addEventListener('submit', handleVerifySubmit);
+      }
+      initVerifyPage();
       const twoMinutes = 90;
       const display = document.querySelector('#timer');
       startTimer(twoMinutes, display);
-    };
+    });
   </script>
 
 </body>

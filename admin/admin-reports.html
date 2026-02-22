@@ -11,6 +11,7 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/admin/admin-data-store.js"></script>
 
   <!-- Tailwind Configuration with Custom Brand Colors -->
   <script>
@@ -173,6 +174,16 @@
             Matches
           </a>
 
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-tournament-overview.html">
+            <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8M12 17v4M7 4h10l-1 6H8L7 4zM5 4h14"></path></svg>
+            Tournament
+          </a>
+
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-division.html">
+            <svg class="w-5 h-5 group-hover:text-hope-yellow transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"></path></svg>
+            Division
+          </a>
+
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-training.html">
              <svg class="w-5 h-5 group-hover:text-hope-red transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
             Training
@@ -246,7 +257,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Team</label>
-             <select class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+             <select id="reportTeamSelect" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
               <option>All Teams</option>
               <option>Team A</option>
               <option>Team B</option>
@@ -256,7 +267,7 @@
 
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Player</label>
-             <select class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+             <select id="reportPlayerSelect" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
               <option>All Players</option>
               <option>Sok Rith</option>
               <option>Rina Seng</option>
@@ -266,12 +277,12 @@
 
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">From Date</label>
-            <input type="date" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+            <input id="reportFromDate" type="date" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
           </div>
 
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">To Date</label>
-            <input type="date" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+            <input id="reportToDate" type="date" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
           </div>
         </div>
 
@@ -279,17 +290,18 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mt-4 md:mt-6 pt-4 md:pt-6 border-t border-gray-50">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Report Type</label>
-            <select class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
-              <option>Player Performance</option>
-              <option>Team Performance</option>
-              <option>Match Report</option>
-              <option>Attendance Report</option>
-              <option>Inventory Report</option>
+            <select id="reportTypeSelect" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+              <option value="player_performance">Player Performance</option>
+              <option value="team_performance">Team Performance</option>
+              <option value="tournament_report">Tournament Report</option>
+              <option value="match_report">Match Report</option>
+              <option value="attendance_report">Attendance Report</option>
+              <option value="inventory_report">Inventory Report</option>
             </select>
           </div>
 
           <div class="flex items-end">
-            <button class="w-full bg-hope-cyan hover:bg-sky-500 text-white py-2.5 rounded-lg shadow-sm transition-colors font-medium flex items-center justify-center gap-2">
+            <button id="generateReportBtn" type="button" class="w-full bg-hope-cyan hover:bg-sky-500 text-white py-2.5 rounded-lg shadow-sm transition-colors font-medium flex items-center justify-center gap-2">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
               Generate Report
             </button>
@@ -320,8 +332,8 @@
           <div class="absolute top-0 left-0 w-1.5 h-full bg-hope-lime"></div>
           <p class="text-gray-500 text-xs md:text-sm font-medium">Matches Played</p>
           <div class="flex items-end justify-between mt-2">
-            <h2 class="text-2xl md:text-3xl font-bold text-hope-dark">18</h2>
-            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-lg">+2 this week</span>
+            <h2 id="summaryMatchesPlayed" class="text-2xl md:text-3xl font-bold text-hope-dark">0</h2>
+            <span class="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-lg">JSON</span>
           </div>
         </div>
 
@@ -330,8 +342,8 @@
           <div class="absolute top-0 left-0 w-1.5 h-full bg-hope-cyan"></div>
           <p class="text-gray-500 text-xs md:text-sm font-medium">Total Goals</p>
           <div class="flex items-end justify-between mt-2">
-             <h2 class="text-2xl md:text-3xl font-bold text-hope-dark">34</h2>
-             <span class="text-xs font-semibold text-hope-cyan bg-cyan-50 px-2 py-1 rounded-lg">1.8 avg/match</span>
+             <h2 id="summaryTotalGoals" class="text-2xl md:text-3xl font-bold text-hope-dark">0</h2>
+             <span id="summaryGoalsMeta" class="text-xs font-semibold text-hope-cyan bg-cyan-50 px-2 py-1 rounded-lg">0 avg/match</span>
           </div>
         </div>
 
@@ -340,8 +352,8 @@
           <div class="absolute top-0 left-0 w-1.5 h-full bg-hope-red"></div>
           <p class="text-gray-500 text-xs md:text-sm font-medium">Attendance Rate</p>
            <div class="flex items-end justify-between mt-2">
-             <h2 class="text-2xl md:text-3xl font-bold text-hope-dark">89%</h2>
-             <span class="text-xs font-semibold text-red-600 bg-red-50 px-2 py-1 rounded-lg">-2% vs last mo</span>
+             <h2 id="summaryAttendanceRate" class="text-2xl md:text-3xl font-bold text-hope-dark">0%</h2>
+             <span class="text-xs font-semibold text-red-600 bg-red-50 px-2 py-1 rounded-lg">From records</span>
           </div>
         </div>
 
@@ -350,8 +362,8 @@
           <div class="absolute top-0 left-0 w-1.5 h-full bg-hope-yellow"></div>
           <p class="text-gray-500 text-xs md:text-sm font-medium">Avg Player Rating</p>
            <div class="flex items-end justify-between mt-2">
-             <h2 class="text-2xl md:text-3xl font-bold text-hope-dark">7.3</h2>
-             <span class="text-xs font-semibold text-yellow-600 bg-yellow-50 px-2 py-1 rounded-lg">Stable</span>
+             <h2 id="summaryAvgRating" class="text-2xl md:text-3xl font-bold text-hope-dark">0.0</h2>
+             <span class="text-xs font-semibold text-yellow-600 bg-yellow-50 px-2 py-1 rounded-lg">From performance</span>
           </div>
         </div>
 
@@ -379,7 +391,7 @@
               </tr>
             </thead>
 
-            <tbody class="bg-white divide-y divide-gray-100">
+            <tbody id="reportTableBody" class="bg-white divide-y divide-gray-100">
 
               <tr class="hover:bg-gray-50 transition-colors">
                 <td class="px-6 py-4 whitespace-nowrap">
@@ -477,7 +489,254 @@
         body.style.overflow = 'auto';
       }
     }
+
+    const reportTeamSelect = document.getElementById('reportTeamSelect');
+    const reportPlayerSelect = document.getElementById('reportPlayerSelect');
+    const reportFromDate = document.getElementById('reportFromDate');
+    const reportToDate = document.getElementById('reportToDate');
+    const reportTypeSelect = document.getElementById('reportTypeSelect');
+    const generateReportBtn = document.getElementById('generateReportBtn');
+    const reportTableBody = document.getElementById('reportTableBody');
+    const summaryMatchesPlayed = document.getElementById('summaryMatchesPlayed');
+    const summaryTotalGoals = document.getElementById('summaryTotalGoals');
+    const summaryGoalsMeta = document.getElementById('summaryGoalsMeta');
+    const summaryAttendanceRate = document.getElementById('summaryAttendanceRate');
+    const summaryAvgRating = document.getElementById('summaryAvgRating');
+
+    let teamsState = [];
+    let playersState = [];
+    let matchesState = [];
+    let performanceRecordsState = [];
+    let attendanceRecordsState = [];
+
+    function normalize(value) {
+      return String(value || '').trim().toLowerCase();
+    }
+
+    function parseDate(value) {
+      if (!value) return null;
+      const dt = new Date(value + 'T00:00:00');
+      return Number.isNaN(dt.getTime()) ? null : dt;
+    }
+
+    function isWithinDateRange(dateStr, fromDate, toDate) {
+      const dt = parseDate(String(dateStr || '').slice(0, 10));
+      if (!dt) return false;
+      if (fromDate && dt < fromDate) return false;
+      if (toDate && dt > toDate) return false;
+      return true;
+    }
+
+    function getTeamNameById(teamId) {
+      const team = teamsState.find((entry) => String(entry.id || '') === String(teamId || ''));
+      return team ? String(team.name || team.id || teamId) : String(teamId || '-');
+    }
+
+    function getPlayerById(playerId) {
+      return playersState.find((entry) => String(entry.id || '') === String(playerId || '')) || null;
+    }
+
+    function initials(name) {
+      return String(name || '')
+        .split(' ')
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((part) => part[0].toUpperCase())
+        .join('') || 'PL';
+    }
+
+    function ratingBadgeClass(rating) {
+      if (rating >= 8) return 'bg-green-100 text-green-800';
+      if (rating >= 7) return 'bg-blue-100 text-blue-800';
+      return 'bg-yellow-100 text-yellow-800';
+    }
+
+    function buildPlayerOptions() {
+      const selectedTeamId = String(reportTeamSelect.value || 'all');
+      const players = selectedTeamId === 'all'
+        ? playersState
+        : playersState.filter((player) => String(player.teamId || '') === selectedTeamId);
+      const current = String(reportPlayerSelect.value || 'all');
+      reportPlayerSelect.innerHTML = '<option value="all">All Players</option>' + players.map((player) =>
+        `<option value="${String(player.id || '')}">${String(player.name || player.id || '')}</option>`
+      ).join('');
+      reportPlayerSelect.value = players.some((player) => String(player.id || '') === current) || current === 'all' ? current : 'all';
+    }
+
+    function buildTeamOptions() {
+      const current = String(reportTeamSelect.value || 'all');
+      reportTeamSelect.innerHTML = '<option value="all">All Teams</option>' + teamsState.map((team) =>
+        `<option value="${String(team.id || '')}">${String(team.name || team.id || '')}</option>`
+      ).join('');
+      reportTeamSelect.value = teamsState.some((team) => String(team.id || '') === current) || current === 'all' ? current : 'all';
+      buildPlayerOptions();
+    }
+
+    function computePlayerRows() {
+      const fromDate = parseDate(reportFromDate.value);
+      const toDate = parseDate(reportToDate.value);
+      const selectedTeamId = String(reportTeamSelect.value || 'all');
+      const selectedPlayerId = String(reportPlayerSelect.value || 'all');
+
+      const filteredPlayers = playersState.filter((player) => {
+        const teamOk = selectedTeamId === 'all' || String(player.teamId || '') === selectedTeamId;
+        const playerOk = selectedPlayerId === 'all' || String(player.id || '') === selectedPlayerId;
+        return teamOk && playerOk;
+      });
+      const filteredPlayerIds = new Set(filteredPlayers.map((player) => String(player.id || '')));
+
+      const filteredPerf = performanceRecordsState.filter((record) =>
+        filteredPlayerIds.has(String(record.playerId || '')) &&
+        isWithinDateRange(record.date, fromDate, toDate)
+      );
+
+      const byPlayer = new Map();
+      filteredPlayers.forEach((player) => {
+        byPlayer.set(String(player.id || ''), { goals: 0, assists: 0, ratingSum: 0, ratingCount: 0 });
+      });
+      filteredPerf.forEach((record) => {
+        const key = String(record.playerId || '');
+        if (!byPlayer.has(key)) return;
+        const obj = byPlayer.get(key);
+        obj.goals += Number(record.goals || 0);
+        obj.assists += Number(record.assists || 0);
+        if (record.rating != null && String(record.rating) !== '') {
+          obj.ratingSum += Number(record.rating || 0);
+          obj.ratingCount += 1;
+        }
+      });
+
+      return filteredPlayers.map((player) => {
+        const stat = byPlayer.get(String(player.id || '')) || { goals: 0, assists: 0, ratingSum: 0, ratingCount: 0 };
+        const avgRating = stat.ratingCount ? stat.ratingSum / stat.ratingCount : 0;
+        const attendancePercent = Number(player.attendance || 0);
+        return {
+          playerId: String(player.id || ''),
+          name: String(player.name || player.id || ''),
+          teamId: String(player.teamId || ''),
+          goals: stat.goals,
+          assists: stat.assists,
+          avgRating: avgRating,
+          attendancePercent: attendancePercent
+        };
+      }).sort((a, b) => b.goals - a.goals || b.assists - a.assists || b.avgRating - a.avgRating);
+    }
+
+    function computeAttendanceRate(fromDate, toDate, filteredPlayerIds) {
+      const records = attendanceRecordsState.filter((record) =>
+        String(record.subjectType || '') === 'player' &&
+        filteredPlayerIds.has(String(record.subjectId || '')) &&
+        isWithinDateRange(record.date, fromDate, toDate)
+      );
+      if (!records.length) return 0;
+      const presentish = records.filter((record) => ['present', 'late', 'excused'].includes(normalize(record.status))).length;
+      return (presentish / records.length) * 100;
+    }
+
+    function computeSummary(rows) {
+      const fromDate = parseDate(reportFromDate.value);
+      const toDate = parseDate(reportToDate.value);
+      const selectedTeamId = String(reportTeamSelect.value || 'all');
+      const filteredPlayerIds = new Set(rows.map((row) => row.playerId));
+
+      const matchesInRange = matchesState.filter((match) => {
+        const dateOk = isWithinDateRange(String(match.dateTime || '').slice(0, 10), fromDate, toDate);
+        if (!dateOk) return false;
+        if (selectedTeamId === 'all') return true;
+        return String(match.homeTeamId || '') === selectedTeamId || String(match.awayTeamId || '') === selectedTeamId;
+      });
+
+      const totalGoals = rows.reduce((acc, row) => acc + row.goals, 0);
+      const avgGoals = matchesInRange.length ? (totalGoals / matchesInRange.length) : 0;
+      const ratingRows = rows.filter((row) => row.avgRating > 0);
+      const avgRating = ratingRows.length
+        ? ratingRows.reduce((acc, row) => acc + row.avgRating, 0) / ratingRows.length
+        : 0;
+      const attendanceRate = computeAttendanceRate(fromDate, toDate, filteredPlayerIds);
+
+      summaryMatchesPlayed.textContent = String(matchesInRange.length);
+      summaryTotalGoals.textContent = String(totalGoals);
+      summaryGoalsMeta.textContent = `${avgGoals.toFixed(1)} avg/match`;
+      summaryAttendanceRate.textContent = `${attendanceRate.toFixed(0)}%`;
+      summaryAvgRating.textContent = avgRating.toFixed(1);
+    }
+
+    function renderTable(rows) {
+      if (!rows.length) {
+        reportTableBody.innerHTML = '<tr><td colspan="6" class="px-6 py-8 text-center text-sm text-gray-400 italic">No report rows for selected filters.</td></tr>';
+        return;
+      }
+
+      reportTableBody.innerHTML = rows.map((row, index) => {
+        const colorClass = index % 3 === 0 ? 'bg-hope-lime/20 text-hope-lime' : index % 3 === 1 ? 'bg-hope-cyan/20 text-hope-cyan' : 'bg-hope-red/20 text-hope-red';
+        const ratingLabel = row.avgRating > 0 ? row.avgRating.toFixed(1) : 'N/A';
+        const attendanceWidth = Math.max(0, Math.min(100, row.attendancePercent));
+        return `
+          <tr class="hover:bg-gray-50 transition-colors">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded-full ${colorClass} flex items-center justify-center font-bold text-xs">${initials(row.name)}</div>
+                <span class="font-medium text-hope-dark">${row.name}</span>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${getTeamNameById(row.teamId)}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-bold text-hope-dark">${row.goals}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${row.assists}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${ratingBadgeClass(row.avgRating)}">${ratingLabel}</span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+              <div class="w-full bg-gray-200 rounded-full h-1.5 w-24">
+                <div class="bg-hope-cyan h-1.5 rounded-full" style="width: ${attendanceWidth}%"></div>
+              </div>
+              <span class="text-xs mt-1 block">${attendanceWidth.toFixed(0)}%</span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function renderReports() {
+      if (reportTypeSelect.value !== 'player_performance') {
+        const rows = computePlayerRows();
+        computeSummary(rows);
+        reportTableBody.innerHTML = '<tr><td colspan="6" class="px-6 py-8 text-center text-sm text-gray-400 italic">This report type uses summary only. Select "Player Performance" for row details.</td></tr>';
+        return;
+      }
+      const rows = computePlayerRows();
+      computeSummary(rows);
+      renderTable(rows);
+    }
+
+    function initializeDateRange() {
+      const today = new Date();
+      const to = today.toISOString().slice(0, 10);
+      const fromObj = new Date(today.getTime() - (30 * 24 * 60 * 60 * 1000));
+      const from = fromObj.toISOString().slice(0, 10);
+      reportFromDate.value = from;
+      reportToDate.value = to;
+    }
+
+    reportTeamSelect.addEventListener('change', function () {
+      buildPlayerOptions();
+    });
+    generateReportBtn.addEventListener('click', function () {
+      renderReports();
+    });
+
+    document.addEventListener('DOMContentLoaded', async function () {
+      await window.AdminDataStore.bootstrap();
+      teamsState = window.AdminDataStore.getArray('teams', []);
+      playersState = window.AdminDataStore.getArray('players', []);
+      matchesState = window.AdminDataStore.getArray('matches', []);
+      performanceRecordsState = window.AdminDataStore.getArray('performanceRecords', []);
+      attendanceRecordsState = window.AdminDataStore.getArray('attendanceRecords', []);
+      initializeDateRange();
+      buildTeamOptions();
+      renderReports();
+    });
   </script>
+  <script src="/admin/admin-sidebar-loader.js"></script>
 
 </body>
 

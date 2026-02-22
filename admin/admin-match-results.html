@@ -11,6 +11,7 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <script src="/admin/admin-data-store.js"></script>
 
     <!-- Tailwind Configuration -->
     <script>
@@ -188,6 +189,16 @@
                         Matches
                     </a>
 
+                    <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-tournament-overview.html">
+                        <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8M12 17v4M7 4h10l-1 6H8L7 4zM5 4h14"></path></svg>
+                        Tournament
+                    </a>
+
+                    <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-division.html">
+                        <svg class="w-5 h-5 group-hover:text-hope-yellow transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"></path></svg>
+                        Division
+                    </a>
+
                     <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-training.html">
                       <svg class="w-5 h-5 group-hover:text-hope-red transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         Training
@@ -234,126 +245,152 @@
         <main class="flex-1 p-4 md:p-8 overflow-y-auto w-full">
 
             <!-- HEADER & AUTH STATUS -->
-            <div class="flex flex-row flex-wrap justify-between items-center mb-6 gap-3">
-                <a href="/admin/admin-matches.html" class="flex items-center text-gray-600 hover:text-hope-yellow transition-colors font-medium text-sm">
-                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                    Back
-                </a>
-                <div class="flex flex-col items-end gap-1">
-                    <h1 class="text-xl md:text-3xl font-bold text-hope-dark text-right">Input Results</h1>
-                    <div id="authStatus" class="flex items-center gap-2 text-[10px] font-mono bg-white px-2 py-1 rounded-full border border-gray-200 shadow-sm">
-                        <span class="w-1.5 h-1.5 rounded-full bg-gray-400" id="authIndicator"></span>
-                        <span id="userIdLabel">Identifying...</span>
+            <div class="mb-6 md:mb-8 rounded-2xl bg-gradient-to-r from-hope-dark via-slate-800 to-hope-cyan p-5 md:p-7 text-white shadow-lg">
+                <div class="flex flex-wrap items-start justify-between gap-4">
+                    <div>
+                        <a href="/admin/admin-matches.html" class="inline-flex items-center text-white/80 hover:text-white transition-colors font-semibold text-sm mb-3">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                            Back to Matches
+                        </a>
+                        <h1 class="text-2xl md:text-4xl font-black tracking-tight">Match Results</h1>
+                        <p class="text-white/75 text-sm md:text-base mt-1">Record the final score and publish verified outcomes.</p>
+                    </div>
+                    <div class="flex flex-col items-end gap-2">
+                        <div id="authStatus" class="flex items-center gap-2 text-[10px] font-mono bg-white/10 px-3 py-1.5 rounded-full border border-white/20">
+                            <span class="w-1.5 h-1.5 rounded-full bg-gray-300" id="authIndicator"></span>
+                            <span id="userIdLabel">Identifying...</span>
+                        </div>
+                        <span id="fixtureIdBadge" class="text-[11px] font-bold uppercase tracking-wider bg-white/10 border border-white/20 px-3 py-1 rounded-full">Fixture ID: #-</span>
                     </div>
                 </div>
             </div>
 
             <!-- MATCH SUMMARY CARD -->
-            <div class="bg-white p-4 md:p-6 rounded-xl shadow-md border border-gray-100 mb-6">
+            <div class="bg-white p-5 md:p-6 rounded-2xl shadow-md border border-gray-100 mb-6">
                 <h2 class="text-lg font-bold mb-4 text-hope-dark flex items-center gap-2">
                     <svg class="w-5 h-5 text-hope-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     Fixture Summary
                 </h2>
-                <!-- Phone Side-by-Side: Grid Cols 2 -->
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 border-b pb-4 mb-4">
-                    <div class="col-span-1 md:col-span-2 flex flex-col items-start justify-center">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="md:col-span-2 rounded-xl border border-gray-100 bg-gray-50 px-4 py-5">
                         <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Matchup</p>
-                        <div class="flex items-center gap-2 md:gap-4 mt-1 md:mt-2">
-                            <span class="text-lg md:text-2xl font-black text-hope-dark leading-none">Team A</span>
-                            <span class="text-[10px] md:text-xs font-bold text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">VS</span>
-                            <span class="text-lg md:text-2xl font-black text-hope-dark leading-none">Team B</span>
+                        <div class="flex items-center gap-3 md:gap-5 mt-2">
+                            <span id="summaryHomeTeam" class="text-xl md:text-3xl font-black text-hope-dark">Team A</span>
+                            <span class="text-[10px] md:text-xs font-bold text-gray-400 bg-white border border-gray-200 px-2 py-1 rounded">VS</span>
+                            <span id="summaryAwayTeam" class="text-xl md:text-3xl font-black text-hope-dark">Team B</span>
                         </div>
                     </div>
-                    <div class="col-span-1 flex flex-col items-end justify-center text-right">
-                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Date</p>
-                        <p class="text-xs md:text-sm font-bold text-gray-800 mt-1 md:mt-2">Dec 20, 2:00 PM</p>
-                        <p class="text-[10px] md:text-xs text-gray-500 font-medium">Field 1</p>
+                    <div class="rounded-xl border border-gray-100 bg-gray-50 px-4 py-5 text-right">
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Schedule</p>
+                        <p id="summaryDateText" class="text-sm md:text-base font-bold text-gray-900 mt-2">-</p>
+                        <p id="summaryVenueText" class="text-xs text-gray-500 font-semibold">-</p>
+                        <p id="summaryCompetitionText" class="text-[10px] text-gray-400 font-bold uppercase tracking-wide mt-1">-</p>
                     </div>
                 </div>
             </div>
 
-            <!-- UNIFIED MATCH RESULTS COMPONENT -->
+            <!-- RESULT ENTRY -->
             <form id="matchResultsForm" class="pb-20">
-                <div class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
-                    
-                    <!-- COMPONENT HEADER (Phone Side-by-Side) -->
-                    <div class="px-4 py-3 md:px-6 md:py-4 border-b border-gray-100 bg-gray-50/50 flex flex-row items-center justify-between gap-2">
-                        <h2 class="text-base md:text-lg font-bold text-hope-dark flex items-center gap-2">
+                <div class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
+                    <div class="px-5 py-4 md:px-6 md:py-5 border-b border-gray-100 bg-gray-50/70">
+                        <h2 class="text-lg md:text-xl font-bold text-hope-dark flex items-center gap-2">
                             <svg class="w-5 h-5 text-hope-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                             Result Entry
                         </h2>
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest bg-white border px-2 py-1 rounded whitespace-nowrap">
-                            ID: #20251220
-                        </span>
                     </div>
 
-                    <div class="p-4 md:p-8">
-                        
-                        <!-- SECTION 1: FINAL SCORES (Top Center) -->
-                        <div class="mb-8 md:mb-10">
-                            <h3 class="text-[10px] md:text-xs font-bold text-gray-400 uppercase tracking-widest text-center mb-4 md:mb-6 flex items-center justify-center gap-2">
-                                <span class="h-px w-6 md:w-8 bg-gray-200"></span>
-                                Final Scoreline
-                                <span class="h-px w-6 md:w-8 bg-gray-200"></span>
-                            </h3>
-                            <div class="flex items-center justify-center gap-3 md:gap-12">
-                                <!-- Team A Input -->
+                    <div class="p-5 md:p-8 space-y-8">
+                        <div class="rounded-2xl bg-gradient-to-b from-gray-50 to-white border border-gray-100 p-4 md:p-8">
+                            <h3 class="text-[11px] font-bold text-gray-400 uppercase tracking-widest text-center mb-5">Final Scoreline</h3>
+                            <div class="flex items-center justify-center gap-4 md:gap-12">
                                 <div class="flex flex-col items-center gap-2">
-                                    <label class="text-[10px] md:text-xs font-bold text-gray-500">TEAM A</label>
-                                    <input id="scoreA" type="number" value="0" min="0" class="w-20 h-20 md:w-32 md:h-32 rounded-2xl border-2 border-gray-100 bg-gray-50 text-4xl md:text-6xl font-black text-center text-hope-dark focus:border-hope-yellow focus:ring-4 focus:ring-hope-yellow/10 focus:bg-white transition-all outline-none">
+                                    <label class="text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-wide">Team A</label>
+                                    <input id="scoreA" type="number" value="0" min="0" class="w-24 h-24 md:w-36 md:h-36 rounded-3xl border-2 border-gray-100 bg-white text-4xl md:text-7xl font-black text-center text-hope-dark focus:border-hope-yellow focus:ring-4 focus:ring-hope-yellow/10 transition-all outline-none">
                                 </div>
-
-                                <!-- Divider -->
-                                <div class="flex flex-col items-center justify-center h-full pt-4 md:pt-6">
-                                    <span class="text-2xl md:text-4xl font-black text-gray-200">-</span>
-                                </div>
-
-                                <!-- Team B Input -->
+                                <span class="text-3xl md:text-5xl font-black text-gray-200">:</span>
                                 <div class="flex flex-col items-center gap-2">
-                                    <label class="text-[10px] md:text-xs font-bold text-gray-500">TEAM B</label>
-                                    <input id="scoreB" type="number" value="0" min="0" class="w-20 h-20 md:w-32 md:h-32 rounded-2xl border-2 border-gray-100 bg-gray-50 text-4xl md:text-6xl font-black text-center text-hope-dark focus:border-hope-yellow focus:ring-4 focus:ring-hope-yellow/10 focus:bg-white transition-all outline-none">
+                                    <label class="text-[10px] md:text-xs font-bold text-gray-500 uppercase tracking-wide">Team B</label>
+                                    <input id="scoreB" type="number" value="0" min="0" class="w-24 h-24 md:w-36 md:h-36 rounded-3xl border-2 border-gray-100 bg-white text-4xl md:text-7xl font-black text-center text-hope-dark focus:border-hope-yellow focus:ring-4 focus:ring-hope-yellow/10 transition-all outline-none">
                                 </div>
                             </div>
                         </div>
 
-                        <!-- SECTION 2 & 3: DETAILS & FINALIZE (Grid Layout) -->
-                        <div class="grid grid-cols-1 lg:grid-cols-1 gap-8 lg:gap-12 pt-8 border-t border-gray-100">
-
-                            <!-- Right Col: Finalize -->
-                            <div class="bg-gray-50 rounded-xl p-4 md:p-6 border border-gray-100 h-fit">
+                        <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                            <div class="lg:col-span-3 rounded-xl border border-gray-100 p-4 md:p-5 bg-white">
+                                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Match Report</label>
+                                <textarea id="matchNotes" rows="8" placeholder="Brief summary of the match..." class="w-full rounded-xl border-gray-200 border p-3 text-sm font-medium focus:border-hope-yellow focus:ring-2 focus:ring-hope-yellow/20 bg-white outline-none transition-all resize-none"></textarea>
+                                <div class="mt-5 rounded-xl border border-gray-100 bg-gray-50/60 p-4">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest">Goal Events (Player & Time)</label>
+                                        <button id="addGoalEventBtn" type="button" class="px-3 py-1.5 text-xs font-bold rounded-lg border border-hope-cyan/30 text-hope-cyan bg-white hover:bg-hope-cyan/5">Add Event</button>
+                                    </div>
+                                    <div class="overflow-x-auto">
+                                        <table class="min-w-full text-sm">
+                                            <thead>
+                                                <tr class="text-left text-[10px] uppercase tracking-wider text-gray-400">
+                                                    <th class="py-2 pr-3">Player Name</th>
+                                                    <th class="py-2 pr-3 w-28">Kick Time</th>
+                                                    <th class="py-2 w-16 text-right">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="goalEventBody"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="lg:col-span-2 bg-gray-50 rounded-xl p-4 md:p-6 border border-gray-100 h-fit">
                                 <h3 class="font-bold text-hope-dark text-sm uppercase tracking-wide mb-4 flex items-center gap-2">
                                     <svg class="w-5 h-5 text-hope-lime" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                     Confirmation
                                 </h3>
-                                
-                                <div class="space-y-4">
-                                    <div>
-                                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Status</label>
-                                        <select id="matchStatus" class="w-full rounded-lg border-gray-200 border p-2.5 text-sm font-semibold text-gray-800 focus:border-hope-lime focus:ring-2 focus:ring-hope-lime/20 bg-white transition-all outline-none">
-                                            <option value="finished">Finished (Awaiting Check)</option>
-                                            <option value="confirmed">Confirmed (Publish)</option>
-                                            <option value="disputed">Disputed / Under Review</option>
-                                        </select>
-                                    </div>
-
-                                    <div>
-                                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Match Report</label>
-                                        <textarea id="matchNotes" rows="3" placeholder="Brief summary of the match..." class="w-full rounded-lg border-gray-200 border p-3 text-sm font-medium focus:border-hope-yellow focus:ring-2 focus:ring-hope-yellow/20 bg-white outline-none transition-all resize-none"></textarea>
-                                    </div>
-
-                                    <div class="pt-2">
-                                        <button type="submit" id="submitBtn" class="w-full bg-hope-yellow hover:bg-yellow-500 text-hope-dark font-black px-4 py-3.5 rounded-xl shadow-lg shadow-hope-yellow/20 transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-[0.98]">
-                                            <span>SUBMIT RESULTS</span>
-                                            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                                        </button>
-                                    </div>
-                                </div>
+                                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Status</label>
+                                <select id="matchStatus" class="w-full rounded-lg border-gray-200 border p-2.5 text-sm font-semibold text-gray-800 focus:border-hope-lime focus:ring-2 focus:ring-hope-lime/20 bg-white transition-all outline-none mb-5">
+                                    <option value="finished">Finished (Awaiting Check)</option>
+                                    <option value="confirmed">Confirmed (Publish)</option>
+                                    <option value="disputed">Disputed / Under Review</option>
+                                </select>
+                                <button type="submit" id="submitBtn" class="w-full bg-hope-yellow hover:bg-yellow-500 text-hope-dark font-black px-4 py-3.5 rounded-xl shadow-lg shadow-hope-yellow/20 transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed transform active:scale-[0.98]">
+                                    <span>SUBMIT RESULTS</span>
+                                    <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                </button>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </form>
+
+            <!-- RESULT LIST COMPONENT -->
+            <section class="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden mb-16">
+                <div class="px-5 py-4 md:px-6 md:py-5 border-b border-gray-100 bg-gray-50/70 flex items-center justify-between">
+                    <h2 class="text-lg md:text-xl font-bold text-hope-dark">Result List</h2>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-gray-400">JSON Data</span>
+                </div>
+                <div class="px-5 md:px-6 py-3 border-b border-gray-100 bg-white flex flex-col md:flex-row gap-3">
+                    <input id="resultListSearchInput" type="text" placeholder="Search by team, venue or player..." class="w-full md:w-80 rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-hope-cyan focus:border-hope-cyan">
+                    <select id="resultListStatusFilter" class="w-full md:w-56 rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-hope-cyan focus:border-hope-cyan">
+                        <option value="">All Status</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="finished">Finished</option>
+                        <option value="disputed">Disputed</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-100">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Match</th>
+                                <th class="px-6 py-3 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider">Score</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Report</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Schedule</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultListBody" class="bg-white divide-y divide-gray-100"></tbody>
+                    </table>
+                </div>
+            </section>
         </main>
     </div>
 
@@ -361,7 +398,7 @@
     <div id="notificationContainer" class="fixed top-6 right-6 z-[100] flex flex-col gap-3 pointer-events-none"></div>
 
     <!-- SCRIPTS -->
-    <script type="module">
+    <script type="application/json" id="legacyResultsScript">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
@@ -491,6 +528,285 @@
             }
         });
     </script>
+    <script>
+        let currentMatchId = '';
+        let matchesState = [];
+        let teamsState = [];
+
+        function getQueryParam(name) {
+            const params = new URLSearchParams(window.location.search);
+            return params.get(name) || '';
+        }
+
+        function getTeamNameById(teamId) {
+            const team = teamsState.find(function (t) { return String(t.id) === String(teamId); });
+            return team ? (team.name || team.teamName || team.id) : 'Unknown Team';
+        }
+
+        function getTournamentNameById(tournamentId) {
+            const tournaments = window.AdminDataStore ? window.AdminDataStore.getArray('tournaments', []) : [];
+            const t = tournaments.find(function (item) { return String(item.id) === String(tournamentId); });
+            return t ? (t.name || t.title || t.id) : '';
+        }
+
+        function getCompetitionLabelJson(match) {
+            const type = String(match.competitionType || (match.externalTournamentName ? 'external' : 'tournament')).toLowerCase();
+            if (type === 'external') return match.externalTournamentName || 'External Tournament (Friendly)';
+            return getTournamentNameById(match.tournamentId || '') || 'Tournament';
+        }
+
+        function formatDateTime(dateTime) {
+            if (!dateTime) return '-';
+            const d = new Date(dateTime);
+            if (Number.isNaN(d.getTime())) return String(dateTime);
+            return d.toLocaleDateString(undefined, { month: 'short', day: '2-digit', year: 'numeric' }) + ', ' +
+                d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function showNotifyJson(msg, type) {
+            const container = document.getElementById('notificationContainer');
+            const toast = document.createElement('div');
+            const colors = type === 'error' ? 'bg-hope-red border-red-800' : 'bg-hope-lime border-green-600';
+            toast.className = 'pointer-events-auto flex items-center gap-3 ' + colors + ' text-white px-5 py-3 rounded-2xl shadow-2xl border-2 animate-slide-in min-w-[280px]';
+            toast.innerHTML = '<div class="flex-1 font-bold text-sm">' + msg + '</div><button onclick="this.parentElement.remove()" class="opacity-70 hover:opacity-100">x</button>';
+            container.appendChild(toast);
+            setTimeout(function () { toast.remove(); }, 4000);
+        }
+
+        function setAuthReadyJson() {
+            const label = document.getElementById('userIdLabel');
+            const indicator = document.getElementById('authIndicator');
+            const submitBtn = document.getElementById('submitBtn');
+            if (label) label.textContent = 'Local Admin Session';
+            if (indicator) {
+                indicator.classList.remove('bg-gray-300', 'bg-gray-400', 'bg-hope-red');
+                indicator.classList.add('bg-hope-lime');
+            }
+            if (submitBtn) submitBtn.disabled = false;
+        }
+
+        function createGoalEventRow(playerName, kickTime) {
+            const tr = document.createElement('tr');
+            tr.className = 'border-t border-gray-100';
+            tr.innerHTML =
+                '<td class="py-2 pr-3"><input type="text" class="goal-player w-full rounded-lg border border-gray-200 px-2.5 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-hope-cyan focus:border-hope-cyan" placeholder="Player name"></td>' +
+                '<td class="py-2 pr-3"><input type="text" class="goal-time w-full rounded-lg border border-gray-200 px-2.5 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-hope-cyan focus:border-hope-cyan" placeholder="45+2 min"></td>' +
+                '<td class="py-2 text-right"><button type="button" class="goal-remove text-xs font-bold text-hope-red hover:text-red-700">Remove</button></td>';
+            tr.querySelector('.goal-player').value = playerName || '';
+            tr.querySelector('.goal-time').value = kickTime || '';
+            tr.querySelector('.goal-remove').addEventListener('click', function () {
+                tr.remove();
+            });
+            return tr;
+        }
+
+        function renderGoalEvents(events) {
+            const body = document.getElementById('goalEventBody');
+            if (!body) return;
+            body.innerHTML = '';
+            const source = Array.isArray(events) && events.length ? events : [{ playerName: '', kickTime: '' }];
+            source.forEach(function (eventItem) {
+                const playerName = eventItem.playerName || eventItem.player || '';
+                const kickTime = eventItem.kickTime || eventItem.time || '';
+                body.appendChild(createGoalEventRow(playerName, kickTime));
+            });
+        }
+
+        function collectGoalEvents() {
+            const body = document.getElementById('goalEventBody');
+            if (!body) return [];
+            const rows = Array.from(body.querySelectorAll('tr'));
+            return rows.map(function (row) {
+                const playerName = (row.querySelector('.goal-player') || {}).value || '';
+                const kickTime = (row.querySelector('.goal-time') || {}).value || '';
+                return { playerName: String(playerName).trim(), kickTime: String(kickTime).trim() };
+            }).filter(function (item) {
+                return item.playerName || item.kickTime;
+            });
+        }
+
+        window.toggleSidebar = function () {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden');
+                setTimeout(function () { backdrop.classList.remove('opacity-0'); }, 10);
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.add('opacity-0');
+                setTimeout(function () { backdrop.classList.add('hidden'); }, 300);
+            }
+        };
+
+        function hydrateMatchJson(match) {
+            const homeTeam = getTeamNameById(match.homeTeamId || match.homeTeam || match.homeId);
+            const awayTeam = getTeamNameById(match.awayTeamId || match.awayTeam || match.awayId);
+            document.getElementById('fixtureIdBadge').textContent = 'Fixture ID: #' + (match.id || '-');
+            document.getElementById('summaryHomeTeam').textContent = homeTeam;
+            document.getElementById('summaryAwayTeam').textContent = awayTeam;
+            document.getElementById('summaryDateText').textContent = formatDateTime(match.dateTime || match.kickoff || '');
+            document.getElementById('summaryVenueText').textContent = match.venue || match.location || '-';
+            document.getElementById('summaryCompetitionText').textContent = getCompetitionLabelJson(match);
+            document.getElementById('scoreA').value = match.homeScore == null ? 0 : Number(match.homeScore);
+            document.getElementById('scoreB').value = match.awayScore == null ? 0 : Number(match.awayScore);
+            const status = String(match.resultStatus || match.status || '').toLowerCase();
+            if (status.indexOf('confirm') !== -1) {
+                document.getElementById('matchStatus').value = 'confirmed';
+            } else if (status.indexOf('disput') !== -1) {
+                document.getElementById('matchStatus').value = 'disputed';
+            } else {
+                document.getElementById('matchStatus').value = 'finished';
+            }
+            document.getElementById('matchNotes').value = match.notes || match.report || '';
+            renderGoalEvents(match.goalEvents || []);
+            currentMatchId = String(match.id || '');
+        }
+
+        function resultStatusClass(status) {
+            const s = String(status || '').toLowerCase();
+            if (s.indexOf('confirm') !== -1 || s === 'completed') return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+            if (s.indexOf('disput') !== -1) return 'bg-hope-red/10 text-hope-red border-hope-red/20';
+            if (s.indexOf('finish') !== -1) return 'bg-hope-yellow/10 text-hope-yellow border-hope-yellow/20';
+            return 'bg-gray-100 text-gray-600 border-gray-200';
+        }
+
+        function renderResultListJson() {
+            const body = document.getElementById('resultListBody');
+            if (!body) return;
+            const keyword = String((document.getElementById('resultListSearchInput') || {}).value || '').trim().toLowerCase();
+            const statusFilter = String((document.getElementById('resultListStatusFilter') || {}).value || '').trim().toLowerCase();
+            const rows = matchesState.slice().filter(function (match) {
+                const home = getTeamNameById(match.homeTeamId || match.homeTeam || match.homeId).toLowerCase();
+                const away = getTeamNameById(match.awayTeamId || match.awayTeam || match.awayId).toLowerCase();
+                const venue = String(match.venue || match.location || '').toLowerCase();
+                const goals = Array.isArray(match.goalEvents) ? match.goalEvents : [];
+                const goalPlayers = goals.map(function (g) { return (g.playerName || g.player || '').toLowerCase(); }).join(' ');
+                const rowStatus = String(match.resultStatus || match.status || '').toLowerCase();
+                const byKeyword = !keyword || home.indexOf(keyword) !== -1 || away.indexOf(keyword) !== -1 || venue.indexOf(keyword) !== -1 || goalPlayers.indexOf(keyword) !== -1;
+                const byStatus = !statusFilter || rowStatus.indexOf(statusFilter) !== -1;
+                return byKeyword && byStatus;
+            }).sort(function (a, b) {
+                const ad = new Date(a.updatedAt || a.dateTime || 0).getTime();
+                const bd = new Date(b.updatedAt || b.dateTime || 0).getTime();
+                return bd - ad;
+            }).slice(0, 12);
+
+            if (!rows.length) {
+                body.innerHTML = '<tr><td colspan="6" class="px-6 py-6 text-sm text-gray-500">No results found.</td></tr>';
+                return;
+            }
+
+            body.innerHTML = rows.map(function (match) {
+                const home = getTeamNameById(match.homeTeamId || match.homeTeam || match.homeId);
+                const away = getTeamNameById(match.awayTeamId || match.awayTeam || match.awayId);
+                const hs = match.homeScore == null ? '-' : String(match.homeScore);
+                const as = match.awayScore == null ? '-' : String(match.awayScore);
+                const status = String(match.resultStatus || match.status || 'Pending');
+                const report = String(match.notes || match.report || '').trim();
+                const goalEvents = Array.isArray(match.goalEvents) ? match.goalEvents : [];
+                const competition = getCompetitionLabelJson(match);
+                const goalSummary = goalEvents.slice(0, 2).map(function (g) {
+                    const n = g.playerName || g.player || '';
+                    const t = g.kickTime || g.time || '';
+                    return (n || '-') + (t ? ' (' + t + ')' : '');
+                }).join(', ');
+                const venue = String(match.venue || match.location || '-');
+                return '' +
+                    '<tr class="hover:bg-gray-50 transition-colors">' +
+                    '<td class="px-6 py-3 text-sm font-semibold text-hope-dark">' + home + ' vs ' + away + '<div class="text-[10px] text-gray-400 font-bold uppercase tracking-wide mt-0.5">ID: ' + (match.id || '-') + '</div>' + '<div class="text-[10px] text-gray-400 font-bold uppercase tracking-wide mt-0.5">' + competition + '</div>' + (goalSummary ? '<div class="text-xs text-gray-500 font-medium mt-0.5">Goals: ' + goalSummary + '</div>' : '') + '</td>' +
+                    '<td class="px-6 py-3 text-center text-sm font-black text-hope-dark">' + hs + ' : ' + as + '</td>' +
+                    '<td class="px-6 py-3 text-sm text-gray-700"><div class="max-w-xs md:max-w-md">' + (report || '-') + '</div></td>' +
+                    '<td class="px-6 py-3 text-sm text-gray-700">' + formatDateTime(match.dateTime || match.kickoff || '') + '<div class="text-xs text-gray-500 font-medium mt-0.5">' + venue + '</div></td>' +
+                    '<td class="px-6 py-3"><span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide border ' + resultStatusClass(status) + '">' + status + '</span></td>' +
+                    '<td class="px-6 py-3 text-right"><button type="button" onclick="editResultMatch(\'' + String(match.id || '') + '\')" class="text-[10px] font-bold uppercase tracking-wide text-hope-cyan hover:text-sky-700">Update</button></td>' +
+                    '</tr>';
+            }).join('');
+        }
+
+        window.editResultMatch = function (matchId) {
+            const match = matchesState.find(function (m) { return String(m.id) === String(matchId); });
+            if (!match) return;
+            hydrateMatchJson(match);
+            const nextUrl = '/admin/admin-match-results.html?id=' + encodeURIComponent(String(match.id || ''));
+            if (window.location.search !== ('?id=' + encodeURIComponent(String(match.id || '')))) {
+                window.history.replaceState({}, '', nextUrl);
+            }
+            const form = document.getElementById('matchResultsForm');
+            if (form && typeof form.scrollIntoView === 'function') {
+                form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        };
+
+        function findCurrentMatchJson() {
+            const id = getQueryParam('id');
+            return matchesState.find(function (m) { return String(m.id) === String(id); }) || matchesState[0] || null;
+        }
+
+        async function initializeResultsWithJson() {
+            await window.AdminDataStore.bootstrap();
+            matchesState = window.AdminDataStore.getArray('matches', []);
+            teamsState = window.AdminDataStore.getArray('teams', []);
+            const match = findCurrentMatchJson();
+            if (!match) {
+                showNotifyJson('No match data found.', 'error');
+                return;
+            }
+            hydrateMatchJson(match);
+            renderResultListJson();
+            setAuthReadyJson();
+            const searchInput = document.getElementById('resultListSearchInput');
+            const statusInput = document.getElementById('resultListStatusFilter');
+            if (searchInput) searchInput.addEventListener('input', renderResultListJson);
+            if (statusInput) statusInput.addEventListener('change', renderResultListJson);
+            const addGoalBtn = document.getElementById('addGoalEventBtn');
+            if (addGoalBtn) {
+                addGoalBtn.addEventListener('click', function () {
+                    const body = document.getElementById('goalEventBody');
+                    if (!body) return;
+                    body.appendChild(createGoalEventRow('', ''));
+                });
+            }
+        }
+
+        document.getElementById('matchResultsForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submitBtn');
+            const originalContent = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'SAVING...';
+
+            try {
+                await window.AdminDataStore.bootstrap();
+                const matches = window.AdminDataStore.getArray('matches', []);
+                const idx = matches.findIndex(function (m) { return String(m.id) === String(currentMatchId); });
+                if (idx < 0) throw new Error('Match not found.');
+
+                matches[idx] = Object.assign({}, matches[idx], {
+                    homeScore: Number(document.getElementById('scoreA').value || 0),
+                    awayScore: Number(document.getElementById('scoreB').value || 0),
+                    resultStatus: document.getElementById('matchStatus').value,
+                    notes: document.getElementById('matchNotes').value.trim(),
+                    goalEvents: collectGoalEvents(),
+                    status: 'Completed',
+                    updatedAt: new Date().toISOString()
+                });
+
+                window.AdminDataStore.set('matches', matches);
+                matchesState = matches.slice();
+                renderResultListJson();
+                showNotifyJson('Match results saved successfully!', 'success');
+            } catch (err) {
+                showNotifyJson('Error saving match results.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalContent;
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', initializeResultsWithJson);
+    </script>
+    <script src="/admin/admin-sidebar-loader.js"></script>
 
 </body>
 

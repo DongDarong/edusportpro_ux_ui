@@ -11,6 +11,7 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="/admin/admin-data-store.js"></script>
 
     <script>
         tailwind.config = {
@@ -109,7 +110,7 @@
                 <h1 class="text-xl font-extrabold text-hope-dark tracking-tight">Player Profile</h1>
             </div>
             <div class="flex items-center gap-3">
-                <a href="/admin/admin-edit-player.html" class="hidden md:flex items-center gap-2 px-4 py-2 bg-hope-dark text-white rounded-xl text-sm font-bold shadow-lg shadow-slate-200 hover:bg-slate-800 transition-all">
+                <a id="editPlayerBtn" href="/admin/admin-create-player.html" class="hidden md:flex items-center gap-2 px-4 py-2 bg-hope-dark text-white rounded-xl text-sm font-bold shadow-lg shadow-slate-200 hover:bg-slate-800 transition-all">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
                     Edit Profile
                 </a>
@@ -125,16 +126,16 @@
         <!-- QUICK ACTIONS -->
         <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
             <div class="flex flex-wrap items-center gap-2">
-                <span class="px-3 py-1.5 rounded-full text-[11px] font-bold bg-hope-cyan/10 text-hope-cyan border border-hope-cyan/20">Profile Synced</span>
-                <span class="px-3 py-1.5 rounded-full text-[11px] font-bold bg-hope-lime/10 text-hope-lime border border-hope-lime/20">Eligible to Play</span>
-                <span class="px-3 py-1.5 rounded-full text-[11px] font-bold bg-white text-slate-500 border border-slate-200">Contract Valid</span>
+                <span id="chipProfileSync" class="px-3 py-1.5 rounded-full text-[11px] font-bold bg-hope-cyan/10 text-hope-cyan border border-hope-cyan/20">Profile Synced</span>
+                <span id="chipEligibility" class="px-3 py-1.5 rounded-full text-[11px] font-bold bg-hope-lime/10 text-hope-lime border border-hope-lime/20">Eligible to Play</span>
+                <span id="chipContract" class="px-3 py-1.5 rounded-full text-[11px] font-bold bg-white text-slate-500 border border-slate-200">Contract Valid</span>
             </div>
             <div class="flex items-center gap-2">
-                <button class="px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 text-sm font-bold hover:border-hope-cyan hover:text-hope-cyan transition-colors">Message Coach</button>
-                <button class="px-4 py-2 rounded-xl bg-hope-dark text-white text-sm font-bold hover:bg-slate-800 transition-colors">Open Timeline</button>
+                <button id="messageCoachBtn" class="px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 text-sm font-bold hover:border-hope-cyan hover:text-hope-cyan transition-colors">Message Coach</button>
+                <button id="openTimelineBtn" class="px-4 py-2 rounded-xl bg-hope-dark text-white text-sm font-bold hover:bg-slate-800 transition-colors">Open Timeline</button>
             </div>
         </div>
-        
+
         <div class="grid grid-cols-12 gap-8">
             
             <!-- LEFT COLUMN: AVATAR & QUICK STATS -->
@@ -149,7 +150,7 @@
                             <div class="w-32 h-32 rounded-3xl bg-white p-1.5 shadow-xl rotate-3 transform transition-transform hover:rotate-0">
                                 <div class="w-full h-full bg-slate-100 rounded-2xl flex items-center justify-center text-4xl font-black text-slate-300 overflow-hidden relative">
                                     <!-- Player Image Fallback -->
-                                    <span class="text-hope-cyan z-10">SK</span>
+                                    <span id="playerAvatarInitial" class="text-hope-cyan z-10">PL</span>
                                     <!-- Placeholder for real image if available -->
                                     <!-- <img src="..." class="absolute inset-0 w-full h-full object-cover" /> -->
                                 </div>
@@ -157,23 +158,23 @@
                         </div>
 
                         <div class="text-center">
-                            <h2 class="text-2xl font-black text-hope-dark leading-tight">Sok Kiri</h2>
-                            <p class="text-slate-500 font-medium text-sm mt-1 uppercase tracking-widest">Center Forward • U-19 Elite</p>
+                            <h2 id="playerNameTitle" class="text-2xl font-black text-hope-dark leading-tight">Player Name</h2>
+                            <p id="playerMetaLine" class="text-slate-500 font-medium text-sm mt-1 uppercase tracking-widest">Position • Team</p>
                             
                             <div class="flex items-center justify-center gap-2 mt-6">
-                                <span class="px-4 py-1.5 bg-emerald-50 text-emerald-600 text-[10px] font-black rounded-full border border-emerald-100/50 shadow-sm">ACTIVE PLAYER</span>
-                                <span class="px-4 py-1.5 bg-white text-slate-500 text-[10px] font-black rounded-full border border-slate-200 shadow-sm">ID: PLY-772</span>
+                                <span id="playerStatusBadge" class="px-4 py-1.5 bg-emerald-50 text-emerald-600 text-[10px] font-black rounded-full border border-emerald-100/50 shadow-sm">ACTIVE PLAYER</span>
+                                <span id="playerIdBadge" class="px-4 py-1.5 bg-white text-slate-500 text-[10px] font-black rounded-full border border-slate-200 shadow-sm">ID: -</span>
                             </div>
                         </div>
 
                         <div class="grid grid-cols-2 gap-4 mt-10">
                             <div class="p-4 bg-slate-50/50 rounded-2xl border border-white shadow-sm">
                                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Height</p>
-                                <p class="text-lg font-extrabold text-hope-dark">178 <span class="text-xs font-normal text-slate-400">cm</span></p>
+                                <p class="text-lg font-extrabold text-hope-dark"><span id="playerHeightValue">-</span> <span class="text-xs font-normal text-slate-400">cm</span></p>
                             </div>
                             <div class="p-4 bg-slate-50/50 rounded-2xl border border-white shadow-sm">
                                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Weight</p>
-                                <p class="text-lg font-extrabold text-hope-dark">72 <span class="text-xs font-normal text-slate-400">kg</span></p>
+                                <p class="text-lg font-extrabold text-hope-dark"><span id="playerWeightValue">-</span> <span class="text-xs font-normal text-slate-400">kg</span></p>
                             </div>
                         </div>
                     </div>
@@ -193,7 +194,7 @@
                             </div>
                             <div>
                                 <p class="text-[10px] font-bold text-slate-400 uppercase">Primary Email</p>
-                                <p class="text-sm font-semibold text-hope-dark">sok.player@esp.com</p>
+                                <p id="playerEmailText" class="text-sm font-semibold text-hope-dark">-</p>
                             </div>
                         </div>
                         <div class="flex items-center gap-4 group p-3 rounded-2xl hover:bg-slate-50 transition-colors cursor-default">
@@ -202,7 +203,7 @@
                             </div>
                             <div>
                                 <p class="text-[10px] font-bold text-slate-400 uppercase">Mobile Contact</p>
-                                <p class="text-sm font-semibold text-hope-dark">012 987 654</p>
+                                <p id="playerPhoneText" class="text-sm font-semibold text-hope-dark">-</p>
                             </div>
                         </div>
                     </div>
@@ -212,20 +213,20 @@
                 <div class="glass-card rounded-[2rem] p-6 shadow-glass">
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest">Health & Eligibility</h3>
-                        <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-1 rounded-full">Cleared</span>
+                        <span id="healthBadge" class="text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-1 rounded-full">Cleared</span>
                     </div>
                     <div class="space-y-3 text-sm">
                         <div class="flex items-center justify-between p-3 rounded-2xl bg-white/70 border border-slate-100">
                             <span class="text-slate-500 font-semibold">Medical Check</span>
-                            <span class="font-bold text-hope-dark">2026-01-10</span>
+                            <span id="medicalCheckText" class="font-bold text-hope-dark">-</span>
                         </div>
                         <div class="flex items-center justify-between p-3 rounded-2xl bg-white/70 border border-slate-100">
                             <span class="text-slate-500 font-semibold">Injury Status</span>
-                            <span class="font-bold text-emerald-600">No Active Injury</span>
+                            <span id="injuryStatusText" class="font-bold text-emerald-600">-</span>
                         </div>
                         <div class="flex items-center justify-between p-3 rounded-2xl bg-white/70 border border-slate-100">
                             <span class="text-slate-500 font-semibold">Registration</span>
-                            <span class="font-bold text-hope-dark">Valid Until 2026-12-31</span>
+                            <span id="registrationText" class="font-bold text-hope-dark">-</span>
                         </div>
                     </div>
                 </div>
@@ -241,7 +242,7 @@
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </div>
                         <div>
-                            <p class="text-3xl font-black text-hope-dark">24</p>
+                            <p id="statMatches" class="text-3xl font-black text-hope-dark">0</p>
                             <p class="text-xs font-bold text-slate-400 uppercase">Matches</p>
                         </div>
                     </div>
@@ -250,14 +251,14 @@
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                         </div>
                         <div>
-                            <p class="text-3xl font-black text-hope-dark">92<span class="text-base">%</span></p>
+                            <p class="text-3xl font-black text-hope-dark"><span id="statAttendance">0</span><span class="text-base">%</span></p>
                             <p class="text-xs font-bold text-slate-400 uppercase">Attendance</p>
                         </div>
                     </div>
                     <div class="stat-card glass-card p-6 rounded-3xl shadow-glass flex items-center gap-5 border-l-4 border-l-hope-yellow">
                         <div class="w-14 h-14 bg-hope-yellow/5 text-hope-yellow rounded-2xl flex items-center justify-center font-black text-xl">8.1</div>
                         <div>
-                            <p class="text-3xl font-black text-hope-dark">Elite</p>
+                            <p id="statTier" class="text-3xl font-black text-hope-dark">-</p>
                             <p class="text-xs font-bold text-slate-400 uppercase">Tier Status</p>
                         </div>
                     </div>
@@ -272,13 +273,12 @@
                         </div>
                         <div class="flex items-center gap-2">
                             <select class="hidden sm:block rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-600 outline-none focus:border-hope-cyan">
-                                <option>Season 2026</option>
-                                <option>Season 2025</option>
+                                <option id="seasonText">Season</option>
                             </select>
                             <div class="flex gap-1">
-                                <div class="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center text-[10px] text-white font-bold shadow-sm">W</div>
-                                <div class="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center text-[10px] text-white font-bold shadow-sm">W</div>
-                                <div class="w-6 h-6 rounded-md bg-amber-400 flex items-center justify-center text-[10px] text-white font-bold shadow-sm">D</div>
+                                <div id="formChip1" class="w-6 h-6 rounded-md bg-slate-300 flex items-center justify-center text-[10px] text-white font-bold shadow-sm">-</div>
+                                <div id="formChip2" class="w-6 h-6 rounded-md bg-slate-300 flex items-center justify-center text-[10px] text-white font-bold shadow-sm">-</div>
+                                <div id="formChip3" class="w-6 h-6 rounded-md bg-slate-300 flex items-center justify-center text-[10px] text-white font-bold shadow-sm">-</div>
                             </div>
                         </div>
                     </div>
@@ -292,30 +292,7 @@
                                     <th class="px-8 py-4 text-right">Rating</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-100/50">
-                                <tr class="group hover:bg-slate-50/50 transition-colors">
-                                    <td class="px-8 py-5">
-                                        <p class="font-bold text-sm text-hope-dark">Team A vs Team B</p>
-                                        <p class="text-[10px] text-slate-400 font-medium">May 14, 2024</p>
-                                    </td>
-                                    <td class="px-8 py-5 text-center font-bold text-slate-600">2</td>
-                                    <td class="px-8 py-5 text-center font-bold text-slate-600">1</td>
-                                    <td class="px-8 py-5 text-right">
-                                        <span class="px-3 py-1 bg-hope-lime text-white rounded-lg text-xs font-black shadow-sm shadow-hope-lime/20">8.4</span>
-                                    </td>
-                                </tr>
-                                <tr class="group hover:bg-slate-50/50 transition-colors">
-                                    <td class="px-8 py-5">
-                                        <p class="font-bold text-sm text-hope-dark">Team C vs Team A</p>
-                                        <p class="text-[10px] text-slate-400 font-medium">May 07, 2024</p>
-                                    </td>
-                                    <td class="px-8 py-5 text-center font-bold text-slate-600">1</td>
-                                    <td class="px-8 py-5 text-center font-bold text-slate-600">2</td>
-                                    <td class="px-8 py-5 text-right">
-                                        <span class="px-3 py-1 bg-hope-cyan text-white rounded-lg text-xs font-black shadow-sm shadow-hope-cyan/20">7.9</span>
-                                    </td>
-                                </tr>
-                            </tbody>
+                            <tbody id="recentFormBody" class="divide-y divide-slate-100/50"></tbody>
                         </table>
                     </div>
                 </div>
@@ -333,19 +310,19 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-8 gap-x-12">
                             <div>
                                 <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Full Legal Name</p>
-                                <p class="text-sm font-bold text-hope-dark">Sok Kiri</p>
+                                <p id="bioFullName" class="text-sm font-bold text-hope-dark">-</p>
                             </div>
                             <div>
                                 <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Date of Birth</p>
-                                <p class="text-sm font-bold text-hope-dark">12 Aug 2006</p>
+                                <p id="bioDob" class="text-sm font-bold text-hope-dark">-</p>
                             </div>
                             <div>
                                 <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Nationality</p>
-                                <p class="text-sm font-bold text-hope-dark">Cambodian</p>
+                                <p id="bioNationality" class="text-sm font-bold text-hope-dark">-</p>
                             </div>
                             <div class="md:col-span-3 pt-6 border-t border-slate-50 border-dashed">
                                 <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Residential Address</p>
-                                <p class="text-sm font-bold text-hope-dark">Svay Pak, Russey Keo, Phnom Penh</p>
+                                <p id="bioAddress" class="text-sm font-bold text-hope-dark">-</p>
                             </div>
                         </div>
                     </section>
@@ -359,12 +336,12 @@
                         <div class="bg-white/60 p-6 rounded-3xl border border-white shadow-soft">
                             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                                 <div>
-                                    <p class="text-sm font-extrabold text-hope-dark">Children’s Hope School</p>
-                                    <p class="text-xs text-slate-500 font-medium">Secondary Education Program</p>
+                                    <p id="educationSchool" class="text-sm font-extrabold text-hope-dark">-</p>
+                                    <p id="educationProgram" class="text-xs text-slate-500 font-medium">-</p>
                                 </div>
                                 <div class="px-5 py-2 bg-white rounded-2xl shadow-sm border border-slate-100 inline-flex items-center gap-2">
                                     <span class="text-[10px] font-black text-slate-400 uppercase">Grade</span>
-                                    <span class="text-lg font-black text-hope-lime">11</span>
+                                    <span id="educationGrade" class="text-lg font-black text-hope-lime">-</span>
                                 </div>
                             </div>
                         </div>
@@ -380,15 +357,15 @@
                             <div class="bg-white/60 p-6 rounded-3xl border border-slate-100 shadow-soft">
                                 <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Paternal Data</h4>
                                 <div class="space-y-2">
-                                    <p class="text-sm font-bold text-hope-dark">Sok Vannak</p>
-                                    <p class="text-xs text-slate-500">Occupation: Farmer</p>
+                                    <p id="fatherName" class="text-sm font-bold text-hope-dark">-</p>
+                                    <p id="fatherOccupation" class="text-xs text-slate-500">Occupation: -</p>
                                 </div>
                             </div>
                             <div class="bg-white/60 p-6 rounded-3xl border border-slate-100 shadow-soft">
                                 <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Maternal Data</h4>
                                 <div class="space-y-2">
-                                    <p class="text-sm font-bold text-hope-dark">Chan Srey</p>
-                                    <p class="text-xs text-slate-500">Occupation: Vendor</p>
+                                    <p id="motherName" class="text-sm font-bold text-hope-dark">-</p>
+                                    <p id="motherOccupation" class="text-xs text-slate-500">Occupation: -</p>
                                 </div>
                             </div>
                             <div class="md:col-span-2 bg-hope-dark p-6 rounded-3xl text-white shadow-xl shadow-slate-200 relative overflow-hidden">
@@ -396,10 +373,10 @@
                                 <div class="flex items-center justify-between relative z-10">
                                     <div>
                                         <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Primary Emergency Contact</p>
-                                        <p class="text-lg font-bold">012 987 654</p>
+                                        <p id="emergencyContactText" class="text-lg font-bold">-</p>
                                     </div>
                                     <div class="text-right">
-                                        <span class="px-4 py-1.5 bg-white/10 rounded-xl text-[10px] font-black uppercase border border-white/10">Verified Guardian</span>
+                                        <span id="guardianBadge" class="px-4 py-1.5 bg-white/10 rounded-xl text-[10px] font-black uppercase border border-white/10">Verified Guardian</span>
                                     </div>
                                 </div>
                             </div>
@@ -423,10 +400,10 @@
                                      </div>
                                 </a>
                                 <div class="flex-1 min-w-0 mr-4">
-                                     <h4 class="text-sm font-bold text-hope-dark truncate">Contract_2024_2025_Signed.jpg</h4>
-                                     <p class="text-xs text-slate-400 font-medium">Uploaded 12 Aug 2024 • 2.4 MB</p>
+                                     <h4 id="documentNameText" class="text-sm font-bold text-hope-dark truncate">-</h4>
+                                     <p id="documentMetaText" class="text-xs text-slate-400 font-medium">-</p>
                                 </div>
-                                <div class="hidden sm:block px-3 py-1 rounded-lg bg-emerald-50 text-emerald-600 text-[10px] font-bold uppercase tracking-wider mr-4 border border-emerald-100">
+                                <div id="documentStatusText" class="hidden sm:block px-3 py-1 rounded-lg bg-emerald-50 text-emerald-600 text-[10px] font-bold uppercase tracking-wider mr-4 border border-emerald-100">
                                     Signed
                                 </div>
                                 <div class="flex gap-2">
@@ -465,6 +442,203 @@
     </div>
 
     <script>
+        function getQueryParam(name) {
+            const params = new URLSearchParams(window.location.search);
+            return params.get(name) || '';
+        }
+
+        function getPlayerName(player) {
+            return player.name || player.fullName || [player.firstName, player.lastName].filter(Boolean).join(' ') || player.id || 'Unknown Player';
+        }
+
+        function getPlayerTeamId(player) {
+            return player.teamId || player.team_id || player.teamID || (player.team && (player.team.id || player.team.teamId || player.team.team_id)) || '';
+        }
+
+        function getPlayerPosition(player) {
+            return player.position || player.role || player.playingPosition || 'N/A';
+        }
+
+        function statusBadgeClass(status) {
+            const s = String(status || '').toLowerCase();
+            if (s === 'injury' || s === 'injured') return 'bg-amber-50 text-amber-600 border-amber-100';
+            if (s === 'inactive' || s === 'suspended') return 'bg-red-50 text-red-600 border-red-100';
+            return 'bg-emerald-50 text-emerald-600 border-emerald-100/50';
+        }
+
+        function pickFirst() {
+            for (let i = 0; i < arguments.length; i += 1) {
+                const value = arguments[i];
+                const text = String(value == null ? '' : value).trim().toLowerCase();
+                if (value !== undefined && value !== null && text !== '' && text !== 'null' && text !== 'undefined') return value;
+            }
+            return '';
+        }
+
+        function readField(player, keys, fallback) {
+            const raw = (player && typeof player.rawForm === 'object' && player.rawForm) ? player.rawForm : {};
+            for (let i = 0; i < keys.length; i += 1) {
+                const key = keys[i];
+                const value = pickFirst(player[key], raw[key]);
+                if (value !== '') return value;
+            }
+            return fallback === undefined ? '' : fallback;
+        }
+
+        function normalizeDisplayValue(value, fallback) {
+            const safeFallback = fallback === undefined ? '-' : fallback;
+            if (value === undefined || value === null) return safeFallback;
+            const text = String(value).trim();
+            if (!text) return safeFallback;
+            if (text.toLowerCase() === 'null' || text.toLowerCase() === 'undefined') return safeFallback;
+            return text;
+        }
+
+        function setText(id, value, fallback) {
+            const el = document.getElementById(id);
+            if (el) el.textContent = normalizeDisplayValue(value, fallback);
+        }
+
+        function toDateLabel(value) {
+            if (!value) return '-';
+            const date = new Date(value);
+            if (Number.isNaN(date.getTime())) return String(value);
+            return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: '2-digit' });
+        }
+
+        function colorForFormResult(result) {
+            const r = String(result || '').toUpperCase();
+            if (r === 'W') return 'bg-emerald-500';
+            if (r === 'D') return 'bg-amber-400';
+            if (r === 'L') return 'bg-red-500';
+            return 'bg-slate-300';
+        }
+
+        function renderRecentFormRows(items) {
+            const tbody = document.getElementById('recentFormBody');
+            if (!tbody) return;
+            if (!items.length) {
+                tbody.innerHTML = '<tr><td colspan="4" class="px-8 py-6 text-center text-sm text-slate-400">No recent matches in JSON data.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = items.map(function (item) {
+                const fixture = item.fixture || item.match || item.opponent || '-';
+                const date = toDateLabel(item.date || item.matchDate || item.playedAt || '');
+                const goals = String(pickFirst(item.g, item.goals, 0));
+                const assists = String(pickFirst(item.a, item.assists, 0));
+                const rating = String(pickFirst(item.rating, item.score, '-'));
+                const color = Number(rating) >= 8 ? 'bg-hope-lime' : 'bg-hope-cyan';
+                return '' +
+                    '<tr class="group hover:bg-slate-50/50 transition-colors">' +
+                    '<td class="px-8 py-5"><p class="font-bold text-sm text-hope-dark">' + fixture + '</p><p class="text-[10px] text-slate-400 font-medium">' + date + '</p></td>' +
+                    '<td class="px-8 py-5 text-center font-bold text-slate-600">' + goals + '</td>' +
+                    '<td class="px-8 py-5 text-center font-bold text-slate-600">' + assists + '</td>' +
+                    '<td class="px-8 py-5 text-right"><span class="px-3 py-1 text-white rounded-lg text-xs font-black shadow-sm ' + color + '">' + rating + '</span></td>' +
+                    '</tr>';
+            }).join('');
+        }
+
+        async function hydratePlayerFromJson() {
+            await window.AdminDataStore.bootstrap();
+            const players = window.AdminDataStore.getArray('players', []);
+            const teams = window.AdminDataStore.getArray('teams', []);
+            const playerId = getQueryParam('id');
+            const player = players.find(function (p) { return String(p.id) === String(playerId); }) || players[0];
+            if (!player) return;
+
+            const name = getPlayerName(player);
+            const position = getPlayerPosition(player);
+            const team = teams.find(function (t) { return String(t.id) === String(getPlayerTeamId(player)); });
+            const teamName = team ? (team.name || team.teamName || team.id) : (player.teamName || 'Unassigned');
+            const status = player.status || 'Active';
+            const email = player.email || player.emailAddress || '-';
+            const phone = player.phone || player.phoneNumber || player.contact || '-';
+            const height = readField(player, ['heightCm', 'height', 'playerHeight'], '-');
+            const weight = readField(player, ['weightKg', 'weight', 'playerWeight'], '-');
+            const attendance = readField(player, ['attendance', 'attendancePercent'], 0);
+            const matches = readField(player, ['matches', 'matchCount'], 0);
+            const tier = readField(player, ['tier', 'tierStatus', 'level'], '-');
+            const season = readField(player, ['season'], 'Season');
+            const medicalCheck = readField(player, ['medicalCheckDate', 'medicalCheck'], '-');
+            const injury = readField(player, ['injuryStatus', 'injury'], 'No Data');
+            const registrationUntil = readField(player, ['registrationUntil', 'registrationExpiry', 'contractEndDate'], '-');
+            const eligibility = readField(player, ['eligibilityStatus', 'eligible'], 'Eligible to Play');
+            const contractStatus = readField(player, ['contractStatus'], 'Contract Valid');
+            const profileSync = readField(player, ['profileSyncStatus', 'syncStatus'], 'Profile Synced');
+            const dob = readField(player, ['dateOfBirth', 'dob', 'birthDate'], '-');
+            const nationality = readField(player, ['nationality'], '-');
+            const address = readField(player, ['address', 'residentialAddress'], '-');
+            const school = readField(player, ['schoolName', 'school'], '-');
+            const program = readField(player, ['educationProgram', 'program'], '-');
+            const grade = readField(player, ['gradeLevel', 'grade'], '-');
+            const fatherName = readField(player, ['fatherName', 'guardianFatherName'], '-');
+            const fatherJob = readField(player, ['fatherOccupation', 'guardianFatherOccupation'], '-');
+            const motherName = readField(player, ['motherName', 'guardianMotherName'], '-');
+            const motherJob = readField(player, ['motherOccupation', 'guardianMotherOccupation'], '-');
+            const emergency = readField(player, ['emergencyContact', 'emergencyPhone', 'guardianPhone'], '-');
+            const guardianVerified = readField(player, ['guardianVerified', 'verifiedGuardian'], 'Verified Guardian');
+            const documentName = readField(player, ['documentName', 'contractFileName'], 'No file');
+            const documentMeta = readField(player, ['documentMeta', 'contractMeta'], 'No document metadata');
+            const documentStatus = readField(player, ['documentStatus', 'contractStatus'], 'Pending');
+            const recentForm = Array.isArray(player.recentForm) ? player.recentForm : [];
+            const formSequence = readField(player, ['form', 'recentFormSummary'], '');
+            const formTokens = String(formSequence || '').toUpperCase().replace(/[^WDL]/g, '').split('').slice(0, 3);
+            const messageCoachLabel = readField(player, ['messageCoachLabel'], 'Message Coach');
+            const openTimelineLabel = readField(player, ['openTimelineLabel'], 'Open Timeline');
+
+            setText('playerAvatarInitial', name.split(' ').filter(Boolean).slice(0, 2).map(function (part) { return part.charAt(0).toUpperCase(); }).join('') || 'PL');
+            setText('playerNameTitle', name);
+            setText('playerMetaLine', position + ' • ' + teamName);
+            setText('playerStatusBadge', String(status).toUpperCase() + ' PLAYER');
+            document.getElementById('playerStatusBadge').className = 'px-4 py-1.5 text-[10px] font-black rounded-full border shadow-sm ' + statusBadgeClass(status);
+            setText('playerIdBadge', 'ID: ' + (player.id || '-'));
+            setText('playerEmailText', email);
+            setText('playerPhoneText', phone);
+            setText('playerHeightValue', String(height));
+            setText('playerWeightValue', String(weight));
+            setText('chipProfileSync', String(profileSync));
+            setText('chipEligibility', String(eligibility));
+            setText('chipContract', String(contractStatus));
+            setText('healthBadge', String(readField(player, ['healthBadge', 'healthStatus'], 'Cleared')));
+            setText('medicalCheckText', toDateLabel(medicalCheck));
+            setText('injuryStatusText', String(injury));
+            setText('registrationText', registrationUntil && registrationUntil !== '-' ? ('Valid Until ' + toDateLabel(registrationUntil)) : '-');
+            setText('statMatches', String(matches));
+            setText('statAttendance', String(attendance).replace('%', ''));
+            setText('statTier', String(tier));
+            setText('seasonText', String(season));
+            setText('bioFullName', name);
+            setText('bioDob', toDateLabel(dob));
+            setText('bioNationality', String(nationality));
+            setText('bioAddress', String(address));
+            setText('educationSchool', String(school));
+            setText('educationProgram', String(program));
+            setText('educationGrade', String(grade));
+            setText('fatherName', String(fatherName));
+            setText('fatherOccupation', 'Occupation: ' + String(fatherJob));
+            setText('motherName', String(motherName));
+            setText('motherOccupation', 'Occupation: ' + String(motherJob));
+            setText('emergencyContactText', String(emergency));
+            setText('guardianBadge', guardianVerified === true ? 'Verified Guardian' : String(guardianVerified || 'Verified Guardian'));
+            setText('documentNameText', String(documentName));
+            setText('documentMetaText', String(documentMeta));
+            setText('documentStatusText', String(documentStatus));
+            setText('messageCoachBtn', String(messageCoachLabel));
+            setText('openTimelineBtn', String(openTimelineLabel));
+            const chips = [document.getElementById('formChip1'), document.getElementById('formChip2'), document.getElementById('formChip3')];
+            chips.forEach(function (chip, idx) {
+                if (!chip) return;
+                const token = formTokens[idx] || '-';
+                chip.textContent = token;
+                chip.className = 'w-6 h-6 rounded-md ' + colorForFormResult(token) + ' flex items-center justify-center text-[10px] text-white font-bold shadow-sm';
+            });
+            renderRecentFormRows(recentForm);
+            document.getElementById('editPlayerBtn').href = '/admin/admin-create-player.html?edit=' + encodeURIComponent(String(player.id || ''));
+            document.title = name + ' | EduSportPro';
+
+        }
+
         function exportPlayerPDF() {
             // Simplified feedback for the prototype
             const btn = event.currentTarget;
@@ -516,6 +690,8 @@
                 closeImageModal();
             }
         });
+
+        document.addEventListener('DOMContentLoaded', hydratePlayerFromJson);
     </script>
 
 </body>

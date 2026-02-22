@@ -28,6 +28,9 @@ Admin menu is organized into:
   - Notifications, Profile
 - Competition Structure:
   - Tournament, Division
+- Admin sidebar implementation is centralized using:
+  - `admin/admin-sidebar-component.html` (shared menu markup)
+  - `admin/admin-sidebar-loader.js` (injects sidebar + applies active state)
 
 This structure supports top-down operations:
 1) Configure people and access ->
@@ -210,12 +213,15 @@ Main functions:
 Use-case:
 - Communication and exception tracking.
 
-4.20 admin/admin-tournament.html
+4.20 admin/admin-tournament-overview.html
+4.21 admin/create-tournament.html
 Purpose:
 - Tournament-level competition management.
 Main functions:
 - Tournament listing by type/status/season.
 - Tournament overview with linked competition context.
+- Tournament create form supports division multi-select using checkboxes
+  (U12, U14, U16, U18).
 Use-case:
 - Seasonal competition governance from setup to monitoring.
 
@@ -285,6 +291,8 @@ Admin section must ensure:
 - Current frontend is static-prototype oriented (mock interactions in several modules).
 - UI logic for scope-based calendar notifications exists and should be enforced server-side.
 - Backend procedure (`sp_create_calendar_event`) and mapping table (`calendar_event_teams`) are intended to operationalize admin targeting logic.
+- Admin pages use a shared sidebar component to keep menu links consistent
+  (including Tournament and Division).
 
 10. RECOMMENDED BACKEND ENFORCEMENT FOR ADMIN MODULE
 - Validate admin role on all write endpoints.

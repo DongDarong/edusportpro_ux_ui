@@ -11,6 +11,7 @@
 
     <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="/admin/admin-data-store.js"></script>
 
     <script>
         tailwind.config = {
@@ -147,12 +148,12 @@
     <main class="max-w-4xl mx-auto px-4 mt-12">
 
         <div class="mb-10 text-center">
-            <h2 class="text-3xl font-extrabold tracking-tight text-hope-dark">Create New User</h2>
+            <h2 id="formTitle" class="text-3xl font-extrabold tracking-tight text-hope-dark">Create New User</h2>
             <div class="w-16 h-1 bg-hope-cyan mx-auto mt-3 rounded-full"></div>
-            <p class="text-gray-500 mt-4">Define user credentials and access permissions for the platform.</p>
+            <p id="formSubtitle" class="text-gray-500 mt-4">Define user credentials and access permissions for the platform.</p>
         </div>
 
-        <form class="bg-white rounded-3xl shadow-soft border border-gray-100 overflow-hidden">
+        <form id="createUserForm" class="bg-white rounded-3xl shadow-soft border border-gray-100 overflow-hidden">
             
             <div class="p-8 md:p-12 space-y-12">
 
@@ -191,34 +192,34 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="md:col-span-2">
                             <label class="label-text">Full Name</label>
-                            <input type="text" placeholder="Enter full name" class="input-field">
+                            <input id="fullNameInput" type="text" placeholder="Enter full name" class="input-field">
                         </div>
 
                         <div>
                             <label class="label-text">Email Address</label>
-                            <input type="email" placeholder="Enter email address" class="input-field">
+                            <input id="emailInput" type="email" placeholder="Enter email address" class="input-field">
                         </div>
 
                         <div>
                             <label class="label-text">Phone Number</label>
-                            <input type="tel" placeholder="Enter phone number" class="input-field">
+                            <input id="phoneInput" type="tel" placeholder="Enter phone number" class="input-field">
                         </div>
 
                         <div>
                             <label class="label-text">User Role</label>
-                            <select class="input-field font-semibold">
-                                <option value="admin">Administrator</option>
-                                <option value="coach">Coach</option>
-                                <option value="player">Player</option>
+                            <select id="roleInput" class="input-field font-semibold">
+                                <option value="Admin">Administrator</option>
+                                <option value="Coach">Coach</option>
+                                <option value="Player">Player</option>
                             </select>
                         </div>
 
                         <div>
                             <label class="label-text">Account Status</label>
-                            <select class="input-field font-bold text-hope-lime">
-                                <option value="active">Active</option>
-                                <option value="pending">Pending Review</option>
-                                <option value="suspended" class="text-hope-red">Suspended</option>
+                            <select id="statusInput" class="input-field font-bold text-hope-lime">
+                                <option value="Active">Active</option>
+                                <option value="Pending">Pending Review</option>
+                                <option value="Suspended" class="text-hope-red">Suspended</option>
                             </select>
                         </div>
                     </div>
@@ -236,27 +237,27 @@
                         
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <label class="permission-card">
-                                <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-hope-cyan focus:ring-0">
+                                <input type="checkbox" data-permission="Manage Users" class="w-4 h-4 rounded border-gray-300 text-hope-cyan focus:ring-0">
                                 <span class="text-xs font-bold text-gray-500 uppercase">Manage Users</span>
                             </label>
                             <label class="permission-card">
-                                <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-hope-cyan focus:ring-0">
+                                <input type="checkbox" data-permission="Match Scheduling" class="w-4 h-4 rounded border-gray-300 text-hope-cyan focus:ring-0">
                                 <span class="text-xs font-bold text-gray-500 uppercase">Match Scheduling</span>
                             </label>
                             <label class="permission-card">
-                                <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-hope-cyan focus:ring-0">
+                                <input type="checkbox" data-permission="Team Management" class="w-4 h-4 rounded border-gray-300 text-hope-cyan focus:ring-0">
                                 <span class="text-xs font-bold text-gray-500 uppercase">Team Management</span>
                             </label>
                             <label class="permission-card">
-                                <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-hope-cyan focus:ring-0">
+                                <input type="checkbox" data-permission="Inventory Control" class="w-4 h-4 rounded border-gray-300 text-hope-cyan focus:ring-0">
                                 <span class="text-xs font-bold text-gray-500 uppercase">Inventory Control</span>
                             </label>
                             <label class="permission-card">
-                                <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-hope-cyan focus:ring-0">
+                                <input type="checkbox" data-permission="Attendance Logs" class="w-4 h-4 rounded border-gray-300 text-hope-cyan focus:ring-0">
                                 <span class="text-xs font-bold text-gray-500 uppercase">Attendance Logs</span>
                             </label>
                             <label class="permission-card">
-                                <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-hope-cyan focus:ring-0">
+                                <input type="checkbox" data-permission="Financial Reports" class="w-4 h-4 rounded border-gray-300 text-hope-cyan focus:ring-0">
                                 <span class="text-xs font-bold text-gray-500 uppercase">Financial Reports</span>
                             </label>
                         </div>
@@ -300,10 +301,13 @@
                     Discard Changes
                 </button>
                 <div class="flex gap-4">
+                    <button id="deleteUserBtn" type="button" class="hidden px-6 py-3 rounded-xl border border-red-200 text-hope-red text-xs font-bold hover:bg-red-50 transition-colors">
+                        Delete User
+                    </button>
                     <a href="/admin/admin-users.html" class="px-6 py-3 rounded-xl text-xs font-bold text-gray-500 hover:text-hope-dark transition-colors">
                         Cancel
                     </a>
-                    <button type="button" onclick="alert('User account successfully created.')" class="px-10 py-3 rounded-xl bg-hope-dark text-white text-xs font-bold hover:bg-black shadow-lg transition-all active:scale-95">
+                    <button id="submitUserBtn" type="submit" class="px-10 py-3 rounded-xl bg-hope-dark text-white text-xs font-bold hover:bg-black shadow-lg transition-all active:scale-95">
                         Create Account
                     </button>
                 </div>
@@ -343,6 +347,164 @@
                 icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>';
             }
         }
+
+        let editingUserId = '';
+
+        function buildUserId(existingUsers) {
+            const maxId = existingUsers.reduce(function (max, user) {
+                const raw = String(user.id || '');
+                const num = Number(raw.replace(/^U/, ''));
+                if (!Number.isFinite(num)) return max;
+                return Math.max(max, num);
+            }, 0);
+            return 'U' + String(maxId + 1).padStart(3, '0');
+        }
+
+        function getSelectedPermissions() {
+            return Array.from(document.querySelectorAll('input[data-permission]:checked')).map(function (input) {
+                return input.dataset.permission;
+            });
+        }
+
+        function setSelectedPermissions(permissions) {
+            const set = new Set(Array.isArray(permissions) ? permissions : []);
+            Array.from(document.querySelectorAll('input[data-permission]')).forEach(function (input) {
+                input.checked = set.has(input.dataset.permission);
+            });
+        }
+
+        function fillForm(user) {
+            document.getElementById('fullNameInput').value = user.name || '';
+            document.getElementById('emailInput').value = user.email || '';
+            document.getElementById('phoneInput').value = user.phone || '';
+            document.getElementById('roleInput').value = user.role || 'Admin';
+            document.getElementById('statusInput').value = user.status || 'Active';
+            setSelectedPermissions(user.permissions);
+        }
+
+        function readForm() {
+            return {
+                name: document.getElementById('fullNameInput').value.trim(),
+                email: document.getElementById('emailInput').value.trim(),
+                phone: document.getElementById('phoneInput').value.trim() || '-',
+                role: document.getElementById('roleInput').value,
+                status: document.getElementById('statusInput').value,
+                password: document.getElementById('password').value,
+                confirmPassword: document.getElementById('confirmPassword').value,
+                permissions: getSelectedPermissions()
+            };
+        }
+
+        function setEditMode() {
+            document.title = 'Update User | EduSportPro';
+            document.getElementById('formTitle').textContent = 'Update User';
+            document.getElementById('formSubtitle').textContent = 'Edit account details, permissions, or remove this user.';
+            document.getElementById('submitUserBtn').textContent = 'Update Account';
+            document.getElementById('deleteUserBtn').classList.remove('hidden');
+        }
+
+        async function handleCreateUserSubmit(event) {
+            event.preventDefault();
+            await window.AdminDataStore.bootstrap();
+
+            const form = readForm();
+
+            if (!form.name || !form.email) {
+                alert('Full name and email are required.');
+                return;
+            }
+            if (form.password || form.confirmPassword) {
+                if (form.password !== form.confirmPassword) {
+                    alert('Password and confirm password do not match.');
+                    return;
+                }
+            }
+
+            const users = window.AdminDataStore.getArray('users', []);
+            const emailExists = users.some(function (user) {
+                const isSameUser = editingUserId && String(user.id) === String(editingUserId);
+                return !isSameUser && String(user.email || '').toLowerCase() === form.email.toLowerCase();
+            });
+            if (emailExists) {
+                alert('A user with this email already exists.');
+                return;
+            }
+
+            if (editingUserId) {
+                const idx = users.findIndex(function (user) { return String(user.id) === String(editingUserId); });
+                if (idx < 0) {
+                    alert('User not found.');
+                    return;
+                }
+                users[idx] = Object.assign({}, users[idx], {
+                    name: form.name,
+                    email: form.email,
+                    role: form.role,
+                    status: form.status,
+                    phone: form.phone,
+                    permissions: form.permissions
+                });
+                window.AdminDataStore.set('users', users);
+                alert('User account updated successfully.');
+                window.location.href = '/admin/admin-users.html';
+                return;
+            }
+
+            const newUser = {
+                id: buildUserId(users),
+                name: form.name,
+                email: form.email,
+                role: form.role,
+                status: form.status,
+                phone: form.phone,
+                permissions: form.permissions
+            };
+
+            users.unshift(newUser);
+            window.AdminDataStore.set('users', users);
+            alert('User account successfully created.');
+            window.location.href = '/admin/admin-users.html';
+        }
+
+        async function handleDeleteUser() {
+            if (!editingUserId) return;
+            await window.AdminDataStore.bootstrap();
+            const users = window.AdminDataStore.getArray('users', []);
+            const current = users.find(function (user) { return String(user.id) === String(editingUserId); });
+            if (!current) {
+                alert('User not found.');
+                return;
+            }
+            const confirmed = window.confirm('Delete user "' + (current.name || current.id) + '"?');
+            if (!confirmed) return;
+            const nextUsers = users.filter(function (user) { return String(user.id) !== String(editingUserId); });
+            window.AdminDataStore.set('users', nextUsers);
+            alert('User deleted successfully.');
+            window.location.href = '/admin/admin-users.html';
+        }
+
+        async function initEditModeFromQuery() {
+            await window.AdminDataStore.bootstrap();
+            const params = new URLSearchParams(window.location.search);
+            const userId = params.get('edit');
+            if (!userId) return;
+
+            const users = window.AdminDataStore.getArray('users', []);
+            const user = users.find(function (item) {
+                return String(item.id) === String(userId);
+            });
+            if (!user) {
+                alert('User not found for update.');
+                return;
+            }
+            editingUserId = String(user.id);
+            fillForm(user);
+            setEditMode();
+        }
+
+        document.getElementById('createUserForm').addEventListener('submit', handleCreateUserSubmit);
+        document.getElementById('deleteUserBtn').addEventListener('click', handleDeleteUser);
+        initEditModeFromQuery();
     </script>
 
 </body>

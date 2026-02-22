@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Random Groups | EduSportPro</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="/admin/admin-data-store.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            hope: {
+              lime: '#8DC63F',
+              cyan: '#00AEEF',
+              red: '#ED1C24',
+              yellow: '#FDC116',
+              dark: '#1D1D1B',
+              light: '#f2f4f7',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background:
+        radial-gradient(circle at 5% 0%, rgba(0, 174, 239, 0.10), transparent 30%),
+        radial-gradient(circle at 100% 0%, rgba(141, 198, 63, 0.10), transparent 36%),
+        #f2f4f7;
+      color: #1D1D1B;
+      overflow-x: hidden;
+    }
+
+    .section-card {
+      position: relative;
+      border-color: #e6edf2 !important;
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.05);
+    }
+
+    .section-card::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      border-radius: 12px 0 0 12px;
+      background: linear-gradient(180deg, #00AEEF, #8DC63F);
+    }
+
+  </style>
+</head>
+
+<body class="antialiased h-screen flex flex-col">
+  <nav class="bg-white w-full shadow-sm border-b border-gray-200 flex items-center justify-between px-4 md:px-6 py-3 sticky top-0 z-50 shrink-0">
+    <div class="flex items-center gap-3">
+      <div class="w-15 h-12 md:w-25 md:h-15 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden border border-gray-100 shadow-sm shrink-0">
+        <img src="/images/logo.jpg" alt="Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-[10px] font-bold text-gray-400\'>HOPE</span>'">
+      </div>
+      <div class="hidden sm:block">
+        <div class="text-[10px] md:text-xs font-bold text-hope-dark uppercase tracking-tight leading-tight">Organization for Children's</div>
+        <div class="text-xs md:text-sm font-extrabold text-hope-cyan leading-none">Hope Foundation of Cambodia</div>
+      </div>
+    </div>
+    <div class="flex items-center gap-3 md:gap-6">
+      <a href="/admin/admin-notifications.html" class="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-hope-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+        <span class="absolute top-1 right-1 bg-hope-red text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">4</span>
+      </a>
+      <a href="/admin/admin-profile.html" class="flex items-center gap-2 md:gap-3 cursor-pointer pl-2 md:pl-4 border-l border-gray-200 hover:bg-gray-50 transition-colors rounded-r-lg p-1">
+        <div class="text-right hidden md:block">
+          <div class="text-sm font-semibold text-hope-dark">Admin User</div>
+          <div class="text-xs text-gray-500">Super Admin</div>
+        </div>
+        <div class="w-8 h-8 md:w-9 md:h-9 bg-hope-cyan rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm shrink-0">AU</div>
+      </a>
+    </div>
+  </nav>
+
+  <main class="p-4 md:p-8 overflow-y-auto w-full h-[calc(100vh-64px)]">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-4">
+        <div>
+          <h1 class="text-2xl md:text-3xl font-bold text-hope-dark">Random Groups (Admin)</h1>
+          <p class="text-gray-500 mt-1 text-sm md:text-base">Run system random draw and assign teams into groups automatically.</p>
+        </div>
+        <div class="w-full md:w-auto flex flex-col sm:flex-row gap-2">
+          <button id="runDivisionDrawBtn" class="w-full md:w-auto inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-hope-cyan hover:bg-sky-500 text-white font-semibold shadow-sm transition-colors">Run Random Draw</button>
+          <a href="/admin/admin-division.html" class="w-full md:w-auto inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-gray-100 hover:bg-gray-200 border border-gray-200 text-hope-dark font-medium">Back to Division</a>
+        </div>
+      </div>
+
+      <div class="section-card bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-6 mb-6">
+        <h2 class="text-lg md:text-xl font-bold text-hope-dark mb-4">Draw Settings</h2>
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+          <div class="md:col-span-2">
+            <label for="tournamentSelect" class="block text-sm font-medium text-gray-700 mb-1">Tournament</label>
+            <select id="tournamentSelect" class="w-full bg-white border border-gray-200 text-hope-dark text-sm rounded-lg px-3 py-2.5 outline-none focus:ring-hope-cyan focus:border-hope-cyan"></select>
+          </div>
+          <div>
+            <label for="divisionSelect" class="block text-sm font-medium text-gray-700 mb-1">Division</label>
+            <select id="divisionSelect" class="w-full bg-white border border-gray-200 text-hope-dark text-sm rounded-lg px-3 py-2.5 outline-none focus:ring-hope-cyan focus:border-hope-cyan"></select>
+          </div>
+          <div>
+            <label for="groupCountInput" class="block text-sm font-medium text-gray-700 mb-1">Number of Groups</label>
+            <input id="groupCountInput" type="number" min="2" max="8" value="3" class="w-full bg-white border border-gray-200 text-hope-dark text-sm rounded-lg px-3 py-2.5 outline-none focus:ring-hope-cyan focus:border-hope-cyan">
+          </div>
+          <div>
+            <label for="maxTeamsPerGroupInput" class="block text-sm font-medium text-gray-700 mb-1">Max Teams / Group</label>
+            <input id="maxTeamsPerGroupInput" type="number" min="1" max="50" value="4" class="w-full bg-white border border-gray-200 text-hope-dark text-sm rounded-lg px-3 py-2.5 outline-none focus:ring-hope-cyan focus:border-hope-cyan">
+          </div>
+        </div>
+        <div class="mt-3">
+          <button id="applyDrawSettingsBtn" class="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-hope-dark hover:bg-black text-white text-sm font-semibold shadow-sm transition-colors">Apply Settings</button>
+        </div>
+        <div id="activeTournamentLabel" class="text-xs text-gray-500 mt-3">Tournament: -</div>
+      </div>
+
+      <div id="group-lists" class="section-card scroll-mt-28 bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-6 mb-8">
+        <h2 class="text-xl md:text-2xl font-bold text-hope-dark mb-4">1. Group Lists</h2>
+        <div id="groupCardsContainer" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+      </div>
+
+      <div id="group-stage-spots" class="section-card scroll-mt-28 bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-6 mb-8">
+        <h2 class="text-xl md:text-2xl font-bold text-hope-dark mb-4">2. Group Stage Spots</h2>
+        <div class="rounded-lg border border-gray-100 bg-gray-50 p-4">
+          <p class="text-xs uppercase text-gray-500 mb-3">Group Stage Spot (Team Slots)</p>
+          <div class="overflow-x-auto">
+            <table class="min-w-full text-sm">
+              <thead>
+                <tr class="border-b border-gray-200">
+                  <th class="px-3 py-2 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Spot</th>
+                  <th class="px-3 py-2 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Team</th>
+                  <th class="px-3 py-2 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Division</th>
+                  <th class="px-3 py-2 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Group</th>
+                </tr>
+              </thead>
+              <tbody id="groupStageSpotBody" class="divide-y divide-gray-100">
+                <tr><td class="px-3 py-2 font-semibold text-hope-cyan">GS-01</td><td class="px-3 py-2">Team A</td><td class="px-3 py-2">-</td><td class="px-3 py-2">A</td></tr>
+                <tr><td class="px-3 py-2 font-semibold text-hope-cyan">GS-02</td><td class="px-3 py-2">Team B</td><td class="px-3 py-2">-</td><td class="px-3 py-2">A</td></tr>
+                <tr><td class="px-3 py-2 font-semibold text-hope-cyan">GS-03</td><td class="px-3 py-2">Team C</td><td class="px-3 py-2">-</td><td class="px-3 py-2">B</td></tr>
+                <tr><td class="px-3 py-2 font-semibold text-hope-cyan">GS-04</td><td class="px-3 py-2">Team D</td><td class="px-3 py-2">-</td><td class="px-3 py-2">B</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div id="coach-team-draw" class="section-card scroll-mt-28 bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-6 mb-4">
+        <h2 class="text-xl md:text-2xl font-bold text-hope-dark mb-4">3. Coach vs Team Draw</h2>
+        <div class="rounded-lg border border-gray-100 bg-gray-50 p-4">
+          <p class="text-xs uppercase text-gray-500 mb-3">Coach assignment from drawn teams</p>
+          <div class="overflow-x-auto">
+            <table class="min-w-full text-sm">
+              <thead>
+                <tr class="border-b border-gray-200">
+                  <th class="px-3 py-2 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Coach</th>
+                  <th class="px-3 py-2 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Competes With Team</th>
+                  <th class="px-3 py-2 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Division</th>
+                  <th class="px-3 py-2 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Group</th>
+                </tr>
+              </thead>
+              <tbody id="coachTeamDrawBody" class="divide-y divide-gray-100">
+                <tr><td class="px-3 py-2">Coach 1</td><td class="px-3 py-2">Team A</td><td class="px-3 py-2">-</td><td class="px-3 py-2">A</td></tr>
+                <tr><td class="px-3 py-2">Coach 2</td><td class="px-3 py-2">Team E</td><td class="px-3 py-2">-</td><td class="px-3 py-2">B</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+  </main>
+
+  <script id="randomGroupsSeedData" type="application/json">
+    {
+      "tournaments": [
+        { "id": "TRN-001", "name": "Spring Youth Cup" },
+        { "id": "TRN-002", "name": "Hope League" },
+        { "id": "TRN-003", "name": "Inter-Academy Championship" }
+      ],
+      "coaches": [
+        { "id": "C001", "name": "Coach Sok" },
+        { "id": "C002", "name": "Coach Dara" },
+        { "id": "C003", "name": "Coach Vanna" },
+        { "id": "C004", "name": "Coach Nita" }
+      ],
+      "teams": [
+        { "id": "T001", "name": "Team A", "division": "U12", "tournamentId": "TRN-001", "logo_image": "/images/logo.jpg" },
+        { "id": "T002", "name": "Team B", "division": "U12", "tournamentId": "TRN-001", "logo_image": "/images/logo.jpg" },
+        { "id": "T003", "name": "Team C", "division": "U12", "tournamentId": "TRN-001", "logo_image": "/images/logo.jpg" },
+        { "id": "T004", "name": "Team D", "division": "U12", "tournamentId": "TRN-001", "logo_image": "/images/logo.jpg" },
+        { "id": "T005", "name": "Team E", "division": "U14", "tournamentId": "TRN-002", "logo_image": "/images/logo.jpg" },
+        { "id": "T006", "name": "Team F", "division": "U14", "tournamentId": "TRN-002", "logo_image": "/images/logo.jpg" },
+        { "id": "T007", "name": "Team G", "division": "U14", "tournamentId": "TRN-003", "logo_image": "/images/logo.jpg" },
+        { "id": "T008", "name": "Team H", "division": "U14", "tournamentId": "TRN-003", "logo_image": "/images/logo.jpg" },
+        { "id": "T009", "name": "Team I", "division": "U16", "tournamentId": "TRN-003", "logo_image": "/images/logo.jpg" },
+        { "id": "T010", "name": "Team J", "division": "U16", "tournamentId": "TRN-002", "logo_image": "/images/logo.jpg" },
+        { "id": "T011", "name": "Team K", "division": "U16", "tournamentId": "TRN-001", "logo_image": "/images/logo.jpg" },
+        { "id": "T012", "name": "Team L", "division": "U16", "tournamentId": "TRN-002", "logo_image": "/images/logo.jpg" }
+      ]
+    }
+  </script>
+
+  <script>
+    const TEAM_KEY = 'edusportpro_teams';
+    const COACH_KEY = 'edusportpro_coaches';
+    const TOURNAMENT_KEY = 'edusportpro_tournaments';
+
+    const fallbackTeams = [
+      { id: 'T001', name: 'Team A' },
+      { id: 'T002', name: 'Team B' },
+      { id: 'T003', name: 'Team C' },
+      { id: 'T004', name: 'Team D' },
+      { id: 'T005', name: 'Team E' },
+      { id: 'T006', name: 'Team F' },
+      { id: 'T007', name: 'Team G' },
+      { id: 'T008', name: 'Team H' },
+      { id: 'T009', name: 'Team I' },
+      { id: 'T010', name: 'Team J' },
+      { id: 'T011', name: 'Team K' },
+      { id: 'T012', name: 'Team L' }
+    ];
+
+    const fallbackCoaches = [
+      { id: 'C001', name: 'Coach Sok' },
+      { id: 'C002', name: 'Coach Dara' },
+      { id: 'C003', name: 'Coach Vanna' },
+      { id: 'C004', name: 'Coach Nita' }
+    ];
+    const fallbackTournaments = [
+      { id: 'TRN-001', name: 'Spring Youth Cup' },
+      { id: 'TRN-002', name: 'Hope League' },
+      { id: 'TRN-003', name: 'Inter-Academy Championship' }
+    ];
+    const EMPTY_GROUPS = {};
+    let currentDrawState = {
+      groups: EMPTY_GROUPS,
+      coachAssignments: [],
+      groupOrder: []
+    };
+    let filteredTeams = [];
+    let currentSettings = {
+      tournamentId: '',
+      division: 'ALL',
+      groupCount: 3,
+      maxTeamsPerGroup: 4
+    };
+
+    function safeParse(input, fallback) {
+      try {
+        const parsed = JSON.parse(input);
+        return Array.isArray(parsed) ? parsed : fallback;
+      } catch (_) {
+        return fallback;
+      }
+    }
+
+    function getSeedData() {
+      const seedEl = document.getElementById('randomGroupsSeedData');
+      if (!seedEl || !seedEl.textContent) {
+        return { teams: [], coaches: [], tournaments: [] };
+      }
+      try {
+        const parsed = JSON.parse(seedEl.textContent);
+        return {
+          teams: Array.isArray(parsed.teams) ? parsed.teams : [],
+          coaches: Array.isArray(parsed.coaches) ? parsed.coaches : [],
+          tournaments: Array.isArray(parsed.tournaments) ? parsed.tournaments : []
+        };
+      } catch (_) {
+        return { teams: [], coaches: [], tournaments: [] };
+      }
+    }
+
+    function normalizeTeamName(team) {
+      return team.name || team.teamName || team.title || team.id || 'Unknown Team';
+    }
+
+    function normalizeCoachName(coach) {
+      return coach.name || coach.fullName || coach.coachName || coach.id || 'Unknown Coach';
+    }
+
+    function normalizeTournamentName(tournament) {
+      return tournament.name || tournament.title || tournament.tournamentName || tournament.id || 'Unnamed Tournament';
+    }
+
+    function normalizeTeamLogo(team) {
+      return team.logo_image || team.logo || team.logoUrl || team.image || '';
+    }
+
+    function getTeams() {
+      const seed = getSeedData();
+      if (seed.teams.length) return seed.teams;
+      const teams = window.AdminDataStore.getArray('teams', fallbackTeams);
+      return Array.isArray(teams) ? teams : fallbackTeams;
+    }
+
+    function getCoaches() {
+      const seed = getSeedData();
+      if (seed.coaches.length) return seed.coaches;
+      const coaches = window.AdminDataStore.getArray('coaches', fallbackCoaches);
+      return Array.isArray(coaches) ? coaches : fallbackCoaches;
+    }
+
+    function getTournaments() {
+      const seed = getSeedData();
+      if (seed.tournaments.length) return seed.tournaments;
+      const tournaments = window.AdminDataStore.getArray('tournaments', fallbackTournaments);
+      return Array.isArray(tournaments) ? tournaments : fallbackTournaments;
+    }
+
+    function getDivisionFromTeam(team) {
+      return team.division || team.divisionName || team.ageGroup || team.category || '';
+    }
+
+    function buildDivisionOptions(teams) {
+      const seen = {};
+      const values = [];
+      teams.forEach(function (team) {
+        const division = String(getDivisionFromTeam(team) || '').trim();
+        if (!division) return;
+        if (seen[division]) return;
+        seen[division] = true;
+        values.push(division);
+      });
+
+      if (!values.length) {
+        return ['U12', 'U14', 'U16', 'U18'];
+      }
+      return values.sort();
+    }
+
+    function shuffle(list) {
+      const arr = list.slice();
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const tmp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = tmp;
+      }
+      return arr;
+    }
+
+    function buildGroupKeys(groupCount) {
+      const keys = [];
+      for (let i = 0; i < groupCount; i += 1) {
+        keys.push(String.fromCharCode(65 + i));
+      }
+      return keys;
+    }
+
+    function splitGroups(teams, keys) {
+      const groups = {};
+      keys.forEach(function (key) { groups[key] = []; });
+      teams.forEach(function (team, idx) {
+        const key = keys[idx % keys.length];
+        groups[key].push(team);
+      });
+      return groups;
+    }
+
+    function getTeamEntryKey(team, idx) {
+      if (team && team.id) return String(team.id);
+      return 'team_' + String(idx);
+    }
+
+    function renderGroupCards(groups, groupOrder) {
+      const container = document.getElementById('groupCardsContainer');
+      if (!container) return;
+
+      const visibleGroups = groupOrder;
+
+      if (!visibleGroups.length) {
+        container.innerHTML = '<div class="rounded-lg border border-gray-100 p-4 bg-gray-50 text-sm text-gray-500">No groups available for selected filter.</div>';
+        return;
+      }
+
+      container.innerHTML = visibleGroups.map(function (groupName) {
+        const teams = groups[groupName] || [];
+        const teamMarkup = teams.length
+          ? teams.map(function (team) {
+              const division = getDivisionFromTeam(team) || '-';
+              const logo = normalizeTeamLogo(team);
+              const logoMarkup = logo
+                ? '<img src="' + logo + '" alt="' + normalizeTeamName(team) + ' logo" class="w-7 h-7 rounded-full object-cover border border-gray-200 shrink-0">'
+                : '<div class="w-7 h-7 rounded-full bg-gray-200 text-[10px] text-gray-500 font-bold flex items-center justify-center shrink-0">TM</div>';
+              return (
+                '<li class="flex items-center gap-2">' +
+                  logoMarkup +
+                  '<div class="min-w-0">' +
+                    '<p class="text-sm text-gray-800 truncate">' + normalizeTeamName(team) + '</p>' +
+                    '<p class="text-xs text-gray-500">Division: ' + division + '</p>' +
+                  '</div>' +
+                '</li>'
+              );
+            }).join('')
+          : '<li class="text-gray-500">No team</li>';
+        return (
+          '<div class="rounded-lg border border-gray-100 p-4 bg-gray-50">' +
+            '<p class="text-xs uppercase text-gray-500">Group ' + groupName + '</p>' +
+            '<ul class="mt-3 text-sm text-gray-700 space-y-1">' + teamMarkup + '</ul>' +
+          '</div>'
+        );
+      }).join('');
+    }
+
+    function renderGroupStageSpot(groups, groupOrder) {
+      const tbody = document.getElementById('groupStageSpotBody');
+      if (!tbody) return;
+
+      const rows = [];
+      let spotNo = 1;
+      groupOrder.forEach(function (groupName) {
+        groups[groupName].forEach(function (team) {
+          const spot = String(spotNo).padStart(2, '0');
+          rows.push(
+            '<tr>' +
+            '<td class="px-3 py-2 font-semibold text-hope-cyan">GS-' + spot + '</td>' +
+            '<td class="px-3 py-2"><div class="flex items-center gap-2">' +
+              (normalizeTeamLogo(team)
+                ? '<img src="' + normalizeTeamLogo(team) + '" alt="' + normalizeTeamName(team) + ' logo" class="w-6 h-6 rounded-full object-cover border border-gray-200 shrink-0">'
+                : '<div class="w-6 h-6 rounded-full bg-gray-200 text-[9px] text-gray-500 font-bold flex items-center justify-center shrink-0">TM</div>') +
+              '<span>' + normalizeTeamName(team) + '</span></div></td>' +
+            '<td class="px-3 py-2">' + (getDivisionFromTeam(team) || '-') + '</td>' +
+            '<td class="px-3 py-2">' + groupName + '</td>' +
+            '</tr>'
+          );
+          spotNo += 1;
+        });
+      });
+
+      tbody.innerHTML = rows.length ? rows.join('') : '<tr><td colspan="4" class="px-3 py-2 text-gray-500">No team slots available.</td></tr>';
+    }
+
+    function createCoachAssignments(coaches, groupEntries) {
+      if (!coaches.length || !groupEntries.length) return [];
+      const shuffledEntries = shuffle(groupEntries);
+      return coaches.map(function (coach, idx) {
+        const entry = shuffledEntries[idx % shuffledEntries.length];
+        return {
+          coach: coach,
+          team: entry.team,
+          group: entry.group
+        };
+      });
+    }
+
+    function renderCoachTeamDraw(assignments) {
+      const tbody = document.getElementById('coachTeamDrawBody');
+      if (!tbody) return;
+      if (!assignments.length) {
+        tbody.innerHTML = '<tr><td colspan="4" class="px-3 py-2 text-gray-500">No coach/team data available for draw.</td></tr>';
+        return;
+      }
+
+      const rows = assignments.map(function (assignment) {
+        return (
+          '<tr>' +
+          '<td class="px-3 py-2">' + normalizeCoachName(assignment.coach) + '</td>' +
+          '<td class="px-3 py-2"><div class="flex items-center gap-2">' +
+            (normalizeTeamLogo(assignment.team)
+              ? '<img src="' + normalizeTeamLogo(assignment.team) + '" alt="' + normalizeTeamName(assignment.team) + ' logo" class="w-6 h-6 rounded-full object-cover border border-gray-200 shrink-0">'
+              : '<div class="w-6 h-6 rounded-full bg-gray-200 text-[9px] text-gray-500 font-bold flex items-center justify-center shrink-0">TM</div>') +
+            '<span>' + normalizeTeamName(assignment.team) + '</span></div></td>' +
+          '<td class="px-3 py-2">' + (getDivisionFromTeam(assignment.team) || '-') + '</td>' +
+          '<td class="px-3 py-2">' + assignment.group + '</td>' +
+          '</tr>'
+        );
+      });
+      tbody.innerHTML = rows.join('');
+    }
+
+    function renderActiveTournamentLabel() {
+      const label = document.getElementById('activeTournamentLabel');
+      const tournamentSelect = document.getElementById('tournamentSelect');
+      const divisionSelect = document.getElementById('divisionSelect');
+      if (!label || !tournamentSelect || !divisionSelect) return;
+      const selectedText = tournamentSelect.options[tournamentSelect.selectedIndex]
+        ? tournamentSelect.options[tournamentSelect.selectedIndex].text
+        : '-';
+      const divisionText = divisionSelect.value === 'ALL' ? 'All Divisions' : divisionSelect.value;
+      label.textContent = 'Tournament: ' + selectedText + ' | Division: ' + divisionText;
+    }
+
+    function renderAllGroupViews() {
+      renderGroupCards(currentDrawState.groups, currentDrawState.groupOrder);
+      renderGroupStageSpot(currentDrawState.groups, currentDrawState.groupOrder);
+      renderCoachTeamDraw(currentDrawState.coachAssignments);
+    }
+
+    function filterTeamsByTournamentAndDivision(teams, tournamentId, division) {
+      let matched = teams;
+
+      if (tournamentId) {
+        matched = matched.filter(function (team) {
+          if (String(team.tournamentId || '') === tournamentId) return true;
+          if (String(team.tournament || '') === tournamentId) return true;
+          if (Array.isArray(team.tournamentIds) && team.tournamentIds.map(String).indexOf(tournamentId) !== -1) return true;
+          return false;
+        });
+      }
+
+      if (division && division !== 'ALL') {
+        matched = matched.filter(function (team) {
+          return String(getDivisionFromTeam(team) || '') === division;
+        });
+      }
+
+      return matched;
+    }
+
+    function resolveGroupCount(teamCount, baseGroupCount, maxTeamsPerGroup) {
+      if (!teamCount) return baseGroupCount;
+      const byLimit = Math.ceil(teamCount / maxTeamsPerGroup);
+      return Math.max(baseGroupCount, byLimit);
+    }
+
+    function readSettingsFromForm() {
+      const tournamentSelect = document.getElementById('tournamentSelect');
+      const divisionSelect = document.getElementById('divisionSelect');
+      const groupCountInput = document.getElementById('groupCountInput');
+      const maxTeamsPerGroupInput = document.getElementById('maxTeamsPerGroupInput');
+      const requestedCount = groupCountInput ? Number(groupCountInput.value) : 3;
+      const requestedMaxTeams = maxTeamsPerGroupInput ? Number(maxTeamsPerGroupInput.value) : 4;
+      const groupCount = Math.max(2, Math.min(8, Number.isFinite(requestedCount) ? requestedCount : 3));
+      const maxTeamsPerGroup = Math.max(1, Math.min(50, Number.isFinite(requestedMaxTeams) ? requestedMaxTeams : 4));
+
+      currentSettings = {
+        tournamentId: tournamentSelect ? tournamentSelect.value : '',
+        division: divisionSelect ? divisionSelect.value : 'ALL',
+        groupCount: groupCount,
+        maxTeamsPerGroup: maxTeamsPerGroup
+      };
+
+      if (groupCountInput) groupCountInput.value = String(groupCount);
+      if (maxTeamsPerGroupInput) maxTeamsPerGroupInput.value = String(maxTeamsPerGroup);
+      renderActiveTournamentLabel();
+    }
+
+    function populateTournamentSelect() {
+      const select = document.getElementById('tournamentSelect');
+      if (!select) return;
+      const tournaments = getTournaments();
+      select.innerHTML = tournaments.map(function (tournament) {
+        const value = String(tournament.id || normalizeTournamentName(tournament));
+        return '<option value="' + value + '">' + normalizeTournamentName(tournament) + '</option>';
+      }).join('');
+      if (select.options.length) {
+        select.selectedIndex = 0;
+      }
+    }
+
+    function populateDivisionSelect() {
+      const select = document.getElementById('divisionSelect');
+      if (!select) return;
+      const divisions = buildDivisionOptions(getTeams());
+      const options = ['<option value="ALL">All Divisions</option>']
+        .concat(divisions.map(function (division) {
+          return '<option value="' + division + '">' + division + '</option>';
+        }));
+      select.innerHTML = options.join('');
+      select.value = 'ALL';
+    }
+
+    function runDivisionRandomDraw() {
+      const allTeams = getTeams().map(function (t, idx) {
+        return Object.assign({ id: 'T' + String(idx + 1).padStart(3, '0') }, t);
+      });
+      filteredTeams = filterTeamsByTournamentAndDivision(allTeams, currentSettings.tournamentId, currentSettings.division);
+      let groupOrder = [];
+      let groups = {};
+
+      if (currentSettings.division === 'ALL') {
+        const divisions = {};
+        filteredTeams.forEach(function (team) {
+          const division = getDivisionFromTeam(team) || 'Uncategorized';
+          if (!divisions[division]) divisions[division] = [];
+          divisions[division].push(team);
+        });
+
+        Object.keys(divisions).sort().forEach(function (division) {
+          const effectiveGroupCount = resolveGroupCount(
+            divisions[division].length,
+            currentSettings.groupCount,
+            currentSettings.maxTeamsPerGroup
+          );
+          const divisionKeys = buildGroupKeys(effectiveGroupCount).map(function (key) {
+            return division + '-' + key;
+          });
+          const divisionGroups = splitGroups(shuffle(divisions[division]), divisionKeys);
+          groupOrder = groupOrder.concat(divisionKeys);
+          Object.keys(divisionGroups).forEach(function (groupName) {
+            groups[groupName] = divisionGroups[groupName];
+          });
+        });
+      } else {
+        const effectiveGroupCount = resolveGroupCount(
+          filteredTeams.length,
+          currentSettings.groupCount,
+          currentSettings.maxTeamsPerGroup
+        );
+        groupOrder = buildGroupKeys(effectiveGroupCount);
+        groups = splitGroups(shuffle(filteredTeams), groupOrder);
+      }
+
+      const entries = groupOrder.reduce(function (acc, groupName) {
+        return acc.concat(
+          groups[groupName].map(function (team) {
+            return { team: team, group: groupName };
+          })
+        );
+      }, []);
+      const coachAssignments = createCoachAssignments(getCoaches(), entries);
+
+      currentDrawState = {
+        groups: groups,
+        coachAssignments: coachAssignments,
+        groupOrder: groupOrder
+      };
+      renderAllGroupViews();
+    }
+
+    document.addEventListener('DOMContentLoaded', async function () {
+      await window.AdminDataStore.bootstrap();
+      populateTournamentSelect();
+      populateDivisionSelect();
+      readSettingsFromForm();
+      runDivisionRandomDraw();
+
+      const btn = document.getElementById('runDivisionDrawBtn');
+      if (btn) btn.addEventListener('click', runDivisionRandomDraw);
+      const applySettingsBtn = document.getElementById('applyDrawSettingsBtn');
+      if (applySettingsBtn) {
+        applySettingsBtn.addEventListener('click', function () {
+          readSettingsFromForm();
+          runDivisionRandomDraw();
+        });
+      }
+      const tournamentSelect = document.getElementById('tournamentSelect');
+      if (tournamentSelect) {
+        tournamentSelect.addEventListener('change', function () {
+          readSettingsFromForm();
+          runDivisionRandomDraw();
+        });
+      }
+      const divisionSelect = document.getElementById('divisionSelect');
+      if (divisionSelect) {
+        divisionSelect.addEventListener('change', function () {
+          readSettingsFromForm();
+          runDivisionRandomDraw();
+        });
+      }
+      renderAllGroupViews();
+    });
+
+  </script>
+</body>
+
+</html>

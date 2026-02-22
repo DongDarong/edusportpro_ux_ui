@@ -11,6 +11,7 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="/admin/admin-data-store.js"></script>
 
     <!-- Tailwind Configuration with Custom Brand Colors -->
     <script>
@@ -184,6 +185,16 @@
                         Matches
                     </a>
 
+                    <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-tournament-overview.html">
+                        <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8M12 17v4M7 4h10l-1 6H8L7 4zM5 4h14"></path></svg>
+                        Tournament
+                    </a>
+
+                    <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-division.html">
+                        <svg class="w-5 h-5 group-hover:text-hope-yellow transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"></path></svg>
+                        Division
+                    </a>
+
                     <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-training.html">
                         <svg class="w-5 h-5 group-hover:text-hope-red transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         Training
@@ -258,20 +269,22 @@
                 <!-- Search & Filter Bar -->
                 <div class="p-4 md:p-5 border-b border-gray-100 flex flex-col sm:flex-row gap-4 justify-between items-center bg-gray-50">
                     <div class="relative w-full sm:w-64">
-                        <input type="text" placeholder="Search by name or email..." class="w-full rounded-xl border-gray-300 border p-2.5 pl-10 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+                        <input id="userSearchInput" type="text" placeholder="Search by name or email..." class="w-full rounded-xl border-gray-300 border p-2.5 pl-10 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
                         <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </div>
                     <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                        <select class="w-full sm:w-32 bg-white border border-gray-300 text-gray-600 text-sm rounded-xl focus:ring-hope-cyan focus:border-hope-cyan block px-4 py-2.5 outline-none shadow-sm">
-                            <option>All Roles</option>
-                            <option>Admin</option>
-                            <option>Coach</option>
-                            <option>Player</option>
+                        <select id="userRoleFilter" class="w-full sm:w-32 bg-white border border-gray-300 text-gray-600 text-sm rounded-xl focus:ring-hope-cyan focus:border-hope-cyan block px-4 py-2.5 outline-none shadow-sm">
+                            <option value="">All Roles</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Coach">Coach</option>
+                            <option value="Player">Player</option>
                         </select>
-                        <select class="w-full sm:w-32 bg-white border border-gray-300 text-gray-600 text-sm rounded-xl focus:ring-hope-cyan focus:border-hope-cyan block px-4 py-2.5 outline-none shadow-sm">
-                            <option>All Status</option>
-                            <option>Active</option>
-                            <option>Inactive</option>
+                        <select id="userStatusFilter" class="w-full sm:w-32 bg-white border border-gray-300 text-gray-600 text-sm rounded-xl focus:ring-hope-cyan focus:border-hope-cyan block px-4 py-2.5 outline-none shadow-sm">
+                            <option value="">All Status</option>
+                            <option value="Active">Active</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="Suspended">Suspended</option>
                         </select>
                     </div>
                 </div>
@@ -290,89 +303,7 @@
                                 <th class="px-4 md:px-6 py-3 text-right text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap">Actions</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-100">
-                            <!-- User 1: Admin -->
-                            <tr class="hover:bg-hope-lime/5 transition-colors">
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-full bg-hope-cyan text-white text-xs font-bold flex-shrink-0 flex items-center justify-center">DD</div>
-                                        <div>
-                                            <div class="font-bold text-hope-dark">Dong Darong</div>
-                                            <div class="text-xs text-gray-500">dngdarong@gmail.com</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-xs font-medium text-hope-cyan">Admin</td>
-                                <!-- ADDED PERMISSION DATA -->
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-                                    <span class="text-[10px] font-semibold text-gray-600 bg-gray-100 px-2 py-0.5 rounded border border-gray-200 uppercase">Full Access</span>
-                                </td>
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-hope-lime/10 text-hope-lime border border-hope-lime/20">
-                                        Active
-                                    </span>
-                                </td>
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-600">010 123 456</td>
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-right space-x-2">
-                                    <button class="text-hope-yellow hover:text-yellow-600 text-xs font-semibold">Edit</button>
-                                    <button class="text-hope-red hover:text-red-700 text-xs font-semibold">Delete</button>
-                                </td>
-                            </tr>
-                            <!-- User 2: Coach -->
-                            <tr class="hover:bg-hope-lime/5 transition-colors">
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-full bg-hope-yellow text-white text-xs font-bold flex-shrink-0 flex items-center justify-center">CS</div>
-                                        <div>
-                                            <div class="font-bold text-hope-dark">Chan Sok</div>
-                                            <div class="text-xs text-gray-500">chansok@gmail.com</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-xs font-medium text-hope-yellow">Coach</td>
-                                <!-- ADDED PERMISSION DATA -->
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-                                    <span class="text-[10px] font-semibold text-gray-600 bg-gray-100 px-2 py-0.5 rounded border border-gray-200 uppercase">Matches, Teams</span>
-                                </td>
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-hope-red/10 text-hope-red border border-hope-red/20">
-                                        Suspended
-                                    </span>
-                                </td>
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-600">012 987 654</td>
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-right space-x-2">
-                                    <button class="text-hope-yellow hover:text-yellow-600 text-xs font-semibold">Edit</button>
-                                    <button class="text-hope-red hover:text-red-700 text-xs font-semibold">Delete</button>
-                                </td>
-                            </tr>
-                            <!-- User 3: Player (Pending) -->
-                            <tr class="hover:bg-hope-lime/5 transition-colors">
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-full bg-hope-red text-white text-xs font-bold flex-shrink-0 flex items-center justify-center">CV</div>
-                                        <div>
-                                            <div class="font-bold text-hope-dark">Chan Vath</div>
-                                            <div class="text-xs text-gray-500">chanvath@gmail.com</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-xs font-medium text-hope-red">Player</td>
-                                <!-- ADDED PERMISSION DATA -->
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-                                    <span class="text-[10px] font-semibold text-gray-600 bg-gray-100 px-2 py-0.5 rounded border border-gray-200 uppercase">View Only</span>
-                                </td>
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-hope-gray/10 text-hope-gray border border-hope-gray/20">
-                                        Pending
-                                    </span>
-                                </td>
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-600">098 765 432</td>
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-right space-x-2">
-                                    <button class="text-hope-yellow hover:text-yellow-600 text-xs font-semibold">Edit</button>
-                                    <button class="text-hope-red hover:text-red-700 text-xs font-semibold">Delete</button>
-                                </td>
-                            </tr>
-                        </tbody>
+                        <tbody id="usersTableBody" class="divide-y divide-gray-100"></tbody>
                     </table>
                 </div>
 
@@ -567,56 +498,197 @@
             }
         });
 
-        // Simple client-side pagination for Users table
-        (function () {
-            const rowsPerPage = 10;
-            let currentPage = 1;
-            const tableBody = document.querySelector('table tbody');
+        const USERS_KEY = 'users';
+        const USER_PAGE_SIZE = 10;
+        let usersState = [];
+        let filteredUsersState = [];
+        let usersCurrentPage = 1;
+
+        function normalizeList(input) {
+            return Array.isArray(input) ? input : [];
+        }
+
+        function getRoleClass(role) {
+            const normalized = String(role || '').toLowerCase();
+            if (normalized === 'admin') return 'text-hope-cyan';
+            if (normalized === 'coach') return 'text-hope-yellow';
+            if (normalized === 'player') return 'text-hope-red';
+            return 'text-gray-600';
+        }
+
+        function getStatusChip(status) {
+            const normalized = String(status || '').toLowerCase();
+            if (normalized === 'active') return 'bg-hope-lime/10 text-hope-lime border-hope-lime/20';
+            if (normalized === 'pending') return 'bg-gray-100 text-gray-700 border-gray-200';
+            if (normalized === 'inactive') return 'bg-hope-red/10 text-hope-red border-hope-red/20';
+            if (normalized === 'suspended') return 'bg-hope-red/10 text-hope-red border-hope-red/20';
+            return 'bg-gray-100 text-gray-700 border-gray-200';
+        }
+
+        function getInitials(name) {
+            const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+            if (!parts.length) return 'NA';
+            return parts.slice(0, 2).map(function (p) { return p.charAt(0).toUpperCase(); }).join('');
+        }
+
+        function getInitialBadgeClass(role) {
+            const normalized = String(role || '').toLowerCase();
+            if (normalized === 'admin') return 'bg-hope-cyan';
+            if (normalized === 'coach') return 'bg-hope-yellow';
+            if (normalized === 'player') return 'bg-hope-red';
+            return 'bg-gray-400';
+        }
+
+        function normalizeRole(input) {
+            const value = String(input || '').trim().toLowerCase();
+            if (value === 'admin' || value === 'administrator') return 'Admin';
+            if (value === 'coach') return 'Coach';
+            if (value === 'player') return 'Player';
+            return '';
+        }
+
+        function normalizeStatus(input) {
+            const value = String(input || '').trim().toLowerCase();
+            if (value === 'active') return 'Active';
+            if (value === 'pending' || value === 'pending review') return 'Pending';
+            if (value === 'inactive') return 'Inactive';
+            if (value === 'suspended') return 'Suspended';
+            return '';
+        }
+
+        function saveUsersState() {
+            window.AdminDataStore.set(USERS_KEY, usersState);
+        }
+
+        function renderUsersTablePage() {
+            const tableBody = document.getElementById('usersTableBody');
             const pageInfo = document.getElementById('paginationInfo');
             const pageButtons = document.getElementById('pageButtons');
             const prevBtn = document.getElementById('prevPage');
             const nextBtn = document.getElementById('nextPage');
-
             if (!tableBody || !pageInfo || !pageButtons) return;
 
-            const rows = Array.from(tableBody.querySelectorAll('tr'));
-            const totalItems = rows.length;
+            const totalItems = filteredUsersState.length;
+            const totalPages = Math.max(1, Math.ceil(totalItems / USER_PAGE_SIZE));
+            if (usersCurrentPage > totalPages) usersCurrentPage = totalPages;
+            const start = (usersCurrentPage - 1) * USER_PAGE_SIZE;
+            const end = Math.min(start + USER_PAGE_SIZE, totalItems);
+            const pageRows = filteredUsersState.slice(start, end);
 
-            function render() {
-                const totalPages = Math.max(1, Math.ceil(totalItems / rowsPerPage));
-                if (currentPage > totalPages) currentPage = totalPages;
-                window.__usersCurrentPage = currentPage;
-
-                const start = (currentPage - 1) * rowsPerPage;
-                const end = Math.min(start + rowsPerPage, totalItems);
-
-                rows.forEach((r, i) => r.style.display = (i >= start && i < end) ? '' : 'none');
-
-                pageInfo.textContent = totalItems === 0 ? 'No users to display.' : `Showing ${totalItems === 0 ? 0 : start + 1} to ${end} of ${totalItems} Users.`;
-
-                // render page buttons
-                pageButtons.innerHTML = '';
-                for (let i = 1; i <= totalPages; i++) {
-                    const btn = document.createElement('button');
-                    btn.type = 'button';
-                    btn.textContent = i;
-                    btn.className = 'px-3 py-1 rounded-md text-sm font-medium ' + (i === currentPage ? 'bg-hope-cyan text-white' : 'bg-white border border-gray-200 text-gray-700');
-                    btn.addEventListener('click', () => { currentPage = i; render(); });
-                    pageButtons.appendChild(btn);
-                }
-
-                if (prevBtn) prevBtn.disabled = currentPage === 1;
-                if (nextBtn) nextBtn.disabled = currentPage === totalPages;
+            if (!pageRows.length) {
+                tableBody.innerHTML = '<tr><td colspan="6" class="px-4 md:px-6 py-6 text-sm text-gray-500">No users found.</td></tr>';
+            } else {
+                tableBody.innerHTML = pageRows.map(function (user) {
+                    const userId = String(user.id || '');
+                    const role = user.role || '-';
+                    const status = user.status || 'Inactive';
+                    const permissions = normalizeList(user.permissions).join(', ') || 'View Only';
+                    const phone = user.phone || '-';
+                    const name = user.name || 'Unknown User';
+                    const email = user.email || '-';
+                    return (
+                        '<tr class="hover:bg-hope-lime/5 transition-colors">' +
+                        '<td class="px-4 md:px-6 py-4 whitespace-nowrap"><div class="flex items-center gap-3">' +
+                        '<div class="w-8 h-8 rounded-full ' + getInitialBadgeClass(role) + ' text-white text-xs font-bold flex-shrink-0 flex items-center justify-center">' + getInitials(name) + '</div>' +
+                        '<div><div class="font-bold text-hope-dark">' + name + '</div><div class="text-xs text-gray-500">' + email + '</div></div>' +
+                        '</div></td>' +
+                        '<td class="px-4 md:px-6 py-4 whitespace-nowrap text-xs font-medium ' + getRoleClass(role) + '">' + role + '</td>' +
+                        '<td class="px-4 md:px-6 py-4 whitespace-nowrap"><span class="text-[10px] font-semibold text-gray-600 bg-gray-100 px-2 py-0.5 rounded border border-gray-200 uppercase">' + permissions + '</span></td>' +
+                        '<td class="px-4 md:px-6 py-4 whitespace-nowrap"><span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ' + getStatusChip(status) + '">' + status + '</span></td>' +
+                        '<td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-600">' + phone + '</td>' +
+                        '<td class="px-4 md:px-6 py-4 whitespace-nowrap text-right space-x-2"><button type="button" onclick="goToUpdateUser(\'' + userId + '\')" class="text-hope-yellow hover:text-yellow-600 text-xs font-semibold">Update</button><button type="button" onclick="deleteUser(\'' + userId + '\')" class="text-hope-red hover:text-red-700 text-xs font-semibold">Delete</button></td>' +
+                        '</tr>'
+                    );
+                }).join('');
             }
 
-            window.changePage = function (n) {
-                const totalPages = Math.max(1, Math.ceil(totalItems / rowsPerPage));
-                currentPage = Math.max(1, Math.min(n, totalPages));
-                render();
-            };
+            pageInfo.textContent = totalItems === 0
+                ? 'No users to display.'
+                : 'Showing ' + (start + 1) + ' to ' + end + ' of ' + totalItems + ' Users.';
 
-            render();
-        })();
+            pageButtons.innerHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = i;
+                btn.className = 'px-3 py-1 rounded-md text-sm font-medium ' + (i === usersCurrentPage ? 'bg-hope-cyan text-white' : 'bg-white border border-gray-200 text-gray-700');
+                btn.addEventListener('click', function () {
+                    usersCurrentPage = i;
+                    renderUsersTablePage();
+                });
+                pageButtons.appendChild(btn);
+            }
+
+            if (prevBtn) prevBtn.disabled = usersCurrentPage === 1;
+            if (nextBtn) nextBtn.disabled = usersCurrentPage === totalPages;
+            window.__usersCurrentPage = usersCurrentPage;
+        }
+
+        function applyUsersFilter(resetPage) {
+            const searchInput = document.getElementById('userSearchInput');
+            const roleFilter = document.getElementById('userRoleFilter');
+            const statusFilter = document.getElementById('userStatusFilter');
+
+            const search = String(searchInput ? searchInput.value : '').trim().toLowerCase();
+            const role = String(roleFilter ? roleFilter.value : '');
+            const status = String(statusFilter ? statusFilter.value : '');
+
+            filteredUsersState = usersState.filter(function (user) {
+                const name = String(user.name || '').toLowerCase();
+                const email = String(user.email || '').toLowerCase();
+                const bySearch = !search || name.indexOf(search) !== -1 || email.indexOf(search) !== -1;
+                const byRole = !role || String(user.role || '') === role;
+                const byStatus = !status || String(user.status || '') === status;
+                return bySearch && byRole && byStatus;
+            });
+
+            if (resetPage) usersCurrentPage = 1;
+            renderUsersTablePage();
+        }
+
+        async function loadUsersFromJson() {
+            await window.AdminDataStore.bootstrap();
+            usersState = normalizeList(window.AdminDataStore.getArray(USERS_KEY, [])).map(function (user, idx) {
+                return Object.assign({ id: user.id || ('USR-' + String(idx + 1).padStart(3, '0')) }, user);
+            });
+            filteredUsersState = usersState.slice();
+            applyUsersFilter(true);
+        }
+
+        window.goToUpdateUser = function (userId) {
+            if (!userId) return;
+            window.location.href = '/admin/admin-user-create.html?edit=' + encodeURIComponent(String(userId));
+        };
+
+        window.deleteUser = function (userId) {
+            const user = usersState.find(function (item) {
+                return String(item.id) === String(userId);
+            });
+            if (!user) return;
+            const confirmed = window.confirm('Delete user "' + (user.name || user.id) + '"?');
+            if (!confirmed) return;
+            usersState = usersState.filter(function (item) {
+                return String(item.id) !== String(userId);
+            });
+            saveUsersState();
+            applyUsersFilter(false);
+        };
+
+        window.changePage = function (n) {
+            const totalPages = Math.max(1, Math.ceil(filteredUsersState.length / USER_PAGE_SIZE));
+            usersCurrentPage = Math.max(1, Math.min(n, totalPages));
+            renderUsersTablePage();
+        };
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('userSearchInput');
+            const roleFilter = document.getElementById('userRoleFilter');
+            const statusFilter = document.getElementById('userStatusFilter');
+            if (searchInput) searchInput.addEventListener('input', function () { applyUsersFilter(true); });
+            if (roleFilter) roleFilter.addEventListener('change', function () { applyUsersFilter(true); });
+            if (statusFilter) statusFilter.addEventListener('change', function () { applyUsersFilter(true); });
+            loadUsersFromJson();
+        });
 
         // Profile image preview for Add User modal
         (function () {
@@ -645,6 +717,7 @@
             });
         })();
     </script>
+    <script src="/admin/admin-sidebar-loader.js"></script>
 
 </body>
 

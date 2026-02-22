@@ -11,6 +11,7 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/admin/admin-data-store.js"></script>
 
   <!-- Tailwind Configuration with Custom Brand Colors -->
   <script>
@@ -182,6 +183,16 @@
                         Matches
                     </a>
 
+                    <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-tournament-overview.html">
+                      <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8M12 17v4M7 4h10l-1 6H8L7 4zM5 4h14"></path></svg>
+                      Tournament
+                    </a>
+
+                    <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-division.html">
+                      <svg class="w-5 h-5 group-hover:text-hope-yellow transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"></path></svg>
+                      Division
+                    </a>
+
                     <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-training.html">
                       <svg class="w-5 h-5 group-hover:text-hope-red transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         Training
@@ -252,24 +263,25 @@
 
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
-            <input type="date" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+            <input id="perfDate" type="date" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
           </div>
 
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Session Type</label>
-            <select class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
-              <option>Match</option>
-              <option>Training</option>
+            <select id="perfSessionType" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+              <option value="match">Match</option>
+              <option value="training">Training</option>
             </select>
           </div>
 
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Opponent (Match)</label>
-            <input type="text" placeholder="e.g. Team C" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+            <label id="perfOpponentLabel" class="block text-sm font-medium text-gray-700 mb-1">Opponent (Match)</label>
+            <input id="perfOpponent" list="teamSearchOptions" type="text" placeholder="Search team name..." class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+            <datalist id="teamSearchOptions"></datalist>
           </div>
 
           <div class="flex items-end">
-             <button class="w-full bg-hope-cyan hover:bg-sky-500 text-white py-2.5 rounded-lg shadow-sm transition-colors font-medium flex items-center justify-center gap-2">
+             <button id="loadPlayersBtn" type="button" class="w-full bg-hope-cyan hover:bg-sky-500 text-white py-2.5 rounded-lg shadow-sm transition-colors font-medium flex items-center justify-center gap-2">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
               Load Players
             </button>
@@ -286,7 +298,7 @@
         
         <div class="p-4 md:p-5 border-b border-gray-100 flex items-center gap-2 bg-gray-50">
            <h2 class="text-base md:text-lg font-bold text-hope-dark">Performance Data</h2>
-           <span class="text-xs text-gray-400">| Dec 20, 2025 vs Team C</span>
+           <span id="performanceSessionMeta" class="text-xs text-gray-400">| No session loaded</span>
         </div>
 
         <div class="overflow-x-auto">
@@ -304,117 +316,17 @@
               </tr>
             </thead>
             
-            <tbody class="bg-white divide-y divide-gray-100">
-
-              <!-- Player 1 -->
-              <tr class="hover:bg-gray-50 transition-colors">
-                <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-                  <div class="flex items-center gap-3">
-                     <div class="h-10 w-10 rounded-full bg-hope-lime/10 flex items-center justify-center text-hope-lime font-bold text-sm border border-hope-lime/20 shrink-0">RS</div>
-                    <div>
-                      <div class="text-sm font-medium text-gray-900">Rina Seng</div>
-                      <div class="text-xs text-gray-500">#10</div>
-                    </div>
-                  </div>
-                </td>
-                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-500">Forward</td>
-                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-center">
-                   <input type="number" min="0" value="0" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-hope-cyan focus:ring-hope-cyan outline-none transition-all">
-                </td>
-                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-center">
-                   <input type="number" min="0" value="0" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-hope-cyan focus:ring-hope-cyan outline-none transition-all">
-                </td>
-                 <!-- Yellow Cards -->
-                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-center">
-                   <input type="number" min="0" value="0" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-yellow-400 focus:ring-yellow-400 outline-none transition-all">
-                </td>
-                 <!-- Red Cards -->
-                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-center">
-                   <input type="number" min="0" value="0" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-red-500 focus:ring-red-500 outline-none transition-all">
-                </td>
-                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-center">
-                   <input type="number" min="1" max="10" placeholder="-" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-hope-cyan focus:ring-hope-cyan outline-none transition-all">
-                </td>
-                <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-                   <input type="text" placeholder="Add comments..." class="w-full min-w-[200px] rounded-lg border-gray-200 border py-1.5 px-3 text-sm focus:border-hope-cyan focus:ring-hope-cyan outline-none bg-gray-50 focus:bg-white transition-colors">
-                </td>
+            <tbody id="performanceTableBody" class="bg-white divide-y divide-gray-100">
+              <tr>
+                <td colspan="8" class="px-6 py-8 text-center text-sm text-gray-400 italic">Choose date/session and click Load Players.</td>
               </tr>
-
-              <!-- Player 2 -->
-              <tr class="hover:bg-gray-50 transition-colors">
-                <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-                  <div class="flex items-center gap-3">
-                     <div class="h-10 w-10 rounded-full bg-hope-cyan/10 flex items-center justify-center text-hope-cyan font-bold text-sm border border-hope-cyan/20 shrink-0">SR</div>
-                    <div>
-                      <div class="text-sm font-medium text-gray-900">Sok Rith</div>
-                      <div class="text-xs text-gray-500">#08</div>
-                    </div>
-                  </div>
-                </td>
-                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-500">Midfielder</td>
-                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-center">
-                   <input type="number" min="0" value="0" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-hope-cyan focus:ring-hope-cyan outline-none transition-all">
-                </td>
-                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-center">
-                   <input type="number" min="0" value="0" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-hope-cyan focus:ring-hope-cyan outline-none transition-all">
-                </td>
-                 <!-- Yellow Cards -->
-                 <td class="px-4 md:px-6 py-4 whitespace-nowrap text-center">
-                   <input type="number" min="0" value="0" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-yellow-400 focus:ring-yellow-400 outline-none transition-all">
-                </td>
-                 <!-- Red Cards -->
-                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-center">
-                   <input type="number" min="0" value="0" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-red-500 focus:ring-red-500 outline-none transition-all">
-                </td>
-                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-center">
-                   <input type="number" min="1" max="10" placeholder="-" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-hope-cyan focus:ring-hope-cyan outline-none transition-all">
-                </td>
-                <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-                   <input type="text" placeholder="Add comments..." class="w-full min-w-[200px] rounded-lg border-gray-200 border py-1.5 px-3 text-sm focus:border-hope-cyan focus:ring-hope-cyan outline-none bg-gray-50 focus:bg-white transition-colors">
-                </td>
-              </tr>
-
-               <!-- Player 3 -->
-              <tr class="hover:bg-gray-50 transition-colors">
-                <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-                  <div class="flex items-center gap-3">
-                     <div class="h-10 w-10 rounded-full bg-hope-red/10 flex items-center justify-center text-hope-red font-bold text-sm border border-hope-red/20 shrink-0">CD</div>
-                    <div>
-                      <div class="text-sm font-medium text-gray-900">Chan Dara</div>
-                      <div class="text-xs text-gray-500">#04</div>
-                    </div>
-                  </div>
-                </td>
-                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-500">Defender</td>
-                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-center">
-                   <input type="number" min="0" value="0" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-hope-cyan focus:ring-hope-cyan outline-none transition-all">
-                </td>
-                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-center">
-                   <input type="number" min="0" value="0" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-hope-cyan focus:ring-hope-cyan outline-none transition-all">
-                </td>
-                 <!-- Yellow Cards -->
-                 <td class="px-4 md:px-6 py-4 whitespace-nowrap text-center">
-                   <input type="number" min="0" value="0" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-yellow-400 focus:ring-yellow-400 outline-none transition-all">
-                </td>
-                 <!-- Red Cards -->
-                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-center">
-                   <input type="number" min="0" value="0" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-red-500 focus:ring-red-500 outline-none transition-all">
-                </td>
-                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-center">
-                   <input type="number" min="1" max="10" placeholder="-" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-hope-cyan focus:ring-hope-cyan outline-none transition-all">
-                </td>
-                <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-                   <input type="text" placeholder="Add comments..." class="w-full min-w-[200px] rounded-lg border-gray-200 border py-1.5 px-3 text-sm focus:border-hope-cyan focus:ring-hope-cyan outline-none bg-gray-50 focus:bg-white transition-colors">
-                </td>
-              </tr>
-
             </tbody>
           </table>
         </div>
 
         <!-- SAVE BUTTON AREA -->
         <div class="p-4 md:p-6 border-t border-gray-100 bg-gray-50 flex justify-end">
-           <button class="w-full md:w-auto bg-hope-cyan hover:bg-sky-500 text-white px-8 py-2.5 rounded-lg shadow-sm transition-all transform active:scale-95 font-semibold flex items-center justify-center gap-2">
+           <button id="savePerformanceBtn" type="button" class="w-full md:w-auto bg-hope-cyan hover:bg-sky-500 text-white px-8 py-2.5 rounded-lg shadow-sm transition-all transform active:scale-95 font-semibold flex items-center justify-center gap-2">
              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
              Save Performance Data
            </button>
@@ -447,7 +359,316 @@
         body.style.overflow = 'auto';
       }
     }
+
+    let teamsState = [];
+    let playersState = [];
+    let matchesState = [];
+    let trainingSessionsState = [];
+    let performanceRecordsState = [];
+
+    const perfDateInput = document.getElementById('perfDate');
+    const perfSessionTypeSelect = document.getElementById('perfSessionType');
+    const perfOpponentInput = document.getElementById('perfOpponent');
+    const perfOpponentLabel = document.getElementById('perfOpponentLabel');
+    const teamSearchOptions = document.getElementById('teamSearchOptions');
+    const loadPlayersBtn = document.getElementById('loadPlayersBtn');
+    const savePerformanceBtn = document.getElementById('savePerformanceBtn');
+    const performanceTableBody = document.getElementById('performanceTableBody');
+    const performanceSessionMeta = document.getElementById('performanceSessionMeta');
+
+    function getTeamNameById(teamId) {
+      const team = teamsState.find((item) => String(item.id || '') === String(teamId || ''));
+      return team ? String(team.name || team.id || teamId) : String(teamId || 'Unknown Team');
+    }
+
+    function normalizeText(value) {
+      return String(value || '').trim().toLowerCase();
+    }
+
+    function findTeamByQuery(query) {
+      const q = normalizeText(query);
+      if (!q) return null;
+      return teamsState.find((team) =>
+        normalizeText(team.name) === q || normalizeText(team.id) === q
+      ) || null;
+    }
+
+    function populateTeamSearchOptions() {
+      if (!teamSearchOptions) return;
+      teamSearchOptions.innerHTML = teamsState.map((team) => {
+        const name = String(team.name || team.id || '');
+        return `<option value="${name.replace(/"/g, '&quot;')}"></option>`;
+      }).join('');
+    }
+
+    function toInitials(name) {
+      return String(name || '')
+        .split(' ')
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((part) => part[0].toUpperCase())
+        .join('') || 'PL';
+    }
+
+    function parseNumber(input, fallback) {
+      const num = Number(input);
+      return Number.isFinite(num) ? num : fallback;
+    }
+
+    function formatDateForMeta(dateStr) {
+      if (!dateStr) return 'No date';
+      const date = new Date(dateStr + 'T00:00:00');
+      if (Number.isNaN(date.getTime())) return dateStr;
+      return date.toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    function getCurrentFilter() {
+      const rawOpponent = String(perfOpponentInput.value || '').trim();
+      const matchedTeam = findTeamByQuery(rawOpponent);
+      return {
+        date: String(perfDateInput.value || ''),
+        sessionType: String(perfSessionTypeSelect.value || 'match'),
+        opponent: matchedTeam ? String(matchedTeam.name || matchedTeam.id || rawOpponent) : rawOpponent,
+        opponentTeamId: matchedTeam ? String(matchedTeam.id || '') : ''
+      };
+    }
+
+    function getPlayerPool(filter) {
+      if (!filter.date) return [];
+
+      if (filter.sessionType === 'match') {
+        let sessions = matchesState.filter((match) => String(match.dateTime || '').slice(0, 10) === filter.date);
+        if (filter.opponentTeamId) {
+          sessions = sessions.filter((match) =>
+            String(match.homeTeamId || '') === filter.opponentTeamId ||
+            String(match.awayTeamId || '') === filter.opponentTeamId
+          );
+          if (!sessions.length) return [];
+          return playersState.filter((player) => String(player.teamId || '') === filter.opponentTeamId);
+        }
+
+        if (filter.opponent) {
+          const q = normalizeText(filter.opponent);
+          sessions = sessions.filter((match) => {
+            const homeName = getTeamNameById(match.homeTeamId);
+            const awayName = getTeamNameById(match.awayTeamId);
+            return normalizeText(homeName).includes(q) || normalizeText(awayName).includes(q);
+          });
+        }
+        const teamIds = new Set();
+        sessions.forEach((match) => {
+          if (match.homeTeamId) teamIds.add(String(match.homeTeamId));
+          if (match.awayTeamId) teamIds.add(String(match.awayTeamId));
+        });
+        if (!teamIds.size) return [];
+        return playersState.filter((player) => teamIds.has(String(player.teamId || '')));
+      }
+
+      let sessions = trainingSessionsState.filter((session) => String(session.date || '') === filter.date);
+      if (filter.opponent) {
+        const q = normalizeText(filter.opponent);
+        sessions = sessions.filter((session) => normalizeText(getTeamNameById(session.teamId)).includes(q));
+      }
+      const teamIds = new Set(sessions.map((session) => String(session.teamId || '')).filter(Boolean));
+      if (!teamIds.size) return [];
+      return playersState.filter((player) => teamIds.has(String(player.teamId || '')));
+    }
+
+    function findExistingRecord(filter, playerId) {
+      const keyOpponent = normalizeText(filter.opponent);
+      return performanceRecordsState.find((record) =>
+        String(record.date || '') === filter.date &&
+        String(record.sessionType || 'match') === filter.sessionType &&
+        normalizeText(record.opponent) === keyOpponent &&
+        String(record.playerId || '') === String(playerId || '')
+      );
+    }
+
+    function updateSessionMeta(filter, count) {
+      const typeLabel = filter.sessionType === 'training' ? 'Training' : 'Match';
+      const extra = filter.opponent ? ` vs ${filter.opponent}` : '';
+      performanceSessionMeta.textContent = `| ${formatDateForMeta(filter.date)} | ${typeLabel}${extra} | ${count} players`;
+    }
+
+    function renderRows(players, filter) {
+      if (!players.length) {
+        performanceTableBody.innerHTML = '<tr><td colspan="8" class="px-6 py-8 text-center text-sm text-gray-400 italic">No players found for this session filter.</td></tr>';
+        updateSessionMeta(filter, 0);
+        return;
+      }
+
+      const rows = players.map((player) => {
+        const existing = findExistingRecord(filter, player.id) || {};
+        const goals = parseNumber(existing.goals, 0);
+        const assists = parseNumber(existing.assists, 0);
+        const yellow = parseNumber(existing.yellow, 0);
+        const red = parseNumber(existing.red, 0);
+        const rating = (existing.rating == null || String(existing.rating) === '')
+          ? ''
+          : Math.min(10, Math.max(1, parseNumber(existing.rating, 0)));
+        const notes = String(existing.notes || '');
+        const teamName = getTeamNameById(player.teamId);
+        return '' +
+          `<tr class="hover:bg-gray-50 transition-colors" data-player-id="${String(player.id || '')}">` +
+          '<td class="px-4 md:px-6 py-4 whitespace-nowrap">' +
+            '<div class="flex items-center gap-3">' +
+              `<div class="h-10 w-10 rounded-full bg-hope-cyan/10 flex items-center justify-center text-hope-cyan font-bold text-sm border border-hope-cyan/20 shrink-0">${toInitials(player.name)}</div>` +
+              '<div>' +
+                `<div class="text-sm font-medium text-gray-900">${String(player.name || player.id || '')}</div>` +
+                `<div class="text-xs text-gray-500">${teamName}</div>` +
+              '</div>' +
+            '</div>' +
+          '</td>' +
+          `<td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-500">${String(player.position || '-')}</td>` +
+          `<td class="px-4 md:px-6 py-4 whitespace-nowrap text-center"><input data-field="goals" type="number" min="0" value="${goals}" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-hope-cyan focus:ring-hope-cyan outline-none transition-all"></td>` +
+          `<td class="px-4 md:px-6 py-4 whitespace-nowrap text-center"><input data-field="assists" type="number" min="0" value="${assists}" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-hope-cyan focus:ring-hope-cyan outline-none transition-all"></td>` +
+          `<td class="px-4 md:px-6 py-4 whitespace-nowrap text-center"><input data-field="yellow" type="number" min="0" value="${yellow}" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-yellow-400 focus:ring-yellow-400 outline-none transition-all"></td>` +
+          `<td class="px-4 md:px-6 py-4 whitespace-nowrap text-center"><input data-field="red" type="number" min="0" value="${red}" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-red-500 focus:ring-red-500 outline-none transition-all"></td>` +
+          `<td class="px-4 md:px-6 py-4 whitespace-nowrap text-center"><input data-field="rating" type="number" min="1" max="10" value="${rating}" placeholder="-" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-hope-cyan focus:ring-hope-cyan outline-none transition-all"></td>` +
+          `<td class="px-4 md:px-6 py-4 whitespace-nowrap"><input data-field="notes" type="text" value="${notes.replace(/"/g, '&quot;')}" placeholder="Add comments..." class="w-full min-w-[200px] rounded-lg border-gray-200 border py-1.5 px-3 text-sm focus:border-hope-cyan focus:ring-hope-cyan outline-none bg-gray-50 focus:bg-white transition-colors"></td>` +
+          '</tr>';
+      }).join('');
+
+      performanceTableBody.innerHTML = rows;
+      updateSessionMeta(filter, players.length);
+    }
+
+    function buildPerformanceId() {
+      const max = performanceRecordsState.reduce((acc, record) => {
+        const n = Number(String(record.id || '').replace(/\D/g, ''));
+        return Number.isFinite(n) ? Math.max(acc, n) : acc;
+      }, 0);
+      return 'PR-' + String(max + 1).padStart(3, '0');
+    }
+
+    function upsertRecord(filter, payload) {
+      const normalizedOpponent = normalizeText(filter.opponent);
+      const idx = performanceRecordsState.findIndex((record) =>
+        String(record.date || '') === filter.date &&
+        String(record.sessionType || 'match') === filter.sessionType &&
+        normalizeText(record.opponent) === normalizedOpponent &&
+        String(record.playerId || '') === String(payload.playerId || '')
+      );
+      if (idx >= 0) {
+        performanceRecordsState[idx] = Object.assign({}, performanceRecordsState[idx], payload);
+      } else {
+        performanceRecordsState.push(Object.assign({ id: buildPerformanceId() }, payload));
+      }
+    }
+
+    function collectRowData(row) {
+      const getValue = (field) => row.querySelector(`[data-field="${field}"]`);
+      return {
+        playerId: String(row.getAttribute('data-player-id') || ''),
+        goals: Math.max(0, parseNumber(getValue('goals').value, 0)),
+        assists: Math.max(0, parseNumber(getValue('assists').value, 0)),
+        yellow: Math.max(0, parseNumber(getValue('yellow').value, 0)),
+        red: Math.max(0, parseNumber(getValue('red').value, 0)),
+        rating: (() => {
+          const raw = String(getValue('rating').value || '').trim();
+          if (!raw) return null;
+          const n = parseNumber(raw, null);
+          if (n == null) return null;
+          return Math.min(10, Math.max(1, n));
+        })(),
+        notes: String(getValue('notes').value || '').trim()
+      };
+    }
+
+    function isEmptyPerformance(entry) {
+      return entry.goals === 0 &&
+        entry.assists === 0 &&
+        entry.yellow === 0 &&
+        entry.red === 0 &&
+        (entry.rating == null || entry.rating === '') &&
+        !entry.notes;
+    }
+
+    function updateOpponentLabel() {
+      const isMatch = perfSessionTypeSelect.value === 'match';
+      perfOpponentLabel.textContent = isMatch ? 'Opponent Team (Match)' : 'Team (Training)';
+      perfOpponentInput.placeholder = isMatch ? 'Search and select team...' : 'Search team...';
+    }
+
+    loadPlayersBtn.addEventListener('click', function () {
+      const filter = getCurrentFilter();
+      if (!filter.date) {
+        window.alert('Please choose a date first.');
+        return;
+      }
+      if (filter.sessionType === 'match' && filter.opponent && !filter.opponentTeamId) {
+        window.alert('Please select a valid opponent team from search.');
+        return;
+      }
+      const players = getPlayerPool(filter);
+      renderRows(players, filter);
+    });
+
+    savePerformanceBtn.addEventListener('click', function () {
+      const filter = getCurrentFilter();
+      if (!filter.date) {
+        window.alert('Please choose a date before saving.');
+        return;
+      }
+
+      const rows = Array.from(performanceTableBody.querySelectorAll('tr[data-player-id]'));
+      if (!rows.length) {
+        window.alert('No loaded players to save.');
+        return;
+      }
+
+      let saved = 0;
+      rows.forEach((row) => {
+        const entry = collectRowData(row);
+        const normalizedOpponent = normalizeText(filter.opponent);
+
+        if (isEmptyPerformance(entry)) {
+          performanceRecordsState = performanceRecordsState.filter((record) =>
+            !(
+              String(record.date || '') === filter.date &&
+              String(record.sessionType || 'match') === filter.sessionType &&
+              normalizeText(record.opponent) === normalizedOpponent &&
+              String(record.playerId || '') === entry.playerId
+            )
+          );
+          return;
+        }
+
+        upsertRecord(filter, {
+          date: filter.date,
+          sessionType: filter.sessionType,
+          opponent: filter.opponent,
+          playerId: entry.playerId,
+          goals: entry.goals,
+          assists: entry.assists,
+          yellow: entry.yellow,
+          red: entry.red,
+          rating: entry.rating,
+          notes: entry.notes
+        });
+        saved += 1;
+      });
+
+      window.AdminDataStore.set('performanceRecords', performanceRecordsState);
+      window.alert(`Performance data saved for ${saved} player(s).`);
+    });
+
+    perfSessionTypeSelect.addEventListener('change', updateOpponentLabel);
+
+    document.addEventListener('DOMContentLoaded', async function () {
+      await window.AdminDataStore.bootstrap();
+      teamsState = window.AdminDataStore.getArray('teams', []);
+      playersState = window.AdminDataStore.getArray('players', []);
+      matchesState = window.AdminDataStore.getArray('matches', []);
+      trainingSessionsState = window.AdminDataStore.getArray('trainingSessions', []);
+      performanceRecordsState = window.AdminDataStore.getArray('performanceRecords', []);
+
+      perfDateInput.value = new Date().toISOString().slice(0, 10);
+      populateTeamSearchOptions();
+      updateOpponentLabel();
+    });
   </script>
+  <script src="/admin/admin-sidebar-loader.js"></script>
 
 </body>
 

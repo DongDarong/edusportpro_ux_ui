@@ -134,9 +134,13 @@ Used for: reviewing alerts, updates, and system messages.
 Function: division management page.
 Used for: organizing teams/players by division.
 
-21. `admin/admin-tournament.html`
-Function: tournament management view.
-Used for: planning and managing tournament structure and status.
+21. `admin/admin-tournament-overview.html`
+Function: tournament overview and list management view.
+Used for: reviewing tournaments, deleting entries, and navigating to update/create flow.
+
+22. `admin/create-tournament.html`
+Function: tournament create/update form.
+Used for: creating a new tournament or editing an existing tournament.
 
 ### 3) Coach Portal Pages (`coach/`)
 

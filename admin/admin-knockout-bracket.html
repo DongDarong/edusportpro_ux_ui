@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Knockout Bracket | EduSportPro</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            hope: {
+              lime: '#8DC63F',
+              cyan: '#00AEEF',
+              red: '#ED1C24',
+              yellow: '#FDC116',
+              dark: '#1D1D1B',
+              light: '#f2f4f7',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background:
+        radial-gradient(circle at 5% 0%, rgba(0, 174, 239, 0.10), transparent 30%),
+        radial-gradient(circle at 100% 0%, rgba(141, 198, 63, 0.10), transparent 36%),
+        #f2f4f7;
+      color: #1D1D1B;
+      overflow-x: hidden;
+    }
+
+    .stage-card {
+      position: relative;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+    }
+
+    .match-node {
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      background: linear-gradient(180deg, #ffffff, #f8fafc);
+      padding: 12px;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+
+    .team-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .team-logo {
+      width: 24px;
+      height: 24px;
+      border-radius: 9999px;
+      border: 1px solid #e5e7eb;
+      background: linear-gradient(135deg, #e6f7ff, #f0fdf4);
+      color: #1D1D1B;
+      font-size: 10px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .stage-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #64748b;
+    }
+
+    .connector-column::before {
+      content: "";
+      position: absolute;
+      left: -14px;
+      top: 32px;
+      bottom: 32px;
+      width: 2px;
+      background: linear-gradient(180deg, rgba(0, 174, 239, 0.25), rgba(141, 198, 63, 0.25));
+      border-radius: 4px;
+    }
+  </style>
+</head>
+
+<body class="antialiased flex flex-col">
+  <nav class="bg-white w-full shadow-sm border-b border-gray-200 flex items-center justify-between px-4 md:px-6 py-3 sticky top-0 z-50 shrink-0">
+    <div class="flex items-center gap-3">
+      <div class="w-15 h-12 md:w-25 md:h-15 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden border border-gray-100 shadow-sm shrink-0">
+        <img src="/images/logo.jpg" alt="Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-[10px] font-bold text-gray-400\'>HOPE</span>'">
+      </div>
+      <div class="hidden sm:block">
+        <div class="text-[10px] md:text-xs font-bold text-hope-dark uppercase tracking-tight leading-tight">Organization for Children's</div>
+        <div class="text-xs md:text-sm font-extrabold text-hope-cyan leading-none">Hope Foundation of Cambodia</div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3 md:gap-6">
+      <a href="/admin/admin-notifications.html" class="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-hope-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+        <span class="absolute top-1 right-1 bg-hope-red text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">4</span>
+      </a>
+      <a href="/admin/admin-profile.html" class="flex items-center gap-2 md:gap-3 cursor-pointer pl-2 md:pl-4 border-l border-gray-200 hover:bg-gray-50 transition-colors rounded-r-lg p-1">
+        <div class="text-right hidden md:block">
+          <div class="text-sm font-semibold text-hope-dark">Admin User</div>
+          <div class="text-xs text-gray-500">Super Admin</div>
+        </div>
+        <div class="w-8 h-8 md:w-9 md:h-9 bg-hope-cyan rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm shrink-0">AU</div>
+      </a>
+    </div>
+  </nav>
+
+  <div class="min-h-[calc(100vh-64px)] relative">
+    <main class="flex-1 p-4 md:p-8 lg:p-10 w-full">
+      <section class="rounded-2xl border border-hope-cyan/20 bg-gradient-to-br from-white via-cyan-50/40 to-emerald-50/30 p-5 md:p-6 mb-6">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wider text-hope-cyan mb-1">Competition Flow</p>
+            <h1 class="text-2xl md:text-3xl font-bold text-hope-dark">Knockout Bracket</h1>
+            <p class="text-gray-600 mt-1 text-sm md:text-base">Quarter-final, semi-final, and final bracket flow.</p>
+          </div>
+          <div class="text-xs px-3 py-1.5 rounded-full bg-white border border-hope-cyan/20 text-hope-cyan font-semibold">Updated Bracket View</div>
+        </div>
+      </section>
+
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6">
+        <div></div>
+        <a href="/admin/admin-division.html#knockout-bracket" class="w-full md:w-auto inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-gray-100 hover:bg-gray-200 border border-gray-200 text-hope-dark font-medium">Back to Division</a>
+      </div>
+
+      <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 md:p-6">
+        <div class="overflow-x-auto">
+          <div class="min-w-[940px] grid grid-cols-3 gap-6 items-start">
+            <div class="stage-card p-4">
+              <h2 class="stage-title">Quarter Finals</h2>
+              <div class="space-y-3">
+                <div class="match-node">
+                  <p class="text-xs text-gray-500 uppercase tracking-wide">QF1</p>
+                  <div class="team-line"><span class="team-logo">TA</span><span>Team A</span></div>
+                  <div class="team-line"><span class="team-logo">TD</span><span>Team D</span></div>
+                </div>
+                <div class="match-node">
+                  <p class="text-xs text-gray-500 uppercase tracking-wide">QF2</p>
+                  <div class="team-line"><span class="team-logo">TB</span><span>Team B</span></div>
+                  <div class="team-line"><span class="team-logo">TC</span><span>Team C</span></div>
+                </div>
+                <div class="match-node">
+                  <p class="text-xs text-gray-500 uppercase tracking-wide">QF3</p>
+                  <div class="team-line"><span class="team-logo">TE</span><span>Team E</span></div>
+                  <div class="team-line"><span class="team-logo">TH</span><span>Team H</span></div>
+                </div>
+                <div class="match-node">
+                  <p class="text-xs text-gray-500 uppercase tracking-wide">QF4</p>
+                  <div class="team-line"><span class="team-logo">TF</span><span>Team F</span></div>
+                  <div class="team-line"><span class="team-logo">TG</span><span>Team G</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="stage-card p-4 connector-column">
+              <h2 class="stage-title">Semi Finals</h2>
+              <div class="space-y-8 pt-4">
+                <div class="match-node border-hope-cyan/20 bg-hope-cyan/5">
+                  <p class="text-xs text-gray-500 uppercase tracking-wide">SF1</p>
+                  <div class="team-line"><span class="team-logo">W1</span><span>Winner QF1</span></div>
+                  <div class="team-line"><span class="team-logo">W2</span><span>Winner QF2</span></div>
+                </div>
+                <div class="match-node border-hope-cyan/20 bg-hope-cyan/5">
+                  <p class="text-xs text-gray-500 uppercase tracking-wide">SF2</p>
+                  <div class="team-line"><span class="team-logo">W3</span><span>Winner QF3</span></div>
+                  <div class="team-line"><span class="team-logo">W4</span><span>Winner QF4</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="stage-card p-4 connector-column">
+              <h2 class="stage-title">Final</h2>
+              <div class="pt-12">
+                <div class="match-node border-hope-yellow/30 bg-hope-yellow/10">
+                  <p class="text-xs text-gray-500 uppercase tracking-wide">Final</p>
+                  <div class="team-line"><span class="team-logo">F1</span><span>Winner SF1</span></div>
+                  <div class="team-line"><span class="team-logo">F2</span><span>Winner SF2</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bg-white rounded-2xl shadow-sm border border-red-100 p-5 md:p-6 mt-6">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-hope-red/10 text-hope-red font-bold text-sm">!</span>
+          <h2 class="text-lg font-bold text-hope-dark">Elimination Rule</h2>
+        </div>
+        <p class="text-sm text-gray-600 mb-4">In each knockout match, the losing team is immediately removed from the tournament.</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+          <div class="rounded-lg border border-gray-100 bg-gray-50 p-3">
+            <p class="font-semibold text-hope-dark">Quarter Finals</p>
+            <p class="text-gray-600 mt-1">4 losing teams are eliminated.</p>
+          </div>
+          <div class="rounded-lg border border-gray-100 bg-gray-50 p-3">
+            <p class="font-semibold text-hope-dark">Semi Finals</p>
+            <p class="text-gray-600 mt-1">2 losing teams are eliminated.</p>
+          </div>
+          <div class="rounded-lg border border-gray-100 bg-gray-50 p-3">
+            <p class="font-semibold text-hope-dark">Final</p>
+            <p class="text-gray-600 mt-1">1 losing team is eliminated, winner becomes champion.</p>
+          </div>
+        </div>
+
+        <div class="mt-5 rounded-xl border border-gray-100 bg-white p-4">
+          <h3 class="text-sm font-bold text-hope-dark mb-3 uppercase tracking-wide">All Eliminated Teams</h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div class="rounded-lg border border-gray-100 bg-gray-50 p-3">
+              <p class="text-xs font-semibold text-gray-500 uppercase mb-2">Quarter Finals</p>
+              <div class="space-y-2">
+                <div class="team-line"><span class="team-logo">TD</span><span>Team D</span></div>
+                <div class="team-line"><span class="team-logo">TC</span><span>Team C</span></div>
+                <div class="team-line"><span class="team-logo">TH</span><span>Team H</span></div>
+                <div class="team-line"><span class="team-logo">TG</span><span>Team G</span></div>
+              </div>
+            </div>
+            <div class="rounded-lg border border-gray-100 bg-gray-50 p-3">
+              <p class="text-xs font-semibold text-gray-500 uppercase mb-2">Semi Finals</p>
+              <div class="space-y-2">
+                <div class="team-line"><span class="team-logo">TB</span><span>Team B</span></div>
+                <div class="team-line"><span class="team-logo">TF</span><span>Team F</span></div>
+              </div>
+            </div>
+            <div class="rounded-lg border border-gray-100 bg-gray-50 p-3">
+              <p class="text-xs font-semibold text-gray-500 uppercase mb-2">Final</p>
+              <div class="space-y-2">
+                <div class="team-line"><span class="team-logo">TE</span><span>Team E (Runner-up)</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+
+</html>

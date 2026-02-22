@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Create Tournament | EduSportPro</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script src="/admin/admin-data-store.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            hope: {
+              lime: '#8DC63F',
+              cyan: '#00AEEF',
+              red: '#ED1C24',
+              yellow: '#FDC116',
+              dark: '#1D1D1B',
+              light: '#f2f4f7',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #f2f4f7;
+      color: #1D1D1B;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00AEEF;
+    }
+
+    .surface-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 1rem;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+  </style>
+</head>
+
+<body class="antialiased flex flex-col">
+
+  <nav class="bg-white w-full shadow-sm border-b border-gray-200 flex items-center justify-between px-4 md:px-6 py-3 sticky top-0 z-50 shrink-0">
+    <div class="flex items-center gap-3">
+      <div class="w-15 h-12 md:w-25 md:h-15 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden border border-gray-100 shadow-sm shrink-0">
+        <img src="/images/logo.jpg" alt="Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-[10px] font-bold text-gray-400\'>HOPE</span>'">
+      </div>
+
+      <div class="hidden sm:block">
+        <div class="text-[10px] md:text-xs font-bold text-hope-dark uppercase tracking-tight leading-tight">
+          Organization for Children's
+        </div>
+        <div class="text-xs md:text-sm font-extrabold text-hope-cyan leading-none">
+          Hope Foundation of Cambodia
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3 md:gap-6">
+      <a href="/admin/admin-notifications.html" class="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-hope-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+        <span class="absolute top-1 right-1 bg-hope-red text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">4</span>
+      </a>
+
+      <select class="bg-gray-50 border border-gray-200 text-hope-dark text-sm rounded-lg focus:ring-hope-cyan focus:border-hope-cyan block px-2 py-1.5 md:px-3 outline-none">
+        <option>EN</option>
+        <option>KM</option>
+      </select>
+
+      <a href="/admin/admin-profile.html" class="flex items-center gap-2 md:gap-3 cursor-pointer pl-2 md:pl-4 border-l border-gray-200 hover:bg-gray-50 transition-colors rounded-r-lg p-1">
+        <div class="text-right hidden md:block">
+          <div class="text-sm font-semibold text-hope-dark">Admin User</div>
+          <div class="text-xs text-gray-500">Super Admin</div>
+        </div>
+        <div class="w-8 h-8 md:w-9 md:h-9 bg-hope-cyan rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm shrink-0">
+          AU
+        </div>
+      </a>
+    </div>
+  </nav>
+
+  <div class="min-h-[calc(100vh-64px)] relative">
+    <main class="flex-1 p-4 md:p-8 lg:p-10 w-full">
+      <section class="rounded-2xl border border-hope-cyan/20 bg-gradient-to-br from-white via-cyan-50/40 to-emerald-50/30 p-5 md:p-6 mb-6">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-wider text-hope-cyan mb-1">Management</p>
+            <h1 id="pageTitle" class="text-2xl md:text-3xl font-bold text-hope-dark">Create Tournament</h1>
+            <p class="text-gray-600 mt-1 text-sm md:text-base">Set up tournaments, then manage and update them below.</p>
+          </div>
+          <div class="text-xs px-3 py-1.5 rounded-full bg-white border border-hope-cyan/20 text-hope-cyan font-semibold">Auto-saved to local data</div>
+        </div>
+      </section>
+
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6">
+        <div></div>
+        <div class="w-full md:w-auto flex gap-2">
+          <a href="/admin/admin-tournament-overview.html" class="w-full md:w-auto bg-gray-100 hover:bg-gray-200 text-hope-dark px-5 py-2.5 rounded-lg border border-gray-200 transition-all font-medium text-center">Back</a>
+          <a href="/admin/admin-tournament-teams.html" class="w-full md:w-auto bg-hope-yellow hover:bg-amber-400 text-hope-dark px-5 py-2.5 rounded-lg shadow-sm transition-all font-semibold text-center">Pull Teams</a>
+        </div>
+      </div>
+
+      <div id="createTournamentSection" class="surface-card p-5 md:p-6 mb-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-5">
+          <div>
+            <h2 id="formHeading" class="text-xl font-bold text-hope-dark">Create Tournament</h2>
+            <p class="text-sm text-gray-500 mt-1">Add a tournament and define schedule, type, and division scope.</p>
+          </div>
+          <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-hope-cyan/10 text-hope-cyan border border-hope-cyan/20">Admin Action</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Tournament Name</label>
+            <input id="tournamentName" type="text" placeholder="e.g. Hope Youth League 2027" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Tournament Type</label>
+            <select id="tournamentType" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+              <option>League</option>
+              <option>Knockout</option>
+              <option>Friendly Cup</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Division</label>
+            <div class="w-full rounded-lg border-gray-300 border p-3 text-gray-900 shadow-sm">
+              <div class="grid grid-cols-2 gap-2 text-sm">
+                <label class="inline-flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" value="U12" class="tournament-division-checkbox rounded border-gray-300 text-hope-cyan focus:ring-hope-cyan">
+                  <span>U12</span>
+                </label>
+                <label class="inline-flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" value="U14" class="tournament-division-checkbox rounded border-gray-300 text-hope-cyan focus:ring-hope-cyan">
+                  <span>U14</span>
+                </label>
+                <label class="inline-flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" value="U16" class="tournament-division-checkbox rounded border-gray-300 text-hope-cyan focus:ring-hope-cyan">
+                  <span>U16</span>
+                </label>
+                <label class="inline-flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" value="U18" class="tournament-division-checkbox rounded border-gray-300 text-hope-cyan focus:ring-hope-cyan">
+                  <span>U18</span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+            <input id="tournamentStartDate" type="date" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+            <input id="tournamentEndDate" type="date" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+            <select id="tournamentStatus" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+              <option>Planned</option>
+              <option>Upcoming</option>
+              <option>Ongoing</option>
+              <option>Completed</option>
+            </select>
+          </div>
+          <div class="md:col-span-2 lg:col-span-3">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <textarea id="tournamentDescription" rows="3" placeholder="Enter tournament details..." class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none resize-none"></textarea>
+          </div>
+        </div>
+
+        <div class="mt-5 flex flex-col sm:flex-row gap-3 sm:justify-end">
+          <button id="clearTournamentBtn" class="px-5 py-2.5 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 text-sm font-medium">Clear</button>
+          <button id="saveTournamentBtn" class="px-5 py-2.5 rounded-lg bg-hope-cyan hover:bg-sky-500 text-white text-sm font-semibold shadow-sm">Save Tournament</button>
+        </div>
+      </div>
+
+      <div id="tournamentListSection" class="surface-card p-5 md:p-6 mb-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5">
+          <div>
+            <h2 class="text-xl font-bold text-hope-dark">Tournament List</h2>
+            <p class="text-sm text-gray-500 mt-1">Manage existing tournaments and edit or remove entries.</p>
+          </div>
+          <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+            <div class="rounded-lg border border-gray-100 bg-gray-50/70 p-3">
+              <label class="block text-xs font-semibold text-gray-500 mb-1">Filter</label>
+              <div class="flex gap-2">
+                <select class="bg-gray-50 border border-gray-200 text-hope-dark text-sm rounded-lg px-3 py-2 outline-none focus:ring-hope-cyan focus:border-hope-cyan">
+                  <option>Year: 2026</option>
+                  <option>Year: 2025</option>
+                  <option>Year: 2024</option>
+                </select>
+                <select class="bg-gray-50 border border-gray-200 text-hope-dark text-sm rounded-lg px-3 py-2 outline-none focus:ring-hope-cyan focus:border-hope-cyan">
+                  <option>Type: League</option>
+                  <option>Type: Knockout</option>
+                  <option>Type: Friendly Cup</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto rounded-xl border border-gray-100">
+          <table class="min-w-full">
+            <thead>
+              <tr class="bg-gray-50/90 border-b border-gray-200">
+                <th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Tournament</th>
+                <th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Division</th>
+                <th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Type</th>
+                <th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Period</th>
+                <th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                <th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tournamentTableBody" class="divide-y divide-gray-100"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    let tournaments = [];
+    let tournamentTeamMap = {};
+    let editingTournamentId = null;
+
+    function loadTournaments() {
+      tournaments = window.AdminDataStore.getArray('tournaments', []);
+      tournamentTeamMap = window.AdminDataStore.getObject('tournamentTeamMap', {});
+      if (!Array.isArray(tournaments)) tournaments = [];
+      if (!tournamentTeamMap || typeof tournamentTeamMap !== 'object') tournamentTeamMap = {};
+    }
+
+    function persistTournaments() {
+      window.AdminDataStore.set('tournaments', tournaments);
+      window.AdminDataStore.set('tournamentTeamMap', tournamentTeamMap);
+    }
+
+    function buildTournamentId(existing) {
+      const year = new Date().getFullYear();
+      const prefix = 'TRN-' + year + '-';
+      const max = existing.reduce(function (acc, item) {
+        const raw = String(item.id || '');
+        if (raw.indexOf(prefix) !== 0) return acc;
+        const num = Number(raw.slice(prefix.length));
+        return Number.isFinite(num) ? Math.max(acc, num) : acc;
+      }, 0);
+      return prefix + String(max + 1).padStart(3, '0');
+    }
+
+    function statusChip(status) {
+      const map = {
+        Ongoing: 'bg-hope-cyan/10 text-hope-cyan',
+        Upcoming: 'bg-hope-yellow/10 text-hope-yellow',
+        Planned: 'bg-hope-lime/10 text-hope-lime',
+        Completed: 'bg-gray-200 text-gray-700'
+      };
+      const cls = map[status] || 'bg-gray-100 text-gray-600';
+      return '<span class="px-2.5 py-1 rounded-full text-xs font-semibold ' + cls + '">' + status + '</span>';
+    }
+
+    function formatPeriod(startDate, endDate) {
+      if (!startDate && !endDate) return '-';
+      if (!endDate) return startDate;
+      if (!startDate) return endDate;
+      return startDate + ' to ' + endDate;
+    }
+
+    function renderTournamentTable() {
+      const tbody = document.getElementById('tournamentTableBody');
+      if (!tournaments.length) {
+        tbody.innerHTML = '<tr><td colspan="6" class="py-4 px-4 text-sm text-gray-500">No tournaments found.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = tournaments.map(function (t) {
+        return (
+          '<tr class="hover:bg-gray-50 transition-colors">' +
+          '<td class="py-3 px-4 font-medium text-hope-dark">' + t.name + '</td>' +
+          '<td class="py-3 px-4 text-gray-600">' + (Array.isArray(t.divisions) ? t.divisions.join(', ') : (t.divisions || '-')) + '</td>' +
+          '<td class="py-3 px-4 text-gray-600">' + (t.type || '-') + '</td>' +
+          '<td class="py-3 px-4 text-gray-600">' + formatPeriod(t.startDate, t.endDate) + '</td>' +
+          '<td class="py-3 px-4">' + statusChip(t.status || 'Planned') + '</td>' +
+          '<td class="py-3 px-4">' +
+          '<div class="flex items-center gap-2">' +
+          '<a href="/admin/create-tournament.html?edit=' + encodeURIComponent(t.id) + '" class="text-xs px-2.5 py-1 rounded-md border border-hope-cyan/30 text-hope-cyan hover:bg-hope-cyan/10">Update</a>' +
+          '<button onclick="deleteTournament(\'' + t.id + '\')" class="text-xs px-2.5 py-1 rounded-md border border-red-200 text-hope-red hover:bg-red-50">Delete</button>' +
+          '</div>' +
+          '</td>' +
+          '</tr>'
+        );
+      }).join('');
+    }
+
+    function deleteTournament(id) {
+      const tournament = tournaments.find(function (t) { return t.id === id; });
+      if (!tournament) return;
+      if (!confirm('Delete tournament "' + tournament.name + '"?')) return;
+
+      tournaments = tournaments.filter(function (t) { return t.id !== id; });
+      if (Object.prototype.hasOwnProperty.call(tournamentTeamMap, id)) {
+        delete tournamentTeamMap[id];
+      }
+      persistTournaments();
+      renderTournamentTable();
+    }
+
+    function resetTournamentForm() {
+      editingTournamentId = null;
+      document.getElementById('tournamentName').value = '';
+      document.getElementById('tournamentType').value = 'League';
+      document.getElementById('tournamentStartDate').value = '';
+      document.getElementById('tournamentEndDate').value = '';
+      document.getElementById('tournamentStatus').value = 'Planned';
+      document.getElementById('tournamentDescription').value = '';
+      document.querySelectorAll('.tournament-division-checkbox').forEach(function (cb) {
+        cb.checked = false;
+      });
+      document.getElementById('pageTitle').textContent = 'Create Tournament';
+      document.getElementById('formHeading').textContent = 'Create Tournament';
+      document.getElementById('saveTournamentBtn').textContent = 'Save Tournament';
+    }
+
+    function readTournamentForm() {
+      const name = document.getElementById('tournamentName').value.trim();
+      const type = document.getElementById('tournamentType').value;
+      const startDate = document.getElementById('tournamentStartDate').value;
+      const endDate = document.getElementById('tournamentEndDate').value;
+      const status = document.getElementById('tournamentStatus').value;
+      const description = document.getElementById('tournamentDescription').value.trim();
+      const divisions = Array.from(document.querySelectorAll('.tournament-division-checkbox:checked')).map(function (cb) {
+        return cb.value;
+      });
+      return { name, type, startDate, endDate, status, description, divisions };
+    }
+
+    function fillForm(tournament) {
+      document.getElementById('tournamentName').value = tournament.name || '';
+      document.getElementById('tournamentType').value = tournament.type || 'League';
+      document.getElementById('tournamentStartDate').value = tournament.startDate || '';
+      document.getElementById('tournamentEndDate').value = tournament.endDate || '';
+      document.getElementById('tournamentStatus').value = tournament.status || 'Planned';
+      document.getElementById('tournamentDescription').value = tournament.description || '';
+      const setDivisions = Array.isArray(tournament.divisions) ? tournament.divisions : [];
+      document.querySelectorAll('.tournament-division-checkbox').forEach(function (cb) {
+        cb.checked = setDivisions.indexOf(cb.value) !== -1;
+      });
+    }
+
+    function initEditModeFromQuery() {
+      const params = new URLSearchParams(window.location.search);
+      const editId = params.get('edit');
+      if (!editId) return;
+
+      const tournament = tournaments.find(function (t) { return t.id === editId; });
+      if (!tournament) return;
+
+      editingTournamentId = editId;
+      fillForm(tournament);
+      document.getElementById('pageTitle').textContent = 'Update Tournament';
+      document.getElementById('formHeading').textContent = 'Update Tournament';
+      document.getElementById('saveTournamentBtn').textContent = 'Update Tournament';
+    }
+
+    function saveTournament() {
+      const payload = readTournamentForm();
+      if (!payload.name) {
+        alert('Tournament Name is required.');
+        return;
+      }
+      if (!payload.divisions.length) {
+        alert('Select at least one Division.');
+        return;
+      }
+
+      if (editingTournamentId) {
+        const duplicateName = tournaments.some(function (t) {
+          return t.id !== editingTournamentId && String(t.name || '').toLowerCase() === payload.name.toLowerCase();
+        });
+        if (duplicateName) {
+          alert('Tournament name already exists.');
+          return;
+        }
+        tournaments = tournaments.map(function (t) {
+          return t.id === editingTournamentId ? Object.assign({}, t, payload) : t;
+        });
+      } else {
+        const duplicateName = tournaments.some(function (t) {
+          return String(t.name || '').toLowerCase() === payload.name.toLowerCase();
+        });
+        if (duplicateName) {
+          alert('Tournament name already exists.');
+          return;
+        }
+        const id = buildTournamentId(tournaments);
+        tournaments.unshift(Object.assign({ id: id }, payload));
+        if (!Array.isArray(tournamentTeamMap[id])) {
+          tournamentTeamMap[id] = [];
+        }
+      }
+
+      persistTournaments();
+      renderTournamentTable();
+      resetTournamentForm();
+    }
+
+    document.addEventListener('DOMContentLoaded', async function () {
+      await window.AdminDataStore.bootstrap();
+      loadTournaments();
+      resetTournamentForm();
+      initEditModeFromQuery();
+      renderTournamentTable();
+      document.getElementById('saveTournamentBtn').addEventListener('click', saveTournament);
+      document.getElementById('clearTournamentBtn').addEventListener('click', resetTournamentForm);
+    });
+  </script>
+</body>
+
+</html>

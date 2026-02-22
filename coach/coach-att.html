@@ -11,6 +11,7 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/admin/admin-data-store.js"></script>
 
   <!-- Tailwind Configuration with Custom Brand Colors -->
   <script>
@@ -241,11 +242,11 @@
     <!-- Session Type -->
     <div>
       <label class="block text-sm font-medium text-gray-700 mb-1">Session Type</label>
-      <select
+      <select id="sessionTypeInput"
         class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900
                focus:border-hope-lime focus:ring-hope-lime sm:text-sm shadow-sm outline-none">
-        <option>Training</option>
-        <option>Match</option>
+        <option value="training">Training</option>
+        <option value="match">Match</option>
       </select>
     </div>
 
@@ -336,7 +337,7 @@
         <div class="p-4 md:p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50">
            <h2 class="text-base md:text-lg font-bold text-hope-dark">Player Attendance List</h2>
            <div class="text-sm text-gray-500">
-             Date: <span class="font-medium text-gray-900">Today</span>
+             Date: <span id="attendanceDateLabel" class="font-medium text-gray-900">Today</span>
            </div>
         </div>
 
@@ -434,7 +435,7 @@
 
         <!-- SAVE BUTTON AREA -->
         <div class="p-4 md:p-6 border-t border-gray-100 bg-gray-50 flex justify-end">
-           <button class="w-full md:w-auto bg-hope-lime hover:bg-lime-600 text-white px-8 py-2.5 rounded-lg shadow-sm transition-all transform active:scale-95 font-semibold flex items-center justify-center gap-2">
+           <button id="saveAttendanceBtn" class="w-full md:w-auto bg-hope-lime hover:bg-lime-600 text-white px-8 py-2.5 rounded-lg shadow-sm transition-all transform active:scale-95 font-semibold flex items-center justify-center gap-2">
              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
              Save Attendance
            </button>
@@ -564,26 +565,15 @@
       }
     }
 
-    function filterAttendanceByName() {
-      const searchInput = document.getElementById('attendanceNameSearch');
-      const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
-      const listRows = document.querySelectorAll('#attendanceListBody tr');
-      const recordRows = document.querySelectorAll('#attendanceRecordsBody tr');
+    let teamsState = [];
+    let playersState = [];
+    let coachesState = [];
+    let attendanceRecordsState = [];
+    let currentCoach = null;
 
-      listRows.forEach((row) => {
-        const nameEl = row.querySelector('td:first-child .text-sm.font-medium.text-gray-900');
-        const name = nameEl ? nameEl.textContent.toLowerCase() : '';
-        row.style.display = name.includes(query) ? '' : 'none';
-      });
-
-      recordRows.forEach((row) => {
-        const nameEl = row.querySelector('td:first-child .font-medium.text-hope-dark');
-        const name = nameEl ? nameEl.textContent.toLowerCase() : '';
-        row.style.display = name.includes(query) ? '' : 'none';
-      });
+    function normalizeArray(value) {
+      return Array.isArray(value) ? value : [];
     }
-
-    const COACH_PRESENCE_KEY = 'esp_coach_presence_records';
 
     function getTodayIsoDate() {
       const now = new Date();
@@ -592,101 +582,214 @@
       return `${now.getFullYear()}-${month}-${day}`;
     }
 
-    function getCoachPresenceStore() {
-      try {
-        const raw = localStorage.getItem(COACH_PRESENCE_KEY);
-        return raw ? JSON.parse(raw) : {};
-      } catch (err) {
-        return {};
-      }
+    function escapeHtml(value) {
+      return String(value == null ? '' : value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
     }
 
-    function setCoachPresenceStore(store) {
-      try {
-        localStorage.setItem(COACH_PRESENCE_KEY, JSON.stringify(store));
-      } catch (err) {
-        // Ignore storage errors for static preview mode.
-      }
-    }
-
-    function getSelectedPresenceDate() {
-      const sessionDateInput = document.getElementById('sessionDateInput');
-      return sessionDateInput && sessionDateInput.value ? sessionDateInput.value : getTodayIsoDate();
-    }
-
-    function getSelectedTeamName() {
-      const teamSelect = document.getElementById('coachTeamSelect');
-      if (!teamSelect || !teamSelect.options || teamSelect.selectedIndex < 0) return 'Coach Team';
-      const selectedText = teamSelect.options[teamSelect.selectedIndex].text;
-      return selectedText === 'All Teams' ? 'Coach Team' : selectedText;
+    function getInitials(name) {
+      const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+      if (!parts.length) return 'NA';
+      if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
     }
 
     function getStatusBadge(status) {
       const map = {
-        present: {
-          label: 'Present',
-          cls: 'bg-hope-lime/10 text-hope-lime border-hope-lime/20',
-          dot: 'bg-hope-lime'
-        },
-        absent: {
-          label: 'Absent',
-          cls: 'bg-hope-red/10 text-hope-red border-hope-red/20',
-          dot: 'bg-hope-red'
-        },
-        late: {
-          label: 'Late',
-          cls: 'bg-hope-yellow/10 text-hope-yellow border-hope-yellow/20',
-          dot: 'bg-hope-yellow'
-        },
-        excused: {
-          label: 'Excused',
-          cls: 'bg-hope-cyan/10 text-hope-cyan border-hope-cyan/20',
-          dot: 'bg-hope-cyan'
-        }
+        present: { label: 'Present', cls: 'bg-hope-lime/10 text-hope-lime border-hope-lime/20', dot: 'bg-hope-lime' },
+        absent: { label: 'Absent', cls: 'bg-hope-red/10 text-hope-red border-hope-red/20', dot: 'bg-hope-red' },
+        late: { label: 'Late', cls: 'bg-hope-yellow/10 text-hope-yellow border-hope-yellow/20', dot: 'bg-hope-yellow' },
+        excused: { label: 'Excused', cls: 'bg-hope-cyan/10 text-hope-cyan border-hope-cyan/20', dot: 'bg-hope-cyan' }
       };
       return map[status] || map.present;
     }
 
-    function upsertMyPresenceRow(record) {
-      const recordsBody = document.getElementById('attendanceRecordsBody');
-      if (!recordsBody) return;
+    function readFilters() {
+      const date = String((document.getElementById('sessionDateInput') || {}).value || '').trim() || getTodayIsoDate();
+      const activityType = String((document.getElementById('sessionTypeInput') || {}).value || 'training');
+      const teamId = String((document.getElementById('coachTeamSelect') || {}).value || '').trim();
+      const query = String((document.getElementById('attendanceNameSearch') || {}).value || '').trim().toLowerCase();
+      return { date, activityType, teamId, query };
+    }
 
-      const existingRow = document.getElementById('myPresenceRecordRow');
-      if (existingRow) existingRow.remove();
-      if (!record) return;
+    function getTeamNameById(teamId) {
+      const team = teamsState.find((item) => String(item.id || '') === String(teamId || ''));
+      return team ? String(team.name || team.id) : 'Unknown Team';
+    }
 
-      const badge = getStatusBadge(record.status);
-      const row = document.createElement('tr');
-      row.id = 'myPresenceRecordRow';
-      row.className = 'hover:bg-gray-50 transition-colors';
-      row.innerHTML = `
-        <td class="px-6 py-4 whitespace-nowrap">
-          <div class="flex items-center gap-3">
-            <div class="h-8 w-8 rounded-full bg-hope-lime/20 flex items-center justify-center text-hope-lime font-bold text-xs border border-white">ME</div>
-            <span class="font-medium text-hope-dark">Coach (You)</span>
-          </div>
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${record.team}</td>
-        <td class="px-6 py-4 whitespace-nowrap">
-          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${badge.cls} border">
-            <span class="w-1.5 h-1.5 rounded-full ${badge.dot}"></span>
-            ${badge.label}
-          </span>
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${record.note || '-'}</td>
-      `;
-      recordsBody.prepend(row);
+    function resolveCurrentCoach() {
+      const byName = coachesState.find((item) => String(item.name || '').toLowerCase().includes('coach sok'));
+      currentCoach = byName || coachesState[0] || null;
+    }
+
+    function populateTeamOptions() {
+      const select = document.getElementById('coachTeamSelect');
+      if (!select) return;
+      select.innerHTML = '<option value="">All Teams</option>' + teamsState.map((team) => {
+        const id = String(team.id || '');
+        const name = String(team.name || id);
+        return '<option value="' + escapeHtml(id) + '">' + escapeHtml(name) + '</option>';
+      }).join('');
+    }
+
+    function getOrCreatePlayerRecord(player, filters) {
+      let record = attendanceRecordsState.find((item) =>
+        String(item.subjectType || '') === 'player' &&
+        String(item.subjectId || '') === String(player.id || '') &&
+        String(item.date || '') === filters.date &&
+        String(item.activityType || '') === filters.activityType
+      );
+      if (!record) {
+        const max = attendanceRecordsState.reduce((acc, item) => {
+          const n = Number(String(item.id || '').replace(/\D/g, ''));
+          return Number.isFinite(n) ? Math.max(acc, n) : acc;
+        }, 0);
+        record = {
+          id: 'AR-' + String(max + 1).padStart(3, '0'),
+          subjectType: 'player',
+          subjectId: String(player.id || ''),
+          teamId: String(player.teamId || ''),
+          coachId: String((currentCoach && currentCoach.id) || ''),
+          date: filters.date,
+          activityType: filters.activityType,
+          status: 'present',
+          note: ''
+        };
+        attendanceRecordsState.push(record);
+      }
+      return record;
+    }
+
+    function findCoachRecord(filters) {
+      if (!currentCoach) return null;
+      return attendanceRecordsState.find((item) =>
+        String(item.subjectType || '') === 'coach' &&
+        String(item.subjectId || '') === String(currentCoach.id || '') &&
+        String(item.date || '') === filters.date &&
+        String(item.activityType || '') === filters.activityType &&
+        (!filters.teamId || String(item.teamId || '') === filters.teamId)
+      ) || null;
+    }
+
+    function renderPlayerList() {
+      const filters = readFilters();
+      const body = document.getElementById('attendanceListBody');
+      const dateLabel = document.getElementById('attendanceDateLabel');
+      if (!body) return;
+      if (dateLabel) dateLabel.textContent = filters.date || 'Today';
+
+      const players = playersState.filter((player) => {
+        const byTeam = !filters.teamId || String(player.teamId || '') === filters.teamId;
+        const byQuery = !filters.query || String(player.name || '').toLowerCase().includes(filters.query);
+        return byTeam && byQuery;
+      });
+
+      if (!players.length) {
+        body.innerHTML = '<tr><td colspan="4" class="px-4 md:px-6 py-6 text-sm text-gray-500">No players found for the selected filters.</td></tr>';
+        return;
+      }
+
+      body.innerHTML = players.map((player) => {
+        const record = getOrCreatePlayerRecord(player, filters);
+        const code = '#' + String(player.id || '').replace(/\D/g, '').slice(-2).padStart(2, '0');
+        const badgeClass = 'bg-hope-lime/10 text-hope-lime border-hope-lime/20';
+        return '' +
+          '<tr class="hover:bg-gray-50 transition-colors">' +
+            '<td class="px-4 md:px-6 py-4 whitespace-nowrap">' +
+              '<div class="flex items-center gap-3">' +
+                '<div class="h-10 w-10 rounded-full ' + badgeClass + ' flex items-center justify-center font-bold text-sm border shrink-0">' + escapeHtml(getInitials(player.name)) + '</div>' +
+                '<div><div class="text-sm font-medium text-gray-900">' + escapeHtml(player.name || '') + '</div><div class="text-xs text-gray-500">' + escapeHtml(code) + '</div></div>' +
+              '</div>' +
+            '</td>' +
+            '<td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-500">' + escapeHtml(player.position || 'Player') + '</td>' +
+            '<td class="px-4 md:px-6 py-4 whitespace-nowrap">' +
+              '<select data-record-id="' + escapeHtml(record.id) + '" class="attendance-status rounded-lg border-gray-300 border py-1.5 px-3 text-sm focus:border-hope-lime focus:ring-hope-lime outline-none bg-white">' +
+                '<option value="present"' + (record.status === 'present' ? ' selected' : '') + '>Present</option>' +
+                '<option value="absent"' + (record.status === 'absent' ? ' selected' : '') + '>Absent</option>' +
+                '<option value="late"' + (record.status === 'late' ? ' selected' : '') + '>Late</option>' +
+                '<option value="excused"' + (record.status === 'excused' ? ' selected' : '') + '>Excused</option>' +
+              '</select>' +
+            '</td>' +
+            '<td class="px-4 md:px-6 py-4 whitespace-nowrap">' +
+              '<input data-record-id="' + escapeHtml(record.id) + '" value="' + escapeHtml(record.note || '') + '" placeholder="Add note..." class="attendance-note w-full min-w-[150px] rounded-lg border-gray-200 border py-1.5 px-3 text-sm focus:border-hope-lime focus:ring-hope-lime outline-none bg-gray-50 focus:bg-white transition-colors">' +
+            '</td>' +
+          '</tr>';
+      }).join('');
+    }
+
+    function renderRecords() {
+      const filters = readFilters();
+      const body = document.getElementById('attendanceRecordsBody');
+      if (!body) return;
+      const records = attendanceRecordsState.filter((item) => {
+        const byDate = String(item.date || '') === filters.date;
+        const byType = String(item.activityType || '') === filters.activityType;
+        const byTeam = !filters.teamId || String(item.teamId || '') === filters.teamId;
+        if (!(byDate && byType && byTeam)) return false;
+        if (String(item.subjectType || '') === 'coach') return true;
+        if (String(item.subjectType || '') !== 'player') return false;
+        if (!filters.query) return true;
+        const player = playersState.find((p) => String(p.id || '') === String(item.subjectId || ''));
+        const name = String((player && player.name) || '').toLowerCase();
+        return name.includes(filters.query);
+      });
+
+      if (!records.length) {
+        body.innerHTML = '<tr><td colspan="4" class="px-6 py-6 text-sm text-gray-500">No attendance records for selected filters.</td></tr>';
+        return;
+      }
+
+      body.innerHTML = records.map((record) => {
+        const badge = getStatusBadge(record.status);
+        const isCoach = String(record.subjectType || '') === 'coach';
+        const player = playersState.find((p) => String(p.id || '') === String(record.subjectId || ''));
+        const subjectName = isCoach ? 'Coach (You)' : String((player && player.name) || record.subjectId || '');
+        const initials = getInitials(subjectName);
+        return '' +
+          '<tr class="hover:bg-gray-50 transition-colors">' +
+            '<td class="px-6 py-4 whitespace-nowrap"><div class="flex items-center gap-3"><div class="h-8 w-8 rounded-full bg-hope-lime/20 flex items-center justify-center text-hope-lime font-bold text-xs border border-white">' + escapeHtml(initials) + '</div><span class="font-medium text-hope-dark">' + escapeHtml(subjectName) + '</span></div></td>' +
+            '<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">' + escapeHtml(getTeamNameById(record.teamId)) + '</td>' +
+            '<td class="px-6 py-4 whitespace-nowrap"><span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ' + badge.cls + ' border"><span class="w-1.5 h-1.5 rounded-full ' + badge.dot + '"></span>' + badge.label + '</span></td>' +
+            '<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">' + escapeHtml(record.note || '-') + '</td>' +
+          '</tr>';
+      }).join('');
+    }
+
+    function bindEditableInputs() {
+      document.querySelectorAll('.attendance-status').forEach((el) => {
+        el.addEventListener('change', function () {
+          const id = String(el.getAttribute('data-record-id') || '');
+          const record = attendanceRecordsState.find((item) => String(item.id || '') === id);
+          if (record) record.status = String(el.value || 'present');
+          renderRecords();
+        });
+      });
+      document.querySelectorAll('.attendance-note').forEach((el) => {
+        el.addEventListener('input', function () {
+          const id = String(el.getAttribute('data-record-id') || '');
+          const record = attendanceRecordsState.find((item) => String(item.id || '') === id);
+          if (record) record.note = String(el.value || '');
+        });
+      });
+    }
+
+    function saveAttendance() {
+      window.AdminDataStore.set('attendanceRecords', attendanceRecordsState);
+      alert('Attendance saved.');
+      renderRecords();
     }
 
     function setMyPresenceLockedState() {
-      const date = getSelectedPresenceDate();
-      const store = getCoachPresenceStore();
-      const record = store[date];
+      const filters = readFilters();
+      const record = findCoachRecord(filters);
       const statusSelect = document.getElementById('myPresenceStatus');
       const noteInput = document.getElementById('myPresenceNote');
       const submitBtn = document.getElementById('submitMyPresenceBtn');
       const stateText = document.getElementById('myPresenceStateText');
-
       if (!statusSelect || !noteInput || !submitBtn || !stateText) return;
 
       if (record) {
@@ -698,8 +801,7 @@
         submitBtn.classList.add('opacity-60', 'cursor-not-allowed');
         submitBtn.textContent = 'Submitted (Locked)';
         stateText.className = 'text-sm text-hope-red font-medium';
-        stateText.textContent = `Submitted for ${date}. Locked (cannot edit/delete).`;
-        upsertMyPresenceRow(record);
+        stateText.textContent = `Submitted for ${filters.date}. Locked (cannot edit/delete).`;
       } else {
         statusSelect.disabled = false;
         noteInput.disabled = false;
@@ -707,58 +809,74 @@
         submitBtn.classList.remove('opacity-60', 'cursor-not-allowed');
         submitBtn.textContent = 'Submit My Presence';
         stateText.className = 'text-sm text-gray-600';
-        stateText.textContent = `No presence submitted for ${date}.`;
-        upsertMyPresenceRow(null);
+        stateText.textContent = `No presence submitted for ${filters.date}.`;
       }
     }
 
     function submitMyPresence() {
-      const date = getSelectedPresenceDate();
-      const store = getCoachPresenceStore();
-      if (store[date]) {
+      if (!currentCoach) return alert('Coach profile not found in JSON data.');
+      const filters = readFilters();
+      if (findCoachRecord(filters)) {
         setMyPresenceLockedState();
         return;
       }
-
       const statusSelect = document.getElementById('myPresenceStatus');
       const noteInput = document.getElementById('myPresenceNote');
-      const record = {
+      const max = attendanceRecordsState.reduce((acc, item) => {
+        const n = Number(String(item.id || '').replace(/\D/g, ''));
+        return Number.isFinite(n) ? Math.max(acc, n) : acc;
+      }, 0);
+      attendanceRecordsState.push({
+        id: 'AR-' + String(max + 1).padStart(3, '0'),
+        subjectType: 'coach',
+        subjectId: String(currentCoach.id || ''),
+        teamId: String(filters.teamId || ''),
+        coachId: '',
+        date: filters.date,
+        activityType: filters.activityType,
         status: statusSelect ? statusSelect.value : 'present',
-        note: noteInput ? noteInput.value.trim() : '',
-        team: getSelectedTeamName(),
-        createdAt: new Date().toISOString()
-      };
-      store[date] = record;
-      setCoachPresenceStore(store);
-      setMyPresenceLockedState();
-      filterAttendanceByName();
-    }
-
-    const attendanceNameSearch = document.getElementById('attendanceNameSearch');
-    const attendanceLoadBtn = document.getElementById('attendanceLoadBtn');
-    const sessionDateInput = document.getElementById('sessionDateInput');
-    const submitMyPresenceBtn = document.getElementById('submitMyPresenceBtn');
-
-    if (attendanceNameSearch) {
-      attendanceNameSearch.addEventListener('input', filterAttendanceByName);
-    }
-    if (attendanceLoadBtn) {
-      attendanceLoadBtn.addEventListener('click', filterAttendanceByName);
-    }
-    if (sessionDateInput && !sessionDateInput.value) {
-      sessionDateInput.value = getTodayIsoDate();
-    }
-    if (sessionDateInput) {
-      sessionDateInput.addEventListener('change', function onSessionDateChange() {
-        setMyPresenceLockedState();
-        filterAttendanceByName();
+        note: noteInput ? noteInput.value.trim() : ''
       });
-    }
-    if (submitMyPresenceBtn) {
-      submitMyPresenceBtn.addEventListener('click', submitMyPresence);
+      window.AdminDataStore.set('attendanceRecords', attendanceRecordsState);
+      renderRecords();
+      setMyPresenceLockedState();
     }
 
-    setMyPresenceLockedState();
+    function renderAll() {
+      renderPlayerList();
+      bindEditableInputs();
+      renderRecords();
+      setMyPresenceLockedState();
+    }
+
+    document.addEventListener('DOMContentLoaded', async function () {
+      await window.AdminDataStore.bootstrap();
+      teamsState = normalizeArray(window.AdminDataStore.getArray('teams', []));
+      playersState = normalizeArray(window.AdminDataStore.getArray('players', []));
+      coachesState = normalizeArray(window.AdminDataStore.getArray('coaches', []));
+      attendanceRecordsState = normalizeArray(window.AdminDataStore.getArray('attendanceRecords', []));
+      resolveCurrentCoach();
+      populateTeamOptions();
+
+      const sessionDateInput = document.getElementById('sessionDateInput');
+      const sessionTypeInput = document.getElementById('sessionTypeInput');
+      const teamSelect = document.getElementById('coachTeamSelect');
+      const attendanceNameSearch = document.getElementById('attendanceNameSearch');
+      const attendanceLoadBtn = document.getElementById('attendanceLoadBtn');
+      const saveAttendanceBtn = document.getElementById('saveAttendanceBtn');
+      const submitMyPresenceBtn = document.getElementById('submitMyPresenceBtn');
+
+      if (sessionDateInput && !sessionDateInput.value) sessionDateInput.value = getTodayIsoDate();
+      if (sessionDateInput) sessionDateInput.addEventListener('change', renderAll);
+      if (sessionTypeInput) sessionTypeInput.addEventListener('change', renderAll);
+      if (teamSelect) teamSelect.addEventListener('change', renderAll);
+      if (attendanceNameSearch) attendanceNameSearch.addEventListener('input', renderAll);
+      if (attendanceLoadBtn) attendanceLoadBtn.addEventListener('click', renderAll);
+      if (saveAttendanceBtn) saveAttendanceBtn.addEventListener('click', saveAttendance);
+      if (submitMyPresenceBtn) submitMyPresenceBtn.addEventListener('click', submitMyPresence);
+
+      renderAll();
+    });
   </script>
 
 </body>

@@ -11,6 +11,7 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="/admin/admin-data-store.js"></script>
 
     <!-- Tailwind Configuration with Custom Brand Colors (FIXED) -->
     <script>
@@ -182,6 +183,16 @@
                         Matches
                     </a>
 
+                    <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-tournament-overview.html">
+                        <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8M12 17v4M7 4h10l-1 6H8L7 4zM5 4h14"></path></svg>
+                        Tournament
+                    </a>
+
+                    <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-division.html">
+                        <svg class="w-5 h-5 group-hover:text-hope-yellow transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"></path></svg>
+                        Division
+                    </a>
+
                     <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-training.html">
                         <svg class="w-5 h-5 group-hover:text-hope-red transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                         Training
@@ -256,20 +267,22 @@
                 <!-- Search & Filter Bar -->
                 <div class="p-4 md:p-5 border-b border-gray-100 flex flex-col sm:flex-row gap-4 justify-between items-center bg-gray-50">
                     <div class="relative w-full sm:w-64">
-                        <input type="text" placeholder="Search by team name or coach..." class="w-full rounded-xl border-gray-300 border p-2.5 pl-10 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+                        <input id="teamSearchInput" type="text" placeholder="Search by team name or coach..." class="w-full rounded-xl border-gray-300 border p-2.5 pl-10 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
                         <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </div>
                     <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                        <select class="w-full sm:w-32 bg-white border border-gray-300 text-gray-600 text-sm rounded-xl focus:ring-hope-cyan focus:border-hope-cyan block px-4 py-2.5 outline-none shadow-sm">
-                            <option>All Divisions</option>
-                            <option>U16</option>
-                            <option>U14</option>
-                            <option>U12</option>
+                        <select id="teamDivisionFilter" class="w-full sm:w-32 bg-white border border-gray-300 text-gray-600 text-sm rounded-xl focus:ring-hope-cyan focus:border-hope-cyan block px-4 py-2.5 outline-none shadow-sm">
+                            <option value="">All Divisions</option>
+                            <option value="U12">U12</option>
+                            <option value="U14">U14</option>
+                            <option value="U16">U16</option>
+                            <option value="U18">U18</option>
                         </select>
-                        <select class="w-full sm:w-32 bg-white border border-gray-300 text-gray-600 text-sm rounded-xl focus:ring-hope-cyan focus:border-hope-cyan block px-4 py-2.5 outline-none shadow-sm">
-                            <option>All Status</option>
-                            <option>Active</option>
-                            <option>Training</option>
+                        <select id="teamStatusFilter" class="w-full sm:w-32 bg-white border border-gray-300 text-gray-600 text-sm rounded-xl focus:ring-hope-cyan focus:border-hope-cyan block px-4 py-2.5 outline-none shadow-sm">
+                            <option value="">All Status</option>
+                            <option value="Active">Active</option>
+                            <option value="Training">Training</option>
+                            <option value="Inactive">Inactive</option>
                         </select>
                     </div>
                 </div>
@@ -286,56 +299,7 @@
                                 <th class="px-4 md:px-6 py-3 text-right text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap">Actions</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-100">
-                            <!-- Team A -->
-                            <tr class="hover:bg-hope-cyan/5 transition-colors">
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center gap-3">
-                                        <div class="h-10 w-10 rounded-lg bg-hope-lime/20 flex items-center justify-center text-hope-lime font-bold border border-white shadow-sm flex-shrink-0">A</div>
-                                        <div>
-                                            <div class="font-bold text-hope-dark">Team A (Eagles)</div>
-                                            <div class="text-xs text-gray-500">U16 Division</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-700">Coach Sok</td>
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-700">20</td>
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-hope-lime/10 text-hope-lime">
-                                        Active
-                                    </span>
-                                </td>
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-right space-x-2">
-                                    <a href="/admin/admin-team-detail.html" class="text-hope-cyan hover:text-hope-dark">Detail</a>
-                                    <button class="text-hope-yellow hover:text-yellow-600 text-xs font-semibold">Edit</button>
-                                    <button class="text-hope-red hover:text-red-700 text-xs font-semibold">Delete</button>
-                                </td>
-                            </tr>
-                            <!-- Team B -->
-                            <tr class="hover:bg-hope-cyan/5 transition-colors">
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center gap-3">
-                                        <div class="h-10 w-10 rounded-lg bg-hope-yellow/20 flex items-center justify-center text-hope-yellow font-bold border border-white shadow-sm flex-shrink-0">B</div>
-                                        <div>
-                                            <div class="font-bold text-hope-dark">Team B (Tigers)</div>
-                                            <div class="text-xs text-gray-500">U14 Division</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-700">Coach Dara</td>
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-700">18</td>
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-hope-yellow/10 text-hope-yellow">
-                                        Training
-                                    </span>
-                                </td>
-                                <td class="px-4 md:px-6 py-4 whitespace-nowrap text-right space-x-2">
-                                    <a href="/admin/admin-team-detail.html" class="text-hope-cyan hover:text-hope-dark">Detail</a>
-                                    <button class="text-hope-yellow hover:text-yellow-600 text-xs font-semibold">Edit</button>
-                                    <button class="text-hope-red hover:text-red-700 text-xs font-semibold">Delete</button>
-                                </td>
-                            </tr>
-                        </tbody>
+                        <tbody id="teamsTableBody" class="divide-y divide-gray-100"></tbody>
                     </table>
                 </div>
 
@@ -399,56 +363,198 @@
             }
         });
 
-        // Simple client-side pagination for Teams table
-        (function () {
-            const rowsPerPage = 10;
-            let currentPage = 1;
-            const tableBody = document.querySelector('table tbody');
+        const TEAM_PAGE_SIZE = 10;
+        let teamsState = [];
+        let playersState = [];
+        let coachesState = [];
+        let filteredTeamsState = [];
+        let teamsCurrentPage = 1;
+
+        function normalizeArray(input) {
+            return Array.isArray(input) ? input : [];
+        }
+
+        function getTeamName(team) {
+            return team.name || team.teamName || team.title || team.id || 'Unknown Team';
+        }
+
+        function getTeamDivision(team) {
+            return team.division || team.divisionName || team.ageGroup || team.category || 'N/A';
+        }
+
+        function getTeamStatus(team) {
+            return team.status || 'Active';
+        }
+
+        function getTeamPlayerCount(team) {
+            if (typeof team.playerCount === 'number') return team.playerCount;
+            if (Array.isArray(team.players)) return team.players.length;
+            return playersState.filter(function (player) {
+                const teamId = player.teamId || player.team_id || player.teamID || (player.team && (player.team.id || player.team.teamId || player.team.team_id));
+                return teamId === team.id;
+            }).length;
+        }
+
+        function getCoachName(team) {
+            if (team.coachName) return team.coachName;
+            if (team.coach && (team.coach.name || team.coach.fullName)) return team.coach.name || team.coach.fullName;
+            const coachId = team.coachId || team.coach_id || (team.coach && (team.coach.id || team.coach.coachId));
+            if (!coachId) return 'Unassigned';
+            const coach = coachesState.find(function (c) {
+                const id = c.id || c.coachId || c.coach_id;
+                return id === coachId;
+            });
+            return coach ? (coach.name || coach.fullName || 'Unassigned') : 'Unassigned';
+        }
+
+        function getStatusChipClass(status) {
+            const normalized = String(status || '').toLowerCase();
+            if (normalized === 'training') return 'bg-hope-yellow/10 text-hope-yellow';
+            if (normalized === 'inactive') return 'bg-hope-red/10 text-hope-red';
+            return 'bg-hope-lime/10 text-hope-lime';
+        }
+
+        function getTeamInitial(team) {
+            return String(getTeamName(team)).trim().charAt(0).toUpperCase() || 'T';
+        }
+
+        function renderTeamsTablePage() {
+            const tableBody = document.getElementById('teamsTableBody');
             const pageInfo = document.getElementById('paginationInfo');
             const pageButtons = document.getElementById('pageButtons');
             const prevBtn = document.getElementById('prevPage');
             const nextBtn = document.getElementById('nextPage');
-
             if (!tableBody || !pageInfo || !pageButtons) return;
 
-            const rows = Array.from(tableBody.querySelectorAll('tr'));
-            const totalItems = rows.length;
+            const totalItems = filteredTeamsState.length;
+            const totalPages = Math.max(1, Math.ceil(totalItems / TEAM_PAGE_SIZE));
+            if (teamsCurrentPage > totalPages) teamsCurrentPage = totalPages;
+            const start = (teamsCurrentPage - 1) * TEAM_PAGE_SIZE;
+            const end = Math.min(start + TEAM_PAGE_SIZE, totalItems);
+            const rows = filteredTeamsState.slice(start, end);
 
-            function render() {
-                const totalPages = Math.max(1, Math.ceil(totalItems / rowsPerPage));
-                if (currentPage > totalPages) currentPage = totalPages;
-                window.__teamsCurrentPage = currentPage;
-
-                const start = (currentPage - 1) * rowsPerPage;
-                const end = Math.min(start + rowsPerPage, totalItems);
-
-                rows.forEach((r, i) => r.style.display = (i >= start && i < end) ? '' : 'none');
-
-                pageInfo.textContent = totalItems === 0 ? 'No teams to display.' : `Showing ${totalItems === 0 ? 0 : start + 1} to ${end} of ${totalItems} Teams.`;
-
-                // render page buttons
-                pageButtons.innerHTML = '';
-                for (let i = 1; i <= totalPages; i++) {
-                    const btn = document.createElement('button');
-                    btn.type = 'button';
-                    btn.textContent = i;
-                    btn.className = 'px-3 py-1 rounded-md text-sm font-medium ' + (i === currentPage ? 'bg-hope-cyan text-white' : 'bg-white border border-gray-200 text-gray-700');
-                    btn.addEventListener('click', () => { currentPage = i; render(); });
-                    pageButtons.appendChild(btn);
-                }
-
-                if (prevBtn) prevBtn.disabled = currentPage === 1;
-                if (nextBtn) nextBtn.disabled = currentPage === totalPages;
+            if (!rows.length) {
+                tableBody.innerHTML = '<tr><td colspan="5" class="px-4 md:px-6 py-6 text-sm text-gray-500">No teams found.</td></tr>';
+            } else {
+                tableBody.innerHTML = rows.map(function (team) {
+                    const teamId = String(team.id || '');
+                    const name = getTeamName(team);
+                    const division = getTeamDivision(team);
+                    const coachName = getCoachName(team);
+                    const playerCount = getTeamPlayerCount(team);
+                    const status = getTeamStatus(team);
+                    return (
+                        '<tr class="hover:bg-hope-cyan/5 transition-colors">' +
+                        '<td class="px-4 md:px-6 py-4 whitespace-nowrap"><div class="flex items-center gap-3">' +
+                        '<div class="h-10 w-10 rounded-lg bg-hope-cyan/10 flex items-center justify-center text-hope-cyan font-bold border border-white shadow-sm flex-shrink-0">' + getTeamInitial(team) + '</div>' +
+                        '<div><div class="font-bold text-hope-dark">' + name + '</div><div class="text-xs text-gray-500">' + division + ' Division</div></div>' +
+                        '</div></td>' +
+                        '<td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-700">' + coachName + '</td>' +
+                        '<td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm font-bold text-gray-700">' + playerCount + '</td>' +
+                        '<td class="px-4 md:px-6 py-4 whitespace-nowrap"><span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ' + getStatusChipClass(status) + '">' + status + '</span></td>' +
+                        '<td class="px-4 md:px-6 py-4 whitespace-nowrap text-right space-x-2"><a href="/admin/admin-team-detail.html?id=' + encodeURIComponent(teamId) + '" class="text-hope-cyan hover:text-hope-dark">Detail</a><button type="button" onclick="goToUpdateTeam(\'' + teamId + '\')" class="text-hope-yellow hover:text-yellow-600 text-xs font-semibold">Update</button><button type="button" onclick="deleteTeam(\'' + teamId + '\')" class="text-hope-red hover:text-red-700 text-xs font-semibold">Delete</button></td>' +
+                        '</tr>'
+                    );
+                }).join('');
             }
 
-            window.changeTeamsPage = function (n) {
-                const totalPages = Math.max(1, Math.ceil(totalItems / rowsPerPage));
-                currentPage = Math.max(1, Math.min(n, totalPages));
-                render();
-            };
+            pageInfo.textContent = totalItems === 0 ? 'No teams to display.' : 'Showing ' + (start + 1) + ' to ' + end + ' of ' + totalItems + ' Teams.';
 
-            render();
-        })();
+            pageButtons.innerHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = i;
+                btn.className = 'px-3 py-1 rounded-md text-sm font-medium ' + (i === teamsCurrentPage ? 'bg-hope-cyan text-white' : 'bg-white border border-gray-200 text-gray-700');
+                btn.addEventListener('click', function () {
+                    teamsCurrentPage = i;
+                    renderTeamsTablePage();
+                });
+                pageButtons.appendChild(btn);
+            }
+
+            if (prevBtn) prevBtn.disabled = teamsCurrentPage === 1;
+            if (nextBtn) nextBtn.disabled = teamsCurrentPage === totalPages;
+            window.__teamsCurrentPage = teamsCurrentPage;
+        }
+
+        function applyTeamsFilters(resetPage) {
+            const searchInput = document.getElementById('teamSearchInput');
+            const divisionFilter = document.getElementById('teamDivisionFilter');
+            const statusFilter = document.getElementById('teamStatusFilter');
+            const search = String(searchInput ? searchInput.value : '').trim().toLowerCase();
+            const division = String(divisionFilter ? divisionFilter.value : '');
+            const status = String(statusFilter ? statusFilter.value : '');
+
+            filteredTeamsState = teamsState.filter(function (team) {
+                const name = getTeamName(team).toLowerCase();
+                const coach = getCoachName(team).toLowerCase();
+                const bySearch = !search || name.indexOf(search) !== -1 || coach.indexOf(search) !== -1;
+                const byDivision = !division || String(getTeamDivision(team)) === division;
+                const byStatus = !status || String(getTeamStatus(team)) === status;
+                return bySearch && byDivision && byStatus;
+            });
+
+            if (resetPage) teamsCurrentPage = 1;
+            renderTeamsTablePage();
+        }
+
+        function saveTeamsState() {
+            window.AdminDataStore.set('teams', teamsState);
+        }
+
+        function normalizeStatus(input) {
+            const value = String(input || '').trim().toLowerCase();
+            if (value === 'active') return 'Active';
+            if (value === 'training') return 'Training';
+            if (value === 'inactive') return 'Inactive';
+            return '';
+        }
+
+        async function loadTeamsFromJson() {
+            await window.AdminDataStore.bootstrap();
+            teamsState = normalizeArray(window.AdminDataStore.getArray('teams', []));
+            playersState = normalizeArray(window.AdminDataStore.getArray('players', []));
+            coachesState = normalizeArray(window.AdminDataStore.getArray('coaches', []));
+            filteredTeamsState = teamsState.slice();
+            applyTeamsFilters(true);
+        }
+
+        window.goToUpdateTeam = function (teamId) {
+            if (!teamId) return;
+            window.location.href = '/admin/admin-team-create.html?edit=' + encodeURIComponent(String(teamId));
+        };
+
+        window.deleteTeam = function (teamId) {
+            const team = teamsState.find(function (item) {
+                return String(item.id) === String(teamId);
+            });
+            if (!team) return;
+            const confirmed = window.confirm('Delete team "' + getTeamName(team) + '"?');
+            if (!confirmed) return;
+
+            teamsState = teamsState.filter(function (item) {
+                return String(item.id) !== String(teamId);
+            });
+            saveTeamsState();
+            applyTeamsFilters(false);
+        };
+
+        window.changeTeamsPage = function (n) {
+            const totalPages = Math.max(1, Math.ceil(filteredTeamsState.length / TEAM_PAGE_SIZE));
+            teamsCurrentPage = Math.max(1, Math.min(n, totalPages));
+            renderTeamsTablePage();
+        };
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('teamSearchInput');
+            const divisionFilter = document.getElementById('teamDivisionFilter');
+            const statusFilter = document.getElementById('teamStatusFilter');
+            if (searchInput) searchInput.addEventListener('input', function () { applyTeamsFilters(true); });
+            if (divisionFilter) divisionFilter.addEventListener('change', function () { applyTeamsFilters(true); });
+            if (statusFilter) statusFilter.addEventListener('change', function () { applyTeamsFilters(true); });
+            loadTeamsFromJson();
+        });
 
         // Team logo preview handler
         (function(){
@@ -472,6 +578,7 @@
             });
         })();
     </script>
+    <script src="/admin/admin-sidebar-loader.js"></script>
 
 </body>
 

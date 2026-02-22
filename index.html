@@ -11,6 +11,7 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/admin/admin-data-store.js"></script>
 
   <!-- Tailwind Configuration with Custom Brand Colors -->
   <script>
@@ -37,7 +38,11 @@
 
   <style>
     body {
-      background-color: #f2f4f7;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(141, 198, 63, 0.18), transparent 35%),
+        radial-gradient(circle at 85% 20%, rgba(0, 174, 239, 0.18), transparent 35%),
+        radial-gradient(circle at 40% 85%, rgba(253, 193, 22, 0.14), transparent 30%),
+        linear-gradient(145deg, #edf2f7 0%, #f8fafc 45%, #eef7fb 100%);
       color: #1D1D1B;
       font-family: 'Inter', sans-serif;
     }
@@ -45,53 +50,66 @@
     .hidden-section {
       display: none;
     }
-    
-    /* Animations */
+
+    .mesh-orb {
+      filter: blur(6px);
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 50px -25px rgba(15, 23, 42, 0.35);
+    }
+
     .fade-in {
       animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
+
     .slide-in-right {
       animation: slideInRight 0.3s ease-out;
     }
-    
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
     @keyframes slideInRight {
       from { opacity: 0; transform: translateX(20px); }
       to { opacity: 1; transform: translateX(0); }
     }
 
-    /* Card Hover Effects */
     .role-card {
-      transition: all 0.3s ease;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     }
+
     .role-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 34px -16px rgba(2, 6, 23, 0.25);
       border-color: currentColor;
     }
   </style>
 </head>
 
-<body class="min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen relative flex items-center justify-center p-4 md:p-8 overflow-x-hidden">
+  <div class="mesh-orb absolute -top-16 -left-20 h-64 w-64 rounded-full bg-hope-lime/40"></div>
+  <div class="mesh-orb absolute top-8 right-0 h-72 w-72 rounded-full bg-hope-cyan/40"></div>
+  <div class="mesh-orb absolute -bottom-20 left-1/3 h-60 w-60 rounded-full bg-hope-yellow/35"></div>
 
-  <!-- ============================ -->
-  <!-- CENTERED CONTENT CARD -->
-  <!-- ============================ -->
-  <div class="w-full max-w-lg bg-white rounded-3xl shadow-xl p-8 md:p-12 relative border border-gray-100">
-    
-    <!-- Logo Header -->
-    <div class="flex flex-col items-center mb-8">
+  <div class="w-full max-w-xl relative z-10">
+    <div class="glass-panel rounded-3xl p-7 md:p-10 lg:p-11 relative">
+      <div class="flex flex-col items-center mb-8">
         <div class="w-14 h-14 bg-gradient-to-br from-hope-lime to-green-500 rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-lg shadow-hope-lime/30 mb-4">
           E
         </div>
         <h1 class="text-3xl font-bold tracking-tight text-gray-900">EduSportPro</h1>
-        <p class="text-gray-500 text-sm mt-1">Unified Sports Management Platform</p>
-    </div>
+        <p class="text-gray-500 text-sm mt-1 text-center">Unified Sports Management Platform</p>
+      </div>
 
-    <div class="w-full">
+      <div class="w-full">
 
       <!-- ============================ -->
       <!-- 1. ROLE SELECTION SCREEN -->
@@ -113,7 +131,7 @@
                 </div>
                 <div>
                    <h3 class="text-lg font-bold text-gray-900 group-hover:text-hope-red transition-colors">Admin Portal</h3>
-                   <p class="text-xs text-gray-500 mt-1">Access system settings & management</p>
+                   <p id="adminPortalDesc" class="text-xs text-gray-500 mt-1">Access system settings & management</p>
                 </div>
                 <div class="ml-auto text-gray-300 group-hover:text-hope-red transition-colors transform group-hover:translate-x-1">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
@@ -131,7 +149,7 @@
                 </div>
                 <div>
                    <h3 class="text-lg font-bold text-gray-900 group-hover:text-hope-cyan transition-colors">Team Portal</h3>
-                   <p class="text-xs text-gray-500 mt-1">Access schedules & performance</p>
+                   <p id="teamPortalDesc" class="text-xs text-gray-500 mt-1">Access schedules & performance</p>
                 </div>
                 <div class="ml-auto text-gray-300 group-hover:text-hope-cyan transition-colors transform group-hover:translate-x-1">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
@@ -147,46 +165,51 @@
       <!-- 2. ADMIN LOGIN FORM -->
       <!-- ============================ -->
       <section id="adminLogin" class="hidden-section slide-in-right">
-        <button onclick="showRoleSelection()" class="mb-6 text-gray-400 hover:text-gray-600 flex items-center gap-2 text-sm font-medium transition-colors group">
+        <button onclick="showRoleSelection()" class="mb-6 inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white/70 px-3 py-1.5 text-sm font-semibold text-gray-500 hover:text-gray-700 hover:border-gray-300 transition-colors group">
            <svg class="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
            Back to Roles
         </button>
 
         <div class="mb-6">
-           <h2 class="text-2xl font-bold text-gray-900">Admin Login</h2>
-           <p class="text-gray-500 text-sm mt-1">Please enter your admin credentials.</p>
+           <span class="inline-flex rounded-full bg-red-50 px-3 py-1 text-xs font-bold uppercase tracking-wide text-hope-red">Admin Access</span>
+           <h2 class="text-2xl font-black text-gray-900 mt-3">Sign In To Admin Portal</h2>
+           <p class="text-gray-500 text-sm mt-1">Use your admin account to manage users, schedules, and reports.</p>
         </div>
 
-        <form onsubmit="event.preventDefault(); window.location.href='./admin/admin-dashboard.html';" class="space-y-5">
+        <form id="adminLoginForm" class="space-y-5 rounded-2xl border border-red-100/70 bg-gradient-to-b from-red-50/40 to-white p-5 md:p-6 shadow-sm">
            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+              <label class="block text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">Email Address</label>
               <div class="relative">
                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path></svg>
                  </div>
-                 <input type="email" required class="w-full rounded-xl border border-gray-200 bg-gray-50 p-3 pl-10 text-gray-900 focus:bg-white focus:border-hope-red focus:ring-2 focus:ring-hope-red/20 outline-none transition-all" placeholder="admin@edusportpro.com" />
+                 <input id="adminEmailInput" type="email" required class="w-full rounded-xl border border-red-100 bg-white p-3.5 pl-10 text-gray-900 placeholder:text-gray-400 focus:bg-white focus:border-hope-red focus:ring-2 focus:ring-hope-red/20 outline-none transition-all" placeholder="admin@edusportpro.com" />
               </div>
            </div>
 
            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <label class="block text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">Password</label>
               <div class="relative">
                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                  </div>
-                 <input type="password" required class="w-full rounded-xl border border-gray-200 bg-gray-50 p-3 pl-10 text-gray-900 focus:bg-white focus:border-hope-red focus:ring-2 focus:ring-hope-red/20 outline-none transition-all" placeholder="••••••••" />
+                 <input id="adminPasswordInput" type="password" required class="w-full rounded-xl border border-red-100 bg-white p-3.5 pl-10 text-gray-900 placeholder:text-gray-400 focus:bg-white focus:border-hope-red focus:ring-2 focus:ring-hope-red/20 outline-none transition-all" placeholder="********" />
               </div>
            </div>
 
-           <div class="flex items-center justify-between">
+           <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <label class="flex items-center">
-                 <input type="checkbox" class="h-4 w-4 text-hope-red focus:ring-hope-red border-gray-300 rounded cursor-pointer">
+                 <input id="adminRememberInput" type="checkbox" class="h-4 w-4 text-hope-red focus:ring-hope-red border-gray-300 rounded cursor-pointer">
                  <span class="ml-2 block text-sm text-gray-600 cursor-pointer">Remember me</span>
               </label>
-              <a href="forgot_password.html" class="text-sm font-medium text-hope-red hover:text-red-700 hover:underline">Forgot password?</a>
+              <div class="flex items-center gap-3">
+                <a href="register.html" class="text-sm font-medium text-hope-red hover:text-red-700 hover:underline">Register</a>
+                <a href="forgot_password.html" class="text-sm font-medium text-hope-red hover:text-red-700 hover:underline">Forgot password?</a>
+              </div>
            </div>
+           <p id="adminLoginMsg" class="hidden text-sm font-medium text-red-600"></p>
 
-           <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-lg shadow-hope-red/30 text-sm font-bold text-white bg-hope-red hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-hope-red transition-all transform active:scale-[0.98]">
+           <button type="submit" class="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-xl shadow-lg shadow-hope-red/25 text-sm font-bold tracking-wide text-white bg-gradient-to-r from-hope-red to-red-500 hover:from-red-600 hover:to-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-hope-red transition-all transform active:scale-[0.98]">
               Sign In
            </button>
         </form>
@@ -197,51 +220,57 @@
       <!-- 3. COACH/PLAYER LOGIN FORM -->
       <!-- ============================ -->
       <section id="userLogin" class="hidden-section slide-in-right">
-        <button onclick="showRoleSelection()" class="mb-6 text-gray-400 hover:text-gray-600 flex items-center gap-2 text-sm font-medium transition-colors group">
+        <button onclick="showRoleSelection()" class="mb-6 inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white/70 px-3 py-1.5 text-sm font-semibold text-gray-500 hover:text-gray-700 hover:border-gray-300 transition-colors group">
            <svg class="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
            Back to Roles
         </button>
 
         <div class="mb-6">
-           <h2 class="text-2xl font-bold text-gray-900">Team Login</h2>
-           <p class="text-gray-500 text-sm mt-1">Enter your details to access the team hub.</p>
+           <span class="inline-flex rounded-full bg-cyan-50 px-3 py-1 text-xs font-bold uppercase tracking-wide text-hope-cyan">Team Access</span>
+           <h2 class="text-2xl font-black text-gray-900 mt-3">Sign In To Team Portal</h2>
+           <p class="text-gray-500 text-sm mt-1">Use your coach email or player ID to access daily operations.</p>
         </div>
 
-        <form onsubmit="event.preventDefault(); window.location.href='./coach/coach-dashboard.html';" class="space-y-5">
+        <form id="teamLoginForm" class="space-y-5 rounded-2xl border border-cyan-100/70 bg-gradient-to-b from-cyan-50/40 to-white p-5 md:p-6 shadow-sm">
            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Email or Player ID</label>
+              <label class="block text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">Email Or Player ID</label>
               <div class="relative">
                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path></svg>
                  </div>
-                 <input type="text" required class="w-full rounded-xl border border-gray-200 bg-gray-50 p-3 pl-10 text-gray-900 focus:bg-white focus:border-hope-cyan focus:ring-2 focus:ring-hope-cyan/20 outline-none transition-all" placeholder="coach@team.com" />
+                 <input id="teamEmailInput" type="text" required class="w-full rounded-xl border border-cyan-100 bg-white p-3.5 pl-10 text-gray-900 placeholder:text-gray-400 focus:bg-white focus:border-hope-cyan focus:ring-2 focus:ring-hope-cyan/20 outline-none transition-all" placeholder="coach@team.com" />
               </div>
            </div>
 
            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <label class="block text-xs font-bold uppercase tracking-wide text-gray-500 mb-2">Password</label>
               <div class="relative">
                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                  </div>
-                 <input type="password" required class="w-full rounded-xl border border-gray-200 bg-gray-50 p-3 pl-10 text-gray-900 focus:bg-white focus:border-hope-cyan focus:ring-2 focus:ring-hope-cyan/20 outline-none transition-all" placeholder="••••••••" />
+                 <input id="teamPasswordInput" type="password" required class="w-full rounded-xl border border-cyan-100 bg-white p-3.5 pl-10 text-gray-900 placeholder:text-gray-400 focus:bg-white focus:border-hope-cyan focus:ring-2 focus:ring-hope-cyan/20 outline-none transition-all" placeholder="********" />
               </div>
            </div>
 
-           <div class="flex items-center justify-between">
+           <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <label class="flex items-center">
-                 <input type="checkbox" class="h-4 w-4 text-hope-cyan focus:ring-hope-cyan border-gray-300 rounded cursor-pointer">
+                 <input id="teamRememberInput" type="checkbox" class="h-4 w-4 text-hope-cyan focus:ring-hope-cyan border-gray-300 rounded cursor-pointer">
                  <span class="ml-2 block text-sm text-gray-600 cursor-pointer">Remember me</span>
               </label>
-              <a href="forgot_password.html" class="text-sm font-medium text-hope-cyan hover:text-sky-600 hover:underline">Forgot password?</a>
+              <div class="flex items-center gap-3">
+                <a href="register.html" class="text-sm font-medium text-hope-cyan hover:text-sky-600 hover:underline">Register</a>
+                <a href="forgot_password.html" class="text-sm font-medium text-hope-cyan hover:text-sky-600 hover:underline">Forgot password?</a>
+              </div>
            </div>
+           <p id="teamLoginMsg" class="hidden text-sm font-medium text-red-600"></p>
 
-           <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-lg shadow-hope-cyan/30 text-sm font-bold text-white bg-hope-cyan hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-hope-cyan transition-all transform active:scale-[0.98]">
+           <button type="submit" class="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-xl shadow-lg shadow-hope-cyan/25 text-sm font-bold tracking-wide text-white bg-gradient-to-r from-hope-cyan to-sky-500 hover:from-sky-500 hover:to-cyan-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-hope-cyan transition-all transform active:scale-[0.98]">
               Sign In
            </button>
         </form>
       </section>
 
+      </div>
     </div>
   </div>
 
@@ -275,6 +304,146 @@
       hideAll();
       document.getElementById(SECTIONS.USER).classList.remove('hidden-section');
     }
+
+    function normalize(value) {
+      return String(value || '').trim().toLowerCase();
+    }
+
+    function showFormMessage(elementId, message) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      if (!message) {
+        el.textContent = '';
+        el.classList.add('hidden');
+        return;
+      }
+      el.textContent = message;
+      el.classList.remove('hidden');
+    }
+
+    function checkPassword(user, inputPassword) {
+      const savedPassword = String((user && user.password) || '');
+      if (!savedPassword) return true;
+      return savedPassword === String(inputPassword || '');
+    }
+
+    function persistLoginSession(user, remember) {
+      const payload = {
+        id: user.id || '',
+        role: user.role || '',
+        email: user.email || '',
+        name: user.name || '',
+        loggedInAt: new Date().toISOString()
+      };
+      if (remember) {
+        localStorage.setItem('edusportpro_current_user', JSON.stringify(payload));
+      } else {
+        sessionStorage.setItem('edusportpro_current_user', JSON.stringify(payload));
+      }
+    }
+
+    function handleAdminLoginSubmit(event) {
+      event.preventDefault();
+      showFormMessage('adminLoginMsg', '');
+
+      const emailInput = document.getElementById('adminEmailInput');
+      const passwordInput = document.getElementById('adminPasswordInput');
+      const rememberInput = document.getElementById('adminRememberInput');
+      const email = normalize(emailInput && emailInput.value);
+      const password = passwordInput ? passwordInput.value : '';
+      const remember = !!(rememberInput && rememberInput.checked);
+      const users = window.AdminDataStore.getArray('users', []);
+
+      const user = users.find(function (item) {
+        return normalize(item.email) === email && String(item.role || '') === 'Admin';
+      });
+
+      if (!user) {
+        showFormMessage('adminLoginMsg', 'Admin account not found.');
+        return;
+      }
+      if (!checkPassword(user, password)) {
+        showFormMessage('adminLoginMsg', 'Invalid password.');
+        return;
+      }
+
+      persistLoginSession(user, remember);
+      window.location.href = './admin/admin-dashboard.html';
+    }
+
+    function handleTeamLoginSubmit(event) {
+      event.preventDefault();
+      showFormMessage('teamLoginMsg', '');
+
+      const identifierInput = document.getElementById('teamEmailInput');
+      const passwordInput = document.getElementById('teamPasswordInput');
+      const rememberInput = document.getElementById('teamRememberInput');
+      const identifier = normalize(identifierInput && identifierInput.value);
+      const password = passwordInput ? passwordInput.value : '';
+      const remember = !!(rememberInput && rememberInput.checked);
+      const users = window.AdminDataStore.getArray('users', []);
+
+      const user = users.find(function (item) {
+        const role = String(item.role || '');
+        const canLoginHere = role === 'Coach' || role === 'Player';
+        return canLoginHere && (normalize(item.email) === identifier || normalize(item.id) === identifier);
+      });
+
+      if (!user) {
+        showFormMessage('teamLoginMsg', 'Coach or Player account not found.');
+        return;
+      }
+      if (!checkPassword(user, password)) {
+        showFormMessage('teamLoginMsg', 'Invalid password.');
+        return;
+      }
+
+      persistLoginSession(user, remember);
+      if (String(user.role || '') === 'Coach') {
+        window.location.href = './coach/coach-dashboard.html';
+        return;
+      }
+      window.location.href = './player/player-dashboard.html';
+    }
+
+    function updateLandingFromJson() {
+      const adminPortalDesc = document.getElementById('adminPortalDesc');
+      const teamPortalDesc = document.getElementById('teamPortalDesc');
+      const adminEmailInput = document.getElementById('adminEmailInput');
+      const teamEmailInput = document.getElementById('teamEmailInput');
+
+      const users = window.AdminDataStore.getArray('users', []);
+      const teams = window.AdminDataStore.getArray('teams', []);
+      const players = window.AdminDataStore.getArray('players', []);
+      const matches = window.AdminDataStore.getArray('matches', []);
+
+      const adminUser = users.find((user) => String(user.role || '') === 'Admin') || users[0] || null;
+      const teamUser = users.find((user) => String(user.role || '') === 'Coach') ||
+        users.find((user) => String(user.role || '') === 'Player') ||
+        users[0] || null;
+
+      if (adminUser && adminEmailInput) {
+        adminEmailInput.placeholder = String(adminUser.email || 'admin@edusportpro.com');
+      }
+      if (teamUser && teamEmailInput) {
+        teamEmailInput.placeholder = String(teamUser.email || 'coach@team.com');
+      }
+      if (adminPortalDesc) {
+        adminPortalDesc.textContent = `${users.length} users, ${matches.length} matches in system`;
+      }
+      if (teamPortalDesc) {
+        teamPortalDesc.textContent = `${teams.length} teams, ${players.length} players tracked`;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async function () {
+      await window.AdminDataStore.bootstrap();
+      updateLandingFromJson();
+      const adminForm = document.getElementById('adminLoginForm');
+      const teamForm = document.getElementById('teamLoginForm');
+      if (adminForm) adminForm.addEventListener('submit', handleAdminLoginSubmit);
+      if (teamForm) teamForm.addEventListener('submit', handleTeamLoginSubmit);
+    });
   </script>
 
 </body>

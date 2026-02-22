@@ -11,6 +11,7 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="/admin/admin-data-store.js"></script>
 
     <!-- Tailwind Configuration -->
     <script>
@@ -383,7 +384,7 @@
                                 <input id="eventTeamAll" type="checkbox" class="rounded border-gray-300 text-hope-cyan focus:ring-hope-cyan">
                                 All Teams
                             </label>
-                            <div class="border-t border-gray-100 pt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <div id="teamOptionsContainer" class="border-t border-gray-100 pt-2 grid grid-cols-1 sm:grid-cols-2 gap-2">
                                 <label class="team-option-item flex items-center gap-2 text-sm text-gray-700">
                                     <input type="checkbox" class="event-team-checkbox rounded border-gray-300 text-hope-cyan focus:ring-hope-cyan" value="Team A">
                                     Team A
@@ -404,6 +405,13 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
                         <input id="eventTitle" type="text" placeholder="e.g. vs Team C" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tournament</label>
+                        <select id="eventTournament" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none bg-white">
+                            <option value="">No Tournament</option>
+                        </select>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
@@ -451,43 +459,118 @@
             }
         }
 
-        // --- CALENDAR & EVENT LOGIC ---
+        // --- CALENDAR & EVENT LOGIC (JSON-backed) ---
 
         const calendarGrid = document.getElementById('calendarGrid');
         const monthLabel = document.getElementById('currentMonthYear');
         const eventListContainer = document.getElementById('eventList');
         const eventTypeSelect = document.getElementById('eventType');
         const eventTeamAll = document.getElementById('eventTeamAll');
-        const eventTeamCheckboxes = Array.from(document.querySelectorAll('.event-team-checkbox'));
         const teamSearchInput = document.getElementById('teamSearchInput');
-        const teamOptionItems = Array.from(document.querySelectorAll('.team-option-item'));
+        const teamOptionsContainer = document.getElementById('teamOptionsContainer');
+        const eventTournamentSelect = document.getElementById('eventTournament');
         const eventCommentWrapper = document.getElementById('eventCommentWrapper');
         const eventCommentInput = document.getElementById('eventComment');
+
+        let teamsState = [];
+        let tournamentsState = [];
+        let matchesState = [];
+        let trainingSessionsState = [];
+        let calendarEventsState = [];
+        let events = [];
         let currentDate = new Date();
-        let editingEventIndex = null; // Track which event is being edited (null = new event)
-        
-        // Sample Events Data
-        let events = [
-            { date: '2025-12-05', title: 'Training', type: 'training', time: '10:00', team: 'Team A' },
-            { date: '2025-12-08', title: 'Tactics Meeting', type: 'meeting', time: '14:00', team: 'all' },
-            { date: '2025-12-20', title: 'vs Team C', type: 'match', time: '16:00', team: 'Team A' },
-            { date: '2025-12-26', title: 'vs Team B', type: 'match', time: '15:30', team: 'Team B' },
-            { date: '2025-12-15', title: 'Fitness Test', type: 'other', time: '09:00', team: 'Team C', comment: 'Pre-season endurance check' },
-            { date: '2025-12-20', title: 'Team Dinner', type: 'meeting', time: '19:00', team: 'all' }
-        ];
+        let editingCalendarEventId = null;
+
+        function getTeamNameById(teamId) {
+            const team = teamsState.find((item) => String(item.id || '') === String(teamId || ''));
+            return team ? String(team.name || team.id || teamId) : String(teamId || 'Unknown Team');
+        }
+
+        function getTournamentNameById(tournamentId) {
+            if (!tournamentId) return '';
+            const tournament = tournamentsState.find((item) => String(item.id || '') === String(tournamentId || ''));
+            return tournament ? String(tournament.name || tournament.id || tournamentId) : String(tournamentId);
+        }
+
+        function normalizeTimeFromDateTime(dateTime) {
+            const value = String(dateTime || '');
+            return value.length >= 16 ? value.slice(11, 16) : '';
+        }
+
+        function getEventTeamCheckboxes() {
+            return Array.from(document.querySelectorAll('.event-team-checkbox'));
+        }
+
+        function populateTeamOptions() {
+            if (!teamOptionsContainer) return;
+            teamOptionsContainer.innerHTML = teamsState.map((team) => {
+                const id = String(team.id || '');
+                const name = String(team.name || id);
+                return '' +
+                    '<label class="team-option-item flex items-center gap-2 text-sm text-gray-700">' +
+                    '<input type="checkbox" class="event-team-checkbox rounded border-gray-300 text-hope-cyan focus:ring-hope-cyan" value="' + id + '">' +
+                    name +
+                    '</label>';
+            }).join('');
+            syncTeamSelectorState();
+        }
+
+        function populateTournamentOptions() {
+            if (!eventTournamentSelect) return;
+            eventTournamentSelect.innerHTML = '<option value="">No Tournament</option>' + tournamentsState.map((tournament) => {
+                const id = String(tournament.id || '');
+                const name = String(tournament.name || id);
+                return '<option value="' + id + '">' + name + '</option>';
+            }).join('');
+        }
+
+        function buildCombinedEvents() {
+            const matchEvents = matchesState.map((match, idx) => {
+                const homeName = getTeamNameById(match.homeTeamId);
+                const awayName = getTeamNameById(match.awayTeamId);
+                return {
+                    _source: 'match',
+                    _id: String(match.id || 'match-' + idx),
+                    date: String(match.dateTime || '').slice(0, 10),
+                    time: normalizeTimeFromDateTime(match.dateTime),
+                    type: 'match',
+                    title: `${homeName} vs ${awayName}`,
+                    team: [String(match.homeTeamId || ''), String(match.awayTeamId || '')],
+                    comment: '',
+                    tournamentId: String(match.tournamentId || '')
+                };
+            });
+
+            const trainingEvents = trainingSessionsState.map((session, idx) => ({
+                _source: 'training',
+                _id: String(session.id || 'training-' + idx),
+                date: String(session.date || ''),
+                time: '',
+                type: 'training',
+                title: `Training - ${getTeamNameById(session.teamId)}`,
+                team: String(session.teamId || ''),
+                comment: String(session.focus || ''),
+                tournamentId: ''
+            }));
+
+            const customEvents = calendarEventsState.map((event) => Object.assign({}, event, {
+                _source: 'custom',
+                _id: String(event.id || '')
+            }));
+
+            events = matchEvents.concat(trainingEvents, customEvents).filter((event) => event.date);
+        }
 
         function toggleEventCommentInput() {
             const isOtherType = eventTypeSelect.value === 'other';
             eventCommentWrapper.classList.toggle('hidden', !isOtherType);
-            if (!isOtherType) {
-                eventCommentInput.value = '';
-            }
+            if (!isOtherType) eventCommentInput.value = '';
         }
         eventTypeSelect.addEventListener('change', toggleEventCommentInput);
 
         function syncTeamSelectorState() {
             const isAll = eventTeamAll.checked;
-            eventTeamCheckboxes.forEach((cb) => {
+            getEventTeamCheckboxes().forEach((cb) => {
                 cb.disabled = isAll;
                 if (isAll) cb.checked = false;
             });
@@ -495,13 +578,13 @@
 
         function getSelectedTeamScope() {
             if (eventTeamAll.checked) return 'all';
-            const selected = eventTeamCheckboxes.filter(cb => cb.checked).map(cb => cb.value);
+            const selected = getEventTeamCheckboxes().filter((cb) => cb.checked).map((cb) => cb.value);
             return selected.length ? selected : null;
         }
 
         function setSelectedTeamScope(scope) {
             eventTeamAll.checked = scope === 'all';
-            eventTeamCheckboxes.forEach((cb) => {
+            getEventTeamCheckboxes().forEach((cb) => {
                 cb.checked = Array.isArray(scope) ? scope.includes(cb.value) : scope === cb.value;
             });
             syncTeamSelectorState();
@@ -509,15 +592,16 @@
 
         function formatTeamScope(scope) {
             if (scope === 'all') return 'All Teams';
-            if (Array.isArray(scope)) return scope.join(', ');
-            return scope || 'N/A';
+            if (Array.isArray(scope)) return scope.map(getTeamNameById).join(', ');
+            if (!scope) return 'N/A';
+            return getTeamNameById(scope);
         }
 
         eventTeamAll.addEventListener('change', syncTeamSelectorState);
 
         function filterTeamOptions() {
             const q = teamSearchInput.value.trim().toLowerCase();
-            teamOptionItems.forEach((item) => {
+            Array.from(document.querySelectorAll('.team-option-item')).forEach((item) => {
                 const labelText = item.textContent.toLowerCase();
                 item.classList.toggle('hidden', q && !labelText.includes(q));
             });
@@ -530,112 +614,110 @@
                 return;
             }
             if (Array.isArray(teamScope) && teamScope.length > 1) {
-                alert(`Event "${title}" created. Notification will be sent to Coaches and Players in: ${teamScope.join(', ')}.`);
+                alert(`Event "${title}" created. Notification will be sent to Coaches and Players in: ${teamScope.map(getTeamNameById).join(', ')}.`);
                 return;
             }
             const singleTeam = Array.isArray(teamScope) ? teamScope[0] : teamScope;
-            alert(`Event "${title}" created. Notification will be sent to Coach and Players in ${singleTeam}.`);
+            alert(`Event "${title}" created. Notification will be sent to Coach and Players in ${getTeamNameById(singleTeam)}.`);
         }
 
-        // 1. Open Modal Logic
+        function persistCalendarEvents() {
+            window.AdminDataStore.set('calendarEvents', calendarEventsState);
+        }
+
+        function buildCalendarEventId() {
+            const max = calendarEventsState.reduce((acc, event) => {
+                const n = Number(String(event.id || '').replace(/\D/g, ''));
+                return Number.isFinite(n) ? Math.max(acc, n) : acc;
+            }, 0);
+            return 'CE-' + String(max + 1).padStart(3, '0');
+        }
+
         function openModal(dateStr = '', isEdit = false) {
             const modal = document.getElementById("eventModal");
             const deleteBtn = document.getElementById("deleteEventBtn");
             const modalTitle = document.getElementById("modalTitle");
-
-            // If NOT editing, clear form and reset state
             if (!isEdit) {
-                editingEventIndex = null;
+                editingCalendarEventId = null;
                 modalTitle.textContent = "New Event";
                 deleteBtn.classList.add("hidden");
-                
-                // Clear inputs
                 document.getElementById('eventTitle').value = '';
                 document.getElementById('eventType').value = 'match';
                 eventCommentInput.value = '';
                 setSelectedTeamScope('all');
                 document.getElementById('eventTime').value = '';
-                
-                // Pre-fill date if clicked on a day, else clear
                 document.getElementById('eventDate').value = dateStr || '';
+                if (eventTournamentSelect) eventTournamentSelect.value = '';
                 toggleEventCommentInput();
             } else {
                 modalTitle.textContent = "Edit Event";
                 deleteBtn.classList.remove("hidden");
             }
-
             modal.classList.remove("hidden");
-            document.body.style.overflow = 'hidden'; 
+            document.body.style.overflow = 'hidden';
         }
+        window.openModal = openModal;
 
         function closeModal() {
             document.getElementById("eventModal").classList.add("hidden");
             document.body.style.overflow = 'auto';
         }
+        window.closeModal = closeModal;
 
-        // 2. Edit Event Logic (Called when clicking a pill)
         window.editEvent = function(index) {
-            editingEventIndex = index;
             const ev = events[index];
-
-            if (ev) {
-                // Populate form
-                document.getElementById('eventTitle').value = ev.title;
-                document.getElementById('eventDate').value = ev.date;
-                document.getElementById('eventType').value = ev.type;
-                eventCommentInput.value = ev.comment || '';
-                setSelectedTeamScope(ev.team || 'all');
-                document.getElementById('eventTime').value = ev.time || '';
-                toggleEventCommentInput();
-                
-                // Open modal in Edit mode
-                openModal(null, true);
+            if (!ev) return;
+            if (ev._source !== 'custom') {
+                alert('This event comes from JSON schedule data (matches/training) and is read-only here.');
+                return;
             }
+            editingCalendarEventId = ev._id;
+            document.getElementById('eventTitle').value = ev.title || '';
+            document.getElementById('eventDate').value = ev.date || '';
+            document.getElementById('eventType').value = ev.type || 'meeting';
+            eventCommentInput.value = ev.comment || '';
+            setSelectedTeamScope(ev.team || 'all');
+            document.getElementById('eventTime').value = ev.time || '';
+            if (eventTournamentSelect) eventTournamentSelect.value = String(ev.tournamentId || '');
+            toggleEventCommentInput();
+            openModal('', true);
         };
 
-        // 3. Save Event Logic
         document.getElementById('saveEventBtn').addEventListener('click', () => {
-            const title = document.getElementById('eventTitle').value;
+            const title = document.getElementById('eventTitle').value.trim();
             const date = document.getElementById('eventDate').value;
             const time = document.getElementById('eventTime').value;
             const type = document.getElementById('eventType').value;
             const comment = type === 'other' ? eventCommentInput.value.trim() : '';
             const team = getSelectedTeamScope();
-            
-            if(title && date) {
-                if (!team) {
-                    alert('Please select All Teams or at least one team.');
-                    return;
-                }
-                if (editingEventIndex !== null) {
-                    // Update existing event
-                    events[editingEventIndex] = { date, title, type, time, team, comment };
-                } else {
-                    // Create new event
-                    events.push({ date, title, type, time, team, comment });
-                    notifyEventAudienceForAdmin(team, title);
-                }
-                
-                renderCalendar();
-                closeModal();
+            const tournamentId = String((eventTournamentSelect || {}).value || '');
+            if (!title || !date) return alert('Please fill in at least the title and date.');
+            if (!team) return alert('Please select All Teams or at least one team.');
+
+            if (editingCalendarEventId) {
+                const idx = calendarEventsState.findIndex((event) => String(event.id || '') === editingCalendarEventId);
+                if (idx >= 0) calendarEventsState[idx] = Object.assign({}, calendarEventsState[idx], { date, title, type, time, team, comment, tournamentId });
             } else {
-                alert('Please fill in at least the title and date.');
+                calendarEventsState.push({ id: buildCalendarEventId(), date, title, type, time, team, comment, tournamentId });
+                notifyEventAudienceForAdmin(team, title);
             }
+
+            persistCalendarEvents();
+            buildCombinedEvents();
+            renderCalendar();
+            closeModal();
         });
 
-        // 4. Delete Event Logic
         document.getElementById('deleteEventBtn').addEventListener('click', () => {
-            if (editingEventIndex !== null) {
-                if(confirm("Are you sure you want to delete this event?")) {
-                    events.splice(editingEventIndex, 1);
-                    renderCalendar();
-                    closeModal();
-                }
-            }
+            if (!editingCalendarEventId) return;
+            if (!confirm("Are you sure you want to delete this event?")) return;
+            calendarEventsState = calendarEventsState.filter((event) => String(event.id || '') !== editingCalendarEventId);
+            persistCalendarEvents();
+            buildCombinedEvents();
+            renderCalendar();
+            closeModal();
         });
 
-
-        // 5. Render Calendar & List
         function renderCalendar() {
             calendarGrid.innerHTML = '';
             
@@ -677,7 +759,6 @@
 
                 let eventsHtml = '';
                 
-                // Find events for this day
                 events.forEach((event, index) => {
                     if (event.date === dateStr) {
                         let colorClass = 'bg-gray-500';
@@ -686,7 +767,6 @@
                         if (event.type === 'meeting') colorClass = 'bg-hope-yellow text-black';
                         if (event.type === 'other') colorClass = 'bg-hope-red';
                         
-                        // Pass the original index to editEvent
                         eventsHtml += `<div onclick="editEvent(${index})" class="event-pill ${colorClass} text-white mt-1 shadow-sm" title="${event.title}">${event.title}</div>`;
                     }
                 });
@@ -714,20 +794,14 @@
                 calendarGrid.appendChild(dayDiv);
             }
 
-            // Update List Below
             renderEventList();
         }
 
-        // 6. Render Event List Function
         function renderEventList() {
             eventListContainer.innerHTML = '';
-
-            // Sort events by date
             const sortedEvents = [...events].sort((a, b) => new Date(a.date + 'T' + (a.time || '00:00')) - new Date(b.date + 'T' + (b.time || '00:00')));
-
-            // Filter for current month view
-            const currentMonthEvents = sortedEvents.filter(e => {
-                const d = new Date(e.date);
+            const currentMonthEvents = sortedEvents.filter((event) => {
+                const d = new Date(event.date);
                 return d.getMonth() === currentDate.getMonth() && d.getFullYear() === currentDate.getFullYear();
             });
 
@@ -737,10 +811,7 @@
             }
 
             currentMonthEvents.forEach((event) => {
-                // Find original index to allow editing from list
-                const originalIndex = events.indexOf(event);
-                
-                // Styles
+                const originalIndex = events.findIndex((e) => e._source === event._source && e._id === event._id);
                 let typeBadgeClass = 'bg-gray-100 text-gray-600';
                 if (event.type === 'match') typeBadgeClass = 'bg-hope-cyan/10 text-hope-cyan border-hope-cyan/20';
                 if (event.type === 'training') typeBadgeClass = 'bg-hope-lime/10 text-hope-lime border-hope-lime/20';
@@ -752,6 +823,10 @@
                 const dateMonth = dateObj.toLocaleString('default', { month: 'short' });
                 const commentHtml = event.type === 'other' && event.comment
                     ? `<p class="mt-1 text-xs text-hope-red font-medium">Comment: ${event.comment}</p>`
+                    : '';
+                const tournamentName = getTournamentNameById(event.tournamentId);
+                const tournamentHtml = tournamentName
+                    ? `<p class="mt-1 text-xs text-hope-cyan font-medium">Tournament: ${tournamentName}</p>`
                     : '';
 
                 const html = `
@@ -775,6 +850,7 @@
                                      </span>
                                 </div>
                                 ${commentHtml}
+                                ${tournamentHtml}
                             </div>
                         </div>
                         <div class="flex items-center justify-between sm:justify-end gap-4 pl-[4.5rem] sm:pl-0">
@@ -787,7 +863,6 @@
             });
         }
 
-        // Navigation
         document.getElementById('prevMonth').addEventListener('click', () => {
             currentDate.setMonth(currentDate.getMonth() - 1);
             renderCalendar();
@@ -802,15 +877,27 @@
             currentDate = new Date();
             renderCalendar();
         }
+        window.goToToday = goToToday;
 
-        // Close modal on escape
         document.addEventListener('keydown', function(event) {
             if (event.key === "Escape") closeModal();
         });
 
-        // Initial Render
-        renderCalendar();
+        document.addEventListener('DOMContentLoaded', async function () {
+            await window.AdminDataStore.bootstrap();
+            teamsState = window.AdminDataStore.getArray('teams', []);
+            tournamentsState = window.AdminDataStore.getArray('tournaments', []);
+            matchesState = window.AdminDataStore.getArray('matches', []);
+            trainingSessionsState = window.AdminDataStore.getArray('trainingSessions', []);
+            calendarEventsState = window.AdminDataStore.getArray('calendarEvents', []);
+            populateTeamOptions();
+            populateTournamentOptions();
+            toggleEventCommentInput();
+            buildCombinedEvents();
+            renderCalendar();
+        });
 
     </script>
+    <script src="/admin/admin-sidebar-loader.js"></script>
 </body>
 </html>

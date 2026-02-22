@@ -11,6 +11,7 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/admin/admin-data-store.js"></script>
 
   <!-- Tailwind Configuration with Custom Brand Colors -->
   <script>
@@ -173,6 +174,16 @@
             Matches
           </a>
 
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-tournament-overview.html">
+            <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8M12 17v4M7 4h10l-1 6H8L7 4zM5 4h14"></path></svg>
+            Tournament
+          </a>
+
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/admin/admin-division.html">
+            <svg class="w-5 h-5 group-hover:text-hope-yellow transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"></path></svg>
+            Division
+          </a>
+
           <!-- Active State: Training (Using RED theme) -->
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg bg-hope-red/10 text-hope-red font-semibold" href="/admin/admin-training.html">
              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
@@ -231,7 +242,7 @@
            <p class="text-gray-500 mt-1 text-sm md:text-base">Manage practice schedules, locations, and drill focus areas.</p>
         </div>
         
-        <button onclick="openModal()" class="w-full md:w-auto bg-hope-red hover:bg-red-600 text-white px-5 py-2.5 rounded-lg shadow-sm transition-all flex items-center justify-center gap-2 font-medium">
+        <button onclick="openCreateTrainingModal()" class="w-full md:w-auto bg-hope-red hover:bg-red-600 text-white px-5 py-2.5 rounded-lg shadow-sm transition-all flex items-center justify-center gap-2 font-medium">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
           Add Training
         </button>
@@ -243,13 +254,13 @@
           <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
           </div>
-          <input type="text" placeholder="Search sessions by focus, team, or location..." class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-hope-red focus:border-hope-red sm:text-sm transition-shadow">
+          <input id="trainingSearchInput" type="text" placeholder="Search sessions by focus, team, or location..." class="block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-lg leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-hope-red focus:border-hope-red sm:text-sm transition-shadow">
         </div>
         
         <div class="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-          <input type="date" class="block w-full md:w-auto px-3 py-2.5 text-base border border-gray-200 focus:outline-none focus:ring-hope-red focus:border-hope-red sm:text-sm rounded-lg text-gray-500">
+          <input id="trainingDateInput" type="date" class="block w-full md:w-auto px-3 py-2.5 text-base border border-gray-200 focus:outline-none focus:ring-hope-red focus:border-hope-red sm:text-sm rounded-lg text-gray-500">
            
-           <button class="w-full md:w-auto px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600 flex items-center justify-center gap-2 transition-colors">
+           <button id="trainingFilterBtn" class="w-full md:w-auto px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600 flex items-center justify-center gap-2 transition-colors">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
             Filter
           </button>
@@ -271,73 +282,16 @@
               </tr>
             </thead>
 
-            <tbody class="bg-white divide-y divide-gray-100">
-
-              <tr class="hover:bg-gray-50 transition-colors">
-                <td class="px-6 py-4 whitespace-nowrap">
-                   <div class="flex items-center gap-3">
-                    <div class="h-10 w-10 rounded-lg bg-hope-lime/20 flex items-center justify-center text-hope-lime font-bold border border-white shadow-sm">A</div>
-                    <span class="font-medium text-hope-dark">Team A</span>
-                  </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Coach Sok</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Dec 10, 2025</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Training Hall A</td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                    Attack & Passing
-                  </span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <button class="text-hope-yellow hover:text-yellow-600 mr-3 transition-colors">Edit</button>
-                  <button class="text-hope-red hover:text-red-700 transition-colors">Delete</button>
-                </td>
-              </tr>
-
-              <tr class="hover:bg-gray-50 transition-colors">
-                <td class="px-6 py-4 whitespace-nowrap">
-                   <div class="flex items-center gap-3">
-                    <div class="h-10 w-10 rounded-lg bg-hope-cyan/20 flex items-center justify-center text-hope-cyan font-bold border border-white shadow-sm">B</div>
-                    <span class="font-medium text-hope-dark">Team B</span>
-                  </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Coach Vuthy</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Dec 12, 2025</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Main Field</td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                    Defense Formation
-                  </span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <button class="text-hope-yellow hover:text-yellow-600 mr-3 transition-colors">Edit</button>
-                  <button class="text-hope-red hover:text-red-700 transition-colors">Delete</button>
-                </td>
-              </tr>
-
-              <tr class="hover:bg-gray-50 transition-colors">
-                <td class="px-6 py-4 whitespace-nowrap">
-                   <div class="flex items-center gap-3">
-                    <div class="h-10 w-10 rounded-lg bg-hope-red/20 flex items-center justify-center text-hope-red font-bold border border-white shadow-sm">C</div>
-                    <span class="font-medium text-hope-dark">Team C</span>
-                  </div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Coach Dara</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Dec 14, 2025</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Training Hall B</td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                    Fitness
-                  </span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <button class="text-hope-yellow hover:text-yellow-600 mr-3 transition-colors">Edit</button>
-                  <button class="text-hope-red hover:text-red-700 transition-colors">Delete</button>
-                </td>
-              </tr>
-
-            </tbody>
+            <tbody id="trainingTableBody" class="bg-white divide-y divide-gray-100"></tbody>
           </table>
+        </div>
+        <div class="flex items-center justify-between mt-0 px-4 py-3 bg-white border-t border-gray-100">
+          <div class="text-sm text-gray-500">Showing <span id="startItem">0</span>-<span id="endItem">0</span> of <span id="totalItems">0</span></div>
+          <div class="flex items-center gap-2">
+            <button id="prevPage" class="px-3 py-1 bg-white border border-gray-200 rounded-md text-sm text-gray-600 hover:bg-gray-50 disabled:opacity-50">Prev</button>
+            <div id="pageButtons" class="flex items-center gap-1"></div>
+            <button id="nextPage" class="px-3 py-1 bg-white border border-gray-200 rounded-md text-sm text-gray-600 hover:bg-gray-50 disabled:opacity-50">Next</button>
+          </div>
         </div>
       </div>
     </main>
@@ -377,37 +331,31 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Team</label>
-               <select class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-red focus:ring-hope-red sm:text-sm shadow-sm outline-none">
-                <option>Select Team</option>
-                <option>Team A</option>
-                <option>Team B</option>
-                <option>Team C</option>
+               <select id="trainingTeamInput" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-red focus:ring-hope-red sm:text-sm shadow-sm outline-none">
+                <option value="">Select Team</option>
               </select>
             </div>
 
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Coach</label>
-               <select class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-red focus:ring-hope-red sm:text-sm shadow-sm outline-none">
-                <option>Select Coach</option>
-                <option>Coach Sok</option>
-                <option>Coach Vuthy</option>
-                <option>Coach Dara</option>
+               <select id="trainingCoachInput" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-red focus:ring-hope-red sm:text-sm shadow-sm outline-none">
+                <option value="">Select Coach</option>
               </select>
             </div>
 
             <div class="sm:col-span-2">
               <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
-              <input type="date" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-red focus:ring-hope-red sm:text-sm shadow-sm outline-none">
+              <input id="trainingDateModalInput" type="date" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-red focus:ring-hope-red sm:text-sm shadow-sm outline-none">
             </div>
 
             <div class="sm:col-span-2">
               <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
-              <input type="text" placeholder="e.g. Main Field" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-red focus:ring-hope-red sm:text-sm shadow-sm outline-none">
+              <input id="trainingLocationInput" type="text" placeholder="e.g. Main Field" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-red focus:ring-hope-red sm:text-sm shadow-sm outline-none">
             </div>
 
              <div class="sm:col-span-2">
                <label class="block text-sm font-medium text-gray-700 mb-1">Focus Area</label>
-               <input type="text" placeholder="e.g. Defense Formation" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-red focus:ring-hope-red sm:text-sm shadow-sm outline-none">
+               <input id="trainingFocusInput" type="text" placeholder="e.g. Defense Formation" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-red focus:ring-hope-red sm:text-sm shadow-sm outline-none">
             </div>
           </div>
 
@@ -415,7 +363,7 @@
 
         <!-- Modal Footer -->
         <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 border-t border-gray-100">
-          <button type="button" class="inline-flex w-full justify-center rounded-lg bg-hope-red px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-600 sm:ml-3 sm:w-auto transition-colors">Save Session</button>
+          <button id="saveTrainingBtn" type="button" class="inline-flex w-full justify-center rounded-lg bg-hope-red px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-600 sm:ml-3 sm:w-auto transition-colors">Save Session</button>
           <button type="button" onclick="closeModal()" class="mt-3 inline-flex w-full justify-center rounded-lg bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto transition-colors">Cancel</button>
         </div>
         
@@ -458,67 +406,329 @@
       document.body.style.overflow = 'auto';
     }
 
-    // Close modal on escape key
-    document.addEventListener('keydown', function(event) {
-      if (event.key === "Escape") {
-        closeModal();
-      }
-    });
+    let trainingState = [];
+    let filteredTrainingState = [];
+    let teamsState = [];
+    let coachesState = [];
+    let trainingCurrentPage = 1;
+    let editingTrainingId = '';
+    const TRAINING_PAGE_SIZE = 10;
 
-    // ===== Training Page: Client-side Pagination =====
-    (function setupTrainingPagination(){
-      const tbody = document.querySelector('table tbody');
-      if (!tbody) return;
-      const rows = Array.from(tbody.querySelectorAll('tr'));
-      const rowsPerPage = 10;
-      const totalItems = rows.length;
-      const totalPages = Math.max(1, Math.ceil(totalItems / rowsPerPage));
+    function normalizeArray(value) {
+      return Array.isArray(value) ? value : [];
+    }
+
+    function escapeHtml(value) {
+      return String(value == null ? '' : value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function formatDateDisplay(dateValue) {
+      const date = new Date(dateValue);
+      if (Number.isNaN(date.getTime())) return String(dateValue || '-');
+      return date.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+    }
+
+    function initialsFromName(name) {
+      const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+      if (!parts.length) return '?';
+      if (parts.length === 1) return parts[0].slice(0, 1).toUpperCase();
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+
+    function badgeClassesByIndex(index) {
+      const set = [
+        'bg-hope-lime/20 text-hope-lime',
+        'bg-hope-cyan/20 text-hope-cyan',
+        'bg-hope-red/20 text-hope-red',
+        'bg-hope-yellow/20 text-hope-yellow'
+      ];
+      return set[index % set.length];
+    }
+
+    function focusPillClassesByIndex(index) {
+      const set = [
+        'bg-red-100 text-red-800',
+        'bg-blue-100 text-blue-800',
+        'bg-yellow-100 text-yellow-800',
+        'bg-emerald-100 text-emerald-800'
+      ];
+      return set[index % set.length];
+    }
+
+    function getTeamNameById(teamId) {
+      const team = teamsState.find(function (item) { return String(item.id || '') === String(teamId || ''); });
+      return team ? String(team.name || team.teamName || team.id || 'Unknown Team') : String(teamId || 'Unknown Team');
+    }
+
+    function getCoachNameById(coachId) {
+      const coach = coachesState.find(function (item) { return String(item.id || '') === String(coachId || ''); });
+      return coach ? String(coach.name || coach.id || 'Unknown Coach') : String(coachId || 'Unknown Coach');
+    }
+
+    function renderTrainingTable() {
+      const tableBody = document.getElementById('trainingTableBody');
+      if (!tableBody) return;
+
+      const totalItems = filteredTrainingState.length;
+      const totalPages = Math.max(1, Math.ceil(totalItems / TRAINING_PAGE_SIZE));
+      if (trainingCurrentPage > totalPages) trainingCurrentPage = totalPages;
+      if (trainingCurrentPage < 1) trainingCurrentPage = 1;
+      const start = (trainingCurrentPage - 1) * TRAINING_PAGE_SIZE;
+      const end = Math.min(start + TRAINING_PAGE_SIZE, totalItems);
+      const pageRows = filteredTrainingState.slice(start, end);
+
+      if (!pageRows.length) {
+        tableBody.innerHTML = '<tr><td colspan="6" class="px-6 py-6 text-sm text-gray-500">No training sessions found.</td></tr>';
+      } else {
+        tableBody.innerHTML = pageRows.map(function (session, idx) {
+          const teamName = getTeamNameById(session.teamId || session.team || session.teamName);
+          const coachName = getCoachNameById(session.coachId || session.coach || session.coachName);
+          const teamInitials = initialsFromName(teamName);
+          const dateDisplay = formatDateDisplay(session.date);
+          const badgeClass = badgeClassesByIndex(start + idx);
+          const focusClass = focusPillClassesByIndex(start + idx);
+          const location = escapeHtml(session.location || '-');
+          const focus = escapeHtml(session.focus || '-');
+          return '' +
+            '<tr class="hover:bg-gray-50 transition-colors">' +
+              '<td class="px-6 py-4 whitespace-nowrap">' +
+                '<div class="flex items-center gap-3">' +
+                  '<div class="h-10 w-10 rounded-lg ' + badgeClass + ' flex items-center justify-center font-bold border border-white shadow-sm">' + escapeHtml(teamInitials) + '</div>' +
+                  '<span class="font-medium text-hope-dark">' + escapeHtml(teamName) + '</span>' +
+                '</div>' +
+              '</td>' +
+              '<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">' + escapeHtml(coachName) + '</td>' +
+              '<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">' + escapeHtml(dateDisplay) + '</td>' +
+              '<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">' + location + '</td>' +
+              '<td class="px-6 py-4 whitespace-nowrap"><span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ' + focusClass + '">' + focus + '</span></td>' +
+              '<td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">' +
+                '<button onclick="editTrainingSession(\'' + escapeHtml(String(session.id || '')) + '\')" class="text-hope-yellow hover:text-yellow-600 mr-3 transition-colors">Edit</button>' +
+                '<button onclick="deleteTrainingSession(\'' + escapeHtml(String(session.id || '')) + '\')" class="text-hope-red hover:text-red-700 transition-colors">Delete</button>' +
+              '</td>' +
+            '</tr>';
+        }).join('');
+      }
+
       const startItemEl = document.getElementById('startItem');
       const endItemEl = document.getElementById('endItem');
       const totalItemsEl = document.getElementById('totalItems');
+      if (startItemEl) startItemEl.textContent = totalItems === 0 ? '0' : String(start + 1);
+      if (endItemEl) endItemEl.textContent = String(end);
+      if (totalItemsEl) totalItemsEl.textContent = String(totalItems);
+
+      renderTrainingPagination(totalPages);
+    }
+
+    function renderTrainingPagination(totalPages) {
       const prevBtn = document.getElementById('prevPage');
       const nextBtn = document.getElementById('nextPage');
       const pageButtons = document.getElementById('pageButtons');
 
-      totalItemsEl && (totalItemsEl.textContent = String(totalItems));
-
-      function renderPage(page){
-        if (page < 1) page = 1;
-        if (page > totalPages) page = totalPages;
-        window.__trainingCurrentPage = page;
-        const start = (page - 1) * rowsPerPage;
-        const end = Math.min(start + rowsPerPage, totalItems);
-
-        rows.forEach((r, i) => r.style.display = (i >= start && i < end) ? '' : 'none');
-
-        if (startItemEl) startItemEl.textContent = totalItems === 0 ? '0' : String(start + 1);
-        if (endItemEl) endItemEl.textContent = String(end);
-
-        // render page buttons
-        if (!pageButtons) return;
+      if (pageButtons) {
         pageButtons.innerHTML = '';
-        for (let p = 1; p <= totalPages; p++){
-          const btn = document.createElement('button');
-          btn.textContent = String(p);
-          btn.className = p === page ? 'px-3 py-1 bg-hope-red text-white rounded-md text-sm' : 'px-3 py-1 bg-white border border-gray-200 rounded-md text-sm text-gray-600 hover:bg-gray-50';
-          btn.addEventListener('click', ()=> renderPage(p));
-          pageButtons.appendChild(btn);
+        for (let page = 1; page <= totalPages; page += 1) {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.textContent = String(page);
+          button.className = page === trainingCurrentPage
+            ? 'px-3 py-1 bg-hope-red text-white rounded-md text-sm'
+            : 'px-3 py-1 bg-white border border-gray-200 rounded-md text-sm text-gray-600 hover:bg-gray-50';
+          button.addEventListener('click', function () {
+            trainingCurrentPage = page;
+            renderTrainingTable();
+          });
+          pageButtons.appendChild(button);
         }
-
-        prevBtn && (prevBtn.disabled = page === 1);
-        nextBtn && (nextBtn.disabled = page === totalPages);
       }
 
-      prevBtn && prevBtn.addEventListener('click', ()=> renderPage((window.__trainingCurrentPage||1)-1));
-      nextBtn && nextBtn.addEventListener('click', ()=> renderPage((window.__trainingCurrentPage||1)+1));
+      if (prevBtn) prevBtn.disabled = trainingCurrentPage <= 1;
+      if (nextBtn) nextBtn.disabled = trainingCurrentPage >= totalPages;
+    }
 
-      // expose function
-      window.changeTrainingPage = function(p){ renderPage(p); };
+    function applyTrainingFilters(resetPage) {
+      const search = String((document.getElementById('trainingSearchInput') || {}).value || '').trim().toLowerCase();
+      const dateFilter = String((document.getElementById('trainingDateInput') || {}).value || '').trim();
+      filteredTrainingState = trainingState.filter(function (session) {
+        const teamName = getTeamNameById(session.teamId || session.team || session.teamName).toLowerCase();
+        const coachName = getCoachNameById(session.coachId || session.coach || session.coachName).toLowerCase();
+        const location = String(session.location || '').toLowerCase();
+        const focus = String(session.focus || '').toLowerCase();
+        const date = String(session.date || '');
+        const bySearch = !search || teamName.indexOf(search) !== -1 || coachName.indexOf(search) !== -1 || location.indexOf(search) !== -1 || focus.indexOf(search) !== -1;
+        const byDate = !dateFilter || date === dateFilter;
+        return bySearch && byDate;
+      });
+      if (resetPage) trainingCurrentPage = 1;
+      renderTrainingTable();
+    }
 
-      // initial render
-      renderPage(1);
-    })();
+    function saveTrainingSessions() {
+      window.AdminDataStore.set('trainingSessions', trainingState);
+    }
+
+    function buildTrainingId() {
+      const max = trainingState.reduce(function (currentMax, session) {
+        const value = Number(String(session.id || '').replace(/\D/g, ''));
+        return Number.isFinite(value) ? Math.max(currentMax, value) : currentMax;
+      }, 0);
+      return 'TRS-' + String(max + 1).padStart(3, '0');
+    }
+
+    function populateTrainingSelects() {
+      const teamInput = document.getElementById('trainingTeamInput');
+      const coachInput = document.getElementById('trainingCoachInput');
+      if (teamInput) {
+        teamInput.innerHTML = '<option value="">Select Team</option>' + teamsState.map(function (team) {
+          const id = String(team.id || '');
+          const name = String(team.name || team.teamName || id);
+          return '<option value="' + escapeHtml(id) + '">' + escapeHtml(name) + '</option>';
+        }).join('');
+      }
+      if (coachInput) {
+        coachInput.innerHTML = '<option value="">Select Coach</option>' + coachesState.map(function (coach) {
+          const id = String(coach.id || '');
+          const name = String(coach.name || id);
+          return '<option value="' + escapeHtml(id) + '">' + escapeHtml(name) + '</option>';
+        }).join('');
+      }
+    }
+
+    function resetTrainingModal() {
+      editingTrainingId = '';
+      const title = document.getElementById('modal-title');
+      const saveBtn = document.getElementById('saveTrainingBtn');
+      const teamInput = document.getElementById('trainingTeamInput');
+      const coachInput = document.getElementById('trainingCoachInput');
+      const dateInput = document.getElementById('trainingDateModalInput');
+      const locationInput = document.getElementById('trainingLocationInput');
+      const focusInput = document.getElementById('trainingFocusInput');
+      if (title) title.textContent = 'Add Training Session';
+      if (saveBtn) saveBtn.textContent = 'Save Session';
+      if (teamInput) teamInput.value = '';
+      if (coachInput) coachInput.value = '';
+      if (dateInput) dateInput.value = '';
+      if (locationInput) locationInput.value = '';
+      if (focusInput) focusInput.value = '';
+    }
+
+    window.openCreateTrainingModal = function () {
+      resetTrainingModal();
+      openModal();
+    };
+
+    function saveTrainingFromModal() {
+      const teamId = String((document.getElementById('trainingTeamInput') || {}).value || '').trim();
+      const coachId = String((document.getElementById('trainingCoachInput') || {}).value || '').trim();
+      const date = String((document.getElementById('trainingDateModalInput') || {}).value || '').trim();
+      const location = String((document.getElementById('trainingLocationInput') || {}).value || '').trim();
+      const focus = String((document.getElementById('trainingFocusInput') || {}).value || '').trim();
+
+      if (!teamId) return alert('Please select a team.');
+      if (!coachId) return alert('Please select a coach.');
+      if (!date) return alert('Please select a date.');
+      if (!location) return alert('Please enter a location.');
+      if (!focus) return alert('Please enter a focus area.');
+
+      if (editingTrainingId) {
+        const index = trainingState.findIndex(function (session) { return String(session.id || '') === editingTrainingId; });
+        if (index >= 0) {
+          trainingState[index] = Object.assign({}, trainingState[index], {
+            teamId: teamId,
+            coachId: coachId,
+            date: date,
+            location: location,
+            focus: focus
+          });
+        }
+      } else {
+        trainingState.unshift({
+          id: buildTrainingId(),
+          teamId: teamId,
+          coachId: coachId,
+          date: date,
+          location: location,
+          focus: focus
+        });
+      }
+
+      saveTrainingSessions();
+      closeModal();
+      resetTrainingModal();
+      applyTrainingFilters(true);
+    }
+
+    window.editTrainingSession = function (sessionId) {
+      const session = trainingState.find(function (item) { return String(item.id || '') === String(sessionId || ''); });
+      if (!session) return;
+      editingTrainingId = String(session.id || '');
+      const title = document.getElementById('modal-title');
+      const saveBtn = document.getElementById('saveTrainingBtn');
+      const teamInput = document.getElementById('trainingTeamInput');
+      const coachInput = document.getElementById('trainingCoachInput');
+      const dateInput = document.getElementById('trainingDateModalInput');
+      const locationInput = document.getElementById('trainingLocationInput');
+      const focusInput = document.getElementById('trainingFocusInput');
+      if (title) title.textContent = 'Edit Training Session';
+      if (saveBtn) saveBtn.textContent = 'Update Session';
+      if (teamInput) teamInput.value = String(session.teamId || '');
+      if (coachInput) coachInput.value = String(session.coachId || '');
+      if (dateInput) dateInput.value = String(session.date || '');
+      if (locationInput) locationInput.value = String(session.location || '');
+      if (focusInput) focusInput.value = String(session.focus || '');
+      openModal();
+    };
+
+    window.deleteTrainingSession = function (sessionId) {
+      const session = trainingState.find(function (item) { return String(item.id || '') === String(sessionId || ''); });
+      if (!session) return;
+      if (!window.confirm('Delete this training session?')) return;
+      trainingState = trainingState.filter(function (item) { return String(item.id || '') !== String(sessionId || ''); });
+      saveTrainingSessions();
+      applyTrainingFilters(false);
+    };
+
+    // Close modal on escape key
+    document.addEventListener('keydown', function (event) {
+      if (event.key === "Escape") closeModal();
+    });
+
+    document.addEventListener('DOMContentLoaded', async function () {
+      await window.AdminDataStore.bootstrap();
+      teamsState = normalizeArray(window.AdminDataStore.getArray('teams', []));
+      coachesState = normalizeArray(window.AdminDataStore.getArray('coaches', []));
+      trainingState = normalizeArray(window.AdminDataStore.getArray('trainingSessions', []));
+      filteredTrainingState = trainingState.slice();
+      populateTrainingSelects();
+
+      const searchInput = document.getElementById('trainingSearchInput');
+      const dateInput = document.getElementById('trainingDateInput');
+      const filterBtn = document.getElementById('trainingFilterBtn');
+      const prevBtn = document.getElementById('prevPage');
+      const nextBtn = document.getElementById('nextPage');
+      const saveBtn = document.getElementById('saveTrainingBtn');
+
+      if (searchInput) searchInput.addEventListener('input', function () { applyTrainingFilters(true); });
+      if (dateInput) dateInput.addEventListener('change', function () { applyTrainingFilters(true); });
+      if (filterBtn) filterBtn.addEventListener('click', function () { applyTrainingFilters(true); });
+      if (saveBtn) saveBtn.addEventListener('click', saveTrainingFromModal);
+      if (prevBtn) prevBtn.addEventListener('click', function () {
+        trainingCurrentPage -= 1;
+        renderTrainingTable();
+      });
+      if (nextBtn) nextBtn.addEventListener('click', function () {
+        trainingCurrentPage += 1;
+        renderTrainingTable();
+      });
+
+      applyTrainingFilters(true);
+    });
   </script>
+  <script src="/admin/admin-sidebar-loader.js"></script>
 
 </body>
 
