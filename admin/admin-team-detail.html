@@ -105,6 +105,7 @@
                         
                         <!-- Logo / Avatar -->
                         <div class="w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gray-50 border-2 border-gray-100 flex items-center justify-center shadow-sm shrink-0 group-hover:scale-105 transition-transform duration-300">
+                            <img id="teamAvatarImg" alt="Team logo" class="hidden w-full h-full rounded-2xl object-cover" />
                             <span id="teamAvatarInitial" class="text-4xl md:text-5xl font-black text-hope-cyan">T</span>
                         </div>
 
@@ -196,18 +197,18 @@
                         <div class="px-6 py-4 border-b border-gray-100 bg-white">
                             <div class="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
                                 <div class="relative w-full md:max-w-xs">
-                                    <input type="text" placeholder="Search player name..." class="w-full rounded-lg border border-gray-200 bg-gray-50 py-2 pl-9 pr-3 text-sm text-gray-700 outline-none focus:bg-white focus:border-hope-cyan">
+                                    <input id="rosterSearchInput" type="text" placeholder="Search player name..." class="w-full rounded-lg border border-gray-200 bg-gray-50 py-2 pl-9 pr-3 text-sm text-gray-700 outline-none focus:bg-white focus:border-hope-cyan">
                                     <svg class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15z"></path></svg>
                                 </div>
                                 <div class="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
-                                    <select class="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 outline-none focus:bg-white focus:border-hope-cyan">
+                                    <select id="rosterPositionFilter" class="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 outline-none focus:bg-white focus:border-hope-cyan">
                                         <option>All Positions</option>
                                         <option>Forward</option>
                                         <option>Midfielder</option>
                                         <option>Defender</option>
                                         <option>Goalkeeper</option>
                                     </select>
-                                    <select class="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 outline-none focus:bg-white focus:border-hope-cyan">
+                                    <select id="rosterSortSelect" class="rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-gray-700 outline-none focus:bg-white focus:border-hope-cyan">
                                         <option>Sort: Jersey Number</option>
                                         <option>Sort: Name A-Z</option>
                                         <option>Sort: Name Z-A</option>
@@ -330,6 +331,8 @@
     </div>
 
     <script>
+        let teamRosterState = [];
+
         function getQueryParam(name) {
             const params = new URLSearchParams(window.location.search);
             return params.get(name) || '';
@@ -363,6 +366,14 @@
             return player.teamId || player.team_id || player.teamID || (player.team && (player.team.id || player.team.teamId || player.team.team_id)) || '';
         }
 
+        function getTeamPlayerIds(team) {
+            return Array.isArray(team.playerIds) ? team.playerIds.map(function (id) { return String(id); }) : [];
+        }
+
+        function getTeamLogo(team) {
+            return String(team.logo || team.logoUrl || team.teamLogo || '').trim();
+        }
+
         function getPlayerName(player) {
             return player.name || player.fullName || [player.firstName, player.lastName].filter(Boolean).join(' ') || player.id || 'Unknown Player';
         }
@@ -393,8 +404,24 @@
             const division = getTeamDivision(team);
             const status = getTeamStatus(team);
             const coachName = getTeamCoachName(team, coaches);
+            const logo = getTeamLogo(team);
 
-            document.getElementById('teamAvatarInitial').textContent = teamName.charAt(0).toUpperCase() || 'T';
+            const avatarInitial = document.getElementById('teamAvatarInitial');
+            const avatarImg = document.getElementById('teamAvatarImg');
+            if (avatarInitial) avatarInitial.textContent = teamName.charAt(0).toUpperCase() || 'T';
+            if (avatarImg && logo) {
+                avatarImg.src = logo;
+                avatarImg.classList.remove('hidden');
+                if (avatarInitial) avatarInitial.classList.add('hidden');
+                avatarImg.onerror = function () {
+                    avatarImg.classList.add('hidden');
+                    if (avatarInitial) avatarInitial.classList.remove('hidden');
+                };
+            } else if (avatarImg) {
+                avatarImg.src = '';
+                avatarImg.classList.add('hidden');
+                if (avatarInitial) avatarInitial.classList.remove('hidden');
+            }
             document.getElementById('teamNameTitle').textContent = teamName;
             document.getElementById('teamCoachName').textContent = coachName;
             document.getElementById('teamDivisionText').textContent = division + ' League';
@@ -404,6 +431,38 @@
             statusBadge.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-current"></span>' + status;
 
             document.getElementById('editTeamBtn').href = '/admin/admin-team-create.html?edit=' + encodeURIComponent(String(teamId));
+        }
+
+        function applyRosterFilters() {
+            const searchInput = document.getElementById('rosterSearchInput');
+            const positionFilter = document.getElementById('rosterPositionFilter');
+            const sortSelect = document.getElementById('rosterSortSelect');
+            const search = String(searchInput ? searchInput.value : '').trim().toLowerCase();
+            const position = String(positionFilter ? positionFilter.value : '');
+            const sortLabel = String(sortSelect ? sortSelect.value : 'Sort: Jersey Number');
+
+            const filtered = teamRosterState.filter(function (player) {
+                const name = getPlayerName(player).toLowerCase();
+                const p = getPlayerPosition(player);
+                const bySearch = !search || name.indexOf(search) !== -1;
+                const byPosition = !position || position === 'All Positions' || String(p) === position;
+                return bySearch && byPosition;
+            });
+
+            filtered.sort(function (a, b) {
+                if (sortLabel === 'Sort: Name A-Z') {
+                    return getPlayerName(a).localeCompare(getPlayerName(b));
+                }
+                if (sortLabel === 'Sort: Name Z-A') {
+                    return getPlayerName(b).localeCompare(getPlayerName(a));
+                }
+                const na = Number(getPlayerKitNumber(a, 0));
+                const nb = Number(getPlayerKitNumber(b, 0));
+                if (Number.isFinite(na) && Number.isFinite(nb)) return na - nb;
+                return getPlayerName(a).localeCompare(getPlayerName(b));
+            });
+
+            renderRosterRows(filtered);
         }
 
         function renderRosterRows(players) {
@@ -452,13 +511,27 @@
             }
 
             const resolvedId = team.id || teamId;
+            const teamPlayerIds = getTeamPlayerIds(team);
             const teamPlayers = players.filter(function (player) {
+                if (teamPlayerIds.includes(String(player.id || ''))) return true;
                 return String(getPlayerTeamId(player)) === String(resolvedId);
+            });
+            const uniqueTeamPlayers = teamPlayers.filter(function (player, index, arr) {
+                const id = String(player.id || '');
+                return arr.findIndex(function (p) { return String(p.id || '') === id; }) === index;
             });
 
             renderTeamHeader(team, coaches, resolvedId);
-            document.getElementById('teamPlayersCount').textContent = String(teamPlayers.length) + ' Registered';
-            renderRosterRows(teamPlayers);
+            document.getElementById('teamPlayersCount').textContent = String(uniqueTeamPlayers.length) + ' Registered';
+            teamRosterState = uniqueTeamPlayers;
+            applyRosterFilters();
+
+            const searchInput = document.getElementById('rosterSearchInput');
+            const positionFilter = document.getElementById('rosterPositionFilter');
+            const sortSelect = document.getElementById('rosterSortSelect');
+            if (searchInput) searchInput.addEventListener('input', applyRosterFilters);
+            if (positionFilter) positionFilter.addEventListener('change', applyRosterFilters);
+            if (sortSelect) sortSelect.addEventListener('change', applyRosterFilters);
         });
     </script>
 </body>

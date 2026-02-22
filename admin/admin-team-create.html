@@ -214,12 +214,21 @@
 
                         <div class="col-span-1 md:col-span-2">
                             <label class="label-text">Team Logo</label>
-                            <div class="relative">
-                                <input type="file" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-                                <div class="input-field flex items-center gap-2 text-gray-400 bg-white">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-                                    <span class="text-xs">Upload File</span>
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-3">
+                                    <div id="teamLogoPreview" class="w-12 h-12 rounded-xl border border-gray-200 bg-white flex items-center justify-center overflow-hidden shrink-0">
+                                        <span id="teamLogoPlaceholder" class="text-[10px] font-bold text-gray-400">LOGO</span>
+                                        <img id="teamLogoImg" alt="Team logo preview" class="hidden w-full h-full object-cover" />
+                                    </div>
+                                    <div class="relative flex-1">
+                                        <input id="teamLogoInput" type="file" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                                        <div class="input-field flex items-center gap-2 text-gray-400 bg-white">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                                            <span id="teamLogoFileName" class="text-xs">Upload Logo</span>
+                                        </div>
+                                    </div>
                                 </div>
+                                <p class="text-[11px] text-gray-400">PNG, JPG, SVG. Max 2MB.</p>
                             </div>
                         </div>
                     </div>
@@ -242,41 +251,34 @@
                                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                                     </span>
-                                    <input type="text" placeholder="Type player name or registration ID..." class="input-field pl-10 bg-white">
+                                    <input id="playerSearchInput" type="text" placeholder="Type player name, ID, or email..." class="input-field pl-10 bg-white">
                                 </div>
-                                <button type="button" class="bg-hope-dark text-white px-6 py-2 rounded-xl font-bold text-sm hover:bg-black transition-colors">
+                                <button id="addPlayerBtn" type="button" class="bg-hope-dark text-white px-6 py-2 rounded-xl font-bold text-sm hover:bg-black transition-colors">
                                     Add
                                 </button>
+                            </div>
+                            <p id="playerSearchMsg" class="text-xs text-gray-500 mt-2">Players are loaded from JSON data.</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="text-xs font-bold text-gray-500 uppercase tracking-widest">Available Players</h4>
+                                <span id="availablePlayersCount" class="text-[10px] font-bold px-2 py-0.5 bg-white text-gray-600 rounded border border-gray-200">0 Results</span>
+                            </div>
+                            <div id="availablePlayersWrap" class="rounded-xl border border-gray-200 bg-white max-h-56 overflow-auto divide-y divide-gray-100">
+                                <div id="availablePlayersEmpty" class="px-4 py-5 text-xs text-gray-400 italic">No players available</div>
                             </div>
                         </div>
 
                         <div>
                             <div class="flex items-center justify-between mb-4">
-                                <h4 class="text-xs font-bold text-gray-500 uppercase tracking-widest">Selected Players (2 / 25)</h4>
-                                <span class="text-[10px] font-bold px-2 py-0.5 bg-gray-200 text-gray-600 rounded">23 Slots Free</span>
+                                <h4 id="selectedPlayersCount" class="text-xs font-bold text-gray-500 uppercase tracking-widest">Selected Players (0 / 25)</h4>
+                                <span id="selectedPlayersSlots" class="text-[10px] font-bold px-2 py-0.5 bg-gray-200 text-gray-600 rounded">25 Slots Free</span>
                             </div>
 
-                            <div class="flex flex-wrap gap-3">
-                                <!-- Player Card -->
-                                <div class="player-badge flex items-center gap-2 bg-white border border-gray-200 pl-2 pr-3 py-1.5 rounded-xl shadow-sm">
-                                    <div class="w-6 h-6 rounded-full bg-hope-cyan/10 flex items-center justify-center text-[10px] font-bold text-hope-cyan">SD</div>
-                                    <span class="text-sm font-medium text-gray-700">SOK Dara</span>
-                                    <button type="button" class="text-gray-300 hover:text-hope-red transition-colors ml-1">
-                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
-                                    </button>
-                                </div>
-
-                                <div class="player-badge flex items-center gap-2 bg-white border border-gray-200 pl-2 pr-3 py-1.5 rounded-xl shadow-sm">
-                                    <div class="w-6 h-6 rounded-full bg-hope-lime/10 flex items-center justify-center text-[10px] font-bold text-hope-lime">PV</div>
-                                    <span class="text-sm font-medium text-gray-700">PLAYER Vannak</span>
-                                    <button type="button" class="text-gray-300 hover:text-hope-red transition-colors ml-1">
-                                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>
-                                    </button>
-                                </div>
-
-                                <!-- Placeholder/Empty State -->
-                                <div class="flex-1 min-w-[200px] border-2 border-dashed border-gray-200 rounded-xl flex items-center justify-center py-2">
-                                    <span class="text-xs text-gray-400 italic">No more players selected</span>
+                            <div id="selectedPlayersWrap" class="flex flex-wrap gap-3">
+                                <div id="selectedPlayersEmpty" class="flex-1 min-w-[220px] border-2 border-dashed border-gray-200 rounded-xl flex items-center justify-center py-3">
+                                    <span class="text-xs text-gray-400 italic">No players selected yet</span>
                                 </div>
                             </div>
                         </div>
@@ -289,6 +291,9 @@
             <div class="bg-gray-50 px-6 py-5 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3">
                 <p class="text-xs text-gray-500">Required fields: Team name and division.</p>
                 <div class="flex items-center gap-3">
+                    <button id="clearFormBtn" type="button" class="px-6 py-2.5 rounded-xl text-sm font-bold text-gray-600 bg-white border border-gray-200 hover:bg-gray-50 hover:text-hope-dark transition-all">
+                    Clear
+                    </button>
                     <a href="/admin/admin-teams.html" class="px-6 py-2.5 rounded-xl text-sm font-bold text-gray-500 hover:bg-white hover:text-hope-dark border border-transparent hover:border-gray-200 transition-all">
                     Cancel
                     </a>
@@ -302,6 +307,11 @@
     </main>
 
     <script>
+        let allPlayers = [];
+        let selectedPlayerIds = [];
+        let editingTeamId = '';
+        const MAX_PLAYERS = 25;
+
         function buildTeamId(existingTeams) {
             const maxId = existingTeams.reduce(function (max, team) {
                 const raw = String(team.id || '');
@@ -316,6 +326,294 @@
             return Array.isArray(input) ? input : [];
         }
 
+        function normalizeText(value) {
+            return String(value || '').trim().toLowerCase();
+        }
+
+        function getEditTeamIdFromUrl() {
+            const params = new URLSearchParams(window.location.search || '');
+            return String(params.get('edit') || '').trim();
+        }
+
+        function setCreateOrEditUI(isEditMode) {
+            const title = document.querySelector('h2.text-3xl');
+            const subtitle = document.querySelector('h2.text-3xl + p');
+            const submitBtn = document.querySelector('#teamCreateForm button[type="submit"]');
+            if (title) {
+                title.textContent = isEditMode ? 'Update Team' : 'Create New Team';
+            }
+            if (subtitle) {
+                subtitle.textContent = isEditMode
+                    ? 'Update team identity, coaching assignment, logo, and roster.'
+                    : 'Configure team identity, assign coaching, and prepare roster structure.';
+            }
+            if (submitBtn) {
+                submitBtn.textContent = isEditMode ? 'Update Team' : 'Create Team';
+            }
+            document.title = isEditMode ? 'Update Team | EduSportPro' : 'Create New Team | EduSportPro';
+        }
+
+        function uniqueIds(input) {
+            const seen = new Set();
+            return normalizeArray(input).map(function (id) { return String(id); }).filter(function (id) {
+                if (!id || seen.has(id)) return false;
+                seen.add(id);
+                return true;
+            });
+        }
+
+        function findTeamById(teams, id) {
+            return normalizeArray(teams).find(function (team) {
+                return String(team.id || '') === String(id || '');
+            }) || null;
+        }
+
+        function loadTeamIntoForm(team, players) {
+            const teamNameInput = document.getElementById('teamNameInput');
+            const teamDivisionInput = document.getElementById('teamDivisionInput');
+            const teamCoachInput = document.getElementById('teamCoachInput');
+            const teamStatusInput = document.getElementById('teamStatusInput');
+            if (teamNameInput) teamNameInput.value = String(team.name || team.teamName || '');
+            if (teamDivisionInput) teamDivisionInput.value = String(team.division || '');
+            if (teamCoachInput) teamCoachInput.value = String(team.coachId || '');
+            if (teamStatusInput) teamStatusInput.value = String(team.status || 'Active');
+
+            const fromTeam = normalizeArray(team.playerIds);
+            const fromPlayers = normalizeArray(players).filter(function (player) {
+                return String(player.teamId || '') === String(team.id || '');
+            }).map(function (player) { return String(player.id); });
+            selectedPlayerIds = uniqueIds(fromTeam.concat(fromPlayers));
+
+            if (team.logo) {
+                teamLogoDataUrl = String(team.logo);
+                teamLogoFileName = String(team.logoFileName || 'Current logo');
+                const logoImg = document.getElementById('teamLogoImg');
+                const logoPlaceholder = document.getElementById('teamLogoPlaceholder');
+                const logoFileName = document.getElementById('teamLogoFileName');
+                if (logoImg) {
+                    logoImg.src = teamLogoDataUrl;
+                    logoImg.classList.remove('hidden');
+                }
+                if (logoPlaceholder) logoPlaceholder.classList.add('hidden');
+                if (logoFileName) logoFileName.textContent = teamLogoFileName;
+            }
+        }
+
+        function showPlayerSearchMessage(message, isError) {
+            const el = document.getElementById('playerSearchMsg');
+            if (!el) return;
+            el.textContent = message;
+            el.classList.remove('text-gray-500', 'text-red-600', 'text-emerald-600');
+            el.classList.add(isError ? 'text-red-600' : 'text-emerald-600');
+        }
+
+        function getInitials(name) {
+            const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+            if (!parts.length) return 'PL';
+            return parts.slice(0, 2).map(function (part) { return part.charAt(0).toUpperCase(); }).join('');
+        }
+
+        function renderSelectedPlayers() {
+            const wrap = document.getElementById('selectedPlayersWrap');
+            const empty = document.getElementById('selectedPlayersEmpty');
+            const count = document.getElementById('selectedPlayersCount');
+            const slots = document.getElementById('selectedPlayersSlots');
+            if (!wrap || !count || !slots) return;
+
+            const selectedPlayers = selectedPlayerIds.map(function (id) {
+                return allPlayers.find(function (player) { return String(player.id) === String(id); });
+            }).filter(Boolean);
+
+            count.textContent = 'Selected Players (' + selectedPlayers.length + ' / ' + MAX_PLAYERS + ')';
+            slots.textContent = String(MAX_PLAYERS - selectedPlayers.length) + ' Slots Free';
+
+            const existing = wrap.querySelectorAll('[data-selected-player]');
+            existing.forEach(function (node) { node.remove(); });
+
+            if (!selectedPlayers.length) {
+                if (empty) empty.classList.remove('hidden');
+                return;
+            }
+            if (empty) empty.classList.add('hidden');
+
+            selectedPlayers.forEach(function (player, idx) {
+                const tone = idx % 2 === 0 ? 'text-hope-cyan bg-hope-cyan/10' : 'text-hope-lime bg-hope-lime/10';
+                const badge = document.createElement('div');
+                badge.setAttribute('data-selected-player', '1');
+                badge.className = 'player-badge flex items-center gap-2 bg-white border border-gray-200 pl-2 pr-3 py-1.5 rounded-xl shadow-sm';
+                badge.innerHTML =
+                    '<div class="w-6 h-6 rounded-full ' + tone + ' flex items-center justify-center text-[10px] font-bold">' + getInitials(player.name) + '</div>' +
+                    '<span class="text-sm font-medium text-gray-700">' + String(player.name || player.id || 'Unknown Player') + '</span>' +
+                    '<button type="button" data-remove-player-id="' + String(player.id) + '" class="text-gray-300 hover:text-hope-red transition-colors ml-1">' +
+                    '<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>' +
+                    '</button>';
+                wrap.appendChild(badge);
+            });
+        }
+
+        function getAvailablePlayers(rawQuery) {
+            const query = normalizeText(rawQuery);
+            const pool = allPlayers.filter(function (player) {
+                return !selectedPlayerIds.includes(String(player.id));
+            });
+            if (!query) return pool.slice(0, 20);
+            return pool.filter(function (player) {
+                const pid = normalizeText(player.id);
+                const name = normalizeText(player.name);
+                const email = normalizeText(player.email);
+                const position = normalizeText(player.position);
+                return pid.includes(query) || name.includes(query) || email.includes(query) || position.includes(query);
+            }).slice(0, 20);
+        }
+
+        function renderAvailablePlayers(rawQuery) {
+            const wrap = document.getElementById('availablePlayersWrap');
+            const count = document.getElementById('availablePlayersCount');
+            const results = getAvailablePlayers(rawQuery);
+            if (!wrap || !count) return;
+
+            count.textContent = String(results.length) + ' Results';
+            wrap.innerHTML = '';
+            if (!results.length) {
+                wrap.innerHTML = '<div id="availablePlayersEmpty" class="px-4 py-5 text-xs text-gray-400 italic">No matching players</div>';
+                return;
+            }
+
+            results.forEach(function (player) {
+                const row = document.createElement('div');
+                row.className = 'px-3 py-2.5 flex items-center gap-3';
+                row.innerHTML =
+                    '<div class="w-7 h-7 rounded-full bg-gray-100 text-gray-600 text-[10px] font-bold flex items-center justify-center shrink-0">' + getInitials(player.name) + '</div>' +
+                    '<div class="min-w-0 flex-1">' +
+                    '<p class="text-sm font-semibold text-gray-700 truncate">' + String(player.name || player.id || 'Unknown Player') + '</p>' +
+                    '<p class="text-[11px] text-gray-400 truncate">' + String(player.id || '-') + ' | ' + String(player.position || 'Player') + '</p>' +
+                    '</div>' +
+                    '<button type="button" data-add-player-id="' + String(player.id) + '" class="px-2.5 py-1 rounded-lg bg-hope-cyan/10 text-hope-cyan text-xs font-bold hover:bg-hope-cyan hover:text-white transition-colors">Add</button>';
+                wrap.appendChild(row);
+            });
+        }
+
+        function addPlayerById(playerId) {
+            if (!playerId) return null;
+            if (selectedPlayerIds.length >= MAX_PLAYERS) return 'limit';
+            if (selectedPlayerIds.includes(String(playerId))) return 'exists';
+            const player = allPlayers.find(function (item) { return String(item.id) === String(playerId); });
+            if (!player) return 'missing';
+            selectedPlayerIds.push(String(player.id));
+            return player;
+        }
+
+        function findPlayerByQuery(rawQuery) {
+            const query = normalizeText(rawQuery);
+            if (!query) return null;
+            return allPlayers.find(function (player) {
+                const pid = normalizeText(player.id);
+                const name = normalizeText(player.name);
+                const email = normalizeText(player.email);
+                const free = !selectedPlayerIds.includes(String(player.id));
+                return free && (pid === query || name.includes(query) || email === query || email.includes(query));
+            }) || null;
+        }
+
+        function handleAddPlayer() {
+            const input = document.getElementById('playerSearchInput');
+            if (!input) return;
+            if (selectedPlayerIds.length >= MAX_PLAYERS) {
+                showPlayerSearchMessage('Maximum 25 players reached.', true);
+                return;
+            }
+
+            const player = findPlayerByQuery(input.value);
+            if (!player) {
+                showPlayerSearchMessage('Player not found or already selected.', true);
+                renderAvailablePlayers(input.value);
+                return;
+            }
+
+            addPlayerById(player.id);
+            input.value = '';
+            renderSelectedPlayers();
+            renderAvailablePlayers('');
+            showPlayerSearchMessage('Added: ' + String(player.name || player.id), false);
+        }
+
+        function handleSelectedPlayerClick(event) {
+            const btn = event.target && event.target.closest ? event.target.closest('[data-remove-player-id]') : null;
+            if (!btn) return;
+            const playerId = String(btn.getAttribute('data-remove-player-id') || '');
+            selectedPlayerIds = selectedPlayerIds.filter(function (id) { return String(id) !== playerId; });
+            renderSelectedPlayers();
+            const searchInput = document.getElementById('playerSearchInput');
+            renderAvailablePlayers(searchInput ? searchInput.value : '');
+            showPlayerSearchMessage('Player removed from selection.', false);
+        }
+
+        function handleClearPlayers() {
+            selectedPlayerIds = [];
+            const input = document.getElementById('playerSearchInput');
+            if (input) input.value = '';
+            renderSelectedPlayers();
+            renderAvailablePlayers('');
+            showPlayerSearchMessage('Selection cleared.', false);
+        }
+
+        function handleClearForm() {
+            const form = document.getElementById('teamCreateForm');
+            if (form) form.reset();
+
+            selectedPlayerIds = [];
+            renderSelectedPlayers();
+            renderAvailablePlayers('');
+
+            teamLogoDataUrl = '';
+            teamLogoFileName = '';
+
+            const logoInput = document.getElementById('teamLogoInput');
+            const logoImg = document.getElementById('teamLogoImg');
+            const logoPlaceholder = document.getElementById('teamLogoPlaceholder');
+            const logoFileName = document.getElementById('teamLogoFileName');
+            if (logoInput) logoInput.value = '';
+            if (logoImg) {
+                logoImg.src = '';
+                logoImg.classList.add('hidden');
+            }
+            if (logoPlaceholder) logoPlaceholder.classList.remove('hidden');
+            if (logoFileName) logoFileName.textContent = 'Upload Logo';
+
+            const searchInput = document.getElementById('playerSearchInput');
+            if (searchInput) searchInput.value = '';
+
+            const msg = document.getElementById('playerSearchMsg');
+            if (msg) {
+                msg.textContent = 'Players are loaded from JSON data.';
+                msg.classList.remove('text-red-600', 'text-emerald-600');
+                msg.classList.add('text-gray-500');
+            }
+        }
+
+        function handleAvailablePlayersClick(event) {
+            const btn = event.target && event.target.closest ? event.target.closest('[data-add-player-id]') : null;
+            if (!btn) return;
+            const playerId = String(btn.getAttribute('data-add-player-id') || '');
+            const result = addPlayerById(playerId);
+            if (result === 'limit') {
+                showPlayerSearchMessage('Maximum 25 players reached.', true);
+                return;
+            }
+            if (result === 'exists') {
+                showPlayerSearchMessage('Player already selected.', true);
+                return;
+            }
+            if (result === 'missing' || !result) {
+                showPlayerSearchMessage('Player not found.', true);
+                return;
+            }
+            renderSelectedPlayers();
+            const input = document.getElementById('playerSearchInput');
+            renderAvailablePlayers(input ? input.value : '');
+            showPlayerSearchMessage('Added: ' + String(result.name || result.id), false);
+        }
+
         function populateCoachOptions(coaches) {
             const select = document.getElementById('teamCoachInput');
             if (!select) return;
@@ -327,6 +625,57 @@
                 })
             );
             select.innerHTML = options.join('');
+        }
+
+        let teamLogoDataUrl = '';
+        let teamLogoFileName = '';
+
+        function handleLogoChange(event) {
+            const input = event.target;
+            const file = input && input.files ? input.files[0] : null;
+            const fileNameEl = document.getElementById('teamLogoFileName');
+            const logoImg = document.getElementById('teamLogoImg');
+            const placeholder = document.getElementById('teamLogoPlaceholder');
+
+            if (!file) {
+                teamLogoDataUrl = '';
+                teamLogoFileName = '';
+                if (fileNameEl) fileNameEl.textContent = 'Upload Logo';
+                if (logoImg) {
+                    logoImg.src = '';
+                    logoImg.classList.add('hidden');
+                }
+                if (placeholder) placeholder.classList.remove('hidden');
+                return;
+            }
+
+            if (!String(file.type || '').startsWith('image/')) {
+                alert('Please upload an image file.');
+                input.value = '';
+                handleLogoChange({ target: input });
+                return;
+            }
+
+            if (file.size > 2 * 1024 * 1024) {
+                alert('Logo file must be 2MB or less.');
+                input.value = '';
+                handleLogoChange({ target: input });
+                return;
+            }
+
+            teamLogoFileName = file.name;
+            if (fileNameEl) fileNameEl.textContent = file.name;
+
+            const reader = new FileReader();
+            reader.onload = function (loadEvent) {
+                teamLogoDataUrl = String(loadEvent.target && loadEvent.target.result ? loadEvent.target.result : '');
+                if (logoImg && teamLogoDataUrl) {
+                    logoImg.src = teamLogoDataUrl;
+                    logoImg.classList.remove('hidden');
+                }
+                if (placeholder) placeholder.classList.add('hidden');
+            };
+            reader.readAsDataURL(file);
         }
 
         async function handleCreateTeamSubmit(event) {
@@ -349,35 +698,114 @@
 
             const teams = normalizeArray(window.AdminDataStore.getArray('teams', []));
             const coaches = normalizeArray(window.AdminDataStore.getArray('coaches', []));
+            const players = normalizeArray(window.AdminDataStore.getArray('players', []));
             const selectedCoach = coaches.find(function (coach) {
                 const id = coach.id || coach.coachId || coach.coach_id;
                 return String(id) === String(coachId);
             });
 
+            const isEditMode = Boolean(editingTeamId);
+            const targetTeamId = isEditMode ? String(editingTeamId) : buildTeamId(teams);
             const newTeam = {
-                id: buildTeamId(teams),
+                id: targetTeamId,
                 name: teamName,
                 division: division,
-                status: status || 'Active'
+                status: status || 'Active',
+                playerIds: selectedPlayerIds.slice(),
+                playerCount: selectedPlayerIds.length
             };
 
             if (coachId) {
                 newTeam.coachId = coachId;
                 newTeam.coachName = selectedCoach ? (selectedCoach.name || selectedCoach.fullName || '') : '';
             }
+            if (teamLogoDataUrl) {
+                newTeam.logo = teamLogoDataUrl;
+                newTeam.logoFileName = teamLogoFileName || '';
+            }
 
-            teams.unshift(newTeam);
+            if (isEditMode) {
+                const existingIndex = teams.findIndex(function (team) {
+                    return String(team.id || '') === targetTeamId;
+                });
+                if (existingIndex === -1) {
+                    alert('Team not found for update.');
+                    return;
+                }
+                const existing = teams[existingIndex] || {};
+                teams[existingIndex] = Object.assign({}, existing, newTeam);
+            } else {
+                teams.unshift(newTeam);
+            }
             window.AdminDataStore.set('teams', teams);
-            alert('Team created successfully.');
+
+            const updatedPlayers = players.map(function (player) {
+                const playerId = String(player.id || '');
+                const belongsToThisTeam = String(player.teamId || '') === targetTeamId;
+                const selectedNow = selectedPlayerIds.includes(playerId);
+
+                if (selectedNow) {
+                    return Object.assign({}, player, {
+                        teamId: targetTeamId,
+                        division: division
+                    });
+                }
+                if (belongsToThisTeam) {
+                    return Object.assign({}, player, {
+                        teamId: '',
+                        division: ''
+                    });
+                }
+                return player;
+            });
+            window.AdminDataStore.set('players', updatedPlayers);
+
+            alert(isEditMode ? 'Team updated successfully.' : 'Team created successfully.');
             window.location.href = '/admin/admin-teams.html';
         }
 
         document.addEventListener('DOMContentLoaded', async function () {
             await window.AdminDataStore.bootstrap();
             const coaches = normalizeArray(window.AdminDataStore.getArray('coaches', []));
+            const teams = normalizeArray(window.AdminDataStore.getArray('teams', []));
+            allPlayers = normalizeArray(window.AdminDataStore.getArray('players', []));
+            editingTeamId = getEditTeamIdFromUrl();
+            setCreateOrEditUI(Boolean(editingTeamId));
             populateCoachOptions(coaches);
+            if (editingTeamId) {
+                const team = findTeamById(teams, editingTeamId);
+                if (!team) {
+                    alert('Team not found.');
+                    window.location.href = '/admin/admin-teams.html';
+                    return;
+                }
+                loadTeamIntoForm(team, allPlayers);
+            }
+            renderSelectedPlayers();
+            renderAvailablePlayers('');
             const form = document.getElementById('teamCreateForm');
             if (form) form.addEventListener('submit', handleCreateTeamSubmit);
+            const logoInput = document.getElementById('teamLogoInput');
+            if (logoInput) logoInput.addEventListener('change', handleLogoChange);
+            const addPlayerBtn = document.getElementById('addPlayerBtn');
+            if (addPlayerBtn) addPlayerBtn.addEventListener('click', handleAddPlayer);
+            const clearFormBtn = document.getElementById('clearFormBtn');
+            if (clearFormBtn) clearFormBtn.addEventListener('click', handleClearForm);
+            const playerSearchInput = document.getElementById('playerSearchInput');
+            if (playerSearchInput) {
+                playerSearchInput.addEventListener('keydown', function (event) {
+                    if (event.key !== 'Enter') return;
+                    event.preventDefault();
+                    handleAddPlayer();
+                });
+                playerSearchInput.addEventListener('input', function () {
+                    renderAvailablePlayers(playerSearchInput.value);
+                });
+            }
+            const selectedPlayersWrap = document.getElementById('selectedPlayersWrap');
+            if (selectedPlayersWrap) selectedPlayersWrap.addEventListener('click', handleSelectedPlayerClick);
+            const availablePlayersWrap = document.getElementById('availablePlayersWrap');
+            if (availablePlayersWrap) availablePlayersWrap.addEventListener('click', handleAvailablePlayersClick);
         });
     </script>
 

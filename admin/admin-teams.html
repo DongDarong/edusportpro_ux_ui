@@ -418,6 +418,10 @@
             return String(getTeamName(team)).trim().charAt(0).toUpperCase() || 'T';
         }
 
+        function getTeamLogo(team) {
+            return String(team.logo || team.logoUrl || team.teamLogo || '').trim();
+        }
+
         function renderTeamsTablePage() {
             const tableBody = document.getElementById('teamsTableBody');
             const pageInfo = document.getElementById('paginationInfo');
@@ -443,10 +447,14 @@
                     const coachName = getCoachName(team);
                     const playerCount = getTeamPlayerCount(team);
                     const status = getTeamStatus(team);
+                    const logo = getTeamLogo(team);
+                    const logoBlock = logo
+                        ? '<img src="' + logo + '" alt="' + name + ' logo" class="h-10 w-10 rounded-lg object-cover border border-white shadow-sm flex-shrink-0" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';"><div style="display:none" class="h-10 w-10 rounded-lg bg-hope-cyan/10 items-center justify-center text-hope-cyan font-bold border border-white shadow-sm flex-shrink-0">' + getTeamInitial(team) + '</div>'
+                        : '<div class="h-10 w-10 rounded-lg bg-hope-cyan/10 flex items-center justify-center text-hope-cyan font-bold border border-white shadow-sm flex-shrink-0">' + getTeamInitial(team) + '</div>';
                     return (
                         '<tr class="hover:bg-hope-cyan/5 transition-colors">' +
                         '<td class="px-4 md:px-6 py-4 whitespace-nowrap"><div class="flex items-center gap-3">' +
-                        '<div class="h-10 w-10 rounded-lg bg-hope-cyan/10 flex items-center justify-center text-hope-cyan font-bold border border-white shadow-sm flex-shrink-0">' + getTeamInitial(team) + '</div>' +
+                        logoBlock +
                         '<div><div class="font-bold text-hope-dark">' + name + '</div><div class="text-xs text-gray-500">' + division + ' Division</div></div>' +
                         '</div></td>' +
                         '<td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-700">' + coachName + '</td>' +
