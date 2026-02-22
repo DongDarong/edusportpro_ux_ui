@@ -86,13 +86,38 @@ CREATE TABLE `inventories` (
   `condition_status` enum('good','damaged','lost') DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  
+  -- --------------------------------------------------------
+  
+  --
+  -- Table structure for table `inventory_categories`
+  --
 
--- --------------------------------------------------------
+  CREATE TABLE `inventory_categories` (
+    `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `name` varchar(150) NOT NULL,
+    `description` varchar(255) DEFAULT NULL,
+    `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uq_inventory_categories_name` (`name`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Table structure for table `matches`
---
+  --
+  -- Dumping data for table `inventory_categories`
+  --
+
+  INSERT INTO `inventory_categories` (`name`, `description`) VALUES
+  ('Equipment', 'Field gear and balls used across teams.'),
+  ('Uniforms', 'Team jerseys and practice kits.'),
+  ('Accessories', 'Small gear such as whistles, cones, and markers.'),
+  ('Supplies', 'Consumables like first-aid and hydration supplies.');
+
+  -- --------------------------------------------------------
+  
+  --
+  -- Table structure for table `matches`
+  --
 
 CREATE TABLE `matches` (
   `id` bigint(20) UNSIGNED NOT NULL,
@@ -341,14 +366,45 @@ CREATE TABLE `player_schools` (
   `grade` varchar(50) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  
+  -- --------------------------------------------------------
+  --
+  -- Table structure for table `attendance_records`
+  --
 
--- --------------------------------------------------------
+  CREATE TABLE `attendance_records` (
+    `id` varchar(32) NOT NULL,
+    `subject_type` enum('player','coach') NOT NULL,
+    `subject_id` varchar(32) NOT NULL,
+    `team_id` varchar(32) DEFAULT NULL,
+    `coach_id` varchar(32) DEFAULT NULL,
+    `date` date NOT NULL,
+    `activity_type` enum('training','match','other') NOT NULL DEFAULT 'training',
+    `status` enum('present','absent','late','excused') NOT NULL DEFAULT 'present',
+    `note` varchar(255) DEFAULT NULL,
+    `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+    PRIMARY KEY (`id`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Table structure for table `roles`
---
+  --
+  -- Dumping data for table `attendance_records`
+  --
 
+  INSERT INTO `attendance_records` (`id`, `subject_type`, `subject_id`, `team_id`, `coach_id`, `date`, `activity_type`, `status`, `note`) VALUES
+  ('AR-001', 'player', 'PL-001', 'T001', 'C001', '2026-02-18', 'training', 'present', ''),
+  ('AR-002', 'player', 'PL-002', 'T002', 'C004', '2026-02-18', 'training', 'absent', 'Sick'),
+  ('AR-003', 'player', 'PL-003', 'T003', 'C002', '2026-02-18', 'training', 'late', 'Traffic'),
+  ('AR-004', 'coach', 'C001', 'T001', '', '2026-02-18', 'training', 'present', ''),
+  ('AR-005', 'coach', 'C002', 'T003', '', '2026-02-18', 'training', 'excused', 'Approved Leave'),
+  ('AR-006', 'coach', 'C004', 'T002', '', '2026-02-18', 'match', 'late', 'Traffic');
+
+  -- --------------------------------------------------------
+
+  --
+  -- Table structure for table `roles`
+  --
+  
 CREATE TABLE `roles` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(50) NOT NULL,
@@ -1200,16 +1256,42 @@ CREATE TABLE `calendar_events` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- TOURNAMENT DIVISIONS
-CREATE TABLE `tournament_divisions` (
-  `tournament_id` bigint(20) UNSIGNED NOT NULL,
-  `division_id` bigint(20) UNSIGNED NOT NULL,
-  PRIMARY KEY (`tournament_id`,`division_id`),
-  KEY `idx_tournament_divisions_division` (`division_id`),
-  CONSTRAINT `tournament_divisions_ibfk_1` FOREIGN KEY (`tournament_id`) REFERENCES `tournaments` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `tournament_divisions_ibfk_2` FOREIGN KEY (`division_id`) REFERENCES `divisions` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  CREATE TABLE `tournament_divisions` (
+    `tournament_id` bigint(20) UNSIGNED NOT NULL,
+    `division_id` bigint(20) UNSIGNED NOT NULL,
+    PRIMARY KEY (`tournament_id`,`division_id`),
+    KEY `idx_tournament_divisions_division` (`division_id`),
+    CONSTRAINT `tournament_divisions_ibfk_1` FOREIGN KEY (`tournament_id`) REFERENCES `tournaments` (`id`) ON DELETE CASCADE,
+    CONSTRAINT `tournament_divisions_ibfk_2` FOREIGN KEY (`division_id`) REFERENCES `divisions` (`id`) ON DELETE CASCADE
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `calendar_events` (`title`, `event_type`, `comment`, `event_date`, `event_time`, `team_id`, `created_by`) VALUES
+  -- --------------------------------------------------------
+  --
+  -- Table structure for table `tournament_team_map`
+  --
+
+  CREATE TABLE `tournament_team_map` (
+    `tournament_code` varchar(32) NOT NULL,
+    `team_code` varchar(32) NOT NULL,
+    `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+    PRIMARY KEY (`tournament_code`, `team_code`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+  --
+  -- Dumping data for table `tournament_team_map`
+  --
+
+  INSERT INTO `tournament_team_map` (`tournament_code`, `team_code`) VALUES
+  ('TRN-2026-001', 'T001'),
+  ('TRN-2026-001', 'T002'),
+  ('TRN-2026-001', 'T003'),
+  ('TRN-2026-002', 'T004'),
+  ('TRN-2026-002', 'T005'),
+  ('TRN-2026-003', 'T006'),
+  ('TRN-2026-003', 'T007'),
+  ('TRN-2026-003', 'T008');
+  
+  INSERT INTO `calendar_events` (`title`, `event_type`, `comment`, `event_date`, `event_time`, `team_id`, `created_by`) VALUES
 ('Training', 'training', NULL, '2026-12-05', '10:00:00', 1, 1),
 ('Tactics Meeting', 'meeting', NULL, '2026-12-08', '14:00:00', NULL, 1),
 ('vs Team C', 'match', NULL, '2026-12-20', '16:00:00', 1, 1),

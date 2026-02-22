@@ -77,14 +77,26 @@ Purpose:
 Main functions:
 - Team list and quick actions.
 - Access team detail/create pages.
+- Display team logo in list when available (fallback to initials).
+- Update action routes to edit mode in team create page using URL query (`?edit=<teamId>`).
 Use-case:
 - Add and maintain team entities used by training/match/attendance/calendar modules.
 
 4.5 admin/admin-team-create.html
 Purpose:
-- Register a new team record.
+- Register and update team records.
 Main functions:
 - Team metadata input (name/division/status/coach mapping in backend logic).
+- Team logo upload with preview (image validation + size limit).
+- JSON-driven player roster assignment:
+  - Search and add players from `players` data.
+  - Display available players and selected roster.
+  - Remove selected players and clear selection.
+  - Full form clear action.
+- Edit mode:
+  - Loads existing team data from JSON/local storage by `edit` query parameter.
+  - Updates team record instead of creating duplicate.
+  - Persists team-to-player assignments.
 Use-case:
 - Organization expansion, season rollovers, and new squad setup.
 
@@ -93,6 +105,10 @@ Purpose:
 - Deep view of one team.
 Main functions:
 - Team profile, member context, links to related modules.
+- Loads team by URL id from JSON data store.
+- Displays uploaded team logo when available.
+- Roster sourced from both `teamId` linkage and `team.playerIds`.
+- Roster controls (search/filter/sort) bound to loaded JSON data.
 Use-case:
 - Team-level diagnostics and administration.
 
@@ -231,8 +247,33 @@ Purpose:
 Main functions:
 - Organize divisional structures.
 - Review group composition and standing contexts.
+- JSON-driven sections:
+  - Matches, Standings, Group Standings, Match List.
+  - Player Profile summary and Leaderboard cards from performance/player data.
+- Division action links include Random Groups and Knockout Bracket.
 Use-case:
 - Keep competitive hierarchy accurate and up-to-date.
+
+4.22 admin/admin-random-groups.html
+Purpose:
+- Randomized grouping utility for tournament/division setup.
+Main functions:
+- Uses JSON-backed teams/coaches/tournaments from AdminDataStore.
+- Supports draw settings (tournament/division/group count/max teams).
+- Renders group lists, group stage spots, and coach-team draw tables.
+- Seed/sample inline dataset removed; page now uses live JSON/local data.
+Use-case:
+- Quickly produce fair randomized group assignments with adjustable constraints.
+
+4.23 admin/admin-knockout-bracket.html
+Purpose:
+- Visual knockout flow for elimination stage.
+Main functions:
+- Bracket rendering is JSON-driven from team data.
+- Dynamic quarter/semi/final cards and eliminated team sections.
+- Team logo/initial fallback support in bracket nodes.
+Use-case:
+- Communicate elimination progression and bracket status.
 
 5. ADMIN WORKFLOW CHAINS (END-TO-END)
 
@@ -293,6 +334,10 @@ Admin section must ensure:
 - Backend procedure (`sp_create_calendar_event`) and mapping table (`calendar_event_teams`) are intended to operationalize admin targeting logic.
 - Admin pages use a shared sidebar component to keep menu links consistent
   (including Tournament and Division).
+- Multiple admin pages now operate with JSON-backed state via `admin/admin-data-store.js`
+  and synchronize from `data.json` into local storage-backed entities.
+- Deprecated page `admin/admin-division-important.html` has been removed and the
+  related button from division page has been removed.
 
 10. RECOMMENDED BACKEND ENFORCEMENT FOR ADMIN MODULE
 - Validate admin role on all write endpoints.

@@ -89,6 +89,54 @@ The project used an applied software engineering approach:
 5. Documentation  
 - Produced structured technical documentation for architecture, logic, and future backend enforcement.
 
+## 3.3 Recent Implementation Updates (Frontend Milestone)
+
+The project implementation was expanded with JSON-driven frontend state management and role-aware workflow refinement.
+
+### 3.3.1 Shared JSON Data Layer
+- Introduced and standardized `admin/admin-data-store.js` as a shared browser-side data service.
+- Core entities are loaded from `data.json` and persisted in local storage for module-level CRUD simulation.
+- Admin pages were aligned to consume this store instead of hardcoded/static placeholders.
+
+### 3.3.2 Authentication and Account Flow Updates
+- Updated `index.html` login flow to validate users from JSON data and route by role (Admin/Coach/Player).
+- Added and integrated password recovery flow:
+  - `forgot_password.html` (email validation + reset session generation)
+  - `verify_code.html` (code + expiry validation)
+  - `reset_password.html` (password update persisted in users data)
+- Added and later removed `register.html` based on revised scope decisions.
+
+### 3.3.3 Admin Team Module Enhancements
+- `admin/admin-teams.html`
+  - Added team logo rendering in list view.
+  - `Update` action routes to edit mode with team id query.
+- `admin/admin-team-create.html`
+  - Supports both create and edit modes.
+  - Added team logo upload with preview and validation.
+  - Implemented JSON-backed player roster assignment (search, add, remove, clear, display).
+  - Added full form clear action.
+- `admin/admin-team-detail.html`
+  - Loads team detail by URL id from JSON data.
+  - Displays team logo and dynamically resolved roster.
+  - Added roster search/filter/sort behavior.
+
+### 3.3.4 Division and Competition Pages
+- `admin/admin-division.html`
+  - Updated to render Matches, Standings, Group Standings, Match List, Player Profile, and Leaderboard from JSON data.
+  - Removed `Important Sections` button per updated page architecture.
+- `admin/admin-random-groups.html`
+  - Converted to JSON-first and then JSON-only data sourcing (seed dataset removed).
+  - Random draw now uses teams/coaches/tournaments from shared data store.
+- `admin/admin-knockout-bracket.html`
+  - Converted from static bracket to JSON-rendered bracket containers and eliminated-team lists.
+- Removed deprecated page:
+  - `admin/admin-division-important.html`
+
+### 3.3.5 UI/UX Refinements
+- `index.html` authentication UI was redesigned while preserving IDs and event bindings.
+- Added targeted navigation improvements and consistency fixes across admin pages.
+- Corrected placeholder/text rendering and improved form feedback messaging in major auth/team flows.
+
 # Chapter 4: Conclusion
 
 EduSportPro successfully establishes a centralized, role-based sports management platform with clear operational boundaries and integrated workflows.
@@ -99,6 +147,8 @@ Key achievements:
 3. Tournament and Division management were included as part of competition governance.
 4. Communication logic was structured around role and audience scope.
 5. A maintainable documentation and component-based frontend approach was introduced.
+6. A JSON-backed shared data store now supports cross-module consistency during frontend-stage operation.
+7. Team, division, and competition pages were upgraded from static prototypes to dynamic JSON-driven views.
 
 Overall, the project meets its main objective of improving data consistency, role clarity, and operational coordination in sports management.  
 Future work should focus on full backend API integration, strict server-side permission enforcement, and automated end-to-end testing.
