@@ -8,6 +8,7 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/admin/admin-data-store.js"></script>
 
   <script>
     tailwind.config = {
@@ -154,53 +155,15 @@
           <div class="min-w-[940px] grid grid-cols-3 gap-6 items-start">
             <div class="stage-card p-4">
               <h2 class="stage-title">Quarter Finals</h2>
-              <div class="space-y-3">
-                <div class="match-node">
-                  <p class="text-xs text-gray-500 uppercase tracking-wide">QF1</p>
-                  <div class="team-line"><span class="team-logo">TA</span><span>Team A</span></div>
-                  <div class="team-line"><span class="team-logo">TD</span><span>Team D</span></div>
-                </div>
-                <div class="match-node">
-                  <p class="text-xs text-gray-500 uppercase tracking-wide">QF2</p>
-                  <div class="team-line"><span class="team-logo">TB</span><span>Team B</span></div>
-                  <div class="team-line"><span class="team-logo">TC</span><span>Team C</span></div>
-                </div>
-                <div class="match-node">
-                  <p class="text-xs text-gray-500 uppercase tracking-wide">QF3</p>
-                  <div class="team-line"><span class="team-logo">TE</span><span>Team E</span></div>
-                  <div class="team-line"><span class="team-logo">TH</span><span>Team H</span></div>
-                </div>
-                <div class="match-node">
-                  <p class="text-xs text-gray-500 uppercase tracking-wide">QF4</p>
-                  <div class="team-line"><span class="team-logo">TF</span><span>Team F</span></div>
-                  <div class="team-line"><span class="team-logo">TG</span><span>Team G</span></div>
-                </div>
-              </div>
+              <div id="qfContainer" class="space-y-3"></div>
             </div>
             <div class="stage-card p-4 connector-column">
               <h2 class="stage-title">Semi Finals</h2>
-              <div class="space-y-8 pt-4">
-                <div class="match-node border-hope-cyan/20 bg-hope-cyan/5">
-                  <p class="text-xs text-gray-500 uppercase tracking-wide">SF1</p>
-                  <div class="team-line"><span class="team-logo">W1</span><span>Winner QF1</span></div>
-                  <div class="team-line"><span class="team-logo">W2</span><span>Winner QF2</span></div>
-                </div>
-                <div class="match-node border-hope-cyan/20 bg-hope-cyan/5">
-                  <p class="text-xs text-gray-500 uppercase tracking-wide">SF2</p>
-                  <div class="team-line"><span class="team-logo">W3</span><span>Winner QF3</span></div>
-                  <div class="team-line"><span class="team-logo">W4</span><span>Winner QF4</span></div>
-                </div>
-              </div>
+              <div id="sfContainer" class="space-y-8 pt-4"></div>
             </div>
             <div class="stage-card p-4 connector-column">
               <h2 class="stage-title">Final</h2>
-              <div class="pt-12">
-                <div class="match-node border-hope-yellow/30 bg-hope-yellow/10">
-                  <p class="text-xs text-gray-500 uppercase tracking-wide">Final</p>
-                  <div class="team-line"><span class="team-logo">F1</span><span>Winner SF1</span></div>
-                  <div class="team-line"><span class="team-logo">F2</span><span>Winner SF2</span></div>
-                </div>
-              </div>
+              <div id="finalContainer" class="pt-12"></div>
             </div>
           </div>
         </div>
@@ -232,31 +195,125 @@
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
             <div class="rounded-lg border border-gray-100 bg-gray-50 p-3">
               <p class="text-xs font-semibold text-gray-500 uppercase mb-2">Quarter Finals</p>
-              <div class="space-y-2">
-                <div class="team-line"><span class="team-logo">TD</span><span>Team D</span></div>
-                <div class="team-line"><span class="team-logo">TC</span><span>Team C</span></div>
-                <div class="team-line"><span class="team-logo">TH</span><span>Team H</span></div>
-                <div class="team-line"><span class="team-logo">TG</span><span>Team G</span></div>
-              </div>
+              <div id="qfEliminated" class="space-y-2"></div>
             </div>
             <div class="rounded-lg border border-gray-100 bg-gray-50 p-3">
               <p class="text-xs font-semibold text-gray-500 uppercase mb-2">Semi Finals</p>
-              <div class="space-y-2">
-                <div class="team-line"><span class="team-logo">TB</span><span>Team B</span></div>
-                <div class="team-line"><span class="team-logo">TF</span><span>Team F</span></div>
-              </div>
+              <div id="sfEliminated" class="space-y-2"></div>
             </div>
             <div class="rounded-lg border border-gray-100 bg-gray-50 p-3">
               <p class="text-xs font-semibold text-gray-500 uppercase mb-2">Final</p>
-              <div class="space-y-2">
-                <div class="team-line"><span class="team-logo">TE</span><span>Team E (Runner-up)</span></div>
-              </div>
+              <div id="finalEliminated" class="space-y-2"></div>
             </div>
           </div>
         </div>
       </section>
     </main>
   </div>
+  <script>
+    function teamName(team) {
+      return String((team && (team.name || team.teamName || team.id)) || 'TBD');
+    }
+
+    function teamLogo(team) {
+      return String((team && (team.logo || team.logoUrl || team.logo_image)) || '');
+    }
+
+    function initials(name) {
+      const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+      if (!parts.length) return 'TM';
+      return parts.slice(0, 2).map(function (part) { return part.charAt(0).toUpperCase(); }).join('');
+    }
+
+    function renderTeamLine(team, fallbackText) {
+      const name = team ? teamName(team) : String(fallbackText || 'TBD');
+      const logo = team ? teamLogo(team) : '';
+      const badge = logo
+        ? '<img src="' + logo + '" alt="' + name + ' logo" class="team-logo object-cover">'
+        : '<span class="team-logo">' + initials(name) + '</span>';
+      return '<div class="team-line">' + badge + '<span>' + name + '</span></div>';
+    }
+
+    function matchNode(label, topTeam, bottomTeam, extraClass) {
+      const klass = extraClass ? 'match-node ' + extraClass : 'match-node';
+      return (
+        '<div class="' + klass + '">' +
+        '<p class="text-xs text-gray-500 uppercase tracking-wide">' + label + '</p>' +
+        renderTeamLine(topTeam, 'TBD') +
+        renderTeamLine(bottomTeam, 'TBD') +
+        '</div>'
+      );
+    }
+
+    function renderLines(containerId, teams, emptyText) {
+      const el = document.getElementById(containerId);
+      if (!el) return;
+      if (!teams.length) {
+        el.innerHTML = '<p class="text-sm text-gray-500">' + emptyText + '</p>';
+        return;
+      }
+      el.innerHTML = teams.map(function (team) { return renderTeamLine(team); }).join('');
+    }
+
+    function renderKnockoutFromJson() {
+      const teams = window.AdminDataStore.getArray('teams', []);
+      const seeded = teams.slice(0, 8);
+      while (seeded.length < 8) seeded.push(null);
+
+      const qfPairs = [
+        [seeded[0], seeded[1]],
+        [seeded[2], seeded[3]],
+        [seeded[4], seeded[5]],
+        [seeded[6], seeded[7]]
+      ];
+
+      const qfWinners = qfPairs.map(function (pair, idx) {
+        return pair[0] || pair[1] || { name: 'Winner QF' + String(idx + 1) };
+      });
+      const qfLosers = qfPairs.map(function (pair, idx) {
+        return pair[1] || { name: 'Loser QF' + String(idx + 1) };
+      });
+
+      const sfPairs = [
+        [qfWinners[0], qfWinners[1]],
+        [qfWinners[2], qfWinners[3]]
+      ];
+      const sfWinners = sfPairs.map(function (pair, idx) {
+        return pair[0] || pair[1] || { name: 'Winner SF' + String(idx + 1) };
+      });
+      const sfLosers = sfPairs.map(function (pair, idx) {
+        return pair[1] || { name: 'Loser SF' + String(idx + 1) };
+      });
+      const finalLoser = sfWinners[1] || { name: 'Final Runner-up' };
+
+      const qfContainer = document.getElementById('qfContainer');
+      const sfContainer = document.getElementById('sfContainer');
+      const finalContainer = document.getElementById('finalContainer');
+
+      if (qfContainer) {
+        qfContainer.innerHTML = qfPairs.map(function (pair, idx) {
+          return matchNode('QF' + String(idx + 1), pair[0], pair[1]);
+        }).join('');
+      }
+      if (sfContainer) {
+        sfContainer.innerHTML = sfPairs.map(function (pair, idx) {
+          return matchNode('SF' + String(idx + 1), pair[0], pair[1], 'border-hope-cyan/20 bg-hope-cyan/5');
+        }).join('');
+      }
+      if (finalContainer) {
+        finalContainer.innerHTML = matchNode('Final', sfWinners[0], sfWinners[1], 'border-hope-yellow/30 bg-hope-yellow/10');
+      }
+
+      renderLines('qfEliminated', qfLosers, 'No eliminated teams');
+      renderLines('sfEliminated', sfLosers, 'No eliminated teams');
+      renderLines('finalEliminated', [finalLoser], 'No eliminated teams');
+    }
+
+    document.addEventListener('DOMContentLoaded', async function () {
+      await window.AdminDataStore.bootstrap();
+      renderKnockoutFromJson();
+    });
+  </script>
 </body>
 
 </html>

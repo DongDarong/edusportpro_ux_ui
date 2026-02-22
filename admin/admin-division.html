@@ -228,7 +228,6 @@
         </div>
         <div class="w-full md:w-auto">
           <div class="flex gap-2">
-            <a href="/admin/admin-division-important.html" class="w-full md:w-auto inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-hope-cyan hover:bg-sky-500 text-white font-semibold shadow-sm transition-colors">Important Sections</a>
             <a href="/admin/admin-random-groups.html" class="w-full md:w-auto inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-hope-lime hover:bg-lime-500 text-white font-semibold shadow-sm transition-colors">Random Groups</a>
             <a href="/admin/admin-knockout-bracket.html" class="w-full md:w-auto inline-flex items-center justify-center px-4 py-2.5 rounded-lg bg-hope-yellow hover:bg-amber-400 text-hope-dark font-semibold shadow-sm transition-colors">Knockout Bracket</a>
           </div>
@@ -266,29 +265,7 @@
                 <th class="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-100">
-              <tr>
-                <td class="px-4 py-3">Team A vs Team B</td>
-                <td class="px-4 py-3">A</td>
-                <td class="px-4 py-3">Mar 12, 2026</td>
-                <td class="px-4 py-3">Field 1</td>
-                <td class="px-4 py-3"><span class="px-2 py-1 rounded-full text-xs bg-hope-cyan/10 text-hope-cyan">Live</span></td>
-              </tr>
-              <tr>
-                <td class="px-4 py-3">Team E vs Team F</td>
-                <td class="px-4 py-3">B</td>
-                <td class="px-4 py-3">Mar 13, 2026</td>
-                <td class="px-4 py-3">Field 2</td>
-                <td class="px-4 py-3"><span class="px-2 py-1 rounded-full text-xs bg-hope-yellow/10 text-hope-yellow">Upcoming</span></td>
-              </tr>
-              <tr>
-                <td class="px-4 py-3">Team I vs Team J</td>
-                <td class="px-4 py-3">C</td>
-                <td class="px-4 py-3">Mar 14, 2026</td>
-                <td class="px-4 py-3">Field 3</td>
-                <td class="px-4 py-3"><span class="px-2 py-1 rounded-full text-xs bg-gray-100 text-gray-700">Scheduled</span></td>
-              </tr>
-            </tbody>
+            <tbody id="divisionMatchesBody" class="divide-y divide-gray-100"></tbody>
           </table>
         </div>
       </div>
@@ -308,12 +285,7 @@
                 <th class="px-4 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Pts</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-100">
-              <tr><td class="px-4 py-3">1</td><td class="px-4 py-3 font-medium">Team A</td><td class="px-4 py-3">4</td><td class="px-4 py-3">3</td><td class="px-4 py-3">1</td><td class="px-4 py-3">0</td><td class="px-4 py-3 text-right font-semibold text-hope-lime">10</td></tr>
-              <tr><td class="px-4 py-3">2</td><td class="px-4 py-3 font-medium">Team B</td><td class="px-4 py-3">4</td><td class="px-4 py-3">2</td><td class="px-4 py-3">1</td><td class="px-4 py-3">1</td><td class="px-4 py-3 text-right font-semibold text-hope-lime">7</td></tr>
-              <tr><td class="px-4 py-3">3</td><td class="px-4 py-3 font-medium">Team C</td><td class="px-4 py-3">4</td><td class="px-4 py-3">1</td><td class="px-4 py-3">1</td><td class="px-4 py-3">2</td><td class="px-4 py-3 text-right font-semibold text-hope-lime">4</td></tr>
-              <tr><td class="px-4 py-3">4</td><td class="px-4 py-3 font-medium">Team D</td><td class="px-4 py-3">4</td><td class="px-4 py-3">0</td><td class="px-4 py-3">1</td><td class="px-4 py-3">3</td><td class="px-4 py-3 text-right font-semibold text-hope-lime">1</td></tr>
-            </tbody>
+            <tbody id="divisionStandingsBody" class="divide-y divide-gray-100"></tbody>
           </table>
         </div>
       </div>
@@ -326,30 +298,21 @@
             <div class="bg-hope-cyan/10 text-hope-cyan font-semibold px-4 py-2">Group A</div>
             <table class="section-table min-w-full text-sm">
               <thead><tr class="bg-gray-50"><th class="px-4 py-2 text-left">Team</th><th class="px-4 py-2 text-right">Pts</th></tr></thead>
-              <tbody class="divide-y divide-gray-100">
-                <tr><td class="px-4 py-2">Team A</td><td class="px-4 py-2 text-right">10</td></tr>
-                <tr><td class="px-4 py-2">Team B</td><td class="px-4 py-2 text-right">8</td></tr>
-              </tbody>
+              <tbody id="divisionGroupABody" class="divide-y divide-gray-100"></tbody>
             </table>
           </div>
           <div class="border border-gray-100 rounded-lg overflow-hidden">
             <div class="bg-hope-lime/10 text-hope-lime font-semibold px-4 py-2">Group B</div>
             <table class="section-table min-w-full text-sm">
               <thead><tr class="bg-gray-50"><th class="px-4 py-2 text-left">Team</th><th class="px-4 py-2 text-right">Pts</th></tr></thead>
-              <tbody class="divide-y divide-gray-100">
-                <tr><td class="px-4 py-2">Team C</td><td class="px-4 py-2 text-right">9</td></tr>
-                <tr><td class="px-4 py-2">Team D</td><td class="px-4 py-2 text-right">7</td></tr>
-              </tbody>
+              <tbody id="divisionGroupBBody" class="divide-y divide-gray-100"></tbody>
             </table>
           </div>
           <div class="border border-gray-100 rounded-lg overflow-hidden">
             <div class="bg-hope-red/10 text-hope-red font-semibold px-4 py-2">Group C</div>
             <table class="section-table min-w-full text-sm">
               <thead><tr class="bg-gray-50"><th class="px-4 py-2 text-left">Team</th><th class="px-4 py-2 text-right">Pts</th></tr></thead>
-              <tbody class="divide-y divide-gray-100">
-                <tr><td class="px-4 py-2">Team E</td><td class="px-4 py-2 text-right">11</td></tr>
-                <tr><td class="px-4 py-2">Team F</td><td class="px-4 py-2 text-right">6</td></tr>
-              </tbody>
+              <tbody id="divisionGroupCBody" class="divide-y divide-gray-100"></tbody>
             </table>
           </div>
         </div>
@@ -368,11 +331,7 @@
                 <th class="px-4 py-3 text-left">Status</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-100">
-              <tr><td class="px-4 py-3">Team A vs Team B</td><td class="px-4 py-3">Mar 15, 2026</td><td class="px-4 py-3">Main Field</td><td class="px-4 py-3 text-hope-cyan">Live</td></tr>
-              <tr><td class="px-4 py-3">Team C vs Team D</td><td class="px-4 py-3">Mar 16, 2026</td><td class="px-4 py-3">Arena 2</td><td class="px-4 py-3 text-hope-yellow">Upcoming</td></tr>
-              <tr><td class="px-4 py-3">Team E vs Team F</td><td class="px-4 py-3">Mar 17, 2026</td><td class="px-4 py-3">Arena 1</td><td class="px-4 py-3 text-gray-600">Scheduled</td></tr>
-            </tbody>
+            <tbody id="divisionMatchListBody" class="divide-y divide-gray-100"></tbody>
           </table>
         </div>
       </div>
@@ -417,15 +376,15 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div class="rounded-lg border border-gray-100 p-4">
             <p class="text-xs uppercase text-gray-500">Goals</p>
-            <p class="text-2xl font-bold mt-1">9</p>
+            <p id="divisionGoalsValue" class="text-2xl font-bold mt-1">0</p>
           </div>
           <div class="rounded-lg border border-gray-100 p-4">
             <p class="text-xs uppercase text-gray-500">Cards</p>
-            <p class="text-2xl font-bold mt-1">2Y / 0R</p>
+            <p id="divisionCardsValue" class="text-2xl font-bold mt-1">0Y / 0R</p>
           </div>
           <div class="rounded-lg border border-gray-100 p-4">
             <p class="text-xs uppercase text-gray-500">Matches played</p>
-            <p class="text-2xl font-bold mt-1">7</p>
+            <p id="divisionMatchesPlayedValue" class="text-2xl font-bold mt-1">0</p>
           </div>
         </div>
       </div>
@@ -435,18 +394,18 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div class="rounded-lg border border-gray-100 p-4 bg-hope-yellow/10">
             <p class="text-xs uppercase text-gray-500">Top scorer</p>
-            <p class="text-lg font-bold mt-1">Sok Dara</p>
-            <p class="text-sm text-gray-600">9 Goals</p>
+            <p id="topScorerName" class="text-lg font-bold mt-1">-</p>
+            <p id="topScorerValue" class="text-sm text-gray-600">0 Goals</p>
           </div>
           <div class="rounded-lg border border-gray-100 p-4 bg-hope-cyan/10">
             <p class="text-xs uppercase text-gray-500">Top assist</p>
-            <p class="text-lg font-bold mt-1">Chan Vanna</p>
-            <p class="text-sm text-gray-600">6 Assists</p>
+            <p id="topAssistName" class="text-lg font-bold mt-1">-</p>
+            <p id="topAssistValue" class="text-sm text-gray-600">0 Assists</p>
           </div>
           <div class="rounded-lg border border-gray-100 p-4 bg-hope-lime/10">
             <p class="text-xs uppercase text-gray-500">Best GK</p>
-            <p class="text-lg font-bold mt-1">Neth Sopheak</p>
-            <p class="text-sm text-gray-600">5 Clean Sheets</p>
+            <p id="bestGkName" class="text-lg font-bold mt-1">-</p>
+            <p id="bestGkValue" class="text-sm text-gray-600">0 Clean Sheets</p>
           </div>
         </div>
       </div>
@@ -501,6 +460,282 @@
     function getCoaches() {
       const coaches = window.AdminDataStore.getArray('coaches', fallbackCoaches);
       return Array.isArray(coaches) ? coaches : fallbackCoaches;
+    }
+
+    function getMatches() {
+      const fallback = [];
+      const matches = window.AdminDataStore.getArray('matches', fallback);
+      return Array.isArray(matches) ? matches : fallback;
+    }
+
+    function getPlayers() {
+      const fallback = [];
+      const players = window.AdminDataStore.getArray('players', fallback);
+      return Array.isArray(players) ? players : fallback;
+    }
+
+    function getPerformanceRecords() {
+      const fallback = [];
+      const records = window.AdminDataStore.getArray('performanceRecords', fallback);
+      return Array.isArray(records) ? records : fallback;
+    }
+
+    function getTeamId(team) {
+      return String(team.id || team.teamId || team.team_id || '');
+    }
+
+    function getTeamByIdMap(teams) {
+      return teams.reduce(function (acc, team) {
+        acc[getTeamId(team)] = team;
+        return acc;
+      }, {});
+    }
+
+    function formatDate(value) {
+      if (!value) return '-';
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return String(value);
+      return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    function matchTeamName(teamId, map) {
+      const team = map[String(teamId)] || null;
+      return team ? normalizeTeamName(team) : String(teamId || 'Unknown');
+    }
+
+    function matchStatusLabel(match) {
+      const status = String(match.status || '').trim();
+      if (status) return status;
+      if (typeof match.homeScore === 'number' && typeof match.awayScore === 'number') return 'Completed';
+      return 'Scheduled';
+    }
+
+    function matchStatusClass(status) {
+      const text = String(status || '').toLowerCase();
+      if (text.includes('live')) return 'bg-hope-cyan/10 text-hope-cyan';
+      if (text.includes('upcoming') || text.includes('pending')) return 'bg-hope-yellow/10 text-hope-yellow';
+      if (text.includes('complete') || text.includes('finished')) return 'bg-hope-lime/10 text-hope-lime';
+      return 'bg-gray-100 text-gray-700';
+    }
+
+    function isCompletedMatch(match) {
+      const status = String(match.status || '').toLowerCase();
+      if (status.includes('complete') || status.includes('finished')) return true;
+      return typeof match.homeScore === 'number' && typeof match.awayScore === 'number';
+    }
+
+    function buildStandings(teams, matches) {
+      const standingsMap = {};
+
+      teams.forEach(function (team) {
+        const id = getTeamId(team);
+        if (!id) return;
+        standingsMap[id] = { teamId: id, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, pts: 0 };
+      });
+
+      matches.forEach(function (match) {
+        if (!isCompletedMatch(match)) return;
+        const homeId = String(match.homeTeamId || '');
+        const awayId = String(match.awayTeamId || '');
+        const hs = Number(match.homeScore);
+        const as = Number(match.awayScore);
+        if (!homeId || !awayId || !Number.isFinite(hs) || !Number.isFinite(as)) return;
+
+        if (!standingsMap[homeId]) standingsMap[homeId] = { teamId: homeId, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, pts: 0 };
+        if (!standingsMap[awayId]) standingsMap[awayId] = { teamId: awayId, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, pts: 0 };
+
+        const home = standingsMap[homeId];
+        const away = standingsMap[awayId];
+
+        home.p += 1; away.p += 1;
+        home.gf += hs; home.ga += as;
+        away.gf += as; away.ga += hs;
+
+        if (hs > as) {
+          home.w += 1; home.pts += 3; away.l += 1;
+        } else if (hs < as) {
+          away.w += 1; away.pts += 3; home.l += 1;
+        } else {
+          home.d += 1; away.d += 1; home.pts += 1; away.pts += 1;
+        }
+      });
+
+      return Object.keys(standingsMap).map(function (id) { return standingsMap[id]; }).sort(function (a, b) {
+        const gdA = a.gf - a.ga;
+        const gdB = b.gf - b.ga;
+        if (b.pts !== a.pts) return b.pts - a.pts;
+        if (gdB !== gdA) return gdB - gdA;
+        return b.gf - a.gf;
+      });
+    }
+
+    function renderMatchesSection(matches, teamMap) {
+      const tbody = document.getElementById('divisionMatchesBody');
+      if (!tbody) return;
+      const rows = matches.slice(0, 8).map(function (match) {
+        const home = matchTeamName(match.homeTeamId, teamMap);
+        const away = matchTeamName(match.awayTeamId, teamMap);
+        const homeDivision = (teamMap[String(match.homeTeamId)] || {}).division || '-';
+        const status = matchStatusLabel(match);
+        return (
+          '<tr>' +
+          '<td class="px-4 py-3">' + home + ' vs ' + away + '</td>' +
+          '<td class="px-4 py-3">' + homeDivision + '</td>' +
+          '<td class="px-4 py-3">' + formatDate(match.dateTime || match.date) + '</td>' +
+          '<td class="px-4 py-3">' + String(match.venue || '-') + '</td>' +
+          '<td class="px-4 py-3"><span class="px-2 py-1 rounded-full text-xs ' + matchStatusClass(status) + '">' + status + '</span></td>' +
+          '</tr>'
+        );
+      });
+      tbody.innerHTML = rows.length ? rows.join('') : '<tr><td colspan="5" class="px-4 py-3 text-gray-500">No matches available.</td></tr>';
+    }
+
+    function renderStandingsSection(standings, teamMap) {
+      const tbody = document.getElementById('divisionStandingsBody');
+      if (!tbody) return;
+      const rows = standings.slice(0, 12).map(function (row, index) {
+        return (
+          '<tr>' +
+          '<td class="px-4 py-3">' + (index + 1) + '</td>' +
+          '<td class="px-4 py-3 font-medium">' + matchTeamName(row.teamId, teamMap) + '</td>' +
+          '<td class="px-4 py-3">' + row.p + '</td>' +
+          '<td class="px-4 py-3">' + row.w + '</td>' +
+          '<td class="px-4 py-3">' + row.d + '</td>' +
+          '<td class="px-4 py-3">' + row.l + '</td>' +
+          '<td class="px-4 py-3 text-right font-semibold text-hope-lime">' + row.pts + '</td>' +
+          '</tr>'
+        );
+      });
+      tbody.innerHTML = rows.length ? rows.join('') : '<tr><td colspan="7" class="px-4 py-3 text-gray-500">No standings data.</td></tr>';
+    }
+
+    function renderGroupStandings(standings, teams, teamMap) {
+      const bodies = [
+        document.getElementById('divisionGroupABody'),
+        document.getElementById('divisionGroupBBody'),
+        document.getElementById('divisionGroupCBody')
+      ];
+      const groups = [[], [], []];
+      const orderedTeams = teams.slice().sort(function (a, b) {
+        return normalizeTeamName(a).localeCompare(normalizeTeamName(b));
+      });
+      orderedTeams.forEach(function (team, idx) {
+        groups[idx % 3].push(team);
+      });
+
+      const pointsMap = standings.reduce(function (acc, row) {
+        acc[row.teamId] = row.pts;
+        return acc;
+      }, {});
+
+      bodies.forEach(function (tbody, idx) {
+        if (!tbody) return;
+        const rows = groups[idx].map(function (team) {
+          const id = getTeamId(team);
+          const pts = Number(pointsMap[id] || 0);
+          return '<tr><td class="px-4 py-2">' + normalizeTeamName(team) + '</td><td class="px-4 py-2 text-right">' + pts + '</td></tr>';
+        });
+        tbody.innerHTML = rows.length ? rows.join('') : '<tr><td colspan="2" class="px-4 py-2 text-gray-500">No teams</td></tr>';
+      });
+    }
+
+    function renderMatchList(matches, teamMap) {
+      const tbody = document.getElementById('divisionMatchListBody');
+      if (!tbody) return;
+      const sorted = matches.slice().sort(function (a, b) {
+        return new Date(a.dateTime || a.date || 0).getTime() - new Date(b.dateTime || b.date || 0).getTime();
+      });
+      const rows = sorted.slice(0, 12).map(function (match) {
+        const home = matchTeamName(match.homeTeamId, teamMap);
+        const away = matchTeamName(match.awayTeamId, teamMap);
+        const status = matchStatusLabel(match);
+        return (
+          '<tr>' +
+          '<td class="px-4 py-3">' + home + ' vs ' + away + '</td>' +
+          '<td class="px-4 py-3">' + formatDate(match.dateTime || match.date) + '</td>' +
+          '<td class="px-4 py-3">' + String(match.venue || '-') + '</td>' +
+          '<td class="px-4 py-3 ' + (status.toLowerCase().includes('live') ? 'text-hope-cyan' : (status.toLowerCase().includes('upcoming') ? 'text-hope-yellow' : 'text-gray-600')) + '">' + status + '</td>' +
+          '</tr>'
+        );
+      });
+      tbody.innerHTML = rows.length ? rows.join('') : '<tr><td colspan="4" class="px-4 py-3 text-gray-500">No match list available.</td></tr>';
+    }
+
+    function renderPlayerProfileAndLeaderboard(players, records) {
+      const goals = records.reduce(function (sum, row) { return sum + Number(row.goals || 0); }, 0);
+      const yellow = records.reduce(function (sum, row) { return sum + Number(row.yellow || 0); }, 0);
+      const red = records.reduce(function (sum, row) { return sum + Number(row.red || 0); }, 0);
+      const matchesPlayed = records.filter(function (row) { return String(row.sessionType || '').toLowerCase() === 'match'; }).length;
+
+      const byPlayer = {};
+      records.forEach(function (row) {
+        const id = String(row.playerId || '');
+        if (!id) return;
+        if (!byPlayer[id]) byPlayer[id] = { goals: 0, assists: 0 };
+        byPlayer[id].goals += Number(row.goals || 0);
+        byPlayer[id].assists += Number(row.assists || 0);
+      });
+
+      const playerMap = players.reduce(function (acc, player) {
+        acc[String(player.id || '')] = player;
+        return acc;
+      }, {});
+
+      let topGoal = { id: '', value: 0 };
+      let topAssist = { id: '', value: 0 };
+      Object.keys(byPlayer).forEach(function (id) {
+        if (byPlayer[id].goals > topGoal.value) topGoal = { id: id, value: byPlayer[id].goals };
+        if (byPlayer[id].assists > topAssist.value) topAssist = { id: id, value: byPlayer[id].assists };
+      });
+
+      let bestGk = { name: '-', value: 0 };
+      players.forEach(function (player) {
+        const pos = String(player.position || '').toLowerCase();
+        if (!pos.includes('goal')) return;
+        const value = Number(player.cleanSheets || 0);
+        if (value > bestGk.value) {
+          bestGk = { name: String(player.name || player.id || '-'), value: value };
+        }
+      });
+
+      const goalName = (playerMap[topGoal.id] && (playerMap[topGoal.id].name || playerMap[topGoal.id].id)) || '-';
+      const assistName = (playerMap[topAssist.id] && (playerMap[topAssist.id].name || playerMap[topAssist.id].id)) || '-';
+
+      const goalsEl = document.getElementById('divisionGoalsValue');
+      const cardsEl = document.getElementById('divisionCardsValue');
+      const matchesEl = document.getElementById('divisionMatchesPlayedValue');
+      if (goalsEl) goalsEl.textContent = String(goals);
+      if (cardsEl) cardsEl.textContent = String(yellow) + 'Y / ' + String(red) + 'R';
+      if (matchesEl) matchesEl.textContent = String(matchesPlayed);
+
+      const topScorerName = document.getElementById('topScorerName');
+      const topScorerValue = document.getElementById('topScorerValue');
+      const topAssistName = document.getElementById('topAssistName');
+      const topAssistValue = document.getElementById('topAssistValue');
+      const bestGkName = document.getElementById('bestGkName');
+      const bestGkValue = document.getElementById('bestGkValue');
+
+      if (topScorerName) topScorerName.textContent = goalName;
+      if (topScorerValue) topScorerValue.textContent = String(topGoal.value) + ' Goals';
+      if (topAssistName) topAssistName.textContent = assistName;
+      if (topAssistValue) topAssistValue.textContent = String(topAssist.value) + ' Assists';
+      if (bestGkName) bestGkName.textContent = bestGk.name;
+      if (bestGkValue) bestGkValue.textContent = String(bestGk.value) + ' Clean Sheets';
+    }
+
+    function renderDivisionFromJson() {
+      const teams = getTeams();
+      const matches = getMatches();
+      const players = getPlayers();
+      const performanceRecords = getPerformanceRecords();
+      const teamMap = getTeamByIdMap(teams);
+      const standings = buildStandings(teams, matches);
+
+      renderMatchesSection(matches, teamMap);
+      renderStandingsSection(standings, teamMap);
+      renderGroupStandings(standings, teams, teamMap);
+      renderMatchList(matches, teamMap);
+      renderPlayerProfileAndLeaderboard(players, performanceRecords);
     }
 
     function shuffle(list) {
@@ -618,6 +853,7 @@
         quickNavSelect.addEventListener('change', jumpToSelectedSection);
       }
       runDivisionRandomDraw();
+      renderDivisionFromJson();
     });
 
     function toggleSidebar() {

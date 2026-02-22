@@ -182,67 +182,7 @@
       </div>
   </main>
 
-  <script id="randomGroupsSeedData" type="application/json">
-    {
-      "tournaments": [
-        { "id": "TRN-001", "name": "Spring Youth Cup" },
-        { "id": "TRN-002", "name": "Hope League" },
-        { "id": "TRN-003", "name": "Inter-Academy Championship" }
-      ],
-      "coaches": [
-        { "id": "C001", "name": "Coach Sok" },
-        { "id": "C002", "name": "Coach Dara" },
-        { "id": "C003", "name": "Coach Vanna" },
-        { "id": "C004", "name": "Coach Nita" }
-      ],
-      "teams": [
-        { "id": "T001", "name": "Team A", "division": "U12", "tournamentId": "TRN-001", "logo_image": "/images/logo.jpg" },
-        { "id": "T002", "name": "Team B", "division": "U12", "tournamentId": "TRN-001", "logo_image": "/images/logo.jpg" },
-        { "id": "T003", "name": "Team C", "division": "U12", "tournamentId": "TRN-001", "logo_image": "/images/logo.jpg" },
-        { "id": "T004", "name": "Team D", "division": "U12", "tournamentId": "TRN-001", "logo_image": "/images/logo.jpg" },
-        { "id": "T005", "name": "Team E", "division": "U14", "tournamentId": "TRN-002", "logo_image": "/images/logo.jpg" },
-        { "id": "T006", "name": "Team F", "division": "U14", "tournamentId": "TRN-002", "logo_image": "/images/logo.jpg" },
-        { "id": "T007", "name": "Team G", "division": "U14", "tournamentId": "TRN-003", "logo_image": "/images/logo.jpg" },
-        { "id": "T008", "name": "Team H", "division": "U14", "tournamentId": "TRN-003", "logo_image": "/images/logo.jpg" },
-        { "id": "T009", "name": "Team I", "division": "U16", "tournamentId": "TRN-003", "logo_image": "/images/logo.jpg" },
-        { "id": "T010", "name": "Team J", "division": "U16", "tournamentId": "TRN-002", "logo_image": "/images/logo.jpg" },
-        { "id": "T011", "name": "Team K", "division": "U16", "tournamentId": "TRN-001", "logo_image": "/images/logo.jpg" },
-        { "id": "T012", "name": "Team L", "division": "U16", "tournamentId": "TRN-002", "logo_image": "/images/logo.jpg" }
-      ]
-    }
-  </script>
-
   <script>
-    const TEAM_KEY = 'edusportpro_teams';
-    const COACH_KEY = 'edusportpro_coaches';
-    const TOURNAMENT_KEY = 'edusportpro_tournaments';
-
-    const fallbackTeams = [
-      { id: 'T001', name: 'Team A' },
-      { id: 'T002', name: 'Team B' },
-      { id: 'T003', name: 'Team C' },
-      { id: 'T004', name: 'Team D' },
-      { id: 'T005', name: 'Team E' },
-      { id: 'T006', name: 'Team F' },
-      { id: 'T007', name: 'Team G' },
-      { id: 'T008', name: 'Team H' },
-      { id: 'T009', name: 'Team I' },
-      { id: 'T010', name: 'Team J' },
-      { id: 'T011', name: 'Team K' },
-      { id: 'T012', name: 'Team L' }
-    ];
-
-    const fallbackCoaches = [
-      { id: 'C001', name: 'Coach Sok' },
-      { id: 'C002', name: 'Coach Dara' },
-      { id: 'C003', name: 'Coach Vanna' },
-      { id: 'C004', name: 'Coach Nita' }
-    ];
-    const fallbackTournaments = [
-      { id: 'TRN-001', name: 'Spring Youth Cup' },
-      { id: 'TRN-002', name: 'Hope League' },
-      { id: 'TRN-003', name: 'Inter-Academy Championship' }
-    ];
     const EMPTY_GROUPS = {};
     let currentDrawState = {
       groups: EMPTY_GROUPS,
@@ -256,32 +196,6 @@
       groupCount: 3,
       maxTeamsPerGroup: 4
     };
-
-    function safeParse(input, fallback) {
-      try {
-        const parsed = JSON.parse(input);
-        return Array.isArray(parsed) ? parsed : fallback;
-      } catch (_) {
-        return fallback;
-      }
-    }
-
-    function getSeedData() {
-      const seedEl = document.getElementById('randomGroupsSeedData');
-      if (!seedEl || !seedEl.textContent) {
-        return { teams: [], coaches: [], tournaments: [] };
-      }
-      try {
-        const parsed = JSON.parse(seedEl.textContent);
-        return {
-          teams: Array.isArray(parsed.teams) ? parsed.teams : [],
-          coaches: Array.isArray(parsed.coaches) ? parsed.coaches : [],
-          tournaments: Array.isArray(parsed.tournaments) ? parsed.tournaments : []
-        };
-      } catch (_) {
-        return { teams: [], coaches: [], tournaments: [] };
-      }
-    }
 
     function normalizeTeamName(team) {
       return team.name || team.teamName || team.title || team.id || 'Unknown Team';
@@ -300,24 +214,18 @@
     }
 
     function getTeams() {
-      const seed = getSeedData();
-      if (seed.teams.length) return seed.teams;
-      const teams = window.AdminDataStore.getArray('teams', fallbackTeams);
-      return Array.isArray(teams) ? teams : fallbackTeams;
+      const teams = window.AdminDataStore.getArray('teams', []);
+      return Array.isArray(teams) ? teams : [];
     }
 
     function getCoaches() {
-      const seed = getSeedData();
-      if (seed.coaches.length) return seed.coaches;
-      const coaches = window.AdminDataStore.getArray('coaches', fallbackCoaches);
-      return Array.isArray(coaches) ? coaches : fallbackCoaches;
+      const coaches = window.AdminDataStore.getArray('coaches', []);
+      return Array.isArray(coaches) ? coaches : [];
     }
 
     function getTournaments() {
-      const seed = getSeedData();
-      if (seed.tournaments.length) return seed.tournaments;
-      const tournaments = window.AdminDataStore.getArray('tournaments', fallbackTournaments);
-      return Array.isArray(tournaments) ? tournaments : fallbackTournaments;
+      const tournaments = window.AdminDataStore.getArray('tournaments', []);
+      return Array.isArray(tournaments) ? tournaments : [];
     }
 
     function getDivisionFromTeam(team) {
@@ -552,6 +460,10 @@
       const select = document.getElementById('tournamentSelect');
       if (!select) return;
       const tournaments = getTournaments();
+      if (!tournaments.length) {
+        select.innerHTML = '<option value="">No tournaments available</option>';
+        return;
+      }
       select.innerHTML = tournaments.map(function (tournament) {
         const value = String(tournament.id || normalizeTournamentName(tournament));
         return '<option value="' + value + '">' + normalizeTournamentName(tournament) + '</option>';
@@ -565,6 +477,11 @@
       const select = document.getElementById('divisionSelect');
       if (!select) return;
       const divisions = buildDivisionOptions(getTeams());
+      if (!divisions.length) {
+        select.innerHTML = '<option value="ALL">All Divisions</option>';
+        select.value = 'ALL';
+        return;
+      }
       const options = ['<option value="ALL">All Divisions</option>']
         .concat(divisions.map(function (division) {
           return '<option value="' + division + '">' + division + '</option>';
