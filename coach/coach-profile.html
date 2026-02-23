@@ -8,6 +8,7 @@
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/admin/admin-data-store.js"></script>
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -97,13 +98,16 @@
 
 
     <div class="flex items-center gap-3 md:gap-6">
+      <a href="/coach/coach-calendar.html" aria-label="Calendar" title="Calendar" class="hidden md:inline-flex items-center justify-center p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-hope-dark transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+      </a>
       
       <!-- Notification Bell -->
       <a href="/coach/coach-notifications.html" class="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-hope-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
         </svg>
-        <span class="absolute top-1 right-1 bg-hope-red text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">4</span>
+        <span id="notificationBadge" class="absolute top-1 right-1 bg-hope-red text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">0</span>
       </a>
 
       <select class="bg-gray-50 border border-gray-200 text-hope-dark text-sm rounded-lg focus:ring-hope-cyan focus:border-hope-cyan block px-2 py-1.5 md:px-3 outline-none">
@@ -112,11 +116,11 @@
       </select>
 
       <a href="/coach/coach-profile.html" class="flex items-center gap-2 md:gap-3 cursor-pointer pl-2 md:pl-4 border-l border-gray-200 hover:bg-gray-50 transition-colors rounded-r-lg p-1">
-        <div class="text-right hidden md:block">
-          <div class="text-sm font-semibold text-hope-dark">Coach Sok</div>
-          <div class="text-xs text-gray-500">Team A Coach</div>
+          <div class="text-right hidden md:block">
+          <div id="navCoachName" class="text-sm font-semibold text-hope-dark">Coach</div>
+          <div id="navCoachTeam" class="text-xs text-gray-500">Team Coach</div>
         </div>
-        <div class="w-8 h-8 md:w-9 md:h-9 bg-hope-cyan rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm shrink-0">
+        <div id="navCoachInitials" class="w-8 h-8 md:w-9 md:h-9 bg-hope-cyan rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm shrink-0">
           CS
         </div>
       </a>
@@ -158,12 +162,12 @@
           
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-teams.html">
             <svg class="w-5 h-5 group-hover:text-hope-lime transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-            My Team
+            Team
           </a>
 
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-training.html">
             <svg class="w-5 h-5 group-hover:text-hope-red transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-            Training Sessions
+            Training
           </a>
 
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-att.html">
@@ -181,10 +185,6 @@
             Matches
           </a>
 
-          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group"  href="/coach/coach-calendar.html">
-                        <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        Calendar
-          </a>
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-tournament.html">
             <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8M12 17v4M7 4h10l-1 6H8L7 4zM5 4h14"></path></svg>
             Tournament
@@ -193,6 +193,10 @@
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-division.html">
             <svg class="w-5 h-5 group-hover:text-hope-lime transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"></path></svg>
             Division
+          </a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-inventory.html">
+            <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            Inventory
           </a>
         </nav>
         <!-- Footer Sign Out -->
@@ -229,15 +233,15 @@
             
             <div class="relative mt-12 mb-4">
               <div class="w-24 h-24 rounded-full bg-white p-1 mx-auto shadow-md">
-                  <div class="w-full h-full rounded-full bg-hope-cyan text-white flex items-center justify-center text-3xl font-bold">CS</div>
+                  <div id="profileCoachInitials" class="w-full h-full rounded-full bg-hope-cyan text-white flex items-center justify-center text-3xl font-bold">CS</div>
               </div>
               <button class="absolute bottom-0 right-1/2 translate-x-10 translate-y-2 bg-white text-gray-600 hover:text-hope-cyan p-1.5 rounded-full shadow-sm border border-gray-100 transition-colors">
                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
               </button>
             </div>
 
-            <h2 class="text-xl font-bold text-hope-dark">Coach Sok</h2>
-            <p class="text-gray-500 text-sm mb-4">Head Coach - Team A</p>
+            <h2 id="profileCoachName" class="text-xl font-bold text-hope-dark">Coach</h2>
+            <p id="profileCoachTeamRole" class="text-gray-500 text-sm mb-4">Head Coach - Team</p>
 
             <div class="flex justify-center gap-2 mb-6">
               <span class="px-3 py-1 bg-hope-lime/10 text-hope-lime rounded-full text-xs font-semibold border border-hope-lime/20">Certified</span>
@@ -247,11 +251,11 @@
             <div class="border-t border-gray-100 pt-4 text-left space-y-3">
               <div class="flex items-center gap-3 text-sm text-gray-600">
                 <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                <span>coach.sok@edusportpro.com</span>
+                <span id="profileCoachEmail">coach@edusportpro.local</span>
               </div>
               <div class="flex items-center gap-3 text-sm text-gray-600">
                 <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-                <span>+855 12 999 888</span>
+                <span id="profileCoachPhone">+855 12 000 000</span>
               </div>
             </div>
 
@@ -281,23 +285,23 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
-                    <input type="text" value="Sok" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+                    <input id="firstNameInput" type="text" value="Sok" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
                   </div>
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
-                    <input type="text" value="San" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+                    <input id="lastNameInput" type="text" value="San" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
                   </div>
                   <div class="md:col-span-2">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                    <input type="email" value="coach.sok@edusportpro.com" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+                    <input id="emailInput" type="email" value="coach.sok@edusportpro.com" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
                   </div>
                   <div class="md:col-span-2">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-                    <input type="tel" value="+855 12 999 888" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+                    <input id="phoneInput" type="tel" value="+855 12 999 888" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
                   </div>
                 </div>
                 <div class="flex justify-end pt-2">
-                  <button class="w-full md:w-auto bg-hope-cyan hover:bg-sky-500 text-white px-5 py-2 rounded-lg shadow-sm transition-colors text-sm font-medium">Save Changes</button>
+                  <button id="saveGeneralBtn" class="w-full md:w-auto bg-hope-cyan hover:bg-sky-500 text-white px-5 py-2 rounded-lg shadow-sm transition-colors text-sm font-medium">Save Changes</button>
                 </div>
               </div>
           </div>
@@ -312,7 +316,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Coaching License</label>
-                    <select class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+                    <select id="licenseSelect" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
                       <option>AFC 'C' License</option>
                       <option selected>AFC 'B' License</option>
                       <option>AFC 'A' License</option>
@@ -321,16 +325,16 @@
                   </div>
                   <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Experience (Years)</label>
-                    <input type="number" value="5" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+                    <input id="experienceInput" type="number" value="5" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
                   </div>
                   <div class="md:col-span-2">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Assigned Team</label>
-                    <input type="text" value="Team A" disabled class="w-full rounded-lg border-gray-200 border p-2.5 text-gray-500 bg-gray-50 sm:text-sm shadow-sm outline-none cursor-not-allowed">
+                    <input id="assignedTeamInput" type="text" value="Team A" disabled class="w-full rounded-lg border-gray-200 border p-2.5 text-gray-500 bg-gray-50 sm:text-sm shadow-sm outline-none cursor-not-allowed">
                     <p class="text-xs text-gray-400 mt-1">Contact admin to change team assignment.</p>
                   </div>
                 </div>
                 <div class="flex justify-end pt-2">
-                  <button class="w-full md:w-auto bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-5 py-2 rounded-lg shadow-sm transition-colors text-sm font-medium">Update Professional Info</button>
+                  <button id="saveProfessionalBtn" class="w-full md:w-auto bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-5 py-2 rounded-lg shadow-sm transition-colors text-sm font-medium">Update Professional Info</button>
                 </div>
               </div>
           </div>
@@ -373,6 +377,47 @@
                 </div>
                 <div class="flex justify-end pt-2">
                   <button class="w-full md:w-auto bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-5 py-2 rounded-lg shadow-sm transition-colors text-sm font-medium">Update Password</button>
+                </div>
+              </div>
+          </div>
+
+          <!-- About Website -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+              <div class="p-4 md:p-5 border-b border-gray-100 bg-gray-50">
+                <h3 class="font-bold text-base md:text-lg text-hope-dark">About Website</h3>
+              </div>
+              <div class="p-4 md:p-6 space-y-4">
+                <p class="text-sm text-gray-600 leading-6">
+                  EduSportPro is the internal sports management platform for Hope Foundation of Cambodia. It supports coordination between admin, coach, and player modules in one system.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div class="rounded-lg border border-gray-200 bg-gray-50 p-3">
+                    <div class="text-xs uppercase tracking-wide text-gray-500 font-semibold">Version</div>
+                    <div class="text-sm font-medium text-hope-dark mt-1">v1.0.0</div>
+                  </div>
+                  <div class="rounded-lg border border-gray-200 bg-gray-50 p-3">
+                    <div class="text-xs uppercase tracking-wide text-gray-500 font-semibold">Environment</div>
+                    <div class="text-sm font-medium text-hope-dark mt-1">Production</div>
+                  </div>
+                </div>
+
+                <div class="pt-2">
+                  <h4 class="text-sm font-semibold text-hope-dark mb-2">Website Development Team</h4>
+                  <div class="rounded-lg border border-gray-200 divide-y divide-gray-100">
+                    <div class="p-3 flex items-center justify-between">
+                      <span class="text-sm text-gray-700">Member 1</span>
+                      <span class="text-xs px-2 py-1 rounded bg-hope-cyan/10 text-hope-cyan font-semibold">Frontend Developer</span>
+                    </div>
+                    <div class="p-3 flex items-center justify-between">
+                      <span class="text-sm text-gray-700">Member 2</span>
+                      <span class="text-xs px-2 py-1 rounded bg-hope-lime/10 text-hope-lime font-semibold">Backend Developer</span>
+                    </div>
+                    <div class="p-3 flex items-center justify-between">
+                      <span class="text-sm text-gray-700">Member 3</span>
+                      <span class="text-xs px-2 py-1 rounded bg-gray-100 text-gray-700 font-semibold">UI/UX Designer</span>
+                    </div>
+                  </div>
                 </div>
               </div>
           </div>
@@ -421,6 +466,132 @@
         icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>';
       }
     }
+
+    (function () {
+      function initialsFromName(name) {
+        const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+        if (!parts.length) return 'C';
+        return parts.slice(0, 2).map(function (part) { return part.charAt(0).toUpperCase(); }).join('');
+      }
+
+      function splitName(name) {
+        const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+        if (!parts.length) return { first: '', last: '' };
+        if (parts.length === 1) return { first: parts[0], last: '' };
+        return { first: parts[0], last: parts.slice(1).join(' ') };
+      }
+
+      function findAssignedTeamName(coach, trainingSessions, teams) {
+        if (!coach || !coach.id) return 'Unassigned';
+        const latestSession = trainingSessions
+          .filter(function (session) { return session.coachId === coach.id; })
+          .sort(function (a, b) { return new Date(b.date || 0) - new Date(a.date || 0); })[0];
+        if (!latestSession || !latestSession.teamId) return 'Unassigned';
+        const team = teams.find(function (entry) { return entry.id === latestSession.teamId; });
+        return team && team.name ? team.name : 'Unassigned';
+      }
+
+      function setText(id, value) {
+        const node = document.getElementById(id);
+        if (!node) return;
+        node.textContent = value;
+      }
+
+      function setValue(id, value) {
+        const node = document.getElementById(id);
+        if (!node) return;
+        node.value = value;
+      }
+
+      function bindNotificationBadge(notifications) {
+        const badge = document.getElementById('notificationBadge');
+        if (!badge) return;
+        const unread = notifications.filter(function (item) { return !item.read; }).length;
+        badge.textContent = String(unread);
+        badge.classList.toggle('hidden', unread === 0);
+      }
+
+      document.addEventListener('DOMContentLoaded', async function () {
+        if (!window.AdminDataStore) return;
+        await window.AdminDataStore.bootstrap();
+
+        const coaches = window.AdminDataStore.getArray('coaches', []);
+        const users = window.AdminDataStore.getArray('users', []);
+        const teams = window.AdminDataStore.getArray('teams', []);
+        const trainingSessions = window.AdminDataStore.getArray('trainingSessions', []);
+        const notifications = window.AdminDataStore.getArray('notifications', []);
+
+        const coach = coaches[0] || { id: '', name: 'Coach' };
+        const coachUser = users.find(function (user) { return String(user.role || '').toLowerCase() === 'coach'; }) || {};
+        const coachName = coach.name || coachUser.name || 'Coach';
+        const teamName = findAssignedTeamName(coach, trainingSessions, teams);
+        const nameParts = splitName(coachName.replace(/^Coach\s+/i, '').trim() || coachName);
+        const initials = initialsFromName(coachName);
+        const profileLabel = 'Head Coach - ' + teamName;
+
+        setText('navCoachName', coachName);
+        setText('navCoachTeam', teamName + ' Coach');
+        setText('navCoachInitials', initials);
+        setText('profileCoachInitials', initials);
+        setText('profileCoachName', coachName);
+        setText('profileCoachTeamRole', profileLabel);
+        setText('profileCoachEmail', coachUser.email || 'coach@edusportpro.local');
+        setText('profileCoachPhone', coachUser.phone || '+855 12 000 000');
+
+        setValue('firstNameInput', nameParts.first);
+        setValue('lastNameInput', nameParts.last);
+        setValue('emailInput', coachUser.email || '');
+        setValue('phoneInput', coachUser.phone || '');
+        setValue('assignedTeamInput', teamName);
+
+        bindNotificationBadge(notifications);
+
+        const saveGeneralBtn = document.getElementById('saveGeneralBtn');
+        if (saveGeneralBtn) {
+          saveGeneralBtn.addEventListener('click', function () {
+            const first = (document.getElementById('firstNameInput').value || '').trim();
+            const last = (document.getElementById('lastNameInput').value || '').trim();
+            const email = (document.getElementById('emailInput').value || '').trim();
+            const phone = (document.getElementById('phoneInput').value || '').trim();
+            const fullName = [first, last].filter(Boolean).join(' ').trim() || coachName;
+
+            const updatedUsers = users.map(function (user) {
+              if (String(user.role || '').toLowerCase() !== 'coach') return user;
+              return Object.assign({}, user, { name: fullName, email: email, phone: phone });
+            });
+            const updatedCoaches = coaches.map(function (entry, index) {
+              if (index !== 0) return entry;
+              return Object.assign({}, entry, { name: fullName });
+            });
+            window.AdminDataStore.set('users', updatedUsers);
+            window.AdminDataStore.set('coaches', updatedCoaches);
+            window.location.reload();
+          });
+        }
+
+        const saveProfessionalBtn = document.getElementById('saveProfessionalBtn');
+        if (saveProfessionalBtn) {
+          saveProfessionalBtn.addEventListener('click', function () {
+            const license = document.getElementById('licenseSelect').value || "AFC 'B' License";
+            const experience = Number(document.getElementById('experienceInput').value || 0);
+            const updatedCoaches = coaches.map(function (entry, index) {
+              if (index !== 0) return entry;
+              return Object.assign({}, entry, {
+                license: license,
+                experienceYears: Number.isFinite(experience) ? experience : 0
+              });
+            });
+            window.AdminDataStore.set('coaches', updatedCoaches);
+            window.location.reload();
+          });
+        }
+
+        if (coaches[0]) {
+          setValue('licenseSelect', coaches[0].license || "AFC 'B' License");
+          setValue('experienceInput', String(coaches[0].experienceYears || 5));
+        }
+      });
+    })();
   </script>
 
 </body>

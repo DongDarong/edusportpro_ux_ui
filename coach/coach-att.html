@@ -98,7 +98,10 @@
 
 
     <div class="flex items-center gap-3 md:gap-6">
-      
+      <a href="/coach/coach-calendar.html" aria-label="Calendar" title="Calendar" class="hidden md:inline-flex items-center justify-center p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-hope-dark transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+      </a>
+
       <!-- Notification Bell -->
       <a href="/coach/coach-notifications.html" class="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-hope-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -115,7 +118,7 @@
       <a href="/coach/coach-profile.html" class="flex items-center gap-2 md:gap-3 cursor-pointer pl-2 md:pl-4 border-l border-gray-200 hover:bg-gray-50 transition-colors rounded-r-lg p-1">
         <div class="text-right hidden md:block">
           <div class="text-sm font-semibold text-hope-dark">Coach Sok</div>
-          <div class="text-xs text-gray-500">Team A Coach</div>
+          <div id="coachTeamLabel" class="text-xs text-gray-500">Team Coach</div>
         </div>
         <div class="w-8 h-8 md:w-9 md:h-9 bg-hope-cyan rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm shrink-0">
           CS
@@ -159,12 +162,12 @@
           
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-teams.html">
             <svg class="w-5 h-5 group-hover:text-hope-lime transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-            My Team
+            Team
           </a>
 
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-training.html">
             <svg class="w-5 h-5 group-hover:text-hope-red transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-            Training Sessions
+            Training
           </a>
 
           <!-- Active State: Attendance (Using LIME theme) -->
@@ -183,10 +186,6 @@
             Matches
           </a>
 
-          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg bg-hope-cyan/10 text-hope-cyan font-semibold" href="/coach/coach-calendar.html">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        Calendar
-                    </a>
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-tournament.html">
             <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8M12 17v4M7 4h10l-1 6H8L7 4zM5 4h14"></path></svg>
             Tournament
@@ -195,6 +194,10 @@
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-division.html">
             <svg class="w-5 h-5 group-hover:text-hope-lime transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"></path></svg>
             Division
+          </a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-inventory.html">
+            <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            Inventory
           </a>
         </nav>
         <!-- Footer Sign Out -->
@@ -568,6 +571,7 @@
     let teamsState = [];
     let playersState = [];
     let coachesState = [];
+    let trainingSessionsState = [];
     let attendanceRecordsState = [];
     let currentCoach = null;
 
@@ -626,14 +630,50 @@
       currentCoach = byName || coachesState[0] || null;
     }
 
+    function resolveCoachTeamIds() {
+      if (!currentCoach) return [];
+      const fromTraining = trainingSessionsState
+        .filter((item) => String(item.coachId || '') === String(currentCoach.id || ''))
+        .map((item) => String(item.teamId || ''))
+        .filter(Boolean);
+      const fromAttendance = attendanceRecordsState
+        .filter((item) => String(item.subjectType || '') === 'coach' && String(item.subjectId || '') === String(currentCoach.id || ''))
+        .map((item) => String(item.teamId || ''))
+        .filter(Boolean);
+      const ids = Array.from(new Set(fromTraining.concat(fromAttendance)));
+      return ids;
+    }
+
+    function updateCoachTeamLabel() {
+      const label = document.getElementById('coachTeamLabel');
+      if (!label) return;
+      const teamId = String((document.getElementById('coachTeamSelect') || {}).value || '');
+      if (teamId) {
+        label.textContent = `${getTeamNameById(teamId)} Coach`;
+        return;
+      }
+      const ids = resolveCoachTeamIds();
+      if (ids.length === 1) {
+        label.textContent = `${getTeamNameById(ids[0])} Coach`;
+      } else {
+        label.textContent = 'Multi Team Coach';
+      }
+    }
+
     function populateTeamOptions() {
       const select = document.getElementById('coachTeamSelect');
       if (!select) return;
-      select.innerHTML = '<option value="">All Teams</option>' + teamsState.map((team) => {
+      const coachTeamIds = resolveCoachTeamIds();
+      const list = coachTeamIds.length
+        ? teamsState.filter((team) => coachTeamIds.includes(String(team.id || '')))
+        : teamsState;
+      select.innerHTML = '<option value="">All Teams</option>' + list.map((team) => {
         const id = String(team.id || '');
         const name = String(team.name || id);
         return '<option value="' + escapeHtml(id) + '">' + escapeHtml(name) + '</option>';
       }).join('');
+      if (coachTeamIds.length === 1) select.value = coachTeamIds[0];
+      updateCoachTeamLabel();
     }
 
     function getOrCreatePlayerRecord(player, filters) {
@@ -847,6 +887,7 @@
       bindEditableInputs();
       renderRecords();
       setMyPresenceLockedState();
+      updateCoachTeamLabel();
     }
 
     document.addEventListener('DOMContentLoaded', async function () {
@@ -854,6 +895,7 @@
       teamsState = normalizeArray(window.AdminDataStore.getArray('teams', []));
       playersState = normalizeArray(window.AdminDataStore.getArray('players', []));
       coachesState = normalizeArray(window.AdminDataStore.getArray('coaches', []));
+      trainingSessionsState = normalizeArray(window.AdminDataStore.getArray('trainingSessions', []));
       attendanceRecordsState = normalizeArray(window.AdminDataStore.getArray('attendanceRecords', []));
       resolveCurrentCoach();
       populateTeamOptions();

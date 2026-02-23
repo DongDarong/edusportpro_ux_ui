@@ -11,6 +11,7 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/admin/admin-data-store.js"></script>
 
   <!-- Tailwind Configuration with Custom Brand Colors -->
   <script>
@@ -96,6 +97,9 @@
         </div>
 
     <div class="flex items-center gap-3 md:gap-6">
+      <a href="/coach/coach-calendar.html" aria-label="Calendar" title="Calendar" class="hidden md:inline-flex items-center justify-center p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-hope-dark transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+      </a>
       
       <!-- Notification Bell -->
       <a href="/coach/coach-notifications.html" class="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
@@ -113,7 +117,7 @@
       <a href="/coach/coach-profile.html" class="flex items-center gap-2 md:gap-3 cursor-pointer pl-2 md:pl-4 border-l border-gray-200 hover:bg-gray-50 transition-colors rounded-r-lg p-1">
         <div class="text-right hidden md:block">
           <div class="text-sm font-semibold text-hope-dark">Coach Sok</div>
-          <div class="text-xs text-gray-500">Team A Coach</div>
+          <div id="coachTeamLabel" class="text-xs text-gray-500">Team A Coach</div>
         </div>
         <div class="w-8 h-8 md:w-9 md:h-9 bg-hope-cyan rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm shrink-0">
           CS
@@ -157,12 +161,12 @@
           
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-teams.html">
             <svg class="w-5 h-5 group-hover:text-hope-lime transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-            My Team
+            Team
           </a>
 
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-training.html">
             <svg class="w-5 h-5 group-hover:text-hope-red transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-            Training Sessions
+            Training
           </a>
 
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-att.html">
@@ -180,20 +184,6 @@
             Matches
           </a>
 
-          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group"
-            href="/coach/coach-inventory.html">
-            <svg class="w-5 h-5 group-hover:text-hope-yellow transition-colors"
-            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M20 13V7a2 2 0 00-2-2H6a2 2 0 00-2 2v6m16 0v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4m16 0H4m4-6h8" />
-            </svg>
-            Inventory
-          </a>
-
-          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group"  href="/coach/coach-calendar.html">
-                        <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        Calendar
-          </a>
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-tournament.html">
             <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8M12 17v4M7 4h10l-1 6H8L7 4zM5 4h14"></path></svg>
             Tournament
@@ -203,7 +193,10 @@
             <svg class="w-5 h-5 group-hover:text-hope-lime transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"></path></svg>
             Division
           </a>
-
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-inventory.html">
+            <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            Inventory
+          </a>
         </nav>
         <!-- Footer Sign Out -->
                 <div class="mt-auto pt-6 border-t border-gray-100">
@@ -238,7 +231,7 @@
           <div class="absolute right-0 top-0 h-full w-1 bg-hope-cyan"></div>
           <p class="text-gray-500 text-xs md:text-sm font-medium">Players</p>
           <div class="flex items-end justify-between mt-2">
-             <h2 class="text-2xl md:text-3xl font-bold text-hope-dark">22</h2>
+             <h2 id="statPlayers" class="text-2xl md:text-3xl font-bold text-hope-dark">22</h2>
              <span class="text-hope-cyan bg-hope-cyan/10 px-2 py-1 rounded text-xs font-semibold">Full Squad</span>
           </div>
         </div>
@@ -248,7 +241,7 @@
           <div class="absolute right-0 top-0 h-full w-1 bg-hope-lime"></div>
           <p class="text-gray-500 text-xs md:text-sm font-medium">Upcoming Trainings</p>
            <div class="flex items-end justify-between mt-2">
-             <h2 class="text-2xl md:text-3xl font-bold text-hope-dark">3</h2>
+             <h2 id="statTrainings" class="text-2xl md:text-3xl font-bold text-hope-dark">3</h2>
              <span class="text-hope-lime bg-hope-lime/10 px-2 py-1 rounded text-xs font-semibold">This Week</span>
           </div>
         </div>
@@ -258,7 +251,7 @@
           <div class="absolute right-0 top-0 h-full w-1 bg-hope-yellow"></div>
           <p class="text-gray-500 text-xs md:text-sm font-medium">Attendance Rate</p>
            <div class="flex items-end justify-between mt-2">
-             <h2 class="text-2xl md:text-3xl font-bold text-hope-dark">92%</h2>
+             <h2 id="statAttendanceRate" class="text-2xl md:text-3xl font-bold text-hope-dark">92%</h2>
              <span class="text-hope-yellow bg-hope-yellow/10 px-2 py-1 rounded text-xs font-semibold">Stable</span>
           </div>
         </div>
@@ -268,7 +261,7 @@
           <div class="absolute right-0 top-0 h-full w-1 bg-hope-red"></div>
           <p class="text-gray-500 text-xs md:text-sm font-medium">Upcoming Matches</p>
            <div class="flex items-end justify-between mt-2">
-             <h2 class="text-2xl md:text-3xl font-bold text-hope-dark">2</h2>
+             <h2 id="statMatches" class="text-2xl md:text-3xl font-bold text-hope-dark">2</h2>
              <span class="text-hope-red bg-hope-red/10 px-2 py-1 rounded text-xs font-semibold">Get Ready</span>
           </div>
         </div>
@@ -289,7 +282,7 @@
            </div>
            
            <div class="p-2 overflow-y-auto max-h-[400px]">
-             <ul class="space-y-1">
+             <ul id="teamRosterList" class="space-y-1">
                <!-- Player 1 -->
                <li class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors">
                  <div class="flex items-center gap-3">
@@ -347,7 +340,7 @@
                    <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Focus</th>
                  </tr>
                </thead>
-               <tbody class="bg-white divide-y divide-gray-100">
+               <tbody id="trainingTableBody" class="bg-white divide-y divide-gray-100">
                  <tr class="hover:bg-gray-50 transition-colors">
                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Dec 10, 2025</td>
                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-hope-dark">Training Hall A</td>
@@ -398,7 +391,7 @@
                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Action</th>
                   </tr>
                 </thead>
-                <tbody class="bg-white divide-y divide-gray-100">
+                <tbody id="matchesTableBody" class="bg-white divide-y divide-gray-100">
                    <!-- Row 1 -->
                   <tr class="hover:bg-gray-50 transition-colors">
                     <td class="px-6 py-3 whitespace-nowrap text-sm font-medium text-gray-900">Chan Dara</td>
@@ -505,6 +498,144 @@
         body.style.overflow = 'auto';
       }
     }
+
+    function formatDate(input) {
+      if (!input) return '-';
+      const date = new Date(input);
+      if (Number.isNaN(date.getTime())) return String(input);
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    function formatDateTime(input) {
+      if (!input) return '-';
+      const date = new Date(input);
+      if (Number.isNaN(date.getTime())) return String(input);
+      return date.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+    }
+
+    function statusBadgeClass(status) {
+      const value = String(status || '').toLowerCase();
+      if (value === 'scheduled') return 'bg-hope-cyan/10 text-hope-cyan border border-hope-cyan/20';
+      if (value === 'pending') return 'bg-hope-yellow/10 text-hope-yellow border border-hope-yellow/20';
+      if (value === 'completed') return 'bg-hope-lime/10 text-hope-lime border border-hope-lime/20';
+      return 'bg-gray-100 text-gray-600 border border-gray-200';
+    }
+
+    async function loadDashboardFromJson() {
+      if (!window.AdminDataStore) return;
+
+      await window.AdminDataStore.bootstrap();
+      const teams = window.AdminDataStore.getArray('teams', []);
+      const players = window.AdminDataStore.getArray('players', []);
+      const coaches = window.AdminDataStore.getArray('coaches', []);
+      const trainingSessions = window.AdminDataStore.getArray('trainingSessions', []);
+      const matches = window.AdminDataStore.getArray('matches', []);
+      const attendanceRecords = window.AdminDataStore.getArray('attendanceRecords', []);
+
+      const coachName = 'Coach Sok';
+      const coach = coaches.find((entry) => String(entry.name || '').trim() === coachName);
+      const coachId = coach ? String(coach.id || '') : '';
+      const teamIdFromTraining = trainingSessions.find((entry) => String(entry.coachId || '') === coachId)?.teamId;
+      const fallbackTeamId = players.find((entry) => String(entry.teamId || '').trim())?.teamId || '';
+      const teamId = String(teamIdFromTraining || fallbackTeamId || '');
+      const teamName = teams.find((entry) => String(entry.id || '') === teamId)?.name || 'My Team';
+
+      const teamPlayers = players.filter((entry) => String(entry.teamId || '') === teamId);
+      const now = new Date();
+      const upcomingTraining = trainingSessions
+        .filter((entry) => String(entry.teamId || '') === teamId)
+        .filter((entry) => {
+          const d = new Date(String(entry.date || ''));
+          return !Number.isNaN(d.getTime()) && d >= new Date(now.toDateString());
+        })
+        .sort((a, b) => String(a.date || '').localeCompare(String(b.date || '')));
+
+      const upcomingMatches = matches
+        .filter((entry) => String(entry.homeTeamId || '') === teamId || String(entry.awayTeamId || '') === teamId)
+        .filter((entry) => {
+          const d = new Date(String(entry.dateTime || ''));
+          return !Number.isNaN(d.getTime()) && d >= now;
+        })
+        .sort((a, b) => String(a.dateTime || '').localeCompare(String(b.dateTime || '')));
+
+      const teamAttendance = attendanceRecords.filter((entry) => String(entry.teamId || '') === teamId && String(entry.subjectType || '') === 'player');
+      const presentLike = teamAttendance.filter((entry) => ['present', 'late', 'excused'].includes(String(entry.status || '').toLowerCase())).length;
+      const attendanceRate = teamAttendance.length ? Math.round((presentLike / teamAttendance.length) * 100) : 0;
+
+      document.getElementById('coachTeamLabel').textContent = `${teamName} Coach`;
+      document.getElementById('statPlayers').textContent = String(teamPlayers.length);
+      document.getElementById('statTrainings').textContent = String(upcomingTraining.length);
+      document.getElementById('statAttendanceRate').textContent = `${attendanceRate}%`;
+      document.getElementById('statMatches').textContent = String(upcomingMatches.length);
+
+      const rosterEl = document.getElementById('teamRosterList');
+      if (!teamPlayers.length) {
+        rosterEl.innerHTML = '<li class="p-3 text-sm text-gray-400 italic">No players in this team.</li>';
+      } else {
+        rosterEl.innerHTML = teamPlayers.slice(0, 8).map((player) => {
+          const name = String(player.name || '-');
+          const initials = name.split(' ').map((part) => part[0] || '').join('').slice(0, 2).toUpperCase();
+          const status = String(player.status || 'Active');
+          const badge = status.toLowerCase() === 'active'
+            ? 'bg-green-100 text-green-700'
+            : 'bg-yellow-100 text-yellow-700';
+          return `
+            <li class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors">
+              <div class="flex items-center gap-3">
+                <div class="h-8 w-8 rounded-full bg-hope-cyan/10 flex items-center justify-center text-hope-cyan font-bold text-xs">${initials}</div>
+                <span class="text-sm font-medium text-gray-700">${name}</span>
+              </div>
+              <span class="px-2 py-0.5 ${badge} rounded-full text-[10px] font-bold uppercase">${status}</span>
+            </li>
+          `;
+        }).join('');
+      }
+
+      const trainingBody = document.getElementById('trainingTableBody');
+      if (!upcomingTraining.length) {
+        trainingBody.innerHTML = '<tr><td colspan="3" class="px-6 py-4 text-sm text-gray-400 italic">No upcoming training sessions.</td></tr>';
+      } else {
+        trainingBody.innerHTML = upcomingTraining.slice(0, 5).map((session) => `
+          <tr class="hover:bg-gray-50 transition-colors">
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${formatDate(session.date)}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-hope-dark">${String(session.location || '-')}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">${String(session.focus || '-')}</span>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      const teamNameById = new Map(teams.map((entry) => [String(entry.id || ''), String(entry.name || '')]));
+      const matchesBody = document.getElementById('matchesTableBody');
+      if (!upcomingMatches.length) {
+        matchesBody.innerHTML = '<tr><td colspan="3" class="px-6 py-4 text-sm text-gray-400 italic">No upcoming matches.</td></tr>';
+      } else {
+        matchesBody.innerHTML = upcomingMatches.slice(0, 5).map((match) => {
+          const home = teamNameById.get(String(match.homeTeamId || '')) || 'TBD';
+          const away = teamNameById.get(String(match.awayTeamId || '')) || 'TBD';
+          const status = String(match.status || 'Scheduled');
+          return `
+            <tr class="hover:bg-gray-50 transition-colors">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-bold text-hope-dark">${home} vs ${away}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">${formatDateTime(match.dateTime)}</div>
+                <div class="text-xs text-gray-500">${String(match.venue || '-')}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusBadgeClass(status)}">${status}</span>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      loadDashboardFromJson();
+    });
   </script>
 
 </body>

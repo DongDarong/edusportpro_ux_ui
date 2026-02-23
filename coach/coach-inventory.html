@@ -11,6 +11,7 @@
 
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/admin/admin-data-store.js"></script>
 
   <script>
     tailwind.config = {
@@ -42,22 +43,52 @@
 <body class="h-screen flex flex-col">
 
 <!-- ================= TOP NAVBAR ================= -->
-<nav class="bg-white shadow-sm border-b flex items-center justify-between px-4 md:px-6 py-3 sticky top-0 z-50">
+<nav class="bg-white w-full shadow-sm border-b border-gray-200 flex items-center justify-between px-4 md:px-6 py-3 sticky top-0 z-50 shrink-0">
   <div class="flex items-center gap-3">
     <button onclick="toggleSidebar()" class="md:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
       ☰
     </button>
 
-    <div class="font-extrabold text-lg">
-      <span class="text-hope-lime">Edu</span><span class="text-hope-cyan">Sport</span><span class="text-hope-red">Pro</span>
+    <div class="w-15 h-12 md:w-25 md:h-15 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden border border-gray-100 shadow-sm shrink-0">
+      <img src="/images/logo.jpg" alt="Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=\'text-[10px] font-bold text-gray-400\'>HOPE</span>'">
+    </div>
+
+    <div class="hidden sm:block">
+      <div class="text-[10px] md:text-xs font-bold text-hope-dark uppercase tracking-tight leading-tight">
+        Organization for Childrenâ€™s
+      </div>
+      <div class="text-xs md:text-sm font-extrabold text-hope-cyan leading-none">
+        Hope Foundation of Cambodia
+      </div>
     </div>
   </div>
 
-  <div class="flex items-center gap-4">
-    <span class="text-sm font-semibold">Coach Sok</span>
-    <div class="w-8 h-8 bg-hope-cyan rounded-full text-white flex items-center justify-center font-bold">
-      CS
-    </div>
+  <div class="flex items-center gap-3 md:gap-6">
+    <a href="/coach/coach-calendar.html" aria-label="Calendar" title="Calendar" class="hidden md:inline-flex items-center justify-center p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-hope-dark transition-colors">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+    </a>
+
+    <a href="/coach/coach-notifications.html" class="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-hope-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+      </svg>
+      <span class="absolute top-1 right-1 bg-hope-red text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">4</span>
+    </a>
+
+    <select class="bg-gray-50 border border-gray-200 text-hope-dark text-sm rounded-lg focus:ring-hope-cyan focus:border-hope-cyan block px-2 py-1.5 md:px-3 outline-none">
+      <option>EN</option>
+      <option>KM</option>
+    </select>
+
+    <a href="/coach/coach-profile.html" class="flex items-center gap-2 md:gap-3 cursor-pointer pl-2 md:pl-4 border-l border-gray-200 hover:bg-gray-50 transition-colors rounded-r-lg p-1">
+      <div class="text-right hidden md:block">
+        <div class="text-sm font-semibold text-hope-dark">Coach Sok</div>
+        <div class="text-xs text-gray-500">Team A Coach</div>
+      </div>
+      <div class="w-8 h-8 md:w-9 md:h-9 bg-hope-cyan rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm shrink-0">
+        CS
+      </div>
+    </a>
   </div>
 </nav>
 
@@ -69,46 +100,69 @@
        class="fixed inset-0 bg-black/50 hidden z-40 md:hidden"></div>
 
   <!-- ================= SIDEBAR ================= -->
-  <aside id="sidebar"
-    class="w-64 bg-white shadow-xl md:shadow-md fixed md:static inset-y-0 left-0 transform
-           -translate-x-full md:translate-x-0 transition-transform z-50">
+  <aside id="sidebar" class="w-64 bg-white shadow-xl md:shadow-md flex-shrink-0 z-[60] fixed inset-y-0 left-0 transform -translate-x-full transition-transform duration-300 md:translate-x-0 md:static md:z-auto h-full">
+    <div class="p-5 h-full overflow-y-auto relative">
+      <button onclick="toggleSidebar()" class="absolute top-4 right-4 md:hidden text-gray-400 hover:text-hope-red transition-colors p-1">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
 
-    <div class="p-5 h-full flex flex-col">
-      <nav class="space-y-2 mt-4">
-        <a href="/coach/coach-dashboard.html" class="block px-4 py-2 rounded-lg hover:bg-gray-100">
+      <div class="mb-8 px-2">
+        <div class="text-2xl font-extrabold tracking-tighter">
+          <span class="text-hope-lime">Edu</span><span class="text-hope-cyan">Sport</span><span class="text-hope-red">Pro</span>
+        </div>
+      </div>
+
+      <h2 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Coach Menu</h2>
+      <nav class="space-y-1">
+        <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-dashboard.html">
+          <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
           Dashboard
         </a>
-        <a href="/coach/coach-teams.html" class="block px-4 py-2 rounded-lg hover:bg-gray-100">
-          My Team
+
+        <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-teams.html">
+          <svg class="w-5 h-5 group-hover:text-hope-lime transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+          Team
         </a>
-        <a href="/coach/coach-training.html" class="block px-4 py-2 rounded-lg hover:bg-gray-100">
+
+        <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-training.html">
+          <svg class="w-5 h-5 group-hover:text-hope-red transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
           Training
         </a>
-        <a href="/coach/coach-att.html" class="block px-4 py-2 rounded-lg hover:bg-gray-100">
+
+        <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-att.html">
+          <svg class="w-5 h-5 group-hover:text-hope-lime transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
           Attendance
         </a>
-        <a href="/coach/coach-matches.html" class="block px-4 py-2 rounded-lg hover:bg-gray-100">
+
+        <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-performance.html">
+          <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+          Performance
+        </a>
+
+        <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-matches.html">
+          <svg class="w-5 h-5 group-hover:text-hope-yellow transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
           Matches
         </a>
-          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-tournament.html">
-            <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8M12 17v4M7 4h10l-1 6H8L7 4zM5 4h14"></path></svg>
-            Tournament
-          </a>
 
-          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-division.html">
-            <svg class="w-5 h-5 group-hover:text-hope-lime transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"></path></svg>
-            Division
-          </a>
+        <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-tournament.html">
+          <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8M12 17v4M7 4h10l-1 6H8L7 4zM5 4h14"></path></svg>
+          Tournament
+        </a>
 
-        <!-- ACTIVE MENU -->
-        <a href="/coach/coach-inventory.html"
-           class="block px-4 py-2 rounded-lg bg-hope-cyan/10 text-hope-cyan font-semibold">
+        <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-division.html">
+          <svg class="w-5 h-5 group-hover:text-hope-lime transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"></path></svg>
+          Division
+        </a>
+
+        <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg bg-hope-cyan/10 text-hope-cyan font-semibold" href="/coach/coach-inventory.html">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
           Inventory
         </a>
       </nav>
 
-      <div class="mt-auto border-t pt-4">
-        <a href="/index.html" class="block px-4 py-2 text-hope-red hover:bg-red-50 rounded-lg">
+      <div class="mt-auto pt-6 border-t border-gray-100">
+        <a href="/index.html" class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-hope-red hover:bg-red-50 transition-colors font-semibold">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
           Sign Out
         </a>
       </div>
@@ -119,70 +173,145 @@
   <main class="flex-1 overflow-y-auto p-4 md:p-8">
 
     <div class="mb-6">
-      <h1 class="text-2xl md:text-3xl font-bold">Inventory Management</h1>
-      <p class="text-gray-500 mt-1">Track and manage team equipment</p>
+      <h1 class="text-2xl md:text-3xl font-bold">Equipment Request</h1>
+      <p class="text-gray-500 mt-1">Submit requests to use in-stock equipment for your own team only.</p>
+    </div>
+
+    <div class="bg-white border rounded-xl p-4 md:p-5 mb-6">
+      <h2 class="font-semibold text-hope-dark">How requests work</h2>
+      <p class="text-sm text-gray-500 mt-1">Choose an item, request quantity, and add training details. Requests are reviewed by inventory staff.</p>
+      <div class="mt-3 flex flex-wrap gap-2">
+        <span class="text-xs font-medium bg-cyan-50 text-hope-cyan px-2.5 py-1 rounded-full">Own team only</span>
+        <span class="text-xs font-medium bg-yellow-50 text-yellow-700 px-2.5 py-1 rounded-full">Low stock may be partially approved</span>
+        <span class="text-xs font-medium bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full">Approval required</span>
+      </div>
     </div>
 
     <!-- STATS -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
       <div class="bg-white p-4 rounded-xl shadow border">
-        <p class="text-sm text-gray-500">Total Items</p>
+        <p class="text-sm text-gray-500">Items in Stock</p>
         <h2 class="text-2xl font-bold">12</h2>
       </div>
       <div class="bg-white p-4 rounded-xl shadow border">
-        <p class="text-sm text-gray-500">Available</p>
+        <p class="text-sm text-gray-500">Available Now</p>
         <h2 class="text-2xl font-bold text-green-600">8</h2>
       </div>
       <div class="bg-white p-4 rounded-xl shadow border">
-        <p class="text-sm text-gray-500">Low Stock</p>
-        <h2 class="text-2xl font-bold text-yellow-500">3</h2>
+        <p class="text-sm text-gray-500">My Pending Requests</p>
+        <h2 class="text-2xl font-bold text-hope-cyan">2</h2>
       </div>
       <div class="bg-white p-4 rounded-xl shadow border">
-        <p class="text-sm text-gray-500">Out</p>
-        <h2 class="text-2xl font-bold text-red-500">1</h2>
+        <p class="text-sm text-gray-500">Need Approval Today</p>
+        <h2 class="text-2xl font-bold text-yellow-500">1</h2>
       </div>
     </div>
 
     <!-- TABLE -->
     <div class="bg-white rounded-xl shadow border overflow-hidden">
-      <div class="p-4 border-b flex justify-between">
-        <h2 class="font-bold">Inventory List</h2>
-        <button class="bg-hope-cyan text-white px-4 py-2 rounded-lg text-sm">
-          + Add Item
-        </button>
+      <div class="p-4 border-b flex items-center justify-between">
+        <h2 class="font-bold">Item List</h2>
+        <span class="text-xs text-gray-500">Coach Sok - Team A</span>
       </div>
 
-      <table class="min-w-full divide-y">
-        <thead class="bg-gray-50">
-          <tr>
-            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500">Item</th>
-            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500">Qty</th>
-            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500">Condition</th>
-            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500">Status</th>
-            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500">Action</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y">
-          <tr class="hover:bg-gray-50">
-            <td class="px-6 py-4 font-medium">Football</td>
-            <td class="px-6 py-4">25</td>
-            <td class="px-6 py-4">Good</td>
-            <td class="px-6 py-4 text-green-600">Available</td>
-            <td class="px-6 py-4">
-              <button class="text-hope-cyan hover:underline">Use</button>
-            </td>
-          </tr>
-          <tr class="hover:bg-gray-50">
-            <td class="px-6 py-4 font-medium">Jersey</td>
-            <td class="px-6 py-4">5</td>
-            <td class="px-6 py-4">Fair</td>
-            <td class="px-6 py-4 text-yellow-600">Low</td>
-            <td class="px-6 py-4">
-              <button class="text-hope-cyan hover:underline">Use</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500">Item</th>
+              <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500">Available Qty</th>
+              <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500">Condition</th>
+              <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500">Status</th>
+              <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500">Request</th>
+            </tr>
+          </thead>
+          <tbody id="itemListBody" class="divide-y"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <p id="requestFeedback" class="hidden mt-4 text-sm font-medium text-green-700 bg-green-50 border border-green-200 rounded-lg px-4 py-3"></p>
+
+    <!-- REQUEST FORM -->
+    <div id="requestFormCard" class="bg-white rounded-xl shadow border mt-6">
+      <div class="p-4 border-b">
+        <h3 class="font-bold text-lg">Request Form</h3>
+        <p class="text-sm text-gray-500 mt-1">Select an item from the table above, then complete this form for Team A.</p>
+      </div>
+
+      <form id="requestForm" class="p-4 space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-600 mb-1">Select Item</label>
+            <select id="requestItem" class="w-full border rounded-lg px-3 py-2 bg-white text-gray-700 outline-none focus:ring-2 focus:ring-hope-cyan/30 focus:border-hope-cyan" required>
+              <option value="">Select an item</option>
+              <option value="Football">Football</option>
+              <option value="Jersey">Jersey</option>
+              <option value="Cones">Cones</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-600 mb-1">Available Qty</label>
+            <input id="requestAvailable" type="text" class="w-full border rounded-lg px-3 py-2 bg-gray-50 text-gray-700" readonly>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="requestQty" class="block text-sm font-medium text-gray-600 mb-1">Requested Qty</label>
+            <input id="requestQty" type="number" min="1" class="w-full border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-hope-cyan/30 focus:border-hope-cyan" required>
+          </div>
+          <div>
+            <label for="requestDate" class="block text-sm font-medium text-gray-600 mb-1">Training Date</label>
+            <input id="requestDate" type="date" class="w-full border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-hope-cyan/30 focus:border-hope-cyan" required>
+          </div>
+        </div>
+
+        <div>
+          <label for="requestPurpose" class="block text-sm font-medium text-gray-600 mb-1">Purpose</label>
+          <input id="requestPurpose" type="text" placeholder="e.g., Passing drill session for Team A" class="w-full border rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-hope-cyan/30 focus:border-hope-cyan" required>
+        </div>
+
+        <p class="text-xs text-gray-500">This request will be submitted under Team A and cannot be assigned to other teams.</p>
+
+        <div id="requestError" class="hidden text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2"></div>
+
+        <div class="flex justify-end gap-2 pt-1">
+          <button type="reset" class="px-4 py-2 rounded-lg border text-gray-600 hover:bg-gray-50">Clear</button>
+          <button type="submit" class="px-4 py-2 rounded-lg bg-hope-cyan text-white hover:opacity-90">Submit Request</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- REQUEST HISTORY -->
+    <div class="bg-white rounded-xl shadow border overflow-hidden mt-6">
+      <div class="p-4 border-b flex items-center justify-between">
+        <h3 class="font-bold text-lg">Request History</h3>
+        <div class="flex items-center gap-2">
+          <button id="reloadRequestsBtn" type="button" class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-gray-200 text-xs font-medium text-gray-600 hover:bg-gray-50 transition-colors" title="Reload request data">
+            <svg id="reloadRequestsIcon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 104.582 9m0 0H9"></path>
+            </svg>
+            Reload
+          </button>
+          <span class="text-xs text-gray-500">Team A</span>
+        </div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500">Requested On</th>
+              <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500">Item</th>
+              <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500">Qty</th>
+              <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500">Training Date</th>
+              <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500">Purpose</th>
+              <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500">Status</th>
+            </tr>
+          </thead>
+          <tbody id="requestHistoryBody" class="divide-y bg-white"></tbody>
+        </table>
+      </div>
     </div>
 
   </main>
@@ -196,6 +325,262 @@
     sidebar.classList.toggle('-translate-x-full');
     backdrop.classList.toggle('hidden');
   }
+
+  const requestForm = document.getElementById('requestForm');
+  const requestFormCard = document.getElementById('requestFormCard');
+  const requestItem = document.getElementById('requestItem');
+  const requestAvailable = document.getElementById('requestAvailable');
+  const requestQty = document.getElementById('requestQty');
+  const requestDate = document.getElementById('requestDate');
+  const requestPurpose = document.getElementById('requestPurpose');
+  const requestError = document.getElementById('requestError');
+  const requestFeedback = document.getElementById('requestFeedback');
+  const itemListBody = document.getElementById('itemListBody');
+  const requestHistoryBody = document.getElementById('requestHistoryBody');
+  const reloadRequestsBtn = document.getElementById('reloadRequestsBtn');
+  const reloadRequestsIcon = document.getElementById('reloadRequestsIcon');
+  const coachName = 'Coach Sok';
+  const teamName = 'Team A';
+  let inventoryState = [];
+  let requestHistoryState = [];
+  let availabilityByItem = {};
+
+  function inventoryStatusMeta(item) {
+    const stock = Math.max(0, Number(item.stock || 0));
+    const status = String(item.status || '').toLowerCase();
+    if (status === 'out' || stock <= 0) {
+      return {
+        label: 'Out of stock',
+        badge: 'text-xs font-semibold bg-red-100 text-red-700 px-2 py-1 rounded-full',
+        condition: 'Poor'
+      };
+    }
+    if (status === 'low' || stock <= 5) {
+      return {
+        label: 'Low stock',
+        badge: 'text-xs font-semibold bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full',
+        condition: 'Fair'
+      };
+    }
+    return {
+      label: 'Available',
+      badge: 'text-xs font-semibold bg-green-100 text-green-700 px-2 py-1 rounded-full',
+      condition: 'Good'
+    };
+  }
+
+  function renderRequestItemOptions() {
+    const names = Object.keys(availabilityByItem).sort((a, b) => a.localeCompare(b));
+    requestItem.innerHTML = '<option value="">Select an item</option>' +
+      names.map((name) => `<option value="${name}">${name}</option>`).join('');
+  }
+
+  function renderItemList() {
+    const inStockItems = inventoryState.filter((item) => Number(item.stock || 0) > 0);
+    availabilityByItem = inStockItems.reduce((acc, item) => {
+      acc[String(item.name || '')] = Math.max(0, Number(item.stock || 0));
+      return acc;
+    }, {});
+    renderRequestItemOptions();
+
+    if (!inStockItems.length) {
+      itemListBody.innerHTML = '<tr><td colspan="5" class="px-6 py-6 text-center text-sm text-gray-400 italic">No in-stock items available.</td></tr>';
+      return;
+    }
+
+    itemListBody.innerHTML = inStockItems.map((item) => {
+      const meta = inventoryStatusMeta(item);
+      const name = String(item.name || '-');
+      const stock = Math.max(0, Number(item.stock || 0));
+      return `
+        <tr class="hover:bg-gray-50">
+          <td class="px-6 py-4 font-medium">${name}</td>
+          <td class="px-6 py-4">${stock}</td>
+          <td class="px-6 py-4">${meta.condition}</td>
+          <td class="px-6 py-4"><span class="${meta.badge}">${meta.label}</span></td>
+          <td class="px-6 py-4">
+            <button class="request-btn text-hope-cyan hover:underline font-medium" data-item="${name}" data-available="${stock}">Request</button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  async function loadInventoryItems() {
+    if (!window.AdminDataStore) {
+      inventoryState = [];
+      availabilityByItem = {};
+      renderRequestItemOptions();
+      renderItemList();
+      return;
+    }
+    await window.AdminDataStore.bootstrap();
+    inventoryState = window.AdminDataStore.getArray('inventoryItems', []);
+    renderItemList();
+  }
+
+  function normalizeStatus(status) {
+    const value = String(status || 'pending').toLowerCase();
+    if (value === 'approved') return 'approved';
+    if (value === 'denied') return 'denied';
+    return 'pending';
+  }
+
+  function toDisplayDate(value) {
+    if (!value) return '-';
+    return String(value).slice(0, 10);
+  }
+
+  function statusBadge(status) {
+    const value = normalizeStatus(status);
+    if (value === 'approved') {
+      return '<span class="text-xs font-semibold bg-green-100 text-green-700 px-2 py-1 rounded-full">Approved</span>';
+    }
+    if (value === 'denied') {
+      return '<span class="text-xs font-semibold bg-red-100 text-red-700 px-2 py-1 rounded-full">Denied</span>';
+    }
+    return '<span class="text-xs font-semibold bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full">Pending</span>';
+  }
+
+  function renderRequestHistory() {
+    if (!requestHistoryState.length) {
+      requestHistoryBody.innerHTML = '<tr><td colspan="6" class="px-6 py-6 text-center text-sm text-gray-400 italic">No requests submitted yet.</td></tr>';
+      return;
+    }
+
+    requestHistoryBody.innerHTML = requestHistoryState.map((entry) => `
+      <tr class="hover:bg-gray-50">
+        <td class="px-6 py-4 text-sm text-gray-600">${toDisplayDate(entry.createdAt)}</td>
+        <td class="px-6 py-4 text-sm font-medium text-hope-dark">${String(entry.item || '-')}</td>
+        <td class="px-6 py-4 text-sm text-gray-600">${Number(entry.qty || 0)}</td>
+        <td class="px-6 py-4 text-sm text-gray-600">${toDisplayDate(entry.trainingDate)}</td>
+        <td class="px-6 py-4 text-sm text-gray-600">${String(entry.purpose || '-')}</td>
+        <td class="px-6 py-4">${statusBadge(entry.status)}</td>
+      </tr>
+    `).join('');
+  }
+
+  function nextRequestId(items) {
+    const max = items.reduce((acc, item) => {
+      const n = Number(String(item.id || '').replace(/\D/g, ''));
+      return Number.isFinite(n) ? Math.max(acc, n) : acc;
+    }, 0);
+    return `REQ-${String(max + 1).padStart(3, '0')}`;
+  }
+
+  async function loadRequestHistory() {
+    if (!window.AdminDataStore) {
+      requestHistoryState = [];
+      renderRequestHistory();
+      return;
+    }
+    await window.AdminDataStore.bootstrap();
+    const allRequests = window.AdminDataStore.getArray('inventoryRequests', []);
+    requestHistoryState = allRequests
+      .filter((entry) => String(entry.team || '') === teamName && String(entry.coach || '') === coachName)
+      .map((entry) => Object.assign({}, entry, { purpose: String(entry.purpose || '') }))
+      .sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
+    renderRequestHistory();
+  }
+
+  reloadRequestsBtn.addEventListener('click', async () => {
+    reloadRequestsBtn.disabled = true;
+    reloadRequestsIcon.classList.add('animate-spin');
+    await loadInventoryItems();
+    await loadRequestHistory();
+    setTimeout(() => {
+      reloadRequestsIcon.classList.remove('animate-spin');
+      reloadRequestsBtn.disabled = false;
+    }, 250);
+  });
+
+  function setSelectedItem(item) {
+    requestItem.value = item;
+    const available = availabilityByItem[item] ?? '';
+    requestAvailable.value = available;
+    requestQty.value = '';
+    requestQty.max = available || '';
+  }
+
+  requestItem.addEventListener('change', () => {
+    setSelectedItem(requestItem.value);
+  });
+
+  itemListBody.addEventListener('click', (event) => {
+    const button = event.target.closest('.request-btn');
+    if (!button) return;
+    setSelectedItem(button.dataset.item);
+    requestError.classList.add('hidden');
+    requestFormCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    requestQty.focus();
+  });
+
+  requestForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const qty = Number(requestQty.value);
+    const available = Number(requestAvailable.value);
+    const item = requestItem.value;
+    const trainingDate = requestDate.value;
+    const purpose = String(requestPurpose.value || '').trim();
+
+    if (!item) {
+      requestError.textContent = 'Select an item first by clicking Request in the table.';
+      requestError.classList.remove('hidden');
+      return;
+    }
+
+    if (!qty || qty < 1) {
+      requestError.textContent = 'Enter a valid quantity.';
+      requestError.classList.remove('hidden');
+      return;
+    }
+
+    if (qty > available) {
+      requestError.textContent = 'Requested quantity cannot exceed available stock.';
+      requestError.classList.remove('hidden');
+      return;
+    }
+
+    if (!trainingDate || !purpose) {
+      requestError.textContent = 'Please complete training date and purpose.';
+      requestError.classList.remove('hidden');
+      return;
+    }
+
+    if (!window.AdminDataStore) {
+      requestError.textContent = 'Data store is unavailable.';
+      requestError.classList.remove('hidden');
+      return;
+    }
+
+    await window.AdminDataStore.bootstrap();
+    const allRequests = window.AdminDataStore.getArray('inventoryRequests', []);
+    const nowIso = new Date().toISOString();
+    const request = {
+      id: nextRequestId(allRequests),
+      coach: coachName,
+      team: teamName,
+      item,
+      qty,
+      trainingDate,
+      purpose,
+      letter: `Dear Inventory Admin,\nI request ${qty} ${item}(s) for ${teamName} training on ${trainingDate}.\nPurpose: ${purpose}\nThis request is for ${teamName} only.\nRegards,\n${coachName}`,
+      status: 'pending',
+      createdAt: nowIso
+    };
+    allRequests.push(request);
+    window.AdminDataStore.set('inventoryRequests', allRequests);
+    await loadRequestHistory();
+
+    requestFeedback.textContent = `Request submitted for ${qty} ${item}(s) for Team A.`;
+    requestFeedback.classList.remove('hidden');
+    requestForm.reset();
+    requestError.classList.add('hidden');
+    setSelectedItem('');
+  });
+
+  loadInventoryItems();
+  loadRequestHistory();
 </script>
 
 </body>

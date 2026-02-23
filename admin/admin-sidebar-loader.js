@@ -63,6 +63,43 @@
     });
   }
 
+  function ensureNavbarCalendarLink(activeKey) {
+    const topNav = document.querySelector("body > nav");
+    if (!topNav) return;
+
+    const rightControls = topNav.querySelector(
+      "div.flex.items-center.gap-3.md\\:gap-6"
+    );
+    if (!rightControls) return;
+
+    const existing = rightControls.querySelector(
+      'a[href="/admin/admin-calendar.html"]'
+    );
+    if (existing) return;
+
+    const isActive = activeKey === "calendar";
+    const classes = isActive
+      ? "hidden md:inline-flex items-center justify-center p-2 rounded-lg bg-hope-cyan/10 text-hope-cyan font-semibold"
+      : "hidden md:inline-flex items-center justify-center p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-hope-dark transition-colors";
+
+    const anchor = document.createElement("a");
+    anchor.href = "/admin/admin-calendar.html";
+    anchor.setAttribute("aria-label", "Calendar");
+    anchor.setAttribute("title", "Calendar");
+    anchor.className = classes;
+    anchor.innerHTML =
+      '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>';
+
+    const notificationsLink = rightControls.querySelector(
+      'a[href="/admin/admin-notifications.html"]'
+    );
+    if (notificationsLink) {
+      rightControls.insertBefore(anchor, notificationsLink);
+      return;
+    }
+    rightControls.prepend(anchor);
+  }
+
   async function fetchComponentHtml() {
     const candidates = [
       "/admin/admin-sidebar-component.html",
@@ -91,12 +128,21 @@
       sidebarHtml = await fetchComponentHtml();
     }
 
+    const activeKey = inferActiveKey();
+
     sidebars.forEach(function (sidebar) {
       if (!sidebar.querySelector("nav") && sidebarHtml) {
         sidebar.innerHTML = sidebarHtml;
       }
-      applyActiveState(sidebar, sidebar.dataset.active || inferActiveKey());
+      const resolvedKey = sidebar.dataset.active || activeKey;
+      const calendarLink = sidebar.querySelector(
+        '[data-sidebar-link="calendar"], a[href="/admin/admin-calendar.html"]'
+      );
+      if (calendarLink) calendarLink.remove();
+      applyActiveState(sidebar, resolvedKey);
     });
+
+    ensureNavbarCalendarLink(activeKey);
   }
 
   document.addEventListener("DOMContentLoaded", function () {

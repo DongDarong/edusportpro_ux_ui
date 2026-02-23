@@ -449,6 +449,36 @@
         </div>
       </div>
 
+      <!-- COACH REQUESTS TABLE -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mt-6">
+        <div class="p-4 md:p-5 border-b border-gray-100 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+          <div>
+            <h2 class="text-base md:text-lg font-bold text-hope-dark">Coach Equipment Requests</h2>
+            <p class="text-sm text-gray-500">Review coach request letters and approve or deny each request.</p>
+          </div>
+          <span id="pendingRequestsBadge" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-hope-yellow/10 text-hope-yellow border border-hope-yellow/20 w-fit">0 Pending</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-100">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Coach</th>
+                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Team</th>
+                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Item</th>
+                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Qty</th>
+                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Removed Qty</th>
+                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Training Date</th>
+                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Request Letter</th>
+                <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Status</th>
+                <th scope="col" class="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Decision</th>
+              </tr>
+            </thead>
+            <tbody id="requestsTableBody" class="bg-white divide-y divide-gray-100"></tbody>
+          </table>
+        </div>
+      </div>
+
     </main>
 
   </div>
@@ -567,6 +597,27 @@
     </div>
   </div>
 
+  <!-- ========================= -->
+  <!-- REQUEST LETTER MODAL -->
+  <!-- ========================= -->
+  <div id="requestLetterModal" class="fixed inset-0 z-[80] hidden overflow-y-auto" aria-labelledby="request-letter-title" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onclick="closeRequestLetterModal()"></div>
+    <div class="flex min-h-screen items-center justify-center p-4 text-center sm:p-0">
+      <div class="relative transform overflow-hidden rounded-xl bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-xl w-full">
+        <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 border-b border-gray-100">
+          <h3 class="text-lg font-semibold leading-6 text-hope-dark" id="request-letter-title">Coach Request Letter</h3>
+          <p id="requestLetterMeta" class="mt-1 text-sm text-gray-500"></p>
+        </div>
+        <div class="bg-white px-4 py-5 sm:p-6">
+          <p id="requestLetterContent" class="text-sm text-gray-700 leading-relaxed whitespace-pre-line"></p>
+        </div>
+        <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 border-t border-gray-100">
+          <button type="button" onclick="closeRequestLetterModal()" class="inline-flex w-full justify-center rounded-lg bg-hope-lime px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-lime-600 sm:w-auto transition-colors">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <!-- SCRIPTS -->
   <script>
@@ -615,9 +666,15 @@
     const categoryModal = document.getElementById('categoryModal');
     const categoryNameInput = document.getElementById('categoryNameInput');
     const saveCategoryBtn = document.getElementById('saveCategoryBtn');
+    const requestsTableBody = document.getElementById('requestsTableBody');
+    const pendingRequestsBadge = document.getElementById('pendingRequestsBadge');
+    const requestLetterModal = document.getElementById('requestLetterModal');
+    const requestLetterMeta = document.getElementById('requestLetterMeta');
+    const requestLetterContent = document.getElementById('requestLetterContent');
 
     let inventoryState = [];
     let inventoryCategoriesState = [];
+    let inventoryRequestsState = [];
     let currentPage = 1;
     const pageSize = 6;
     let editingItemId = null;
@@ -642,6 +699,16 @@
         return { label: 'Low Stock', badge: 'bg-hope-yellow/10 text-hope-yellow border-hope-yellow/20', dot: 'bg-hope-yellow' };
       }
       return { label: 'In Stock', badge: 'bg-hope-lime/10 text-hope-lime border-hope-lime/20', dot: 'bg-hope-lime' };
+    }
+
+    function requestStatusMeta(status) {
+      if (status === 'approved') {
+        return { label: 'Approved', badge: 'bg-hope-lime/10 text-hope-lime border-hope-lime/20', dot: 'bg-hope-lime' };
+      }
+      if (status === 'denied') {
+        return { label: 'Denied', badge: 'bg-hope-red/10 text-hope-red border-hope-red/20', dot: 'bg-hope-red' };
+      }
+      return { label: 'Pending', badge: 'bg-hope-yellow/10 text-hope-yellow border-hope-yellow/20', dot: 'bg-hope-yellow' };
     }
 
     function iconForCategory(category) {
@@ -804,6 +871,142 @@
       window.AdminDataStore.set('inventoryItems', inventoryState);
     }
 
+    function persistInventoryRequests() {
+      window.AdminDataStore.set('inventoryRequests', inventoryRequestsState);
+    }
+
+    function deriveStatusFromStock(stock) {
+      if (stock <= 0) return 'out';
+      if (stock <= 5) return 'low';
+      return 'in_stock';
+    }
+
+    function findInventoryItemForRequest(itemName) {
+      const key = normalize(itemName);
+      return inventoryState.find((item) => {
+        const name = normalize(item.name);
+        return name === key || name.includes(key) || key.includes(name);
+      });
+    }
+
+    function adjustInventoryStock(itemName, delta) {
+      const item = findInventoryItemForRequest(itemName);
+      if (!item) return false;
+      const current = Math.max(0, Number(item.stock || 0));
+      const next = Math.max(0, current + delta);
+      item.stock = next;
+      item.status = deriveStatusFromStock(next);
+      persistInventory();
+      renderInventoryTable();
+      return true;
+    }
+
+    function renderRequestsTable() {
+      if (!inventoryRequestsState.length) {
+        requestsTableBody.innerHTML = '<tr><td colspan="9" class="px-6 py-8 text-center text-sm text-gray-400 italic">No coach requests yet.</td></tr>';
+        pendingRequestsBadge.textContent = '0 Pending';
+        return;
+      }
+
+      requestsTableBody.innerHTML = inventoryRequestsState.map((request) => {
+        const currentStatus = String(request.status || 'pending');
+        const status = requestStatusMeta(currentStatus);
+        const pending = currentStatus === 'pending';
+        const approved = currentStatus === 'approved';
+        return `
+          <tr class="hover:bg-gray-50 transition-colors">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-hope-dark">${String(request.coach || '-')}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${String(request.team || '-')}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${String(request.item || '-')}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-hope-dark">${Number(request.qty || 0)}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${Number(request.removedQty || 0) || '-'}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${String(request.trainingDate || '-')}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm">
+              <button type="button" onclick="openRequestLetter('${String(request.id || '')}')" class="text-hope-cyan hover:text-cyan-600 transition-colors font-medium">View Letter</button>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${status.badge}">
+                <span class="w-1.5 h-1.5 rounded-full ${status.dot}"></span>
+                ${status.label}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <button type="button" onclick="decideRequest('${String(request.id || '')}','approved')" class="text-hope-lime hover:text-lime-600 mr-3 transition-colors ${pending ? '' : 'opacity-50 cursor-not-allowed'}" ${pending ? '' : 'disabled'}>Approve</button>
+              <button type="button" onclick="decideRequest('${String(request.id || '')}','denied')" class="text-hope-red hover:text-red-700 mr-3 transition-colors ${pending ? '' : 'opacity-50 cursor-not-allowed'}" ${pending ? '' : 'disabled'}>Deny</button>
+              <button type="button" onclick="decideRequest('${String(request.id || '')}','pending')" class="text-hope-cyan hover:text-cyan-700 transition-colors ${approved ? '' : 'opacity-50 cursor-not-allowed'}" ${approved ? '' : 'disabled'}>Unapprove</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      const pending = inventoryRequestsState.filter((request) => String(request.status || 'pending') === 'pending').length;
+      pendingRequestsBadge.textContent = `${pending} Pending`;
+    }
+
+    function decideRequest(requestId, decision) {
+      const idx = inventoryRequestsState.findIndex((entry) => String(entry.id || '') === String(requestId || ''));
+      if (idx < 0) return;
+      const currentStatus = String(inventoryRequestsState[idx].status || 'pending');
+      const canDecidePending = currentStatus === 'pending' && (decision === 'approved' || decision === 'denied');
+      const canUnapprove = currentStatus === 'approved' && decision === 'pending';
+      if (!canDecidePending && !canUnapprove) return;
+
+      const request = inventoryRequestsState[idx];
+      if (decision === 'approved') {
+        const requestedQty = Math.max(1, Number(request.qty || 0));
+        const initialValue = String(Number(request.removedQty || 0) || requestedQty);
+        const raw = window.prompt(`Enter removed quantity for "${String(request.item || 'item')}" (max ${requestedQty}):`, initialValue);
+        if (raw === null) return;
+        const removedQty = Math.floor(Number(raw));
+        if (!Number.isFinite(removedQty) || removedQty < 1) {
+          window.alert('Removed quantity must be at least 1.');
+          return;
+        }
+        if (removedQty > requestedQty) {
+          window.alert('Removed quantity cannot exceed requested quantity.');
+          return;
+        }
+        request.removedQty = removedQty;
+        const reduced = adjustInventoryStock(request.item, -removedQty);
+        if (!reduced) {
+          window.alert('Request approved. Inventory stock was not auto-updated because matching item was not found.');
+        }
+      }
+
+      if (decision === 'denied') {
+        request.removedQty = 0;
+      }
+
+      if (decision === 'pending') {
+        const previouslyRemoved = Math.max(0, Number(request.removedQty || 0));
+        if (previouslyRemoved > 0) {
+          adjustInventoryStock(request.item, previouslyRemoved);
+        }
+        request.removedQty = 0;
+      }
+
+      inventoryRequestsState[idx].status = decision;
+      persistInventoryRequests();
+      renderRequestsTable();
+    }
+    window.decideRequest = decideRequest;
+
+    function openRequestLetter(requestId) {
+      const request = inventoryRequestsState.find((entry) => String(entry.id || '') === String(requestId || ''));
+      if (!request) return;
+      requestLetterMeta.textContent = `${String(request.coach || '-')} • ${String(request.team || '-')} • ${String(request.item || '-')}`;
+      requestLetterContent.textContent = String(request.letter || 'No letter provided.');
+      requestLetterModal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+    window.openRequestLetter = openRequestLetter;
+
+    function closeRequestLetterModal() {
+      requestLetterModal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+    window.closeRequestLetterModal = closeRequestLetterModal;
+
     function resetModalForm() {
       editingItemId = null;
       modalTitle.textContent = 'Add Inventory Item';
@@ -940,6 +1143,7 @@
       if (event.key === 'Escape') {
         closeModal();
         closeCategoryModal();
+        closeRequestLetterModal();
       }
     });
 
@@ -947,9 +1151,36 @@
       await window.AdminDataStore.bootstrap();
       inventoryState = window.AdminDataStore.getArray('inventoryItems', []);
       inventoryCategoriesState = window.AdminDataStore.getArray('inventoryCategories', []);
+      inventoryRequestsState = window.AdminDataStore.getArray('inventoryRequests', []);
+      if (!inventoryRequestsState.length) {
+        inventoryRequestsState = [
+          {
+            id: 'REQ-001',
+            coach: 'Coach Sok',
+            team: 'Team A',
+            item: 'Football',
+            qty: 10,
+            trainingDate: '2026-02-24',
+            letter: 'Dear Inventory Admin,\nI request 10 footballs for Team A training drills on 2026-02-24. The equipment will be used by Team A only and returned after session.\nThank you.\nCoach Sok',
+            status: 'pending'
+          },
+          {
+            id: 'REQ-002',
+            coach: 'Coach Dara',
+            team: 'Team B',
+            item: 'Jersey',
+            qty: 5,
+            trainingDate: '2026-02-25',
+            letter: 'Dear Inventory Admin,\nPlease approve 5 jerseys for Team B match preparation on 2026-02-25. This request is for Team B only.\nRegards,\nCoach Dara',
+            status: 'pending'
+          }
+        ];
+        persistInventoryRequests();
+      }
       renderCategoryFilterOptions();
       renderItemCategoryOptions();
       renderInventoryTable();
+      renderRequestsTable();
     });
   </script>
   <script src="/admin/admin-sidebar-loader.js"></script>

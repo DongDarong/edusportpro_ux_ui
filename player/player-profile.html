@@ -105,7 +105,10 @@
     </div>
 
     <div class="flex items-center gap-3 md:gap-6">
-      
+      <a href="/player/player-match-schedule.html" aria-label="Calendar" title="Calendar" class="hidden md:inline-flex items-center justify-center p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-hope-dark transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+      </a>
+
       <!-- Notification Bell -->
       <a href="/player/player-notifications.html" class="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-hope-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -165,11 +168,6 @@
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/player/player-team.html">
             <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
             Team Info
-          </a>
-
-          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/player/player-match-schedule.html">
-             <svg class="w-5 h-5 group-hover:text-hope-yellow transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-            Match Schedule
           </a>
 
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/player/player-performance.html">
@@ -343,6 +341,47 @@
                 <div class="flex justify-end pt-2">
                    <button class="w-full md:w-auto bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-5 py-2.5 rounded-lg shadow-sm transition-colors text-sm font-medium">Update Password</button>
                 </div>
+             </div>
+          </div>
+
+          <!-- About Website -->
+          <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+             <div class="p-4 md:p-5 border-b border-gray-100 bg-gray-50">
+               <h3 class="font-bold text-base md:text-lg text-hope-dark">About Website</h3>
+             </div>
+             <div class="p-4 md:p-6 space-y-4">
+               <p class="text-sm text-gray-600 leading-6">
+                 EduSportPro is the internal sports management platform for Hope Foundation of Cambodia. It supports coordination between admin, coach, and player modules in one system.
+               </p>
+
+               <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                 <div class="rounded-lg border border-gray-200 bg-gray-50 p-3">
+                   <div class="text-xs uppercase tracking-wide text-gray-500 font-semibold">Version</div>
+                   <div class="text-sm font-medium text-hope-dark mt-1">v1.0.0</div>
+                 </div>
+                 <div class="rounded-lg border border-gray-200 bg-gray-50 p-3">
+                   <div class="text-xs uppercase tracking-wide text-gray-500 font-semibold">Environment</div>
+                   <div class="text-sm font-medium text-hope-dark mt-1">Production</div>
+                 </div>
+               </div>
+
+               <div class="pt-2">
+                 <h4 class="text-sm font-semibold text-hope-dark mb-2">Website Development Team</h4>
+                 <div class="rounded-lg border border-gray-200 divide-y divide-gray-100">
+                   <div class="p-3 flex items-center justify-between">
+                     <span class="text-sm text-gray-700">Member 1</span>
+                     <span class="text-xs px-2 py-1 rounded bg-hope-cyan/10 text-hope-cyan font-semibold">Frontend Developer</span>
+                   </div>
+                   <div class="p-3 flex items-center justify-between">
+                     <span class="text-sm text-gray-700">Member 2</span>
+                     <span class="text-xs px-2 py-1 rounded bg-hope-lime/10 text-hope-lime font-semibold">Backend Developer</span>
+                   </div>
+                   <div class="p-3 flex items-center justify-between">
+                     <span class="text-sm text-gray-700">Member 3</span>
+                     <span class="text-xs px-2 py-1 rounded bg-gray-100 text-gray-700 font-semibold">UI/UX Designer</span>
+                   </div>
+                 </div>
+               </div>
              </div>
           </div>
 

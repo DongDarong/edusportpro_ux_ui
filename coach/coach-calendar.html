@@ -11,6 +11,7 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="/admin/admin-data-store.js"></script>
 
     <!-- Tailwind Configuration -->
     <script>
@@ -127,6 +128,9 @@
         </div>
 
         <div class="flex items-center gap-3 md:gap-6">
+            <a href="/coach/coach-calendar.html" aria-label="Calendar" title="Calendar" class="hidden md:inline-flex items-center justify-center p-2 rounded-lg bg-hope-cyan/10 text-hope-cyan font-semibold">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            </a>
             <!-- Notification Bell -->
             <a href="/coach/coach-notifications.html" class="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-hope-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -143,7 +147,7 @@
             <a href="/coach/coach-profile.html" class="flex items-center gap-2 md:gap-3 cursor-pointer pl-2 md:pl-4 border-l border-gray-200 hover:bg-gray-50 transition-colors rounded-r-lg p-1">
                 <div class="text-right hidden md:block">
                     <div class="text-sm font-semibold text-hope-dark">Coach Sok</div>
-                    <div class="text-xs text-gray-500">Team A Coach</div>
+                    <div id="coachTeamLabel" class="text-xs text-gray-500">Team Coach</div>
                 </div>
                 <div class="w-8 h-8 md:w-9 md:h-9 bg-hope-cyan rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm shrink-0">
                     CS
@@ -183,12 +187,12 @@
                     
                     <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-teams.html">
                         <svg class="w-5 h-5 group-hover:text-hope-lime transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                        My Team
+                        Team
                     </a>
 
                     <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-training.html">
                         <svg class="w-5 h-5 group-hover:text-hope-red transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                        Training Sessions
+                        Training
                     </a>
 
                     <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-att.html">
@@ -206,11 +210,6 @@
                         Matches
                     </a>
 
-                    <!-- Active State: Calendar -->
-                    <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg bg-hope-cyan/10 text-hope-cyan font-semibold" href="/coach/coach-calendar.html">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        Calendar
-                    </a>
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-tournament.html">
             <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8M12 17v4M7 4h10l-1 6H8L7 4zM5 4h14"></path></svg>
             Tournament
@@ -219,6 +218,10 @@
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-division.html">
             <svg class="w-5 h-5 group-hover:text-hope-lime transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"></path></svg>
             Division
+          </a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-inventory.html">
+            <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            Inventory
           </a>
                 </nav>
 
@@ -449,19 +452,28 @@
         const teamOptionItems = Array.from(document.querySelectorAll('.team-option-item'));
         const eventCommentWrapper = document.getElementById('eventCommentWrapper');
         const eventCommentInput = document.getElementById('eventComment');
-        const currentCoachTeam = 'Team A';
+        const coachTeamLabel = document.getElementById('coachTeamLabel');
+        let teamsState = [];
+        let currentCoachTeam = 'Team A';
+        let currentCoachTeamId = '';
+        let allCalendarEventsState = [];
+        let loadedCoachEventIds = new Set();
         let currentDate = new Date();
         let editingEventIndex = null; // Track which event is being edited (null = new event)
-        
-        // Sample Events Data
-        let events = [
-            { date: '2025-12-05', title: 'Training', type: 'training', time: '10:00', team: 'Team A' },
-            { date: '2025-12-08', title: 'Tactics Meeting', type: 'meeting', time: '14:00', team: 'all' },
-            { date: '2025-12-20', title: 'vs Team C', type: 'match', time: '16:00', team: 'Team A' },
-            { date: '2025-12-26', title: 'vs Team B', type: 'match', time: '15:30', team: 'Team B' },
-            { date: '2025-12-15', title: 'Fitness Test', type: 'other', time: '09:00', team: 'Team C', comment: 'Pre-season endurance check' },
-            { date: '2025-12-20', title: 'Team Dinner', type: 'meeting', time: '19:00', team: 'all' }
-        ];
+        let events = [];
+
+        function teamNameById(teamId) {
+            const team = teamsState.find((item) => String(item.id || '') === String(teamId || ''));
+            return team ? String(team.name || team.id) : String(teamId || '');
+        }
+
+        function nextCalendarEventId(items) {
+            const max = items.reduce((acc, item) => {
+                const n = Number(String(item.id || '').replace(/\D/g, ''));
+                return Number.isFinite(n) ? Math.max(acc, n) : acc;
+            }, 0);
+            return `CE-${String(max + 1).padStart(3, '0')}`;
+        }
 
         function toggleEventCommentInput() {
             const isOtherType = eventTypeSelect.value === 'other';
@@ -559,12 +571,13 @@
             if(title && date) {
                 if (editingEventIndex !== null) {
                     // Update existing event
-                    events[editingEventIndex] = { date, title, type, time, team, comment };
+                    events[editingEventIndex] = Object.assign({}, events[editingEventIndex], { date, title, type, time, team, comment, teamId: currentCoachTeamId || '' });
                 } else {
                     // Create new event
-                    events.push({ date, title, type, time, team, comment });
+                    const nextId = nextCalendarEventId(allCalendarEventsState.concat(events));
+                    events.push({ id: nextId, date, title, type, time, team, comment, teamId: currentCoachTeamId || '' });
                 }
-                
+                persistCalendarEvents();
                 renderCalendar();
                 closeModal();
             } else {
@@ -577,6 +590,7 @@
             if (editingEventIndex !== null) {
                 if(confirm("Are you sure you want to delete this event?")) {
                     events.splice(editingEventIndex, 1);
+                    persistCalendarEvents();
                     renderCalendar();
                     closeModal();
                 }
@@ -758,7 +772,78 @@
         });
 
         // Initial Render
-        renderCalendar();
+        async function loadCalendarData() {
+            if (!window.AdminDataStore) {
+                renderCalendar();
+                return;
+            }
+            await window.AdminDataStore.bootstrap();
+            teamsState = window.AdminDataStore.getArray('teams', []);
+            const trainingSessions = window.AdminDataStore.getArray('trainingSessions', []);
+            const calendarEvents = window.AdminDataStore.getArray('calendarEvents', []);
+            allCalendarEventsState = Array.isArray(calendarEvents) ? calendarEvents.slice() : [];
+
+            const coachSession = trainingSessions.find((item) => String(item.coachId || '') === 'C001');
+            currentCoachTeamId = String((coachSession && coachSession.teamId) || (teamsState[0] && teamsState[0].id) || '');
+            currentCoachTeam = teamNameById(currentCoachTeamId) || 'Team A';
+            if (coachTeamLabel) coachTeamLabel.textContent = `${currentCoachTeam} Coach`;
+            enforceCoachTeamSelection();
+
+            events = calendarEvents
+                .filter((entry) => {
+                    if (entry.team === 'all') return true;
+                    if (Array.isArray(entry.team)) return entry.team.includes(currentCoachTeamId);
+                    return String(entry.team || '') === currentCoachTeamId || String(entry.team || '') === currentCoachTeam;
+                })
+                .map((entry) => {
+                    let teamValue = currentCoachTeam;
+                    let teamId = currentCoachTeamId;
+                    if (entry.team === 'all') {
+                        teamValue = 'all';
+                        teamId = 'all';
+                    } else if (Array.isArray(entry.team)) {
+                        teamId = entry.team[0] || currentCoachTeamId;
+                        teamValue = teamNameById(teamId) || currentCoachTeam;
+                    } else {
+                        teamId = String(entry.team || currentCoachTeamId);
+                        teamValue = teamNameById(teamId) || currentCoachTeam;
+                    }
+                    return {
+                        id: String(entry.id || nextCalendarEventId(calendarEvents)),
+                        date: String(entry.date || ''),
+                        title: String(entry.title || ''),
+                        type: String(entry.type || 'other'),
+                        time: String(entry.time || ''),
+                        team: teamValue,
+                        teamId: teamId,
+                        comment: String(entry.comment || '')
+                    };
+                });
+            loadedCoachEventIds = new Set(events.map((entry) => String(entry.id || '')));
+
+            renderCalendar();
+        }
+
+        function persistCalendarEvents() {
+            if (!window.AdminDataStore) return;
+            const localIds = new Set(events.map((entry) => String(entry.id || '')));
+            const preserved = allCalendarEventsState.filter((entry) => !loadedCoachEventIds.has(String(entry.id || '')));
+            const coachEvents = events.map((entry) => ({
+                id: String(entry.id || ''),
+                date: String(entry.date || ''),
+                title: String(entry.title || ''),
+                type: String(entry.type || 'other'),
+                time: String(entry.time || ''),
+                team: entry.teamId === 'all' ? 'all' : (entry.teamId || currentCoachTeamId),
+                comment: String(entry.comment || '')
+            }));
+            const merged = preserved.concat(coachEvents);
+            allCalendarEventsState = merged.slice();
+            loadedCoachEventIds = localIds;
+            window.AdminDataStore.set('calendarEvents', merged);
+        }
+
+        loadCalendarData();
 
     </script>
 </body>

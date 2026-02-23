@@ -6,6 +6,7 @@
   <title>Coach - Division | EduSportPro</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/admin/admin-data-store.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -31,9 +32,10 @@
       <div class="hidden sm:block"><div class="text-[10px] md:text-xs font-bold text-hope-dark uppercase tracking-tight leading-tight">Organization for Children's</div><div class="text-xs md:text-sm font-extrabold text-hope-cyan leading-none">Hope Foundation of Cambodia</div></div>
     </div>
     <div class="flex items-center gap-3 md:gap-6">
+      <a href="/coach/coach-calendar.html" aria-label="Calendar" title="Calendar" class="hidden md:inline-flex items-center justify-center p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-hope-dark transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></a>
       <a href="/coach/coach-notifications.html" class="relative p-2 hover:bg-gray-100 rounded-full transition-colors"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-hope-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg><span class="absolute top-1 right-1 bg-hope-red text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">4</span></a>
       <select class="bg-gray-50 border border-gray-200 text-hope-dark text-sm rounded-lg focus:ring-hope-cyan focus:border-hope-cyan block px-2 py-1.5 md:px-3 outline-none"><option>EN</option><option>KM</option></select>
-      <a href="/coach/coach-profile.html" class="flex items-center gap-2 md:gap-3 cursor-pointer pl-2 md:pl-4 border-l border-gray-200 hover:bg-gray-50 transition-colors rounded-r-lg p-1"><div class="text-right hidden md:block"><div class="text-sm font-semibold text-hope-dark">Coach Sok</div><div class="text-xs text-gray-500">Team A Coach</div></div><div class="w-8 h-8 md:w-9 md:h-9 bg-hope-cyan rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm shrink-0">CS</div></a>
+      <a href="/coach/coach-profile.html" class="flex items-center gap-2 md:gap-3 cursor-pointer pl-2 md:pl-4 border-l border-gray-200 hover:bg-gray-50 transition-colors rounded-r-lg p-1"><div class="text-right hidden md:block"><div class="text-sm font-semibold text-hope-dark">Coach Sok</div><div id="coachTeamLabel" class="text-xs text-gray-500">Team Coach</div></div><div class="w-8 h-8 md:w-9 md:h-9 bg-hope-cyan rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm shrink-0">CS</div></a>
     </div>
   </nav>
 
@@ -45,18 +47,49 @@
         <div class="mb-8 px-2"><div class="text-2xl font-extrabold tracking-tighter"><span class="text-hope-lime">Edu</span><span class="text-hope-cyan">Sport</span><span class="text-hope-red">Pro</span></div></div>
         <h2 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Coach Menu</h2>
         <nav class="space-y-1 flex-1">
-          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-dashboard.html">Dashboard</a>
-          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-teams.html">My Team</a>
-          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-training.html">Training Sessions</a>
-          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-att.html">Attendance</a>
-          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-performance.html">Performance</a>
-          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-matches.html">Matches</a>
-          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-inventory.html">Inventory</a>
-          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-calendar.html">Calendar</a>
-          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-tournament.html">Tournament</a>
-          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg bg-hope-cyan/10 text-hope-cyan font-semibold" href="/coach/coach-division.html">Division</a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-dashboard.html">
+            <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+            Dashboard
+          </a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-teams.html">
+            <svg class="w-5 h-5 group-hover:text-hope-lime transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+            Team
+          </a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-training.html">
+            <svg class="w-5 h-5 group-hover:text-hope-red transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            Training
+          </a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-att.html">
+            <svg class="w-5 h-5 group-hover:text-hope-lime transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+            Attendance
+          </a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-performance.html">
+            <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+            Performance
+          </a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-matches.html">
+            <svg class="w-5 h-5 group-hover:text-hope-yellow transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            Matches
+          </a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-tournament.html">
+            <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8M12 17v4M7 4h10l-1 6H8L7 4zM5 4h14"></path></svg>
+            Tournament
+          </a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg bg-hope-cyan/10 text-hope-cyan font-semibold" href="/coach/coach-division.html">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"></path></svg>
+            Division
+          </a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-inventory.html">
+            <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            Inventory
+          </a>
         </nav>
-        <div class="mt-auto pt-6 border-t border-gray-100"><a href="/index.html" class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-hope-red hover:bg-red-50 transition-colors font-semibold">Sign Out</a></div>
+        <div class="mt-auto pt-6 border-t border-gray-100">
+          <a href="/index.html" class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-hope-red hover:bg-red-50 transition-colors font-semibold">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+            Sign Out
+          </a>
+        </div>
       </div>
     </aside>
 
@@ -73,7 +106,7 @@
 
       <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-6 mb-6">
         <h2 class="text-xl font-bold text-hope-dark mb-4">Division Groups</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+        <div id="divisionGroups" class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
           <div class="rounded-lg border border-gray-100 p-4 bg-gray-50"><p class="text-xs uppercase text-gray-500">Group A</p><ul class="mt-2 space-y-1"><li>Team A</li><li>Team B</li><li>Team C</li><li>Team D</li></ul></div>
           <div class="rounded-lg border border-gray-100 p-4 bg-gray-50"><p class="text-xs uppercase text-gray-500">Group B</p><ul class="mt-2 space-y-1"><li>Team E</li><li>Team F</li><li>Team G</li><li>Team H</li></ul></div>
           <div class="rounded-lg border border-gray-100 p-4 bg-gray-50"><p class="text-xs uppercase text-gray-500">Group C</p><ul class="mt-2 space-y-1"><li>Team I</li><li>Team J</li><li>Team K</li><li>Team L</li></ul></div>
@@ -94,7 +127,7 @@
                 <th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase">Pts</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-100">
+            <tbody id="standingsBody" class="divide-y divide-gray-100">
               <tr><td class="py-3 px-4 font-medium text-hope-dark">Team A</td><td class="py-3 px-4">5</td><td class="py-3 px-4">4</td><td class="py-3 px-4">1</td><td class="py-3 px-4">0</td><td class="py-3 px-4 font-semibold">13</td></tr>
               <tr><td class="py-3 px-4 font-medium text-hope-dark">Team B</td><td class="py-3 px-4">5</td><td class="py-3 px-4">3</td><td class="py-3 px-4">1</td><td class="py-3 px-4">1</td><td class="py-3 px-4 font-semibold">10</td></tr>
               <tr><td class="py-3 px-4 font-medium text-hope-dark">Team C</td><td class="py-3 px-4">5</td><td class="py-3 px-4">2</td><td class="py-3 px-4">1</td><td class="py-3 px-4">2</td><td class="py-3 px-4 font-semibold">7</td></tr>
@@ -122,6 +155,119 @@
         setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
       }
     }
+
+    (function () {
+      const coachId = 'C001';
+      const coachTeamLabel = document.getElementById('coachTeamLabel');
+      const divisionGroups = document.getElementById('divisionGroups');
+      const standingsBody = document.getElementById('standingsBody');
+
+      function escapeHtml(value) {
+        return String(value == null ? '' : value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function getTeamName(teams, teamId) {
+        const team = teams.find((item) => String(item.id || '') === String(teamId || ''));
+        return team ? String(team.name || team.id) : 'Unknown Team';
+      }
+
+      function resolveCoachTeamId(trainingSessions, teams) {
+        const byTraining = trainingSessions.find((item) => String(item.coachId || '') === coachId);
+        if (byTraining && byTraining.teamId) return String(byTraining.teamId);
+        return String((teams[0] && teams[0].id) || '');
+      }
+
+      function renderGroups(teams) {
+        const byDivision = {};
+        teams.forEach((team) => {
+          const key = String(team.division || 'Other');
+          if (!byDivision[key]) byDivision[key] = [];
+          byDivision[key].push(String(team.name || team.id || '-'));
+        });
+        const divisions = Object.keys(byDivision).sort();
+        if (!divisions.length) {
+          divisionGroups.innerHTML = '<div class="rounded-lg border border-gray-100 p-4 bg-gray-50 text-sm text-gray-500">No division groups found.</div>';
+          return;
+        }
+        divisionGroups.innerHTML = divisions.map((division) => {
+          const teamsHtml = byDivision[division].sort().map((name) => `<li>${escapeHtml(name)}</li>`).join('');
+          return `<div class="rounded-lg border border-gray-100 p-4 bg-gray-50">
+            <p class="text-xs uppercase text-gray-500">${escapeHtml(division)}</p>
+            <ul class="mt-2 space-y-1">${teamsHtml}</ul>
+          </div>`;
+        }).join('');
+      }
+
+      function computeStandings(teams, matches) {
+        const table = new Map();
+        teams.forEach((team) => {
+          table.set(String(team.id || ''), { teamId: String(team.id || ''), p: 0, w: 0, d: 0, l: 0, pts: 0 });
+        });
+
+        matches.forEach((match) => {
+          const homeId = String(match.homeTeamId || '');
+          const awayId = String(match.awayTeamId || '');
+          const homeScore = Number(match.homeScore);
+          const awayScore = Number(match.awayScore);
+          if (!table.has(homeId) || !table.has(awayId)) return;
+          if (!Number.isFinite(homeScore) || !Number.isFinite(awayScore)) return;
+
+          const home = table.get(homeId);
+          const away = table.get(awayId);
+          home.p += 1;
+          away.p += 1;
+
+          if (homeScore > awayScore) {
+            home.w += 1; home.pts += 3;
+            away.l += 1;
+          } else if (homeScore < awayScore) {
+            away.w += 1; away.pts += 3;
+            home.l += 1;
+          } else {
+            home.d += 1; away.d += 1;
+            home.pts += 1; away.pts += 1;
+          }
+        });
+
+        return Array.from(table.values()).sort((a, b) => b.pts - a.pts || b.w - a.w || a.l - b.l);
+      }
+
+      function renderStandings(teams, matches) {
+        const standings = computeStandings(teams, matches);
+        if (!standings.length) {
+          standingsBody.innerHTML = '<tr><td colspan="6" class="py-3 px-4 text-sm text-gray-500">No standings data.</td></tr>';
+          return;
+        }
+        standingsBody.innerHTML = standings.map((row) => `
+          <tr>
+            <td class="py-3 px-4 font-medium text-hope-dark">${escapeHtml(getTeamName(teams, row.teamId))}</td>
+            <td class="py-3 px-4">${row.p}</td>
+            <td class="py-3 px-4">${row.w}</td>
+            <td class="py-3 px-4">${row.d}</td>
+            <td class="py-3 px-4">${row.l}</td>
+            <td class="py-3 px-4 font-semibold">${row.pts}</td>
+          </tr>
+        `).join('');
+      }
+
+      document.addEventListener('DOMContentLoaded', async function () {
+        if (!window.AdminDataStore) return;
+        await window.AdminDataStore.bootstrap();
+        const teams = window.AdminDataStore.getArray('teams', []);
+        const matches = window.AdminDataStore.getArray('matches', []);
+        const trainingSessions = window.AdminDataStore.getArray('trainingSessions', []);
+
+        const coachTeamId = resolveCoachTeamId(trainingSessions, teams);
+        if (coachTeamLabel) coachTeamLabel.textContent = `${getTeamName(teams, coachTeamId)} Coach`;
+        renderGroups(teams);
+        renderStandings(teams, matches);
+      });
+    })();
   </script>
 </body>
 </html>

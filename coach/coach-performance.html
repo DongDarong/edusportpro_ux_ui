@@ -11,6 +11,7 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/admin/admin-data-store.js"></script>
 
   <!-- Tailwind Configuration with Custom Brand Colors -->
   <script>
@@ -104,7 +105,10 @@
 
 
     <div class="flex items-center gap-3 md:gap-6">
-      
+      <a href="/coach/coach-calendar.html" aria-label="Calendar" title="Calendar" class="hidden md:inline-flex items-center justify-center p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-hope-dark transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+      </a>
+
       <!-- Notification Bell -->
       <a href="/coach/coach-notifications.html" class="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-hope-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -121,7 +125,7 @@
       <a href="/coach/coach-profile.html" class="flex items-center gap-2 md:gap-3 cursor-pointer pl-2 md:pl-4 border-l border-gray-200 hover:bg-gray-50 transition-colors rounded-r-lg p-1">
         <div class="text-right hidden md:block">
           <div class="text-sm font-semibold text-hope-dark">Coach Sok</div>
-          <div class="text-xs text-gray-500">Team A Coach</div>
+          <div id="coachTeamLabel" class="text-xs text-gray-500">Team Coach</div>
         </div>
         <div class="w-8 h-8 md:w-9 md:h-9 bg-hope-cyan rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm shrink-0">
           CS
@@ -165,12 +169,12 @@
           
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-teams.html">
             <svg class="w-5 h-5 group-hover:text-hope-lime transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-            My Team
+            Team
           </a>
 
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-training.html">
             <svg class="w-5 h-5 group-hover:text-hope-red transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-            Training Sessions
+            Training
           </a>
 
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-att.html">
@@ -189,10 +193,6 @@
             Matches
           </a>
 
-          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group"  href="/coach/coach-calendar.html">
-                        <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        Calendar
-          </a>
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-tournament.html">
             <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8M12 17v4M7 4h10l-1 6H8L7 4zM5 4h14"></path></svg>
             Tournament
@@ -201,6 +201,10 @@
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-division.html">
             <svg class="w-5 h-5 group-hover:text-hope-lime transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"></path></svg>
             Division
+          </a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-inventory.html">
+            <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            Inventory
           </a>
         </nav>
         <!-- Footer Sign Out -->
@@ -239,30 +243,26 @@
 
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
-            <input type="date" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+            <input id="perfDateInput" type="date" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
           </div>
 
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Session Type</label>
-            <select class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
-              <option>Match</option>
-              <option>Training</option>
+            <select id="perfSessionTypeInput" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+              <option value="match">Match</option>
+              <option value="training">Training</option>
             </select>
           </div>
 
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Opponent (Match)</label>
-            <select class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
+            <select id="perfOpponentInput" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-cyan focus:ring-hope-cyan sm:text-sm shadow-sm outline-none">
               <option value="">Select Team</option>
-              <option>Team A</option>
-              <option>Team B</option>
-              <option>Team C</option>
-              <option>Team D</option>
             </select>
           </div>
 
           <div class="flex items-end">
-             <button class="w-full bg-hope-cyan hover:bg-sky-500 text-white py-2.5 rounded-lg shadow-sm transition-colors font-medium flex items-center justify-center gap-2">
+             <button id="perfLoadBtn" class="w-full bg-hope-cyan hover:bg-sky-500 text-white py-2.5 rounded-lg shadow-sm transition-colors font-medium flex items-center justify-center gap-2">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
               Load Players
             </button>
@@ -279,7 +279,7 @@
         
         <div class="p-4 md:p-5 border-b border-gray-100 flex items-center gap-2 bg-gray-50">
            <h2 class="text-base md:text-lg font-bold text-hope-dark">Performance Data</h2>
-           <span class="text-xs text-gray-400">| Dec 20, 2025 vs Team C</span>
+           <span id="perfTableMeta" class="text-xs text-gray-400">| -</span>
         </div>
 
         <div class="overflow-x-auto">
@@ -297,7 +297,7 @@
               </tr>
             </thead>
             
-            <tbody class="bg-white divide-y divide-gray-100">
+            <tbody id="perfTableBody" class="bg-white divide-y divide-gray-100">
 
               <!-- Player 1 -->
               <tr class="hover:bg-gray-50 transition-colors">
@@ -407,7 +407,7 @@
 
         <!-- SAVE BUTTON AREA -->
         <div class="p-4 md:p-6 border-t border-gray-100 bg-gray-50 flex justify-end">
-           <button class="w-full md:w-auto bg-hope-cyan hover:bg-sky-500 text-white px-8 py-2.5 rounded-lg shadow-sm transition-all transform active:scale-95 font-semibold flex items-center justify-center gap-2">
+           <button id="perfSaveBtn" class="w-full md:w-auto bg-hope-cyan hover:bg-sky-500 text-white px-8 py-2.5 rounded-lg shadow-sm transition-all transform active:scale-95 font-semibold flex items-center justify-center gap-2">
              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
              Save Performance Data
            </button>
@@ -440,6 +440,220 @@
         body.style.overflow = 'auto';
       }
     }
+
+    (function () {
+      const coachId = 'C001';
+      const coachName = 'Coach Sok';
+      const coachTeamLabel = document.getElementById('coachTeamLabel');
+      const perfDateInput = document.getElementById('perfDateInput');
+      const perfSessionTypeInput = document.getElementById('perfSessionTypeInput');
+      const perfOpponentInput = document.getElementById('perfOpponentInput');
+      const perfLoadBtn = document.getElementById('perfLoadBtn');
+      const perfTableMeta = document.getElementById('perfTableMeta');
+      const perfTableBody = document.getElementById('perfTableBody');
+      const perfSaveBtn = document.getElementById('perfSaveBtn');
+
+      let teamsState = [];
+      let playersState = [];
+      let matchesState = [];
+      let trainingState = [];
+      let performanceState = [];
+      let selectedTeamId = '';
+
+      function normalize(value) {
+        return String(value || '').trim().toLowerCase();
+      }
+
+      function escapeHtml(value) {
+        return String(value == null ? '' : value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function initials(name) {
+        const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+        if (!parts.length) return 'NA';
+        if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+        return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+      }
+
+      function getTeamName(teamId) {
+        const team = teamsState.find((item) => String(item.id || '') === String(teamId || ''));
+        return team ? String(team.name || team.id) : '';
+      }
+
+      function getTodayIsoDate() {
+        const now = new Date();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        return `${now.getFullYear()}-${month}-${day}`;
+      }
+
+      function nextPerformanceId() {
+        const max = performanceState.reduce((acc, item) => {
+          const n = Number(String(item.id || '').replace(/\D/g, ''));
+          return Number.isFinite(n) ? Math.max(acc, n) : acc;
+        }, 0);
+        return `PR-${String(max + 1).padStart(3, '0')}`;
+      }
+
+      function resolveCoachTeamId() {
+        const fromTraining = trainingState.find((item) => String(item.coachId || '') === coachId);
+        if (fromTraining && fromTraining.teamId) return String(fromTraining.teamId);
+        const fromMatches = matchesState.find((item) => String(item.homeTeamId || '') || String(item.awayTeamId || ''));
+        if (fromMatches && fromMatches.homeTeamId) return String(fromMatches.homeTeamId);
+        return String((teamsState[0] && teamsState[0].id) || '');
+      }
+
+      function populateOpponentOptions() {
+        if (!perfOpponentInput) return;
+        const options = new Map();
+        matchesState.forEach((match) => {
+          const home = String(match.homeTeamId || '');
+          const away = String(match.awayTeamId || '');
+          if (home === selectedTeamId && away) options.set(away, getTeamName(away));
+          if (away === selectedTeamId && home) options.set(home, getTeamName(home));
+        });
+        const current = String(perfOpponentInput.value || '');
+        const html = ['<option value="">Select Team</option>']
+          .concat(Array.from(options.entries()).map(([id, name]) => `<option value="${escapeHtml(id)}">${escapeHtml(name || id)}</option>`))
+          .join('');
+        perfOpponentInput.innerHTML = html;
+        if (options.has(current)) perfOpponentInput.value = current;
+      }
+
+      function findExistingRecord(playerId, filters) {
+        return performanceState.find((item) =>
+          String(item.playerId || '') === String(playerId || '') &&
+          String(item.sessionType || '') === String(filters.sessionType || '') &&
+          String(item.date || '') === String(filters.date || '') &&
+          String(item.opponent || '') === String(filters.opponentName || '')
+        ) || null;
+      }
+
+      function getFilters() {
+        const date = String((perfDateInput && perfDateInput.value) || getTodayIsoDate());
+        const sessionType = String((perfSessionTypeInput && perfSessionTypeInput.value) || 'match');
+        const opponentTeamId = String((perfOpponentInput && perfOpponentInput.value) || '');
+        const opponentName = opponentTeamId ? getTeamName(opponentTeamId) : '';
+        return { date, sessionType, opponentTeamId, opponentName };
+      }
+
+      function renderMeta() {
+        const filters = getFilters();
+        const suffix = filters.sessionType === 'match' && filters.opponentName ? ` vs ${filters.opponentName}` : (filters.sessionType === 'training' ? ' training session' : '');
+        perfTableMeta.textContent = `| ${filters.date}${suffix}`;
+      }
+
+      function renderRows() {
+        const filters = getFilters();
+        const players = playersState.filter((player) => String(player.teamId || '') === selectedTeamId);
+        if (!players.length) {
+          perfTableBody.innerHTML = '<tr><td colspan="8" class="px-4 md:px-6 py-6 text-sm text-gray-500">No players found for this team.</td></tr>';
+          renderMeta();
+          return;
+        }
+
+        perfTableBody.innerHTML = players.map((player) => {
+          const existing = findExistingRecord(player.id, filters) || {};
+          const code = '#' + String(player.id || '').replace(/\D/g, '').slice(-2).padStart(2, '0');
+          return `
+            <tr class="hover:bg-gray-50 transition-colors" data-player-id="${escapeHtml(player.id)}">
+              <td class="px-4 md:px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center gap-3">
+                  <div class="h-10 w-10 rounded-full bg-hope-cyan/10 flex items-center justify-center text-hope-cyan font-bold text-sm border border-hope-cyan/20 shrink-0">${escapeHtml(initials(player.name))}</div>
+                  <div>
+                    <div class="text-sm font-medium text-gray-900">${escapeHtml(player.name || '')}</div>
+                    <div class="text-xs text-gray-500">${escapeHtml(code)}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-500">${escapeHtml(player.position || 'Player')}</td>
+              <td class="px-4 md:px-6 py-4 whitespace-nowrap text-center"><input data-field="goals" type="number" min="0" value="${Number(existing.goals || 0)}" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-hope-cyan focus:ring-hope-cyan outline-none transition-all"></td>
+              <td class="px-4 md:px-6 py-4 whitespace-nowrap text-center"><input data-field="assists" type="number" min="0" value="${Number(existing.assists || 0)}" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-hope-cyan focus:ring-hope-cyan outline-none transition-all"></td>
+              <td class="px-4 md:px-6 py-4 whitespace-nowrap text-center"><input data-field="yellow" type="number" min="0" value="${Number(existing.yellow || 0)}" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-yellow-400 focus:ring-yellow-400 outline-none transition-all"></td>
+              <td class="px-4 md:px-6 py-4 whitespace-nowrap text-center"><input data-field="red" type="number" min="0" value="${Number(existing.red || 0)}" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-red-500 focus:ring-red-500 outline-none transition-all"></td>
+              <td class="px-4 md:px-6 py-4 whitespace-nowrap text-center"><input data-field="rating" type="number" min="1" max="10" value="${existing.rating == null ? '' : Number(existing.rating)}" placeholder="-" class="w-14 text-center rounded-lg border-gray-300 border py-1.5 px-2 text-sm focus:border-hope-cyan focus:ring-hope-cyan outline-none transition-all"></td>
+              <td class="px-4 md:px-6 py-4 whitespace-nowrap"><input data-field="notes" type="text" value="${escapeHtml(existing.notes || '')}" placeholder="Add comments..." class="w-full min-w-[200px] rounded-lg border-gray-200 border py-1.5 px-3 text-sm focus:border-hope-cyan focus:ring-hope-cyan outline-none bg-gray-50 focus:bg-white transition-colors"></td>
+            </tr>
+          `;
+        }).join('');
+        renderMeta();
+      }
+
+      function saveRows() {
+        const filters = getFilters();
+        const rows = Array.from(perfTableBody.querySelectorAll('tr[data-player-id]'));
+        rows.forEach((row) => {
+          const playerId = String(row.getAttribute('data-player-id') || '');
+          if (!playerId) return;
+          const parseNum = (field, fallback) => {
+            const input = row.querySelector(`input[data-field="${field}"]`);
+            const n = Number(input ? input.value : fallback);
+            return Number.isFinite(n) ? n : fallback;
+          };
+          const data = {
+            goals: parseNum('goals', 0),
+            assists: parseNum('assists', 0),
+            yellow: parseNum('yellow', 0),
+            red: parseNum('red', 0),
+            rating: parseNum('rating', 0),
+            notes: String((row.querySelector('input[data-field="notes"]') || {}).value || '').trim()
+          };
+
+          let record = findExistingRecord(playerId, filters);
+          if (!record) {
+            record = {
+              id: nextPerformanceId(),
+              date: filters.date,
+              sessionType: filters.sessionType,
+              opponent: filters.opponentName || '',
+              playerId: playerId
+            };
+            performanceState.push(record);
+          }
+          record.goals = data.goals;
+          record.assists = data.assists;
+          record.yellow = data.yellow;
+          record.red = data.red;
+          record.rating = data.rating;
+          record.notes = data.notes;
+        });
+
+        window.AdminDataStore.set('performanceRecords', performanceState);
+        alert('Performance data saved.');
+        renderRows();
+      }
+
+      function bindFilters() {
+        if (perfDateInput) perfDateInput.addEventListener('change', renderRows);
+        if (perfSessionTypeInput) perfSessionTypeInput.addEventListener('change', renderRows);
+        if (perfOpponentInput) perfOpponentInput.addEventListener('change', renderRows);
+        if (perfLoadBtn) perfLoadBtn.addEventListener('click', renderRows);
+        if (perfSaveBtn) perfSaveBtn.addEventListener('click', saveRows);
+      }
+
+      document.addEventListener('DOMContentLoaded', async function () {
+        if (!window.AdminDataStore) return;
+        await window.AdminDataStore.bootstrap();
+        teamsState = Array.isArray(window.AdminDataStore.getArray('teams', [])) ? window.AdminDataStore.getArray('teams', []) : [];
+        playersState = Array.isArray(window.AdminDataStore.getArray('players', [])) ? window.AdminDataStore.getArray('players', []) : [];
+        matchesState = Array.isArray(window.AdminDataStore.getArray('matches', [])) ? window.AdminDataStore.getArray('matches', []) : [];
+        trainingState = Array.isArray(window.AdminDataStore.getArray('trainingSessions', [])) ? window.AdminDataStore.getArray('trainingSessions', []) : [];
+        performanceState = Array.isArray(window.AdminDataStore.getArray('performanceRecords', [])) ? window.AdminDataStore.getArray('performanceRecords', []) : [];
+
+        selectedTeamId = resolveCoachTeamId();
+        const selectedTeamName = getTeamName(selectedTeamId) || 'Team';
+        if (coachTeamLabel) coachTeamLabel.textContent = `${selectedTeamName} Coach`;
+        if (perfDateInput && !perfDateInput.value) perfDateInput.value = getTodayIsoDate();
+        populateOpponentOptions();
+        bindFilters();
+        renderRows();
+      });
+    })();
   </script>
 
 </body>

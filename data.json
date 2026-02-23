@@ -251,6 +251,32 @@
     "Accessories",
     "Supplies"
   ],
+  "inventoryRequests": [
+    {
+      "id": "REQ-001",
+      "coach": "Coach Sok",
+      "team": "Team A",
+      "item": "Football",
+      "qty": 10,
+      "trainingDate": "2026-02-24",
+      "purpose": "Ball control and passing drills",
+      "letter": "Dear Inventory Admin,\nI request 10 footballs for Team A training drills on 2026-02-24. The equipment will be used by Team A only and returned after session.\nThank you.\nCoach Sok",
+      "status": "pending",
+      "createdAt": "2026-02-23T09:00:00Z"
+    },
+    {
+      "id": "REQ-002",
+      "coach": "Coach Dara",
+      "team": "Team B",
+      "item": "Jersey",
+      "qty": 5,
+      "trainingDate": "2026-02-25",
+      "purpose": "Practice match preparation",
+      "letter": "Dear Inventory Admin,\nPlease approve 5 jerseys for Team B match preparation on 2026-02-25. This request is for Team B only.\nRegards,\nCoach Dara",
+      "status": "pending",
+      "createdAt": "2026-02-23T10:00:00Z"
+    }
+  ],
   "notifications": [
     {
       "id": "NTF-001",

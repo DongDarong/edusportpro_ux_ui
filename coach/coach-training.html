@@ -11,6 +11,7 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/admin/admin-data-store.js"></script>
 
   <!-- Tailwind Configuration with Custom Brand Colors -->
   <script>
@@ -97,7 +98,10 @@
 
 
     <div class="flex items-center gap-3 md:gap-6">
-      
+      <a href="/coach/coach-calendar.html" aria-label="Calendar" title="Calendar" class="hidden md:inline-flex items-center justify-center p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-hope-dark transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+      </a>
+
       <!-- Notification Bell -->
       <a href="/coach/coach-notifications.html" class="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-hope-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -114,7 +118,7 @@
       <a href="/coach/coach-profile.html" class="flex items-center gap-2 md:gap-3 cursor-pointer pl-2 md:pl-4 border-l border-gray-200 hover:bg-gray-50 transition-colors rounded-r-lg p-1">
         <div class="text-right hidden md:block">
           <div class="text-sm font-semibold text-hope-dark">Coach Sok</div>
-          <div class="text-xs text-gray-500">Team A Coach</div>
+          <div id="coachTeamLabel" class="text-xs text-gray-500">Team A Coach</div>
         </div>
         <div class="w-8 h-8 md:w-9 md:h-9 bg-hope-cyan rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm shrink-0">
           CS
@@ -158,13 +162,13 @@
           
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-teams.html">
             <svg class="w-5 h-5 group-hover:text-hope-lime transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-            My Team
+            Team
           </a>
 
           <!-- Active State: Training (Using RED theme) -->
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg bg-hope-red/10 text-hope-red font-semibold" href="#">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-            Training Sessions
+            Training
           </a>
 
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-att.html">
@@ -181,10 +185,6 @@
              <svg class="w-5 h-5 group-hover:text-hope-yellow transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
             Matches
           </a>
-          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group"  href="/coach/coach-calendar.html">
-                        <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        Calendar
-          </a>
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-tournament.html">
             <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8M12 17v4M7 4h10l-1 6H8L7 4zM5 4h14"></path></svg>
             Tournament
@@ -193,6 +193,10 @@
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-division.html">
             <svg class="w-5 h-5 group-hover:text-hope-lime transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"></path></svg>
             Division
+          </a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-inventory.html">
+            <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            Inventory
           </a>
         </nav>
         <!-- Footer Sign Out -->
@@ -217,11 +221,17 @@
            <h1 class="text-2xl md:text-3xl font-bold text-hope-dark">Training Sessions</h1>
            <p class="text-gray-500 mt-1 text-sm md:text-base">Plan and manage your team's training schedule.</p>
         </div>
-        
-        <button onclick="openModal()" class="w-full md:w-auto bg-hope-red hover:bg-red-600 text-white px-5 py-2.5 rounded-lg shadow-sm transition-all flex items-center justify-center gap-2 font-medium">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-          Add Training
-        </button>
+
+        <div class="w-full md:w-auto flex flex-col sm:flex-row gap-3">
+          <select id="teamSelect" class="w-full sm:w-52 bg-white border border-gray-200 text-hope-dark text-sm rounded-lg focus:ring-hope-red/40 focus:border-hope-red px-3 py-2.5 outline-none">
+            <option value="">Select Team</option>
+          </select>
+
+          <button onclick="openModal()" class="w-full md:w-auto bg-hope-red hover:bg-red-600 text-white px-5 py-2.5 rounded-lg shadow-sm transition-all flex items-center justify-center gap-2 font-medium">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+            Add Training
+          </button>
+        </div>
       </div>
 
 
@@ -373,24 +383,30 @@
         <div class="bg-white px-4 py-5 sm:p-6 space-y-4">
           
           <div class="grid grid-cols-2 gap-4">
+            <div class="col-span-2">
+              <label class="block text-sm font-medium text-gray-700 mb-1">Select Team</label>
+              <select id="trainingTeamInput" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-red focus:ring-hope-red sm:text-sm shadow-sm outline-none">
+                <option value="">Select Team</option>
+              </select>
+            </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
-              <input type="date" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-red focus:ring-hope-red sm:text-sm shadow-sm outline-none">
+              <input id="trainingDateInput" type="date" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-red focus:ring-hope-red sm:text-sm shadow-sm outline-none">
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Time</label>
-              <input type="time" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-red focus:ring-hope-red sm:text-sm shadow-sm outline-none">
+              <input id="trainingTimeInput" type="time" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-red focus:ring-hope-red sm:text-sm shadow-sm outline-none">
             </div>
           </div>
 
           <div>
              <label class="block text-sm font-medium text-gray-700 mb-1">Training Focus</label>
-             <input type="text" placeholder="e.g. Defense, Fitness, Tactical..." class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-red focus:ring-hope-red sm:text-sm shadow-sm outline-none">
+             <input id="trainingFocusInput" type="text" placeholder="e.g. Defense, Fitness, Tactical..." class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-red focus:ring-hope-red sm:text-sm shadow-sm outline-none">
           </div>
 
           <div>
              <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
-             <input type="text" placeholder="e.g. Field A" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-red focus:ring-hope-red sm:text-sm shadow-sm outline-none">
+             <input id="trainingLocationInput" type="text" placeholder="e.g. Field A" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-red focus:ring-hope-red sm:text-sm shadow-sm outline-none">
           </div>
 
         </div>
@@ -447,168 +463,242 @@
       }
     });
 
-    // Training sessions: Save and Delete handlers
+    // Training sessions: JSON-backed (AdminDataStore) CRUD + search
     (function () {
+      const coachName = 'Coach Sok';
+      const coachId = 'C001';
       const saveBtn = document.getElementById('saveSessionBtn');
-      const modal = document.getElementById('trainingModal');
+      const searchInput = document.getElementById('searchInput');
+      const teamSelect = document.getElementById('teamSelect');
       const tbody = document.getElementById('sessionsTbody');
+      const trainingTeamInput = document.getElementById('trainingTeamInput');
+      const dateInput = document.getElementById('trainingDateInput');
+      const timeInput = document.getElementById('trainingTimeInput');
+      const focusInput = document.getElementById('trainingFocusInput');
+      const locationInput = document.getElementById('trainingLocationInput');
+      const teamLabel = document.getElementById('coachTeamLabel');
+      let trainingState = [];
+      let teamsState = [];
+      let teamId = '';
+      let teamName = 'Team';
+      let editingId = null;
 
-      function formatDateDisplay(dateStr) {
-        try {
-          const d = new Date(dateStr);
-          const opts = { year: 'numeric', month: 'short', day: 'numeric' };
-          return d.toLocaleDateString(undefined, opts);
-        } catch (e) {
-          return dateStr;
-        }
+      function normalize(value) {
+        return String(value || '').trim().toLowerCase();
       }
 
-      function createRow(date, time, focus, location) {
-        const tr = document.createElement('tr');
-        tr.className = 'hover:bg-gray-50 transition-colors';
-        tr.innerHTML = `
-          <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-            <div class="text-sm font-bold text-gray-900">${formatDateDisplay(date)}</div>
-            <div class="text-xs text-gray-500">${time}</div>
-          </td>
-          <td class="px-4 md:px-6 py-4 whitespace-nowrap">
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-hope-red/10 text-hope-red">${escapeHtml(focus)}</span>
-          </td>
-          <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-            <div class="flex items-center gap-1">
-              <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-              ${escapeHtml(location)}
-            </div>
-          </td>
-          <td class="px-4 md:px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-            <button data-action="edit" class="text-hope-yellow hover:text-yellow-600 mr-3 transition-colors">
-              <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-            </button>
-            <button data-action="delete" class="text-hope-red hover:text-red-700 transition-colors">
-               <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-            </button>
-          </td>
-        `;
-        return tr;
-      }
-
-      function escapeHtml(s) {
-        return String(s).replace(/[&<>"']/g, function (c) {
-          return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c];
+      function escapeHtml(value) {
+        return String(value).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
         });
       }
 
-      if (saveBtn) {
-        saveBtn.addEventListener('click', () => {
-          const modalEl = document.getElementById('trainingModal');
-          if (!modalEl) return;
-          const dateInput = modalEl.querySelector('input[type="date"]');
-          const timeInput = modalEl.querySelector('input[type="time"]');
-          const focusInput = modalEl.querySelector('input[placeholder*="Defense"]') || modalEl.querySelector('input[type="text"]');
-          const locationInput = modalEl.querySelectorAll('input[type="text"]')[1] || modalEl.querySelector('input[placeholder*="Field"]');
+      function formatDateDisplay(dateStr) {
+        const d = new Date(dateStr);
+        if (Number.isNaN(d.getTime())) return String(dateStr || '-');
+        return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+      }
 
+      function formatTimeDisplay(timeStr) {
+        if (!timeStr) return '-';
+        if (/^\d{2}:\d{2}$/.test(timeStr)) {
+          const [h, m] = timeStr.split(':').map(Number);
+          const d = new Date();
+          d.setHours(h, m, 0, 0);
+          return d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+        }
+        return String(timeStr);
+      }
+
+      function nextTrainingId(items) {
+        const max = items.reduce((acc, item) => {
+          const n = Number(String(item.id || '').replace(/\D/g, ''));
+          return Number.isFinite(n) ? Math.max(acc, n) : acc;
+        }, 0);
+        return `TRS-${String(max + 1).padStart(3, '0')}`;
+      }
+
+      function persist() {
+        if (!window.AdminDataStore) return;
+        window.AdminDataStore.set('trainingSessions', trainingState);
+      }
+
+      function renderTeamOptions() {
+        if (!teamSelect) return;
+        const coachedIds = new Set(
+          trainingState
+            .filter((entry) => String(entry.coachId || '') === coachId)
+            .map((entry) => String(entry.teamId || ''))
+            .filter(Boolean)
+        );
+        const options = teamsState.filter((entry) => coachedIds.size === 0 || coachedIds.has(String(entry.id || '')));
+        teamSelect.innerHTML = options.map((entry) => `<option value="${String(entry.id || '')}">${String(entry.name || '')}</option>`).join('');
+        if (trainingTeamInput) {
+          trainingTeamInput.innerHTML = '<option value="">Select Team</option>' + options.map((entry) => `<option value="${String(entry.id || '')}">${String(entry.name || '')}</option>`).join('');
+        }
+        if (!options.length) {
+          teamSelect.innerHTML = '<option value="">No Team</option>';
+          if (trainingTeamInput) trainingTeamInput.innerHTML = '<option value="">No Team</option>';
+          teamId = '';
+          teamName = 'Team';
+          return;
+        }
+        const hasCurrent = options.some((entry) => String(entry.id || '') === teamId);
+        if (!hasCurrent) teamId = String(options[0].id || '');
+        teamSelect.value = teamId;
+        if (trainingTeamInput) trainingTeamInput.value = teamId;
+        teamName = String((options.find((entry) => String(entry.id || '') === teamId) || {}).name || 'Team');
+      }
+
+      function filteredSessions() {
+        const q = normalize(searchInput ? searchInput.value : '');
+        const mine = trainingState
+          .filter((entry) => String(entry.teamId || '') === teamId)
+          .slice();
+        const sorted = mine.sort((a, b) => {
+          const aKey = `${String(a.date || '')} ${String(a.time || '')}`;
+          const bKey = `${String(b.date || '')} ${String(b.time || '')}`;
+          return aKey.localeCompare(bKey);
+        });
+        if (!q) return sorted;
+        return sorted.filter((entry) => {
+          return normalize(entry.focus).includes(q) || normalize(entry.location).includes(q);
+        });
+      }
+
+      function renderSessions() {
+        if (!tbody) return;
+        const rows = filteredSessions();
+        if (!rows.length) {
+          tbody.innerHTML = '<tr><td colspan="4" class="px-4 md:px-6 py-6 text-center text-sm text-gray-400 italic">No training sessions found.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = rows.map((entry) => `
+          <tr class="hover:bg-gray-50 transition-colors" data-id="${escapeHtml(entry.id || '')}">
+            <td class="px-4 md:px-6 py-4 whitespace-nowrap">
+              <div class="text-sm font-bold text-gray-900">${formatDateDisplay(entry.date)}</div>
+              <div class="text-xs text-gray-500">${formatTimeDisplay(entry.time)}</div>
+            </td>
+            <td class="px-4 md:px-6 py-4 whitespace-nowrap">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-hope-red/10 text-hope-red">${escapeHtml(entry.focus || '-')}</span>
+            </td>
+            <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+              <div class="flex items-center gap-1">
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                ${escapeHtml(entry.location || '-')}
+              </div>
+            </td>
+            <td class="px-4 md:px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              <button data-action="edit" class="text-hope-yellow hover:text-yellow-600 mr-3 transition-colors">
+                <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+              </button>
+              <button data-action="delete" class="text-hope-red hover:text-red-700 transition-colors">
+                <svg class="w-5 h-5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      function clearForm() {
+        if (trainingTeamInput) trainingTeamInput.value = teamId;
+        if (dateInput) dateInput.value = '';
+        if (timeInput) timeInput.value = '';
+        if (focusInput) focusInput.value = '';
+        if (locationInput) locationInput.value = '';
+        editingId = null;
+      }
+
+      if (saveBtn) {
+        saveBtn.addEventListener('click', function () {
+          const selectedTeamId = trainingTeamInput ? String(trainingTeamInput.value || '') : '';
           const date = dateInput ? dateInput.value : '';
           const time = timeInput ? timeInput.value : '';
           const focus = focusInput ? focusInput.value.trim() : '';
           const location = locationInput ? locationInput.value.trim() : '';
-
-          if (!date || !time || !focus || !location) {
+          if (!selectedTeamId || !date || !time || !focus || !location) {
             alert('Please fill in all fields before saving the session.');
             return;
           }
 
-          const displayTime = time; // user-friendly; could format range
-          const newRow = createRow(date, displayTime, focus, location);
-          if (tbody) tbody.prepend(newRow);
-
-          // reset inputs and close modal
-          dateInput.value = '';
-          timeInput.value = '';
-          focusInput.value = '';
-          locationInput.value = '';
-          modal.classList.add('hidden');
-          document.body.style.overflow = 'auto';
+          const payload = { teamId: selectedTeamId, coachId, date, time, focus, location };
+          if (editingId) {
+            const idx = trainingState.findIndex((entry) => String(entry.id || '') === editingId);
+            if (idx >= 0) trainingState[idx] = Object.assign({}, trainingState[idx], payload);
+          } else {
+            trainingState.push(Object.assign({ id: nextTrainingId(trainingState) }, payload));
+          }
+          persist();
+          renderSessions();
+          clearForm();
+          closeModal();
         });
       }
 
-      // Delegate delete/edit actions
-      document.addEventListener('click', (e) => {
+      document.addEventListener('click', function (e) {
         const btn = e.target.closest('button[data-action]');
         if (!btn) return;
         const action = btn.getAttribute('data-action');
         const row = btn.closest('tr');
-        if (action === 'delete' && row) {
-          if (confirm('Are you sure you want to delete this session?')) {
-            row.remove();
-          }
+        const id = row ? String(row.getAttribute('data-id') || '') : '';
+        if (!id) return;
+        const session = trainingState.find((entry) => String(entry.id || '') === id);
+        if (!session) return;
+
+        if (action === 'delete') {
+          if (!confirm('Are you sure you want to delete this session?')) return;
+          trainingState = trainingState.filter((entry) => String(entry.id || '') !== id);
+          persist();
+          renderSessions();
+          return;
         }
-        if (action === 'edit' && row) {
-          // open modal and prefill values for quick edit
-          const modalEl = document.getElementById('trainingModal');
-          if (!modalEl) return;
-          const dateInput = modalEl.querySelector('input[type="date"]');
-          const timeInput = modalEl.querySelector('input[type="time"]');
-          const focusInput = modalEl.querySelector('input[placeholder*="Defense"]') || modalEl.querySelector('input[type="text"]');
-          const locationInput = modalEl.querySelectorAll('input[type="text"]')[1] || modalEl.querySelector('input[placeholder*="Field"]');
 
-          // read values from row
-          const dateText = row.children[0]?.querySelector('.text-sm')?.textContent || '';
-          const timeText = row.children[0]?.querySelector('.text-xs')?.textContent || '';
-          const focusText = row.children[1]?.textContent.trim() || '';
-          const locationText = row.children[2]?.textContent.trim() || '';
-
-          // attempt to parse dateText back to yyyy-mm-dd where possible; otherwise leave blank
-          const parsedDate = new Date(dateText);
-          if (!isNaN(parsedDate)) {
-            const y = parsedDate.getFullYear();
-            const m = String(parsedDate.getMonth() + 1).padStart(2, '0');
-            const d = String(parsedDate.getDate()).padStart(2, '0');
-            dateInput.value = `${y}-${m}-${d}`;
-          }
-          timeInput.value = timeText;
-          focusInput.value = focusText;
-          locationInput.value = locationText;
-
-          // remove the row being edited and open modal to save as new/updated
-          row.remove();
-          modalEl.classList.remove('hidden');
-          document.body.style.overflow = 'hidden';
+        if (action === 'edit') {
+          editingId = id;
+          if (trainingTeamInput) trainingTeamInput.value = String(session.teamId || '');
+          if (dateInput) dateInput.value = String(session.date || '');
+          if (timeInput) timeInput.value = String(session.time || '');
+          if (focusInput) focusInput.value = String(session.focus || '');
+          if (locationInput) locationInput.value = String(session.location || '');
+          openModal();
         }
       });
-    })();
-
-    // Live search for training sessions (filters by focus or location)
-    (function () {
-      const input = document.getElementById('searchInput');
-      const tbody = document.getElementById('sessionsTbody');
-      if (!input || !tbody) return;
 
       function debounce(fn, wait) {
-        let t;
-        return function (...args) {
-          clearTimeout(t);
-          t = setTimeout(() => fn.apply(this, args), wait);
+        let timer = null;
+        return function () {
+          clearTimeout(timer);
+          const args = arguments;
+          timer = setTimeout(function () { fn.apply(null, args); }, wait);
         };
       }
 
-      function normalize(s) { return (s || '').toString().toLowerCase().trim(); }
+      if (searchInput) {
+        searchInput.addEventListener('input', debounce(renderSessions, 180));
+      }
 
-      const onInput = debounce(function (e) {
-        const q = normalize(e.target.value);
-        const rows = Array.from(tbody.querySelectorAll('tr'));
-        if (!q) {
-          rows.forEach(r => r.style.display = '');
-          return;
-        }
-        rows.forEach(r => {
-          const focus = normalize(r.children[1]?.textContent);
-          const location = normalize(r.children[2]?.textContent);
-          const matched = focus.includes(q) || location.includes(q);
-          r.style.display = matched ? '' : 'none';
+      if (teamSelect) {
+        teamSelect.addEventListener('change', function () {
+          teamId = String(teamSelect.value || '');
+          if (trainingTeamInput) trainingTeamInput.value = teamId;
+          const selectedTeam = teamsState.find((entry) => String(entry.id || '') === teamId);
+          teamName = String((selectedTeam && selectedTeam.name) || 'Team');
+          if (teamLabel) teamLabel.textContent = `${teamName} Coach`;
+          renderSessions();
         });
-      }, 180);
+      }
 
-      input.addEventListener('input', onInput);
+      document.addEventListener('DOMContentLoaded', async function () {
+        if (!window.AdminDataStore) return;
+        await window.AdminDataStore.bootstrap();
+        teamsState = window.AdminDataStore.getArray('teams', []);
+        trainingState = window.AdminDataStore.getArray('trainingSessions', []);
+        const fromCoachTraining = trainingState.find((entry) => String(entry.coachId || '') === coachId);
+        teamId = String((fromCoachTraining && fromCoachTraining.teamId) || (teamsState[0] && teamsState[0].id) || '');
+        renderTeamOptions();
+        if (teamLabel) teamLabel.textContent = `${teamName} Coach`;
+        renderSessions();
+      });
     })();
   </script>
 

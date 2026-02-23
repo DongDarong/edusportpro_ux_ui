@@ -11,6 +11,7 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="/admin/admin-data-store.js"></script>
 
   <!-- Tailwind Configuration with Custom Brand Colors -->
   <script>
@@ -33,132 +34,6 @@
         }
       }
     }
-  </script>
-
-  <script>
-    // Match: Save / Edit / Delete script with edit-in-place
-    (function () {
-      const saveBtn = document.getElementById('saveMatchBtn');
-      const modal = document.getElementById('matchModal');
-      const tbody = document.getElementById('upcomingMatchesTbody');
-      let editingRow = null; // when set, Save will update this row instead of creating a new one
-
-      function escapeHtml(s) {
-        return String(s).replace(/[&<>"']/g, function (c) {
-          return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c];
-        });
-      }
-
-      function initials(name) {
-        return (name || '').split(/\s+/).map(w => w[0] || '').slice(0,2).join('').toUpperCase();
-      }
-
-      function formatDateDisplay(dateStr) {
-        try {
-          const d = new Date(dateStr);
-          const opts = { year: 'numeric', month: 'short', day: 'numeric' };
-          return d.toLocaleDateString(undefined, opts);
-        } catch (e) { return dateStr; }
-      }
-
-      function createRowElement(opponent, date, time, location) {
-        const tr = document.createElement('tr');
-        tr.className = 'hover:bg-gray-50 transition-colors';
-        const av = initials(opponent);
-        // Updated padding to be responsive: px-4 md:px-6
-        tr.innerHTML = `\
-          <td class="px-4 md:px-6 py-4 whitespace-nowrap">\
-              <div class="flex items-center gap-3">\
-                <div class="h-10 w-10 rounded-lg bg-hope-cyan/10 flex items-center justify-center text-hope-cyan font-bold border border-white shadow-sm">${escapeHtml(av)}</div>\
-                <span class="font-medium text-hope-dark">${escapeHtml(opponent)}</span>\
-              </div>\
-          </td>\
-          <td class="px-4 md:px-6 py-4 whitespace-nowrap">\
-            <div class="text-sm font-medium text-gray-900">${formatDateDisplay(date)}</div>\
-            <div class="text-xs text-gray-500">${escapeHtml(time)}</div>\
-          </td>\
-          <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-600">\
-            <span class="flex items-center gap-1">\
-               <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>\
-               ${escapeHtml(location)}\
-            </span>\
-          </td>\
-          <td class="px-4 md:px-6 py-4 whitespace-nowrap text-right text-sm font-medium">\
-            <button data-action="edit" class="text-hope-yellow hover:text-yellow-600 mr-3 transition-colors">Edit</button>\
-            <button data-action="delete" class="text-hope-red hover:text-red-700 transition-colors">Delete</button>\
-          </td>\
-        `;
-        return tr;
-      }
-
-      if (saveBtn) {
-        saveBtn.addEventListener('click', () => {
-          if (!modal) return;
-          const inputs = modal.querySelectorAll('input');
-          const opponent = inputs[0]?.value.trim();
-          const date = inputs[1]?.value || '';
-          const time = inputs[2]?.value || '';
-          const location = inputs[3]?.value.trim() || '';
-
-          if (!opponent || !date || !time || !location) {
-            alert('Please fill all match details before saving.');
-            return;
-          }
-
-          if (editingRow) {
-            // update existing row in place
-            const newRow = createRowElement(opponent, date, time, location);
-            editingRow.replaceWith(newRow);
-            editingRow = null;
-          } else {
-            const row = createRowElement(opponent, date, time, location);
-            if (tbody) tbody.prepend(row);
-          }
-
-          // reset and close
-          inputs.forEach(i => i.value = '');
-          modal.classList.add('hidden');
-          document.body.style.overflow = 'auto';
-        });
-      }
-
-      // Delegate edit/delete
-      document.addEventListener('click', (e) => {
-        const btn = e.target.closest('button[data-action]');
-        if (!btn) return;
-        const action = btn.getAttribute('data-action');
-        const row = btn.closest('tr');
-        if (action === 'delete' && row) {
-          if (confirm('Delete this match?')) row.remove();
-          return;
-        }
-        if (action === 'edit' && row && modal) {
-          const inputs = modal.querySelectorAll('input');
-          // read values from row
-          const opponent = row.children[0]?.querySelector('span')?.textContent?.trim() || '';
-          const dateText = row.children[1]?.querySelector('.text-sm')?.textContent || '';
-          const timeText = row.children[1]?.querySelector('.text-xs')?.textContent || '';
-          const locationText = row.children[2]?.textContent?.trim() || '';
-
-          // parse dateText to yyyy-mm-dd if possible
-          const parsed = new Date(dateText);
-          if (!isNaN(parsed)) {
-            const y = parsed.getFullYear();
-            const m = String(parsed.getMonth() + 1).padStart(2, '0');
-            const d = String(parsed.getDate()).padStart(2, '0');
-            inputs[1].value = `${y}-${m}-${d}`;
-          }
-          inputs[0].value = opponent;
-          inputs[2].value = timeText;
-          inputs[3].value = locationText;
-
-          // set editing target and open modal (do not remove row yet)
-          editingRow = row;
-          modal.classList.remove('hidden');
-          document.body.style.overflow = 'hidden';
-        }
-      });
-    })();
   </script>
 
   <style>
@@ -223,7 +98,10 @@
 
 
     <div class="flex items-center gap-3 md:gap-6">
-      
+      <a href="/coach/coach-calendar.html" aria-label="Calendar" title="Calendar" class="hidden md:inline-flex items-center justify-center p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-hope-dark transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+      </a>
+
       <!-- Notification Bell -->
       <a href="/coach/coach-notifications.html" class="relative p-2 hover:bg-gray-100 rounded-full transition-colors">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-hope-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -240,7 +118,7 @@
       <a href="/coach/coach-profile.html" class="flex items-center gap-2 md:gap-3 cursor-pointer pl-2 md:pl-4 border-l border-gray-200 hover:bg-gray-50 transition-colors rounded-r-lg p-1">
         <div class="text-right hidden md:block">
           <div class="text-sm font-semibold text-hope-dark">Coach Sok</div>
-          <div class="text-xs text-gray-500">Team A Coach</div>
+          <div id="coachTeamLabel" class="text-xs text-gray-500">Team Coach</div>
         </div>
         <div class="w-8 h-8 md:w-9 md:h-9 bg-hope-cyan rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm shrink-0">
           CS
@@ -284,12 +162,12 @@
           
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-teams.html">
             <svg class="w-5 h-5 group-hover:text-hope-lime transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-            My Team
+            Team
           </a>
 
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-training.html">
             <svg class="w-5 h-5 group-hover:text-hope-red transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-            Training Sessions
+            Training
           </a>
 
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-att.html">
@@ -308,10 +186,6 @@
             Matches
           </a>
 
-          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group"  href="/coach/coach-calendar.html">
-                        <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        Calendar
-          </a>
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-tournament.html">
             <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 21h8M12 17v4M7 4h10l-1 6H8L7 4zM5 4h14"></path></svg>
             Tournament
@@ -320,6 +194,10 @@
           <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-division.html">
             <svg class="w-5 h-5 group-hover:text-hope-lime transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18"></path></svg>
             Division
+          </a>
+          <a class="flex items-center gap-3 py-2.5 px-4 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-hope-dark transition-colors group" href="/coach/coach-inventory.html">
+            <svg class="w-5 h-5 group-hover:text-hope-cyan transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+            Inventory
           </a>
         </nav>
         <!-- Footer Sign Out -->
@@ -446,7 +324,7 @@
               </tr>
             </thead>
             
-            <tbody class="bg-white divide-y divide-gray-100">
+            <tbody id="pastMatchesTbody" class="bg-white divide-y divide-gray-100">
 
               <tr class="hover:bg-gray-50 transition-colors">
                 <td class="px-4 md:px-6 py-4 whitespace-nowrap font-medium text-gray-700">Team A vs Team C</td>
@@ -510,7 +388,7 @@
   
           <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Home Team</label>
-              <select class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-yellow focus:ring-hope-yellow sm:text-sm shadow-sm outline-none bg-white">
+              <select id="homeTeamSelect" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-yellow focus:ring-hope-yellow sm:text-sm shadow-sm outline-none bg-white">
                 <option value="" disabled selected>Select Home Team</option>
                 <option value="1">Phnom Penh Crown</option>
                 <option value="2">Visakha FC</option>
@@ -520,7 +398,7 @@
 
           <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Away Team</label>
-              <select class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-yellow focus:ring-hope-yellow sm:text-sm shadow-sm outline-none bg-white">
+              <select id="awayTeamSelect" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-yellow focus:ring-hope-yellow sm:text-sm shadow-sm outline-none bg-white">
                 <option value="" disabled selected>Select Away Team</option>
                 <option value="1">Phnom Penh Crown</option>
                 <option value="2">Visakha FC</option>
@@ -531,17 +409,17 @@
           <div class="grid grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
-              <input type="date" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-yellow focus:ring-hope-yellow sm:text-sm shadow-sm outline-none">
+              <input id="matchDateInput" type="date" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-yellow focus:ring-hope-yellow sm:text-sm shadow-sm outline-none">
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Time</label>
-              <input type="time" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-yellow focus:ring-hope-yellow sm:text-sm shadow-sm outline-none">
+              <input id="matchTimeInput" type="time" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-yellow focus:ring-hope-yellow sm:text-sm shadow-sm outline-none">
             </div>
           </div>
 
           <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
-              <input type="text" placeholder="e.g. National Stadium" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-yellow focus:ring-hope-yellow sm:text-sm shadow-sm outline-none">
+              <input id="matchLocationInput" type="text" placeholder="e.g. National Stadium" class="w-full rounded-lg border-gray-300 border p-2.5 text-gray-900 focus:border-hope-yellow focus:ring-hope-yellow sm:text-sm shadow-sm outline-none">
           </div>
 
         </div>
@@ -597,6 +475,277 @@
         closeModal();
       }
     });
+
+    (function () {
+      const coachTeamLabel = document.getElementById('coachTeamLabel');
+      const upcomingMatchesTbody = document.getElementById('upcomingMatchesTbody');
+      const pastMatchesTbody = document.getElementById('pastMatchesTbody');
+      const homeTeamSelect = document.getElementById('homeTeamSelect');
+      const awayTeamSelect = document.getElementById('awayTeamSelect');
+      const matchDateInput = document.getElementById('matchDateInput');
+      const matchTimeInput = document.getElementById('matchTimeInput');
+      const matchLocationInput = document.getElementById('matchLocationInput');
+      const saveMatchBtn = document.getElementById('saveMatchBtn');
+
+      let teamsState = [];
+      let matchesState = [];
+      let selectedTeamId = '';
+      let editingMatchId = null;
+
+      function escapeHtml(value) {
+        return String(value == null ? '' : value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function initials(name) {
+        return String(name || '').split(/\s+/).map((w) => w[0] || '').slice(0, 2).join('').toUpperCase();
+      }
+
+      function getTeamName(teamId) {
+        const team = teamsState.find((item) => String(item.id || '') === String(teamId || ''));
+        return team ? String(team.name || team.id) : 'Unknown Team';
+      }
+
+      function formatDateDisplay(dateIsoOrDateTime) {
+        const date = new Date(String(dateIsoOrDateTime || ''));
+        if (Number.isNaN(date.getTime())) return '-';
+        return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+      }
+
+      function formatTimeDisplay(dateIsoOrDateTime) {
+        const date = new Date(String(dateIsoOrDateTime || ''));
+        if (Number.isNaN(date.getTime())) return '-';
+        return date.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+      }
+
+      function toDateTimeValue(date, time) {
+        if (!date || !time) return '';
+        return `${date}T${time}`;
+      }
+
+      function splitDateTime(dateTime) {
+        const dt = new Date(String(dateTime || ''));
+        if (Number.isNaN(dt.getTime())) return { date: '', time: '' };
+        const y = dt.getFullYear();
+        const m = String(dt.getMonth() + 1).padStart(2, '0');
+        const d = String(dt.getDate()).padStart(2, '0');
+        const hh = String(dt.getHours()).padStart(2, '0');
+        const mm = String(dt.getMinutes()).padStart(2, '0');
+        return { date: `${y}-${m}-${d}`, time: `${hh}:${mm}` };
+      }
+
+      function nextMatchId() {
+        const max = matchesState.reduce((acc, item) => {
+          const n = Number(String(item.id || '').replace(/\D/g, ''));
+          return Number.isFinite(n) ? Math.max(acc, n) : acc;
+        }, 0);
+        return `M${String(max + 1).padStart(3, '0')}`;
+      }
+
+      function populateTeamSelectOptions() {
+        const optionHtml = '<option value="">Select Team</option>' + teamsState.map((team) => {
+          const id = String(team.id || '');
+          const name = String(team.name || id);
+          return `<option value="${escapeHtml(id)}">${escapeHtml(name)}</option>`;
+        }).join('');
+        if (homeTeamSelect) homeTeamSelect.innerHTML = optionHtml;
+        if (awayTeamSelect) awayTeamSelect.innerHTML = optionHtml;
+      }
+
+      function relevantMatches() {
+        return matchesState.filter((m) => String(m.homeTeamId || '') === selectedTeamId || String(m.awayTeamId || '') === selectedTeamId);
+      }
+
+      function renderUpcomingMatches() {
+        const now = new Date();
+        const rows = relevantMatches()
+          .filter((m) => {
+            const dt = new Date(String(m.dateTime || ''));
+            return !Number.isNaN(dt.getTime()) && dt >= now;
+          })
+          .sort((a, b) => String(a.dateTime || '').localeCompare(String(b.dateTime || '')));
+
+        if (!rows.length) {
+          upcomingMatchesTbody.innerHTML = '<tr><td colspan="4" class="px-4 md:px-6 py-6 text-sm text-gray-500">No upcoming matches.</td></tr>';
+          return;
+        }
+
+        upcomingMatchesTbody.innerHTML = rows.map((match) => {
+          const opponentId = String(match.homeTeamId || '') === selectedTeamId ? String(match.awayTeamId || '') : String(match.homeTeamId || '');
+          const opponent = getTeamName(opponentId);
+          return `
+            <tr class="hover:bg-gray-50 transition-colors" data-match-id="${escapeHtml(match.id)}">
+              <td class="px-4 md:px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center gap-3">
+                  <div class="h-10 w-10 rounded-lg bg-hope-cyan/10 flex items-center justify-center text-hope-cyan font-bold border border-white shadow-sm">${escapeHtml(initials(opponent))}</div>
+                  <span class="font-medium text-hope-dark">${escapeHtml(opponent)}</span>
+                </div>
+              </td>
+              <td class="px-4 md:px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-medium text-gray-900">${formatDateDisplay(match.dateTime)}</div>
+                <div class="text-xs text-gray-500">${formatTimeDisplay(match.dateTime)}</div>
+              </td>
+              <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                <span class="flex items-center gap-1">
+                  <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                  ${escapeHtml(match.venue || '-')}
+                </span>
+              </td>
+              <td class="px-4 md:px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <button data-action="edit" class="text-hope-yellow hover:text-yellow-600 mr-3 transition-colors">Edit</button>
+                <button data-action="delete" class="text-hope-red hover:text-red-700 transition-colors">Delete</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      function renderPastMatches() {
+        const now = new Date();
+        const rows = relevantMatches()
+          .filter((m) => {
+            const dt = new Date(String(m.dateTime || ''));
+            return !Number.isNaN(dt.getTime()) && dt < now;
+          })
+          .sort((a, b) => String(b.dateTime || '').localeCompare(String(a.dateTime || '')));
+
+        if (!rows.length) {
+          pastMatchesTbody.innerHTML = '<tr><td colspan="4" class="px-4 md:px-6 py-6 text-sm text-gray-500">No past matches.</td></tr>';
+          return;
+        }
+
+        pastMatchesTbody.innerHTML = rows.map((match) => {
+          const home = getTeamName(match.homeTeamId);
+          const away = getTeamName(match.awayTeamId);
+          const scoreKnown = Number.isFinite(Number(match.homeScore)) && Number.isFinite(Number(match.awayScore));
+          const score = scoreKnown ? `${Number(match.homeScore)} - ${Number(match.awayScore)}` : '-';
+          return `
+            <tr class="hover:bg-gray-50 transition-colors">
+              <td class="px-4 md:px-6 py-4 whitespace-nowrap font-medium text-gray-700">${escapeHtml(`${home} vs ${away}`)}</td>
+              <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formatDateDisplay(match.dateTime)}</td>
+              <td class="px-4 md:px-6 py-4 whitespace-nowrap">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-gray-100 text-gray-700">${escapeHtml(score)}</span>
+              </td>
+              <td class="px-4 md:px-6 py-4 whitespace-nowrap text-sm text-gray-500">${escapeHtml(match.venue || '-')}</td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      function renderAllMatches() {
+        renderUpcomingMatches();
+        renderPastMatches();
+      }
+
+      function clearModalForm() {
+        editingMatchId = null;
+        if (homeTeamSelect) homeTeamSelect.value = selectedTeamId;
+        if (awayTeamSelect) awayTeamSelect.value = '';
+        if (matchDateInput) matchDateInput.value = '';
+        if (matchTimeInput) matchTimeInput.value = '';
+        if (matchLocationInput) matchLocationInput.value = '';
+      }
+
+      function loadMatchToForm(matchId) {
+        const match = matchesState.find((item) => String(item.id || '') === String(matchId || ''));
+        if (!match) return;
+        editingMatchId = String(match.id || '');
+        if (homeTeamSelect) homeTeamSelect.value = String(match.homeTeamId || '');
+        if (awayTeamSelect) awayTeamSelect.value = String(match.awayTeamId || '');
+        const dt = splitDateTime(match.dateTime);
+        if (matchDateInput) matchDateInput.value = dt.date;
+        if (matchTimeInput) matchTimeInput.value = dt.time;
+        if (matchLocationInput) matchLocationInput.value = String(match.venue || '');
+      }
+
+      function saveMatches() {
+        window.AdminDataStore.set('matches', matchesState);
+      }
+
+      function saveModalMatch() {
+        const homeTeamId = String((homeTeamSelect && homeTeamSelect.value) || '');
+        const awayTeamId = String((awayTeamSelect && awayTeamSelect.value) || '');
+        const date = String((matchDateInput && matchDateInput.value) || '');
+        const time = String((matchTimeInput && matchTimeInput.value) || '');
+        const venue = String((matchLocationInput && matchLocationInput.value) || '').trim();
+
+        if (!homeTeamId || !awayTeamId || !date || !time || !venue) {
+          alert('Please fill all match details before saving.');
+          return;
+        }
+        if (homeTeamId === awayTeamId) {
+          alert('Home and away teams must be different.');
+          return;
+        }
+
+        const payload = {
+          competitionType: 'external',
+          externalTournamentName: 'Coach Scheduled',
+          homeTeamId,
+          awayTeamId,
+          dateTime: toDateTimeValue(date, time),
+          venue,
+          status: 'Scheduled',
+          homeScore: null,
+          awayScore: null
+        };
+
+        if (editingMatchId) {
+          const idx = matchesState.findIndex((item) => String(item.id || '') === editingMatchId);
+          if (idx >= 0) matchesState[idx] = Object.assign({}, matchesState[idx], payload);
+        } else {
+          matchesState.push(Object.assign({ id: nextMatchId() }, payload));
+        }
+        saveMatches();
+        renderAllMatches();
+        closeModal();
+        clearModalForm();
+      }
+
+      function resolveCoachTeamId() {
+        const fromMatch = matchesState.find((m) => String(m.homeTeamId || ''));
+        return String((fromMatch && fromMatch.homeTeamId) || (teamsState[0] && teamsState[0].id) || '');
+      }
+
+      upcomingMatchesTbody.addEventListener('click', function (event) {
+        const btn = event.target.closest('button[data-action]');
+        if (!btn) return;
+        const row = btn.closest('tr[data-match-id]');
+        const matchId = row ? String(row.getAttribute('data-match-id') || '') : '';
+        if (!matchId) return;
+        const action = String(btn.getAttribute('data-action') || '');
+
+        if (action === 'delete') {
+          if (!confirm('Delete this match?')) return;
+          matchesState = matchesState.filter((item) => String(item.id || '') !== matchId);
+          saveMatches();
+          renderAllMatches();
+          return;
+        }
+
+        if (action === 'edit') {
+          loadMatchToForm(matchId);
+          openModal();
+        }
+      });
+
+      saveMatchBtn.addEventListener('click', saveModalMatch);
+
+      document.addEventListener('DOMContentLoaded', async function () {
+        await window.AdminDataStore.bootstrap();
+        teamsState = window.AdminDataStore.getArray('teams', []);
+        matchesState = window.AdminDataStore.getArray('matches', []);
+        populateTeamSelectOptions();
+        selectedTeamId = resolveCoachTeamId();
+        if (coachTeamLabel) coachTeamLabel.textContent = `${getTeamName(selectedTeamId)} Coach`;
+        clearModalForm();
+        renderAllMatches();
+      });
+    })();
   </script>
 
 </body>
