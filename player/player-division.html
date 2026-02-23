@@ -59,12 +59,31 @@
     <main class="flex-1 p-4 md:p-8 overflow-y-auto w-full">
       <div class="mb-6"><h1 class="text-2xl md:text-3xl font-bold text-hope-dark">Division Information</h1><p class="text-gray-500 mt-1 text-sm md:text-base">Read-only division standings for player reference.</p></div>
       <div class="mb-6 rounded-xl border border-hope-cyan/30 bg-hope-cyan/5 p-4"><span class="inline-flex items-center rounded-full bg-white border border-hope-cyan/30 text-hope-cyan text-xs font-semibold px-3 py-1">View Only</span><p class="text-sm text-gray-600 mt-2">You can check standings and group tables only.</p></div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        <div class="rounded-xl border border-gray-200 bg-white p-4">
+          <p class="text-xs uppercase tracking-wide text-gray-500 font-semibold">Division</p>
+          <p id="playerDivisionName" class="mt-2 text-xl font-bold text-hope-dark">-</p>
+        </div>
+        <div class="rounded-xl border border-gray-200 bg-white p-4">
+          <p class="text-xs uppercase tracking-wide text-gray-500 font-semibold">Teams</p>
+          <p id="playerDivisionTeamCount" class="mt-2 text-xl font-bold text-hope-dark">0</p>
+        </div>
+        <div class="rounded-xl border border-gray-200 bg-white p-4">
+          <p class="text-xs uppercase tracking-wide text-gray-500 font-semibold">Matches Tracked</p>
+          <p id="playerDivisionMatchCount" class="mt-2 text-xl font-bold text-hope-dark">0</p>
+        </div>
+      </div>
       <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 md:p-6">
-        <h2 class="text-xl font-bold text-hope-dark mb-4">Division Standings</h2>
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-xl font-bold text-hope-dark">Division Standings</h2>
+          <span class="text-xs text-gray-500">Sorted by points</span>
+        </div>
         <div class="overflow-x-auto">
           <table class="min-w-full text-sm">
-            <thead><tr class="bg-gray-50 border-b border-gray-200"><th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase">Team</th><th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase">Group</th><th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase">Played</th><th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase">Points</th></tr></thead>
-            <tbody class="divide-y divide-gray-100"><tr><td class="py-3 px-4">Team A</td><td class="py-3 px-4">A</td><td class="py-3 px-4">5</td><td class="py-3 px-4 font-semibold">13</td></tr><tr><td class="py-3 px-4">Team B</td><td class="py-3 px-4">A</td><td class="py-3 px-4">5</td><td class="py-3 px-4 font-semibold">10</td></tr><tr><td class="py-3 px-4">Team E</td><td class="py-3 px-4">B</td><td class="py-3 px-4">5</td><td class="py-3 px-4 font-semibold">11</td></tr><tr><td class="py-3 px-4">Team I</td><td class="py-3 px-4">C</td><td class="py-3 px-4">5</td><td class="py-3 px-4 font-semibold">12</td></tr></tbody>
+            <thead><tr class="bg-gray-50 border-b border-gray-200"><th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase">#</th><th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase">Team</th><th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase">Division</th><th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase">Played</th><th class="py-3 px-4 text-left text-xs font-semibold text-gray-500 uppercase">Points</th></tr></thead>
+            <tbody id="playerDivisionTbody" class="divide-y divide-gray-100">
+              <tr><td colspan="5" class="py-4 px-4 text-center text-gray-500">Loading division standings...</td></tr>
+            </tbody>
           </table>
         </div>
       </div>

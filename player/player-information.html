@@ -101,7 +101,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-hope-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
         </svg>
-        <span class="absolute top-1 right-1 bg-hope-red text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">3</span>
+        <span id="notificationBadge" class="absolute top-1 right-1 bg-hope-red text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">0</span>
       </a>
 
       <select class="bg-gray-50 border border-gray-200 text-hope-dark text-sm rounded-lg focus:ring-hope-cyan focus:border-hope-cyan block px-2 py-1.5 md:px-3 outline-none">
@@ -111,10 +111,10 @@
 
       <a href="/player/player-profile.html" class="flex items-center gap-2 md:gap-3 cursor-pointer pl-2 md:pl-4 border-l border-gray-200 hover:bg-gray-50 transition-colors rounded-r-lg p-1">
         <div class="text-right hidden md:block">
-          <div class="text-sm font-semibold text-hope-dark">Player Dara</div>
-          <div class="text-xs text-gray-500">Defender - Team A</div>
+          <div id="navPlayerName" class="text-sm font-semibold text-hope-dark">Player</div>
+          <div id="navPlayerRole" class="text-xs text-gray-500">Player - Team</div>
         </div>
-        <div class="w-8 h-8 md:w-9 md:h-9 bg-hope-yellow rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm shrink-0">
+        <div id="navPlayerInitials" class="w-8 h-8 md:w-9 md:h-9 bg-hope-yellow rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm shrink-0">
           PD
         </div>
       </a>
@@ -197,28 +197,28 @@
         <div class="px-4 md:px-8 pb-4 md:pb-8 flex flex-col md:flex-row items-center md:items-end gap-4 md:gap-6 -mt-10 md:-mt-12 relative z-10">
             <!-- Avatar -->
             <div class="flex-shrink-0">
-                <div class="w-28 h-28 md:w-32 md:h-32 rounded-full border-4 border-white bg-white shadow-md overflow-hidden flex items-center justify-center bg-hope-yellow text-white text-3xl md:text-4xl font-bold">
+                <div id="infoPlayerInitials" class="w-28 h-28 md:w-32 md:h-32 rounded-full border-4 border-white bg-white shadow-md overflow-hidden flex items-center justify-center bg-hope-yellow text-white text-3xl md:text-4xl font-bold">
                   PD
                 </div>
             </div>
 
             <!-- Info -->
             <div class="flex-1 text-center md:text-left pt-2 md:pt-12 w-full">
-              <h2 class="text-2xl md:text-3xl font-bold text-gray-900">Dara Chan</h2>
-              <p class="text-gray-600 font-medium text-sm md:text-base">Team A — Defender</p>
+              <h2 id="infoPlayerName" class="text-2xl md:text-3xl font-bold text-gray-900">Player Name</h2>
+              <p id="infoTeamPosition" class="text-gray-600 font-medium text-sm md:text-base">Team - Position</p>
               
               <div class="flex flex-wrap justify-center md:justify-start gap-3 mt-3">
                   <div class="bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-200 text-center flex-1 min-w-[80px] max-w-full">
                      <span class="text-xs text-gray-500 uppercase font-bold tracking-wide block">Age</span>
-                     <span class="font-bold text-gray-900">23</span>
+                     <span id="infoAge" class="font-bold text-gray-900">-</span>
                   </div>
                   <div class="bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-200 text-center flex-1 min-w-[80px] max-w-full">
                      <span class="text-xs text-gray-500 uppercase font-bold tracking-wide block">Jersey</span>
-                     <span class="font-bold text-gray-900">#4</span>
+                     <span id="infoJersey" class="font-bold text-gray-900">#-</span>
                   </div>
                   <div class="bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-200 text-center flex-1 min-w-[80px] max-w-full">
                      <span class="text-xs text-gray-500 uppercase font-bold tracking-wide block">Joined</span>
-                     <span class="font-bold text-gray-900">2023</span>
+                     <span id="infoJoined" class="font-bold text-gray-900">-</span>
                   </div>
               </div>
             </div>
@@ -235,19 +235,19 @@
              <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 md:gap-x-8 gap-y-4 md:gap-y-6">
                <div>
                  <p class="text-sm font-medium text-gray-500">Full Name</p>
-                 <p class="font-semibold text-gray-900 mt-1">Dara Chan</p>
+                 <p id="personalName" class="font-semibold text-gray-900 mt-1">-</p>
                </div>
                <div>
                  <p class="text-sm font-medium text-gray-500">Email Address</p>
-                 <p class="font-semibold text-gray-900 mt-1">dara@example.com</p>
+                 <p id="personalEmail" class="font-semibold text-gray-900 mt-1">-</p>
                </div>
                <div>
                  <p class="text-sm font-medium text-gray-500">Phone Number</p>
-                 <p class="font-semibold text-gray-900 mt-1">098 765 432</p>
+                 <p id="personalPhone" class="font-semibold text-gray-900 mt-1">-</p>
                </div>
                <div>
                  <p class="text-sm font-medium text-gray-500">Address</p>
-                 <p class="font-semibold text-gray-900 mt-1">Phnom Penh, Cambodia</p>
+                 <p id="personalAddress" class="font-semibold text-gray-900 mt-1">-</p>
                </div>
              </div>
            </div>
@@ -267,7 +267,7 @@
                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                  </div>
                  <p class="text-gray-500 text-xs font-bold uppercase tracking-wider">Matches</p>
-                 <h3 class="text-xl md:text-2xl font-bold text-gray-900 mt-1">18</h3>
+                 <h3 id="statMatches" class="text-xl md:text-2xl font-bold text-gray-900 mt-1">0</h3>
                </div>
 
                <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 text-center hover:border-green-300 transition-colors">
@@ -275,7 +275,7 @@
                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                  </div>
                  <p class="text-gray-500 text-xs font-bold uppercase tracking-wider">Goals</p>
-                 <h3 class="text-xl md:text-2xl font-bold text-gray-900 mt-1">3</h3>
+                 <h3 id="statGoals" class="text-xl md:text-2xl font-bold text-gray-900 mt-1">0</h3>
                </div>
 
                <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 text-center hover:border-yellow-300 transition-colors">
@@ -283,7 +283,7 @@
                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                  </div>
                  <p class="text-gray-500 text-xs font-bold uppercase tracking-wider">Assists</p>
-                 <h3 class="text-xl md:text-2xl font-bold text-gray-900 mt-1">5</h3>
+                 <h3 id="statAssists" class="text-xl md:text-2xl font-bold text-gray-900 mt-1">0</h3>
                </div>
 
                <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 text-center hover:border-red-300 transition-colors">
@@ -291,7 +291,7 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                  </div>
                  <p class="text-gray-500 text-xs font-bold uppercase tracking-wider">Avg Rating</p>
-                 <h3 class="text-xl md:text-2xl font-bold text-gray-900 mt-1">7.8</h3>
+                 <h3 id="statRating" class="text-xl md:text-2xl font-bold text-gray-900 mt-1">0.0</h3>
                </div>
 
              </div>
@@ -303,11 +303,11 @@
       <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-8">
            <div class="p-4 md:p-5 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
              <h3 class="font-bold text-base md:text-lg text-hope-dark">Team Information</h3>
-             <span class="text-xs bg-hope-cyan/10 text-hope-cyan px-2 py-1 rounded font-semibold border border-hope-cyan/20">Team A</span>
+             <span id="teamInfoTag" class="text-xs bg-hope-cyan/10 text-hope-cyan px-2 py-1 rounded font-semibold border border-hope-cyan/20">Team</span>
            </div>
            
            <div class="p-4 md:p-5 border-b border-gray-100">
-             <p class="text-sm text-gray-600"><strong>Coach:</strong> Mr. Vuthy</p>
+             <p class="text-sm text-gray-600"><strong>Coach:</strong> <span id="teamCoachName">-</span></p>
            </div>
 
            <div class="overflow-x-auto">
@@ -319,36 +319,7 @@
                      <th class="px-4 md:px-6 py-4 font-medium whitespace-nowrap">Jersey</th>
                    </tr>
                </thead>
-               <tbody class="divide-y divide-gray-100">
-
-                   <tr class="hover:bg-gray-50 transition-colors">
-                     <td class="px-4 md:px-6 py-4 font-medium text-gray-900 flex items-center gap-3 whitespace-nowrap">
-                        <div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 text-xs font-bold">RS</div>
-                        Rina Seng
-                     </td>
-                     <td class="px-4 md:px-6 py-4 text-gray-600 whitespace-nowrap">Forward</td>
-                     <td class="px-4 md:px-6 py-4 font-mono font-semibold text-gray-900 whitespace-nowrap">#9</td>
-                   </tr>
-
-                   <tr class="hover:bg-gray-50 transition-colors">
-                     <td class="px-4 md:px-6 py-4 font-medium text-gray-900 flex items-center gap-3 whitespace-nowrap">
-                        <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 text-xs font-bold">SR</div>
-                        Sok Rith
-                     </td>
-                     <td class="px-4 md:px-6 py-4 text-gray-600 whitespace-nowrap">Midfielder</td>
-                     <td class="px-4 md:px-6 py-4 font-mono font-semibold text-gray-900 whitespace-nowrap">#6</td>
-                   </tr>
-
-                   <tr class="bg-blue-50/50 hover:bg-blue-50 transition-colors">
-                     <td class="px-4 md:px-6 py-4 font-medium text-hope-cyan flex items-center gap-3 whitespace-nowrap">
-                        <div class="w-8 h-8 rounded-full bg-hope-cyan flex items-center justify-center text-white text-xs font-bold">DC</div>
-                        Dara Chan (You)
-                     </td>
-                     <td class="px-4 md:px-6 py-4 text-gray-600 whitespace-nowrap">Defender</td>
-                     <td class="px-4 md:px-6 py-4 font-mono font-semibold text-gray-900 whitespace-nowrap">#4</td>
-                   </tr>
-
-               </tbody>
+               <tbody id="teamRosterBody" class="divide-y divide-gray-100"></tbody>
              </table>
            </div>
       </div>
@@ -378,6 +349,173 @@
         body.style.overflow = 'auto';
       }
     }
+  </script>
+  <script>
+    (function () {
+      function normalizeText(value) {
+        return String(value || '').trim().toLowerCase();
+      }
+
+      function escapeHtml(value) {
+        return String(value || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function initials(name) {
+        const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+        if (!parts.length) return 'PL';
+        return parts.slice(0, 2).map(function (part) { return part.charAt(0).toUpperCase(); }).join('');
+      }
+
+      function resolveCurrentPlayer(users, players) {
+        const raw = sessionStorage.getItem('edusportpro_current_user') || localStorage.getItem('edusportpro_current_user') || '';
+        let current = null;
+        try { current = raw ? JSON.parse(raw) : null; } catch (_) { current = null; }
+        const currentId = normalizeText(current && current.id);
+        const currentEmail = normalizeText(current && current.email);
+
+        if (currentId || currentEmail) {
+          const matched = players.find(function (p) {
+            return normalizeText(p.id) === currentId || normalizeText(p.email) === currentEmail;
+          });
+          if (matched) return matched;
+
+          const user = users.find(function (u) {
+            return normalizeText(u.id) === currentId || normalizeText(u.email) === currentEmail;
+          });
+          if (user) {
+            const mapped = players.find(function (p) {
+              return normalizeText(p.email) === normalizeText(user.email) || normalizeText(p.name) === normalizeText(user.name);
+            });
+            if (mapped) return mapped;
+          }
+        }
+
+        return players[0] || null;
+      }
+
+      function calcAge(dateOfBirth) {
+        const dob = new Date(dateOfBirth || '');
+        if (Number.isNaN(dob.getTime())) return '-';
+        const now = new Date();
+        let age = now.getFullYear() - dob.getFullYear();
+        const m = now.getMonth() - dob.getMonth();
+        if (m < 0 || (m === 0 && now.getDate() < dob.getDate())) age -= 1;
+        return age > 0 ? String(age) : '-';
+      }
+
+      function setText(id, value) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.textContent = value;
+      }
+
+      function getJoinedYear(player) {
+        const fromSeason = String(player.season || '').match(/\d{4}/);
+        if (fromSeason && fromSeason[0]) return fromSeason[0];
+        const fromReg = String(player.registrationUntil || '').match(/\d{4}/);
+        return fromReg && fromReg[0] ? fromReg[0] : '-';
+      }
+
+      document.addEventListener('DOMContentLoaded', async function () {
+        if (!window.AdminDataStore) return;
+        await window.AdminDataStore.bootstrap();
+
+        const users = window.AdminDataStore.getArray('users', []);
+        const players = window.AdminDataStore.getArray('players', []);
+        const teams = window.AdminDataStore.getArray('teams', []);
+        const matches = window.AdminDataStore.getArray('matches', []);
+        const performance = window.AdminDataStore.getArray('performanceRecords', []);
+        const trainingSessions = window.AdminDataStore.getArray('trainingSessions', []);
+        const coaches = window.AdminDataStore.getArray('coaches', []);
+        const notifications = window.AdminDataStore.getArray('notifications', []);
+
+        const player = resolveCurrentPlayer(users, players);
+        if (!player) return;
+
+        const team = teams.find(function (entry) { return String(entry.id || '') === String(player.teamId || ''); }) || null;
+        const teamName = (team && team.name) ? team.name : 'Unassigned Team';
+        const position = player.position || 'Player';
+        const teamPlayers = players.filter(function (entry) { return String(entry.teamId || '') === String(player.teamId || ''); });
+        const playerPerf = performance.filter(function (entry) { return String(entry.playerId || '') === String(player.id || ''); });
+        const teamMatchCount = matches.filter(function (entry) {
+          const home = String(entry.homeTeamId || '');
+          const away = String(entry.awayTeamId || '');
+          const teamId = String(player.teamId || '');
+          return home === teamId || away === teamId;
+        }).length;
+        const goals = playerPerf.reduce(function (sum, row) { return sum + Number(row.goals || 0); }, 0);
+        const assists = playerPerf.reduce(function (sum, row) { return sum + Number(row.assists || 0); }, 0);
+        const ratings = playerPerf.map(function (row) { return Number(row.rating || 0); }).filter(Number.isFinite);
+        const avgRating = ratings.length ? (ratings.reduce(function (a, b) { return a + b; }, 0) / ratings.length).toFixed(1) : '0.0';
+        const notificationUnread = notifications.filter(function (entry) { return !entry.read; }).length;
+        const latestSession = trainingSessions
+          .filter(function (session) { return String(session.teamId || '') === String(player.teamId || ''); })
+          .sort(function (a, b) { return new Date(b.date || 0) - new Date(a.date || 0); })[0];
+        const coach = latestSession ? coaches.find(function (entry) { return String(entry.id || '') === String(latestSession.coachId || ''); }) : null;
+        const playerInitials = initials(player.name || player.id || 'Player');
+
+        setText('notificationBadge', String(notificationUnread));
+        const badge = document.getElementById('notificationBadge');
+        if (badge) badge.classList.toggle('hidden', notificationUnread === 0);
+
+        setText('navPlayerName', player.name || 'Player');
+        setText('navPlayerRole', position + ' - ' + teamName);
+        setText('navPlayerInitials', playerInitials);
+
+        setText('infoPlayerInitials', playerInitials);
+        setText('infoPlayerName', player.name || 'Player');
+        const infoTeamPosition = document.getElementById('infoTeamPosition');
+        if (infoTeamPosition) {
+          infoTeamPosition.textContent = teamName + ' - ' + position;
+        } else {
+          const infoName = document.getElementById('infoPlayerName');
+          if (infoName && infoName.nextElementSibling) {
+            infoName.nextElementSibling.textContent = teamName + ' - ' + position;
+          }
+        }
+        setText('infoAge', calcAge(player.dateOfBirth));
+        setText('infoJersey', '#-');
+        setText('infoJoined', getJoinedYear(player));
+
+        setText('personalName', player.name || '-');
+        setText('personalEmail', player.email || '-');
+        setText('personalPhone', player.phone || '-');
+        setText('personalAddress', player.address || '-');
+
+        setText('statMatches', String(teamMatchCount));
+        setText('statGoals', String(goals));
+        setText('statAssists', String(assists));
+        setText('statRating', avgRating);
+
+        setText('teamInfoTag', teamName);
+        setText('teamCoachName', (coach && coach.name) ? coach.name : '-');
+
+        const rosterBody = document.getElementById('teamRosterBody');
+        if (rosterBody) {
+          rosterBody.innerHTML = teamPlayers.length ? teamPlayers.map(function (entry, index) {
+            const isCurrent = String(entry.id || '') === String(player.id || '');
+            const rowClass = isCurrent ? 'bg-blue-50/50 hover:bg-blue-50 transition-colors' : 'hover:bg-gray-50 transition-colors';
+            const nameClass = isCurrent ? 'text-hope-cyan' : 'text-gray-900';
+            const avatarBg = isCurrent ? 'bg-hope-cyan text-white' : (index % 2 === 0 ? 'bg-indigo-100 text-indigo-600' : 'bg-purple-100 text-purple-600');
+            const label = escapeHtml(String(entry.name || 'Player')) + (isCurrent ? ' (You)' : '');
+            return '' +
+              '<tr class="' + rowClass + '">' +
+                '<td class="px-4 md:px-6 py-4 font-medium ' + nameClass + ' flex items-center gap-3 whitespace-nowrap">' +
+                  '<div class="w-8 h-8 rounded-full ' + avatarBg + ' flex items-center justify-center text-xs font-bold">' + escapeHtml(initials(entry.name || entry.id || 'P')) + '</div>' +
+                  label +
+                '</td>' +
+                '<td class="px-4 md:px-6 py-4 text-gray-600 whitespace-nowrap">' + escapeHtml(String(entry.position || '-')) + '</td>' +
+                '<td class="px-4 md:px-6 py-4 font-mono font-semibold text-gray-900 whitespace-nowrap">#-</td>' +
+              '</tr>';
+          }).join('') : '<tr><td colspan="3" class="px-4 md:px-6 py-4 text-gray-500">No team roster available.</td></tr>';
+        }
+      });
+    })();
   </script>
 
 </body>

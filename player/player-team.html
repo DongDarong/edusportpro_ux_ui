@@ -101,7 +101,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-hope-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
         </svg>
-        <span class="absolute top-1 right-1 bg-hope-red text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">3</span>
+        <span id="notificationBadge" class="absolute top-1 right-1 bg-hope-red text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">0</span>
       </a>
 
       <select class="bg-gray-50 border border-gray-200 text-hope-dark text-sm rounded-lg focus:ring-hope-cyan focus:border-hope-cyan block px-2 py-1.5 md:px-3 outline-none">
@@ -111,10 +111,10 @@
 
       <a href="/player/player-profile.html" class="flex items-center gap-2 md:gap-3 cursor-pointer pl-2 md:pl-4 border-l border-gray-200 hover:bg-gray-50 transition-colors rounded-r-lg p-1">
         <div class="text-right hidden md:block">
-          <div class="text-sm font-semibold text-hope-dark">Player Dara</div>
-          <div class="text-xs text-gray-500">Defender - Team A</div>
+          <div id="navPlayerName" class="text-sm font-semibold text-hope-dark">Player</div>
+          <div id="navPlayerRole" class="text-xs text-gray-500">Player - Team</div>
         </div>
-        <div class="w-8 h-8 md:w-9 md:h-9 bg-hope-yellow rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm shrink-0">
+        <div id="navPlayerInitials" class="w-8 h-8 md:w-9 md:h-9 bg-hope-yellow rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm shrink-0">
           PD
         </div>
       </a>
@@ -198,12 +198,12 @@
              
              <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 relative z-10">
                 <div class="flex items-center gap-4">
-                   <div class="w-14 h-14 md:w-16 md:h-16 bg-white rounded-xl shadow-sm border border-gray-100 flex items-center justify-center text-xl md:text-2xl font-bold text-hope-dark flex-shrink-0">
+                   <div id="teamBadge" class="w-14 h-14 md:w-16 md:h-16 bg-white rounded-xl shadow-sm border border-gray-100 flex items-center justify-center text-xl md:text-2xl font-bold text-hope-dark flex-shrink-0">
                       TA
                    </div>
                    <div>
-                      <h2 class="text-xl md:text-2xl font-bold text-hope-dark">Team A</h2>
-                      <p class="text-gray-500 text-sm">Main Squad</p>
+                      <h2 id="teamNameHeading" class="text-xl md:text-2xl font-bold text-hope-dark">Team</h2>
+                      <p id="teamDivisionLabel" class="text-gray-500 text-sm">Division</p>
                    </div>
                 </div>
                 <div class="mt-4 md:mt-0 bg-white px-4 py-2 rounded-lg border border-gray-100 shadow-sm self-stretch flex items-center justify-center">
@@ -211,7 +211,7 @@
                     <span class="text-xs text-gray-400 font-semibold uppercase tracking-wider block">Next Match</span>
                     <div class="font-bold text-hope-dark flex items-center gap-2">
                        <svg class="w-4 h-4 text-hope-red" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                       <span class="text-sm">Dec 20, 2025</span>
+                       <span id="nextMatchDate" class="text-sm">-</span>
                     </div>
                   </div>
                 </div>
@@ -220,11 +220,11 @@
              <div class="grid grid-cols-2 gap-4 relative z-10">
                 <div class="bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
                    <p class="text-gray-500 text-xs uppercase tracking-wider font-semibold">Total Players</p>
-                   <h3 class="text-2xl font-bold text-gray-900">22</h3>
+                   <h3 id="totalPlayersStat" class="text-2xl font-bold text-gray-900">0</h3>
                 </div>
                 <div class="bg-white p-4 rounded-lg border border-gray-100 shadow-sm">
                    <p class="text-gray-500 text-xs uppercase tracking-wider font-semibold">League Position</p>
-                   <h3 class="text-2xl font-bold text-hope-cyan">3rd</h3>
+                   <h3 id="leaguePositionStat" class="text-2xl font-bold text-hope-cyan">-</h3>
                 </div>
              </div>
           </div>
@@ -233,12 +233,12 @@
           <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col items-center text-center justify-center relative overflow-hidden">
               <div class="absolute top-0 w-full h-1 bg-hope-lime"></div>
               <div class="w-20 h-20 bg-gray-100 rounded-full mb-4 overflow-hidden border-2 border-white shadow-md">
-                 <div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500 font-bold text-xl">MV</div>
+                 <div id="coachInitials" class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500 font-bold text-xl">CO</div>
               </div>
-              <h3 class="text-xl font-bold text-hope-dark">Mr. Vuthy</h3>
+              <h3 id="coachName" class="text-xl font-bold text-hope-dark">Coach</h3>
               <p class="text-gray-500 font-medium text-sm mb-4">Head Coach</p>
               <div class="bg-gray-50 px-4 py-1.5 rounded-full border border-gray-100 text-xs font-semibold text-gray-600">
-                 8 Years Experience
+                 <span id="coachExperience">-</span>
               </div>
               <button class="mt-6 text-hope-cyan text-sm font-semibold hover:underline">View Coach Profile</button>
           </div>
@@ -250,105 +250,10 @@
       <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 md:p-6 mb-10">
         <div class="flex justify-between items-center mb-6">
            <h2 class="text-xl font-bold text-hope-dark">Squad List</h2>
-           <span class="text-xs bg-gray-100 text-gray-500 px-3 py-1 rounded-full font-medium">22 Players</span>
+           <span id="squadCountLabel" class="text-xs bg-gray-100 text-gray-500 px-3 py-1 rounded-full font-medium">0 Players</span>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-
-          <!-- Player 1 (You) -->
-          <div class="group relative bg-white border border-hope-cyan/30 rounded-xl p-4 hover:shadow-md transition-shadow">
-             <div class="absolute top-3 right-3">
-               <span class="bg-hope-cyan text-white text-[10px] font-bold px-2 py-0.5 rounded-full">YOU</span>
-             </div>
-             <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-hope-cyan rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0">DC</div>
-                <div>
-                   <h3 class="font-bold text-gray-900 group-hover:text-hope-cyan transition-colors">Dara Chan</h3>
-                   <p class="text-xs text-gray-500">Defender</p>
-                </div>
-             </div>
-             <div class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center">
-                <span class="text-xs font-mono text-gray-400">#4</span>
-                <span class="text-xs font-semibold text-green-600">Active</span>
-             </div>
-          </div>
-
-          <!-- Player 2 -->
-          <div class="group bg-white border border-gray-100 rounded-xl p-4 hover:shadow-md hover:border-gray-200 transition-all">
-             <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">RS</div>
-                <div>
-                   <h3 class="font-bold text-gray-900 group-hover:text-hope-dark transition-colors">Rina Seng</h3>
-                   <p class="text-xs text-gray-500">Forward</p>
-                </div>
-             </div>
-             <div class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center">
-                <span class="text-xs font-mono text-gray-400">#9</span>
-                <span class="text-xs font-semibold text-green-600">Active</span>
-             </div>
-          </div>
-
-          <!-- Player 3 -->
-          <div class="group bg-white border border-gray-100 rounded-xl p-4 hover:shadow-md hover:border-gray-200 transition-all">
-             <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">SR</div>
-                <div>
-                   <h3 class="font-bold text-gray-900 group-hover:text-hope-dark transition-colors">Sok Rith</h3>
-                   <p class="text-xs text-gray-500">Midfielder</p>
-                </div>
-             </div>
-             <div class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center">
-                <span class="text-xs font-mono text-gray-400">#6</span>
-                <span class="text-xs font-semibold text-green-600">Active</span>
-             </div>
-          </div>
-
-          <!-- Player 4 -->
-          <div class="group bg-white border border-gray-100 rounded-xl p-4 hover:shadow-md hover:border-gray-200 transition-all">
-             <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">CD</div>
-                <div>
-                   <h3 class="font-bold text-gray-900 group-hover:text-hope-dark transition-colors">Chan Dara</h3>
-                   <p class="text-xs text-gray-500">Defender</p>
-                </div>
-             </div>
-             <div class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center">
-                <span class="text-xs font-mono text-gray-400">#5</span>
-                <span class="text-xs font-semibold text-yellow-500">Injured</span>
-             </div>
-          </div>
-
-          <!-- Player 5 -->
-          <div class="group bg-white border border-gray-100 rounded-xl p-4 hover:shadow-md hover:border-gray-200 transition-all">
-             <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">VL</div>
-                <div>
-                   <h3 class="font-bold text-gray-900 group-hover:text-hope-dark transition-colors">Vuthy Lim</h3>
-                   <p class="text-xs text-gray-500">Goalkeeper</p>
-                </div>
-             </div>
-             <div class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center">
-                <span class="text-xs font-mono text-gray-400">#1</span>
-                <span class="text-xs font-semibold text-green-600">Active</span>
-             </div>
-          </div>
-
-          <!-- Player 6 -->
-          <div class="group bg-white border border-gray-100 rounded-xl p-4 hover:shadow-md hover:border-gray-200 transition-all">
-             <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">KP</div>
-                <div>
-                   <h3 class="font-bold text-gray-900 group-hover:text-hope-dark transition-colors">Kosal Pheak</h3>
-                   <p class="text-xs text-gray-500">Forward</p>
-                </div>
-             </div>
-             <div class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center">
-                <span class="text-xs font-mono text-gray-400">#11</span>
-                <span class="text-xs font-semibold text-green-600">Active</span>
-             </div>
-          </div>
-
-        </div>
+        <div id="squadGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6"></div>
       </div>
 
     </main>
@@ -376,6 +281,199 @@
         body.style.overflow = 'auto';
       }
     }
+  </script>
+  <script>
+    (function () {
+      function normalizeText(value) {
+        return String(value || '').trim().toLowerCase();
+      }
+
+      function initials(name) {
+        const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+        if (!parts.length) return 'PL';
+        return parts.slice(0, 2).map(function (part) { return part.charAt(0).toUpperCase(); }).join('');
+      }
+
+      function escapeHtml(value) {
+        return String(value || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function resolveCurrentPlayer(users, players) {
+        const raw = sessionStorage.getItem('edusportpro_current_user') || localStorage.getItem('edusportpro_current_user') || '';
+        let current = null;
+        try { current = raw ? JSON.parse(raw) : null; } catch (_) { current = null; }
+        const currentId = normalizeText(current && current.id);
+        const currentEmail = normalizeText(current && current.email);
+
+        if (currentId || currentEmail) {
+          const matched = players.find(function (p) {
+            return normalizeText(p.id) === currentId || normalizeText(p.email) === currentEmail;
+          });
+          if (matched) return matched;
+
+          const user = users.find(function (u) {
+            return normalizeText(u.id) === currentId || normalizeText(u.email) === currentEmail;
+          });
+          if (user) {
+            const mapped = players.find(function (p) {
+              return normalizeText(p.email) === normalizeText(user.email) || normalizeText(p.name) === normalizeText(user.name);
+            });
+            if (mapped) return mapped;
+          }
+        }
+
+        return players[0] || null;
+      }
+
+      function setText(id, value) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.textContent = value;
+      }
+
+      function ordinal(value) {
+        if (!Number.isFinite(value) || value <= 0) return '-';
+        const mod100 = value % 100;
+        if (mod100 >= 11 && mod100 <= 13) return value + 'th';
+        const mod10 = value % 10;
+        if (mod10 === 1) return value + 'st';
+        if (mod10 === 2) return value + 'nd';
+        if (mod10 === 3) return value + 'rd';
+        return value + 'th';
+      }
+
+      function computeLeaguePosition(team, teams, matches) {
+        if (!team) return '-';
+        const table = teams.map(function (t) {
+          return { id: t.id, points: 0, gd: 0, gf: 0, ga: 0 };
+        });
+        const byId = {};
+        table.forEach(function (row) { byId[String(row.id)] = row; });
+
+        matches.forEach(function (m) {
+          const home = byId[String(m.homeTeamId || '')];
+          const away = byId[String(m.awayTeamId || '')];
+          const hs = Number(m.homeScore);
+          const as = Number(m.awayScore);
+          if (!home || !away || !Number.isFinite(hs) || !Number.isFinite(as)) return;
+
+          home.gf += hs; home.ga += as; home.gd = home.gf - home.ga;
+          away.gf += as; away.ga += hs; away.gd = away.gf - away.ga;
+
+          if (hs > as) home.points += 3;
+          else if (as > hs) away.points += 3;
+          else { home.points += 1; away.points += 1; }
+        });
+
+        table.sort(function (a, b) {
+          return b.points - a.points || b.gd - a.gd || b.gf - a.gf || String(a.id).localeCompare(String(b.id));
+        });
+        const pos = table.findIndex(function (row) { return String(row.id) === String(team.id); }) + 1;
+        return ordinal(pos);
+      }
+
+      function formatDate(dateValue) {
+        const d = new Date(dateValue || '');
+        if (Number.isNaN(d.getTime())) return '-';
+        return d.toLocaleDateString();
+      }
+
+      document.addEventListener('DOMContentLoaded', async function () {
+        if (!window.AdminDataStore) return;
+        await window.AdminDataStore.bootstrap();
+
+        const users = window.AdminDataStore.getArray('users', []);
+        const players = window.AdminDataStore.getArray('players', []);
+        const teams = window.AdminDataStore.getArray('teams', []);
+        const matches = window.AdminDataStore.getArray('matches', []);
+        const training = window.AdminDataStore.getArray('trainingSessions', []);
+        const coaches = window.AdminDataStore.getArray('coaches', []);
+        const notifications = window.AdminDataStore.getArray('notifications', []);
+
+        const player = resolveCurrentPlayer(users, players);
+        if (!player) return;
+
+        const team = teams.find(function (entry) { return String(entry.id || '') === String(player.teamId || ''); }) || null;
+        const teamName = team && team.name ? team.name : 'Unassigned Team';
+        const teamPlayers = players.filter(function (entry) { return String(entry.teamId || '') === String(player.teamId || ''); });
+        const teamMatches = matches.filter(function (entry) {
+          const teamId = String(player.teamId || '');
+          return String(entry.homeTeamId || '') === teamId || String(entry.awayTeamId || '') === teamId;
+        });
+        const nextMatch = teamMatches
+          .filter(function (entry) { return new Date(entry.dateTime || entry.date || 0).getTime() >= Date.now(); })
+          .sort(function (a, b) { return new Date(a.dateTime || a.date || 0) - new Date(b.dateTime || b.date || 0); })[0];
+        const latestSession = training
+          .filter(function (entry) { return String(entry.teamId || '') === String(player.teamId || ''); })
+          .sort(function (a, b) { return new Date(b.date || 0) - new Date(a.date || 0); })[0];
+        const coach = latestSession ? coaches.find(function (entry) { return String(entry.id || '') === String(latestSession.coachId || ''); }) : null;
+        const unreadCount = notifications.filter(function (entry) { return !entry.read; }).length;
+
+        const playerInitials = initials(player.name || player.id || 'Player');
+        setText('notificationBadge', String(unreadCount));
+        const badge = document.getElementById('notificationBadge');
+        if (badge) badge.classList.toggle('hidden', unreadCount === 0);
+
+        setText('navPlayerName', player.name || 'Player');
+        setText('navPlayerRole', String(player.position || 'Player') + ' - ' + teamName);
+        setText('navPlayerInitials', playerInitials);
+
+        setText('teamBadge', initials(teamName));
+        setText('teamNameHeading', teamName);
+        setText('teamDivisionLabel', team && team.division ? team.division : 'Division N/A');
+        setText('nextMatchDate', nextMatch ? formatDate(nextMatch.dateTime || nextMatch.date) : '-');
+        setText('totalPlayersStat', String(teamPlayers.length));
+        setText('leaguePositionStat', computeLeaguePosition(team, teams, matches));
+
+        const coachName = coach && coach.name ? coach.name : 'Unassigned Coach';
+        setText('coachInitials', initials(coachName));
+        setText('coachName', coachName);
+        setText('coachExperience', (coach && Number.isFinite(Number(coach.experienceYears)))
+          ? String(coach.experienceYears) + ' Years Experience'
+          : '-');
+
+        setText('squadCountLabel', String(teamPlayers.length) + ' Players');
+
+        const squadGrid = document.getElementById('squadGrid');
+        if (squadGrid) {
+          if (!teamPlayers.length) {
+            squadGrid.innerHTML = '<div class="col-span-full text-sm text-gray-500">No squad data available.</div>';
+            return;
+          }
+          squadGrid.innerHTML = teamPlayers.map(function (entry, index) {
+            const isCurrent = String(entry.id || '') === String(player.id || '');
+            const cardClass = isCurrent
+              ? 'group relative bg-white border border-hope-cyan/30 rounded-xl p-4 hover:shadow-md transition-shadow'
+              : 'group bg-white border border-gray-100 rounded-xl p-4 hover:shadow-md hover:border-gray-200 transition-all';
+            const avatarClass = isCurrent
+              ? 'w-12 h-12 bg-hope-cyan rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0'
+              : (index % 2 === 0
+                ? 'w-12 h-12 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0'
+                : 'w-12 h-12 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0');
+            return '' +
+              '<div class="' + cardClass + '">' +
+                (isCurrent ? '<div class="absolute top-3 right-3"><span class="bg-hope-cyan text-white text-[10px] font-bold px-2 py-0.5 rounded-full">YOU</span></div>' : '') +
+                '<div class="flex items-center gap-4">' +
+                  '<div class="' + avatarClass + '">' + escapeHtml(initials(entry.name || entry.id || 'P')) + '</div>' +
+                  '<div>' +
+                    '<h3 class="font-bold text-gray-900 ' + (isCurrent ? 'group-hover:text-hope-cyan' : 'group-hover:text-hope-dark') + ' transition-colors">' + escapeHtml(String(entry.name || 'Player')) + '</h3>' +
+                    '<p class="text-xs text-gray-500">' + escapeHtml(String(entry.position || '-')) + '</p>' +
+                  '</div>' +
+                '</div>' +
+                '<div class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center">' +
+                  '<span class="text-xs font-mono text-gray-400">#-</span>' +
+                  '<span class="text-xs font-semibold ' + (String(entry.status || '').toLowerCase() === 'injury' ? 'text-yellow-500' : 'text-green-600') + '">' + escapeHtml(String(entry.status || 'Active')) + '</span>' +
+                '</div>' +
+              '</div>';
+          }).join('');
+        }
+      });
+    })();
   </script>
 
 </body>

@@ -101,7 +101,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-hope-dark" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
         </svg>
-        <span class="absolute top-1 right-1 bg-hope-red text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">4</span>
+        <span id="notificationBadge" class="absolute top-1 right-1 bg-hope-red text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">0</span>
       </a>
 
       <select class="bg-gray-50 border border-gray-200 text-hope-dark text-sm rounded-lg focus:ring-hope-cyan focus:border-hope-cyan block px-2 py-1.5 md:px-3 outline-none">
@@ -111,10 +111,10 @@
 
       <a href="/player/player-profile.html" class="flex items-center gap-2 md:gap-3 cursor-pointer pl-2 md:pl-4 border-l border-gray-200 hover:bg-gray-50 transition-colors rounded-r-lg p-1">
         <div class="text-right hidden md:block">
-          <div class="text-sm font-semibold text-hope-dark">Player Dara</div>
-          <div class="text-xs text-gray-500">Defender - Team A</div>
+          <div id="navPlayerName" class="text-sm font-semibold text-hope-dark">Player</div>
+          <div id="navPlayerRole" class="text-xs text-gray-500">Player - Team</div>
         </div>
-        <div class="w-8 h-8 md:w-9 md:h-9 bg-hope-yellow rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm shrink-0">
+        <div id="navPlayerInitials" class="w-8 h-8 md:w-9 md:h-9 bg-hope-yellow rounded-full flex items-center justify-center text-white font-bold border-2 border-white shadow-sm shrink-0">
           PD
         </div>
       </a>
@@ -204,7 +204,7 @@
           <div class="px-4 pb-4 md:px-6 md:pb-6 text-center relative">
             <div class="-mt-10 mb-3 inline-block">
                <div class="w-20 h-20 rounded-full border-4 border-white bg-white shadow-md mx-auto overflow-hidden">
-                 <div class="w-full h-full bg-hope-yellow text-white flex items-center justify-center text-2xl font-bold">PD</div>
+                 <div id="dashPlayerInitials" class="w-full h-full bg-hope-yellow text-white flex items-center justify-center text-2xl font-bold">PD</div>
                </div>
             </div>
             <h2 id="dashPlayerName" class="text-xl font-bold text-hope-dark">Dara Chan</h2>
@@ -477,6 +477,15 @@
       };
     }
 
+    function escapeHtml(value) {
+      return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
     function buildBadge(name) {
       const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
       if (!parts.length) return 'TM';
@@ -505,10 +514,24 @@
       if (pName) pName.textContent = String(player.name || pName.textContent);
       const pId = document.getElementById('dashPlayerId');
       if (pId) pId.textContent = 'Player ID: ' + String(player.id || '-');
+      const pInitials = document.getElementById('dashPlayerInitials');
+      if (pInitials) pInitials.textContent = buildBadge(player.name || player.id || 'Player');
       const teamTag = document.getElementById('dashTeamTag');
       if (teamTag) teamTag.textContent = String((team && team.name) || 'Unassigned Team');
       const posTag = document.getElementById('dashPositionTag');
       if (posTag) posTag.textContent = String(player.position || 'Player');
+      const navName = document.getElementById('navPlayerName');
+      const navRole = document.getElementById('navPlayerRole');
+      const navInitials = document.getElementById('navPlayerInitials');
+      if (navName) navName.textContent = String(player.name || 'Player');
+      if (navRole) navRole.textContent = String(player.position || 'Player') + ' - ' + String((team && team.name) || 'Team');
+      if (navInitials) navInitials.textContent = buildBadge(player.name || player.id || 'Player');
+      const notificationBadge = document.getElementById('notificationBadge');
+      if (notificationBadge) {
+        const unreadCount = notifications.filter(function (n) { return !n.read; }).length;
+        notificationBadge.textContent = String(unreadCount);
+        notificationBadge.classList.toggle('hidden', unreadCount === 0);
+      }
 
       const teamId = String(player.teamId || '');
       const teamMatches = matches.filter(function (m) {
@@ -546,7 +569,7 @@
             '<tr class="hover:bg-gray-50 transition-colors">' +
               '<td class="px-4 md:px-6 py-4 font-medium text-gray-900 flex items-center gap-2 whitespace-nowrap"><div class="w-6 h-6 rounded-full bg-gray-200 flex-shrink-0 text-[10px] font-bold flex items-center justify-center">' + buildBadge(oppName) + '</div>' + oppName + '</td>' +
               '<td class="px-4 md:px-6 py-4 text-gray-600 whitespace-nowrap"><div class="font-medium">' + dt.date + '</div><div class="text-xs">' + dt.time + '</div></td>' +
-              '<td class="px-4 md:px-6 py-4 text-gray-500 whitespace-nowrap">' + String(m.venue || '-') + '</td>' +
+              '<td class="px-4 md:px-6 py-4 text-gray-500 whitespace-nowrap">' + escapeHtml(String(m.venue || '-')) + '</td>' +
             '</tr>'
           );
         }).join('') : '<tr><td colspan="3" class="px-4 md:px-6 py-4 text-gray-500">No upcoming matches.</td></tr>';
@@ -556,15 +579,16 @@
       if (trainingBody) {
         const sessions = training
           .filter(function (s) { return String(s.teamId || '') === teamId; })
+          .filter(function (s) { return new Date(s.date || 0).getTime() >= Date.now() - 86400000; })
           .sort(function (a, b) { return new Date(a.date || 0) - new Date(b.date || 0); })
           .slice(0, 2);
         trainingBody.innerHTML = sessions.length ? sessions.map(function (s) {
           const dt = fmtDateTime(s.date);
           return (
             '<tr class="hover:bg-gray-50 transition-colors">' +
-              '<td class="px-4 md:px-6 py-4 font-medium text-gray-900 whitespace-nowrap"><span class="inline-block w-2 h-2 rounded-full bg-hope-lime mr-2"></span>' + String(s.focus || 'Training') + '</td>' +
+              '<td class="px-4 md:px-6 py-4 font-medium text-gray-900 whitespace-nowrap"><span class="inline-block w-2 h-2 rounded-full bg-hope-lime mr-2"></span>' + escapeHtml(String(s.focus || 'Training')) + '</td>' +
               '<td class="px-4 md:px-6 py-4 text-gray-600 whitespace-nowrap"><div class="font-medium">' + dt.date + '</div><div class="text-xs">' + String(s.time || '4:00 PM') + '</div></td>' +
-              '<td class="px-4 md:px-6 py-4 text-gray-500 whitespace-nowrap">' + String(s.location || '-') + '</td>' +
+              '<td class="px-4 md:px-6 py-4 text-gray-500 whitespace-nowrap">' + escapeHtml(String(s.location || '-')) + '</td>' +
             '</tr>'
           );
         }).join('') : '<tr><td colspan="3" class="px-4 md:px-6 py-4 text-gray-500">No upcoming training sessions.</td></tr>';
@@ -580,7 +604,7 @@
           return (
             '<div class="flex gap-4 p-3 rounded-lg ' + tone + '">' +
               '<div class="flex-shrink-0"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>' +
-              '<div><h3 class="font-semibold text-gray-900 text-sm">' + String(n.title || 'Notification') + '</h3><p class="text-gray-600 text-sm mt-0.5">' + String(n.message || '') + '</p><p class="text-xs text-gray-400 mt-2">' + fmtDateTime(n.createdAt).date + '</p></div>' +
+              '<div><h3 class="font-semibold text-gray-900 text-sm">' + escapeHtml(String(n.title || 'Notification')) + '</h3><p class="text-gray-600 text-sm mt-0.5">' + escapeHtml(String(n.message || '')) + '</p><p class="text-xs text-gray-400 mt-2">' + fmtDateTime(n.createdAt).date + '</p></div>' +
             '</div>'
           );
         }).join('') : '<div class="text-sm text-gray-500">No notifications available.</div>';
