@@ -1,6 +1,6 @@
 # THESIS TOPIC
 
-## SPORT MANAGEMENT SYSTEM OF THE HOPE FOR CAMBODIAN CHILDREN FOUNDATION
+## SPORT MANAGEMENT SYSTEM OF THE HOPE FOR CAMBODIAN CHILDREN FOUNDATION (EDUSPORTPRO)
 
 # Chapter 1: Introduction
 
@@ -31,7 +31,21 @@ Develop and evaluate a centralized, role-based Sport Management System for the H
 6. Define database relationships that preserve integrity across all major sports operations.
 7. Document implementation logic to support future backend integration and system scaling.
 
-# Chapter 2: Library Science
+## 1.3 Scope and Limitations
+
+### Project Scope
+1. Multi-role frontend implementation for Admin, Coach, and Player user flows.
+2. Core sports operations modules (users, teams, players, matches, training, attendance, calendar, tournament, division, performance, notifications, inventory, and reports).
+3. Role-based UI access behavior with admin full control and coach/player constrained flows.
+4. JSON-backed browser data layer to simulate cross-module CRUD and workflow continuity.
+5. SQL schema preparation for backend-ready data relationships and access control mapping.
+
+### Current Limitations
+1. The deployed project stage is frontend-first; API and server-side authorization are not yet fully enforced.
+2. Client-side storage and JSON simulation are used for development behavior and are not production security controls.
+3. Some analytics and process automation (for example automated standings recomputation) are defined in design/SQL logic but not fully productionized in API services.
+
+# Chapter 2: Literature Review
 
 This chapter reviews related concepts and references used to guide the system design for the Hope for Cambodian Children Foundation.
 
@@ -137,6 +151,22 @@ The project implementation was expanded with JSON-driven frontend state manageme
 - Added targeted navigation improvements and consistency fixes across admin pages.
 - Corrected placeholder/text rendering and improved form feedback messaging in major auth/team flows.
 
+### 3.3.6 Shared Admin Navigation Standardization
+- Introduced reusable sidebar architecture:
+  - `admin/admin-sidebar-component.html` for shared menu markup.
+  - `admin/admin-sidebar-loader.js` for runtime injection and active-route highlighting.
+- Reduced duplicated navigation code and improved consistency across admin modules.
+
+### 3.3.7 Tournament and Division Workflow Alignment
+- `admin/admin-tournament-overview.html` and `admin/create-tournament.html` were aligned for clearer create/update lifecycle.
+- Tournament setup supports multi-division mapping behavior in line with the competition model.
+- Coach and Player tournament/division pages are maintained as read-only views to preserve role boundaries in UI.
+
+### 3.3.8 Calendar Targeting and Communication Logic
+- Admin calendar flow supports event targeting to all teams, single team, or multiple teams.
+- Coach calendar flow is constrained to coach-team scope for audience safety.
+- Event-type conditional behavior (including `Other` comment handling) was preserved across role workflows.
+
 # Chapter 4: Conclusion
 
 EduSportPro successfully establishes a centralized, role-based sports management platform with clear operational boundaries and integrated workflows.
@@ -146,9 +176,10 @@ Key achievements:
 2. Core sports modules were integrated into a single web project.
 3. Tournament and Division management were included as part of competition governance.
 4. Communication logic was structured around role and audience scope.
-5. A maintainable documentation and component-based frontend approach was introduced.
+5. A maintainable documentation and component-based frontend approach was introduced, including shared admin navigation components.
 6. A JSON-backed shared data store now supports cross-module consistency during frontend-stage operation.
 7. Team, division, and competition pages were upgraded from static prototypes to dynamic JSON-driven views.
+8. Authentication and recovery flows were expanded to include role routing and end-to-end password reset sequence.
 
 Overall, the project meets its main objective of improving data consistency, role clarity, and operational coordination in sports management.  
 Future work should focus on full backend API integration, strict server-side permission enforcement, and automated end-to-end testing.

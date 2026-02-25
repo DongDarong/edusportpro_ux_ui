@@ -80,7 +80,7 @@
     const isActive = activeKey === "calendar";
     const classes = isActive
       ? "hidden md:inline-flex items-center justify-center p-2 rounded-lg bg-hope-cyan/10 text-hope-cyan font-semibold"
-      : "hidden md:inline-flex items-center justify-center p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-hope-dark transition-colors";
+      : " md:inline-flex items-center justify-center p-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-hope-dark transition-colors";
 
     const anchor = document.createElement("a");
     anchor.href = "/admin/admin-calendar.html";
